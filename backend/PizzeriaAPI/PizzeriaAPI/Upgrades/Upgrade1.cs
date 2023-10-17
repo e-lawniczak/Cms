@@ -1,4 +1,5 @@
-﻿using ISession = NHibernate.ISession;
+﻿using Microsoft.Data.SqlClient;
+using System.Data.Common;
 
 namespace PizzeriaAPI.Upgrades
 {
@@ -6,15 +7,15 @@ namespace PizzeriaAPI.Upgrades
 	{
 		public int Number => 1;
 
-		public void Execute(ISession session)
+		public void Execute(NHibernate.ISession session)
 		{
-			string sql = "@\"CREATE TABLE IF NOT EXISTS SocialMedia " +
-				"( " +
-					"Id NOT NULL, " +
-					"Name Text NOT NULL, " +
-					"PRIMARY KEY (Id) " +
-				");";
-			session.CreateSQLQuery(sql).ExecuteUpdate();
+			string createTableSQL = "CREATE TABLE UpgradeExecuted (Id NUMBER(10) PRIMARY KEY, UpgradeNumber VARCHAR2(255))";
+
+			using (DbCommand command = session.Connection.CreateCommand())
+			{
+				command.CommandText = createTableSQL;
+				command.ExecuteNonQuery();
+			}
 		}
 	}
 }

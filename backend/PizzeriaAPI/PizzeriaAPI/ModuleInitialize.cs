@@ -18,6 +18,7 @@ namespace PizzeriaAPI
 			services.AddSingleton<IUpgradesService, UpgradesService>();
 
 			services.AddSingleton<IUpgrade, Upgrade1>();
+			services.AddSingleton<IUpgrade, Upgrade2>();
 		}
 
 		public static void OnInitialize(this IServiceProvider services)

@@ -31,22 +31,23 @@ namespace PizzeriaAPI.Controllers
 		[SwaggerResponse(HttpStatusCode.OK, "SocialMedia inserted successfully")]
 		public ActionResult AddSocialMedia([FromBody] SocialMediaDto socialMediaDto)
 		{
-			var socialMedia = new SocialMedia()
-			{
-				Name = socialMediaDto.Name
-			};
 			try
 			{
+				var socialMedia = new SocialMedia()
+				{
+					Name = socialMediaDto.Name
+				};
 				logger.LogDebug($"Insert socialMedia. Name: {socialMedia.Name}");
 				transactionCoordinator.InCommitScope(session => repository.InsertSocialMedia(socialMedia, session));
+				return Ok();
+
 			}
 			catch (Exception ex)
 			{
-				logger.LogDebug($"Failed to insert socialMedia. Name: {socialMedia.Name}. ", ex);
+				logger.LogDebug($"Failed to insert socialMedia. Name: {socialMediaDto.Name}. ", ex);
 
-				throw;
+				return StatusCode(500, ex.Message);
 			}
-			return Ok();
 		}
 
 		[HttpGet(Name = "GetSocialMedia")]
@@ -54,17 +55,26 @@ namespace PizzeriaAPI.Controllers
 		[SwaggerResponse(HttpStatusCode.NotFound, "SocialMedia not found")]
 		public ActionResult<IEnumerable<SocialMedia>> GetSocialMedia()
 		{
-			var socialMedia = transactionCoordinator.InRollbackScope(session => repository.GetSocialMedia(session));
-
-			logger.LogDebug($"Send social Media. Size {socialMedia.Count()}");
-
-			var socialMediaDtos = socialMedia.Select(x => new SocialMediaDto()
+			try
 			{
-				Name = x.Name,
-			});
-			if (socialMediaDtos.IsNullOrEmpty())
-				return NotFound("SocialMedia not found");
-			return Ok(socialMediaDtos);
+				IEnumerable<SocialMedia> socialMedia;
+				socialMedia = transactionCoordinator.InRollbackScope(session => repository.GetSocialMedia(session));
+
+				logger.LogDebug($"Send social Media. Size {socialMedia.Count()}");
+
+				var socialMediaDtos = socialMedia.Select(x => new SocialMediaDto()
+				{
+					Name = x.Name,
+				});
+				if (socialMediaDtos.IsNullOrEmpty())
+					return NotFound("SocialMedia not found");
+				return Ok(socialMediaDtos);
+			}
+			catch (Exception ex)
+			{
+				logger.LogError("Failed to fetch social media", ex);
+				return StatusCode(500,ex.Message);
+			}
 		}
 	}
 }

@@ -36,8 +36,7 @@ namespace PizzeriaAPI.ORM
 			}
 			catch (Exception ex)
 			{
-				logger.LogError("Error during rollback transaction", ex);
-				result = default;
+				throw;
 			}
 			finally
 			{
@@ -56,7 +55,7 @@ namespace PizzeriaAPI.ORM
 			}
 			catch (Exception ex)
 			{
-				logger.LogError("Error during rollback transaction", ex);
+				throw;
 			}
 			finally
 			{
@@ -75,8 +74,8 @@ namespace PizzeriaAPI.ORM
 			}
 			catch(Exception ex)
 			{
-				logger.LogError("Error during commit transaction", ex);
 				transaction?.Rollback();
+				throw;
 			}
 			finally
 			{
@@ -95,9 +94,8 @@ namespace PizzeriaAPI.ORM
 			}
 			catch (Exception ex)
 			{
-				logger.LogError("Error during rollback transaction", ex);
 				transaction?.Rollback();
-				result = default;
+				throw;
 			}
 			finally
 			{

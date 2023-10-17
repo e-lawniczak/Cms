@@ -1,6 +1,5 @@
-using Microsoft.Extensions.DependencyInjection;
+
 using Serilog;
-using System.Reflection;
 
 namespace PizzeriaAPI
 {
@@ -8,9 +7,10 @@ namespace PizzeriaAPI
 	{
 		public static void Main(string[] args)
 		{
-
 			var builder = WebApplication.CreateBuilder(args);
-			builder.Host.UseSerilog((ctx, lc) => lc.WriteTo.Console());
+
+			builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration));
+
 			builder.Services.AddControllers();
 			builder.Services.AddServices();
 			builder.Services.AddEndpointsApiExplorer();

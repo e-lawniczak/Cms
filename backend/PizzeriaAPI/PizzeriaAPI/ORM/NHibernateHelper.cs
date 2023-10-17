@@ -39,7 +39,7 @@ namespace PizzeriaAPI.ORM
 				.Database(GetDatabaseConfiguration)
 				.Mappings(m =>
 					m.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly()))
-				.ExposeConfiguration(cfg => new SchemaExport(cfg).Create(true, true))
+				.ExposeConfiguration(cfg => new SchemaExport(cfg))
 				.Cache(
 					c => c.UseQueryCache()
 					.UseSecondLevelCache()
