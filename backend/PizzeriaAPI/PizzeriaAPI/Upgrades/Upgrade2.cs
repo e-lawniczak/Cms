@@ -8,14 +8,10 @@ namespace PizzeriaAPI.Upgrades
 
 		public void Execute(NHibernate.ISession session)
 		{
-			var sql = "CREATE TABLE SocialMedia (Id NUMBER(10) PRIMARY KEY, Name VARCHAR2(255))";
+			var sql = "CREATE TABLE IF NOT EXISTS SocialMedia (Id INT PRIMARY KEY, Name TEXT)";
 
 
-			using (DbCommand command = session.Connection.CreateCommand())
-			{
-				command.CommandText = sql;
-				command.ExecuteNonQuery();
-			}
+			session.CreateSQLQuery(sql).ExecuteUpdate();
 		}
 	}
 }

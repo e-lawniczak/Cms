@@ -9,13 +9,9 @@ namespace PizzeriaAPI.Upgrades
 
 		public void Execute(NHibernate.ISession session)
 		{
-			string createTableSQL = "CREATE TABLE UpgradeExecuted (Id NUMBER(10) PRIMARY KEY, UpgradeNumber VARCHAR2(255))";
+			string createTableSQL = "CREATE TABLE IF NOT EXISTS UpgradeExecuted (Id INT PRIMARY KEY, UpgradeNumber TEXT)";
 
-			using (DbCommand command = session.Connection.CreateCommand())
-			{
-				command.CommandText = createTableSQL;
-				command.ExecuteNonQuery();
-			}
+			session.CreateSQLQuery(createTableSQL).ExecuteUpdate();
 		}
 	}
 }

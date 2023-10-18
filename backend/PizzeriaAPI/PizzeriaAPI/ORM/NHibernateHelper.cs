@@ -48,11 +48,11 @@ namespace PizzeriaAPI.ORM
 		}
 		private IPersistenceConfigurer GetDatabaseConfiguration()
 		{
-			return OracleManagedDataClientConfiguration.Oracle10.ConnectionString(c => {
-				c.Server("127.0.0.1");
-				c.Instance("XE");
-				c.Port(1521);
-				c.Username("CMS");
+			return PostgreSQLConfiguration.Standard.ConnectionString(c => {
+				c.Host("127.0.0.1");
+				c.Database("CMSDatabase");
+				c.Port(5432);
+				c.Username("CMSUser");
 				c.Password("CMSPassword");
 			});
 		}
