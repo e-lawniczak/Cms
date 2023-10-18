@@ -1,4 +1,6 @@
-﻿using PizzeriaAPI.Database.Entities;
+﻿using API.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.ORM;
 using PizzeriaAPI.Repositories;
 using PizzeriaAPI.Upgrades;
@@ -11,6 +13,7 @@ namespace PizzeriaAPI
 		{
 			services.AddSingleton<INHibernateHelper, NHibernateHelper>();
 			services.AddSingleton<ITransactionCoordinator, TransactionCoordinator>();
+			services.AddSingleton<IHealthCheck, DBHealthCheck>();
 
 			services.AddSingleton<ISocialMediaRepository, SocialMediaRepository>();
 

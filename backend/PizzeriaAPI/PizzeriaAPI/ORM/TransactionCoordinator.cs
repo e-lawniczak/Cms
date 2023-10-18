@@ -5,6 +5,7 @@ namespace PizzeriaAPI.ORM
 {
 	public interface ITransactionCoordinator
 	{
+		Task<T> InRollbackScopeAsync<T>(Func<ISession, Task<T>> action);
 		T InRollbackScope<T>(Func<ISession, T> action);
 		void InRollbackScope<T>(Action<ISession> action);
 		void InCommitScope(Action<ISession> action);
@@ -25,6 +26,29 @@ namespace PizzeriaAPI.ORM
 			this.nHibernateHelper = nHibernateHelper;
 			this.logger = logger;
 		}
+
+
+		public async Task<T> InRollbackScopeAsync<T>(Func<ISession, Task<T>> action)
+		{
+			T? result;
+			try
+			{
+				session = nHibernateHelper.OpenSession();
+				transaction = session.BeginTransaction();
+				result = await action(session);
+			}
+			catch (Exception ex)
+			{
+				throw;
+			}
+			finally
+			{
+				transaction?.Rollback();
+				session?.Close();
+			}
+			return result;
+		}
+
 		public T InRollbackScope<T>(Func<ISession, T> action)
 		{
 			T? result;
@@ -45,6 +69,7 @@ namespace PizzeriaAPI.ORM
 			}
 			return result;
 		}
+
 		public void InRollbackScope<T>(Action<ISession> action)
 		{
 			try
