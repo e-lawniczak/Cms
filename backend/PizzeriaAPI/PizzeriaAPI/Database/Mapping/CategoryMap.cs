@@ -1,19 +1,19 @@
 ﻿using FluentNHibernate.Mapping;
-using NHibernate.Mapping;
 using PizzeriaAPI.Database.Entities;
 
 namespace PizzeriaAPI.Database.Mapping
 {
-	public class GalleryMap : SubclassMap<Gallery>
+	public class CategoryMap : SubclassMap<Category>
 	{
-		public GalleryMap()
-		{
+		public CategoryMap() {
 			KeyColumn("Id");
 			Map(x => x.Name).Not.Nullable();
-			Map(x => x.MainText);
-			Map(x => x.SubText);
+			Map(x => x.Link);
 
-			Table("Gallery");
+			HasMany(x => x.ProductList)
+				.Table("Product");
+
+			Table("Category");
 		}
 	}
 }

@@ -6,10 +6,13 @@ namespace PizzeriaAPI.ORM
 	public interface ITransactionCoordinator
 	{
 		Task<T> InRollbackScopeAsync<T>(Func<ISession, Task<T>> action);
+		Task InRollbackScopeAsync(Func<ISession, Task> action);
 		T InRollbackScope<T>(Func<ISession, T> action);
 		void InRollbackScope<T>(Action<ISession> action);
 		void InCommitScope(Action<ISession> action);
 		T InCommitScope<T>(Func<ISession, T> action);
+		Task<T> InCommitScopeAsync<T>(Func<ISession, Task<T>> action);
+		Task InCommitScopeAsync(Func<ISession, Task> action);
 	}
 
 	public class TransactionCoordinator : ITransactionCoordinator
@@ -37,7 +40,7 @@ namespace PizzeriaAPI.ORM
 				transaction = session.BeginTransaction();
 				result = await action(session);
 			}
-			catch (Exception ex)
+			catch
 			{
 				throw;
 			}
@@ -47,6 +50,26 @@ namespace PizzeriaAPI.ORM
 				session?.Close();
 			}
 			return result;
+		}
+		public async Task InRollbackScopeAsync(Func<ISession, Task> action)
+		{
+			try
+			{
+				session = nHibernateHelper.OpenSession();
+				transaction = session.BeginTransaction();
+				await action(session);
+			}
+			catch
+			{
+				throw;
+			}
+			finally
+			{
+				await transaction?.RollbackAsync();
+				transaction.Dispose();
+				session?.Close();
+				session.Dispose();
+			}
 		}
 
 		public T InRollbackScope<T>(Func<ISession, T> action)
@@ -58,7 +81,7 @@ namespace PizzeriaAPI.ORM
 				transaction = session.BeginTransaction();
 				result = action(session);
 			}
-			catch (Exception ex)
+			catch
 			{
 				throw;
 			}
@@ -78,7 +101,7 @@ namespace PizzeriaAPI.ORM
 				transaction = session.BeginTransaction();
 				action(session);
 			}
-			catch (Exception ex)
+			catch
 			{
 				throw;
 			}
@@ -97,7 +120,7 @@ namespace PizzeriaAPI.ORM
 				action(session);
 				transaction.Commit();
 			}
-			catch(Exception ex)
+			catch
 			{
 				transaction?.Rollback();
 				throw;
@@ -117,7 +140,7 @@ namespace PizzeriaAPI.ORM
 				result = action(session);
 				transaction.Commit();
 			}
-			catch (Exception ex)
+			catch
 			{
 				transaction?.Rollback();
 				throw;
@@ -127,6 +150,51 @@ namespace PizzeriaAPI.ORM
 				session?.Close();
 			}
 			return result;
+		}
+
+		public async Task<T> InCommitScopeAsync<T>(Func<ISession, Task<T>> action)
+		{
+			T? result;
+			try
+			{
+				session = nHibernateHelper.OpenSession();
+				transaction = session.BeginTransaction();
+				result = await action(session);
+				await transaction.CommitAsync();
+			}
+			catch
+			{
+				await transaction?.RollbackAsync();
+				transaction?.Dispose();
+				throw;
+			}
+			finally
+			{
+				session?.Close();
+				session?.Dispose();
+			}
+			return result;
+		}
+		public async Task InCommitScopeAsync(Func<ISession, Task> action)
+		{
+			try
+			{
+				session = nHibernateHelper.OpenSession();
+				transaction = session.BeginTransaction();
+				action(session);
+				await transaction.CommitAsync();
+			}
+			catch
+			{
+				await transaction?.RollbackAsync();
+				transaction?.Dispose();
+				throw;
+			}
+			finally
+			{
+				session?.Close();
+				session?.Dispose();
+			}
 		}
 	}
 }

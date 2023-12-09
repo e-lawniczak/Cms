@@ -40,7 +40,8 @@ namespace PizzeriaAPI.Upgrades
 				}
 				catch (Exception ex)
 				{
-					logger.LogError($"Error while executing Upgrade{upgrade.Number}", ex);
+					logger.LogError($"Error while executing Upgrade{upgrade.Number}. Message: {ex.Message}. StackTrace: {ex.StackTrace}");
+					throw;
 				}
 			}
 		}
@@ -53,7 +54,7 @@ namespace PizzeriaAPI.Upgrades
 					session.QueryOver<UpgradeExecuted>().List());
 				upgradesExecuted = upgradesExecuted1.Select(x => x.UpgradeNumber);
 			}
-			catch (Exception ex) { }
+			catch { }
 			if (upgradesExecuted.IsNullOrEmpty())
 				return upgrades.OrderBy(x=>x.Number).ToList();
 

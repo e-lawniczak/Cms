@@ -3,15 +3,20 @@ using PizzeriaAPI.Database.Entities;
 
 namespace PizzeriaAPI.Database.Mapping
 {
-	public class ProductMap : ClassMap<Product>
+	public class ProductMap : SubclassMap<Product>
 	{
 		public ProductMap()
 		{
-			Id(x => x.ProductId).Not.Nullable().GeneratedBy.Increment();
-			Map(x => x.ProductName).Not.Nullable();
-			Map(x => x.ProductPrice).Not.Nullable();
-			Map(x => x.ProductDescription);
-			Map(x => x.ProductDiscountPrice);
+			KeyColumn("Id");
+			Map(x => x.Name).Not.Nullable();
+			Map(x => x.Price).Not.Nullable();
+			Map(x => x.Description);
+			Map(x => x.DiscountPrice);
+			Map(x => x.Score);
+			Map(x => x.IsRecommended).Not.Nullable();
+
+			References(x => x.Category)
+				.Column("CategoryId");
 
 			Table("Product");
 		}

@@ -5,22 +5,10 @@ using ISession = NHibernate.ISession;
 
 namespace PizzeriaAPI.Repositories
 {
-	public interface ISocialMediaRepository
+	public interface ISocialMediaRepository : IGenericRepository<SocialMedia>
 	{
-		IEnumerable<SocialMedia> GetSocialMedia(ISession session);
-
-		void InsertSocialMedia(SocialMedia socialMedia, ISession session);
 	}
-	public class SocialMediaRepository : ISocialMediaRepository
+	public class SocialMediaRepository : GenericRepository<SocialMedia>, ISocialMediaRepository
 	{
-		public IEnumerable<SocialMedia> GetSocialMedia(ISession session)
-		{
-			return session.QueryOver<SocialMedia>().List();
-		}
-
-		public void InsertSocialMedia(SocialMedia socialMedia, ISession session)
-		{
-			session.SaveOrUpdate(socialMedia);
-		}
 	}
 }

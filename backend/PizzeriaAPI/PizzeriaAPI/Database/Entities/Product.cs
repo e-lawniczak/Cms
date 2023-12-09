@@ -2,12 +2,14 @@
 
 namespace PizzeriaAPI.Database.Entities
 {
-	public class Product
+	public class Product : EntityWithPicture
 	{
-		public virtual int ProductId { get; set; }
-		public virtual string ProductName { get; set; }
-		public virtual decimal ProductPrice { get; set; }
-		public virtual string ProductDescription { get; set; }
-		public virtual decimal? ProductDiscountPrice { get; set; }
+		public virtual string Name { get; set; }
+		public virtual decimal Price { get; set; }
+		public virtual string? Description { get; set; }
+		public virtual decimal? DiscountPrice { get; set; }
+		public virtual decimal? Score { get; set; }
+		public virtual bool IsRecommended { get; set; }
+		public virtual Category Category { get; set; }
 	}
 }

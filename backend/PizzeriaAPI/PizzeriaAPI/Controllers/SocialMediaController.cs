@@ -1,11 +1,11 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using PizzeriaAPI.Database.Entities;
-using PizzeriaAPI.Dto;
 using PizzeriaAPI.ORM;
 using PizzeriaAPI.Repositories;
 using Swashbuckle.Swagger.Annotations;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PizzeriaAPI.Controllers
 {
@@ -29,22 +29,18 @@ namespace PizzeriaAPI.Controllers
 		[HttpPost]
 		[Route("/AddSocialMedia")]
 		[SwaggerResponse(HttpStatusCode.OK, "SocialMedia inserted successfully")]
-		public ActionResult AddSocialMedia([FromBody] SocialMediaDto socialMediaDto)
+		public ActionResult AddSocialMedia([FromBody] SocialMedia socialMedia)
 		{
 			try
 			{
-				var socialMedia = new SocialMedia()
-				{
-					Name = socialMediaDto.Name
-				};
 				logger.LogDebug($"Insert socialMedia. Name: {socialMedia.Name}");
-				transactionCoordinator.InCommitScope(session => repository.InsertSocialMedia(socialMedia, session));
+				transactionCoordinator.InCommitScope(session => repository.InsertOrUpdateAsync(socialMedia, session));
 				return Ok();
 
 			}
 			catch (Exception ex)
 			{
-				logger.LogDebug($"Failed to insert socialMedia. Name: {socialMediaDto.Name}. ", ex);
+				logger.LogDebug($"Failed to insert socialMedia. Name: {socialMedia.Name}.  Message: {ex.Message}. StackTrace: {ex.StackTrace}");
 
 				return StatusCode(500, ex.Message);
 			}
@@ -57,22 +53,18 @@ namespace PizzeriaAPI.Controllers
 		{
 			try
 			{
-				IEnumerable<SocialMedia> socialMedia;
-				socialMedia = transactionCoordinator.InRollbackScope(session => repository.GetSocialMedia(session));
+				IEnumerable<SocialMedia> socialMediaList;
+				socialMediaList = transactionCoordinator.InRollbackScope(session => repository.GetAllAsync(session).Result);
 
-				logger.LogDebug($"Send social Media. Size {socialMedia.Count()}");
+				logger.LogDebug($"Send social Media. Size {socialMediaList.Count()}");
 
-				var socialMediaDtos = socialMedia.Select(x => new SocialMediaDto()
-				{
-					Name = x.Name,
-				});
-				if (socialMediaDtos.IsNullOrEmpty())
+				if (socialMediaList.IsNullOrEmpty())
 					return NotFound("SocialMedia not found");
-				return Ok(socialMediaDtos);
+				return Ok(socialMediaList);
 			}
 			catch (Exception ex)
 			{
-				logger.LogError("Failed to fetch social media", ex);
+				logger.LogError($"Failed to fetch social media.  Message: {ex.Message}. StackTrace: {ex.StackTrace}");
 				return StatusCode(500,ex.Message);
 			}
 		}

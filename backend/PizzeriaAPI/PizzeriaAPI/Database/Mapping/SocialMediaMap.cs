@@ -3,13 +3,18 @@ using PizzeriaAPI.Database.Entities;
 
 namespace PizzeriaAPI.Database.Mapping
 {
-	public class SocialMediaMap : ClassMap<SocialMedia>
+	public class SocialMediaMap : SubclassMap<SocialMedia>
 	{
 		public SocialMediaMap()
 		{
-			Id(x => x.Id).Not.Nullable().GeneratedBy.Increment();
+			KeyColumn("Id");
 			Map(x => x.Name).Not.Nullable();
+			Map(x => x.Link).Not.Nullable();
+			Map(x => x.IsMain).Not.Nullable();
 
+			References(x => x.TeamMember)
+				.Column("TeamMemberId");
+			
 			Table("SocialMedia");
 		}
 	}
