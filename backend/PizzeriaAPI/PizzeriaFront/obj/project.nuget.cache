@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "7MGzJOjJsczrD0krZvot/BMMlok2XXN4zVkRwtcWrYCYz9L6Gg9yVmcmIYIvcB3X7qJr8NR6kHPbBTIikW4Whw==",
+  "dgSpecHash": "nkTE0MsRPvDxhCCZbVootMPgjeLFGvLWg7Q6zS0yMzFcRvYjkxmbtC88bDIsYcC0YbTCr6zZ8IzxqO7ldW4YQg==",
   "success": true,
-  "projectFilePath": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFront\\PizzeriaFrontKlient.csproj",
+  "projectFilePath": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFront\\PizzeriaFrontClient.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
