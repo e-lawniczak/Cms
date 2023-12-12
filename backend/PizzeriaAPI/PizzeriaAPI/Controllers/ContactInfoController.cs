@@ -43,7 +43,7 @@ namespace PizzeriaAPI.Controllers
 			var contactInfo = GetContactInfo(contactInfoDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await contactInfoRepository.InsertOrUpdateAsync(contactInfo, session);
+				await contactInfoRepository.InsertAsync(contactInfo, session);
 			});
 
 			return Ok("ContactInfo inserted successfully");
@@ -88,7 +88,7 @@ namespace PizzeriaAPI.Controllers
 			var contactInfo = GetContactInfo(contactInfoDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await contactInfoRepository.InsertOrUpdateAsync(contactInfo, session);
+				await contactInfoRepository.InsertAsync(contactInfo, session);
 			});
 
 			return Ok("ContactInfo updated successfully");
@@ -111,8 +111,6 @@ namespace PizzeriaAPI.Controllers
 			return new ContactInfoDto()
 			{
 				Id = contactInfo?.Id,
-				CreateDate = contactInfo.CreateDate,
-				ModificationDate = contactInfo.ModificationDate,
 				IsVisible = contactInfo.IsVisible,
 				Text = contactInfo.Text,
 				PictureIdList = contactInfo.PictureList.Select(x=>x.PictureId).ToList()
@@ -125,8 +123,6 @@ namespace PizzeriaAPI.Controllers
 				{
 
 					Id = contactInfoDto?.Id ?? 0,
-					CreateDate = contactInfoDto.CreateDate ?? DateTime.Now,
-					ModificationDate = contactInfoDto.ModificationDate ?? DateTime.Now,
 					IsVisible = contactInfoDto.IsVisible ?? true,
 					IsDeleted = false,
 					Text = contactInfoDto.Text,

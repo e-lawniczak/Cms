@@ -8,7 +8,8 @@ namespace PizzeriaAPI.Repositories
 {
 	public interface IGenericRepository<T> where T : class
 	{
-		Task InsertOrUpdateAsync(T entity, ISession session);
+		Task InsertAsync(T entity, ISession session);
+		Task UpdateAsync(T entity, ISession session);
 		Task<T> GetByIdAsync(int id, ISession session);
 		Task<IList<T>> GetAllAsync(ISession session);
 	}
@@ -24,12 +25,15 @@ namespace PizzeriaAPI.Repositories
 		{
 			return await session.GetAsync<T>(id);
 		}
-
-		public async Task InsertOrUpdateAsync(T entity, ISession session)
+		public async virtual Task UpdateAsync(T entity, ISession session)
 		{
-			await session.SaveOrUpdateAsync(entity);
+			await session.UpdateAsync(entity);
 		}
 
+		public async virtual Task InsertAsync(T entity, ISession session)
+		{
+			await session.SaveAsync(entity);
+		}
 		private Expression<Func<T, bool>> CreateColumnFalsePredicate(string columnName)
 		{
 			var parameter = Expression.Parameter(typeof(T), "x");

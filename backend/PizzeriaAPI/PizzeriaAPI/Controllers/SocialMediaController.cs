@@ -43,7 +43,7 @@ namespace PizzeriaAPI.Controllers
 			var socialMedia = GetSocialMedia(socialMediaDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await socialMediaRepository.InsertOrUpdateAsync(socialMedia, session);
+				await socialMediaRepository.InsertAsync(socialMedia, session);
 			});
 
 			return Ok("SocialMedia inserted successfully");
@@ -88,7 +88,7 @@ namespace PizzeriaAPI.Controllers
 			var socialMedia = GetSocialMedia(socialMediaDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await socialMediaRepository.InsertOrUpdateAsync(socialMedia, session);
+				await socialMediaRepository.InsertAsync(socialMedia, session);
 			});
 
 			return Ok("SocialMedia updated successfully");
@@ -114,8 +114,6 @@ namespace PizzeriaAPI.Controllers
 				Name = socialMedia.Name,
 				Link = socialMedia.Link,
 				IsMain = socialMedia.IsMain,
-				CreateDate = socialMedia.CreateDate,
-				ModificationDate = socialMedia.ModificationDate,
 				IsVisible = socialMedia.IsVisible,
 				PictureIdList = socialMedia.PictureList.Select(x=>x.PictureId).ToList(),
 				TeamMemberId = socialMedia.TeamMember.Id
@@ -131,8 +129,6 @@ namespace PizzeriaAPI.Controllers
 					Name = socialMediaDto.Name,
 					Link = socialMediaDto.Link,
 					IsMain = socialMediaDto.IsMain ?? false,
-					CreateDate = socialMediaDto.CreateDate ?? DateTime.Now,
-					ModificationDate = socialMediaDto.ModificationDate ?? DateTime.Now,
 					IsVisible = socialMediaDto.IsVisible ?? true,
 					IsDeleted = false,
 					PictureList = pictureRepository.GetPictureListByIdListAsync(socialMediaDto.PictureIdList ?? new List<int>(), session).Result,

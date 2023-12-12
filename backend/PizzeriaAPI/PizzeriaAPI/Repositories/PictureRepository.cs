@@ -17,5 +17,18 @@ namespace PizzeriaAPI.Repositories
 									.WhereRestrictionOn(x => x.PictureId).IsIn(pictureIdList.ToArray())
 									.ListAsync<Picture>();
 		}
+
+		public override async Task InsertAsync(Picture entity, ISession session)
+		{
+			entity.CreateDate = DateTime.Now;
+			entity.ModificationDate = DateTime.Now;
+			await base.InsertAsync(entity, session);
+		}
+
+		public override async Task UpdateAsync(Picture entity, ISession session)
+		{
+			entity.ModificationDate = DateTime.Now;
+			await base.UpdateAsync(entity, session);
+		}
 	}
 }

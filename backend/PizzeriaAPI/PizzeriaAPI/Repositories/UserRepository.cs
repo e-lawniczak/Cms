@@ -14,5 +14,17 @@ namespace PizzeriaAPI.Repositories
 		{
 			return session.QueryOver<User>().Where(Restrictions.Eq("Email", email)).SingleOrDefault();
 		}
+		public override async Task InsertAsync(User entity, ISession session)
+		{
+			entity.CreationDate = DateTime.Now;
+			entity.ModificationDate = DateTime.Now;
+			await base.InsertAsync(entity, session);
+		}
+
+		public override async Task UpdateAsync(User entity, ISession session)
+		{
+			entity.ModificationDate = DateTime.Now;
+			await base.UpdateAsync(entity, session);
+		}
 	}
 }

@@ -43,7 +43,7 @@ namespace PizzeriaAPI.Controllers
 			var gallery = GetGallery(galleryDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await galleryRepository.InsertOrUpdateAsync(gallery, session);
+				await galleryRepository.InsertAsync(gallery, session);
 			});
 
 			return Ok("Gallery inserted successfully");
@@ -88,7 +88,7 @@ namespace PizzeriaAPI.Controllers
 			var gallery = GetGallery(galleryDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await galleryRepository.InsertOrUpdateAsync(gallery, session);
+				await galleryRepository.InsertAsync(gallery, session);
 			});
 
 			return Ok("Gallery updated successfully");
@@ -114,8 +114,6 @@ namespace PizzeriaAPI.Controllers
 				Name = gallery.Name,
 				MainText = gallery.MainText,
 				SubText = gallery.SubText,
-				CreateDate = gallery.CreateDate,
-				ModificationDate = gallery.ModificationDate,
 				IsVisible = gallery.IsVisible,
 				PictureIdList = gallery.PictureList.Select(x => x.PictureId).ToList(),
 			};
@@ -130,8 +128,6 @@ namespace PizzeriaAPI.Controllers
 					Name = galleryDto.Name,
 					MainText = galleryDto.MainText,
 					SubText = galleryDto.SubText,
-					CreateDate = galleryDto.CreateDate ?? DateTime.Now,
-					ModificationDate = galleryDto.ModificationDate ?? DateTime.Now,
 					IsVisible = galleryDto.IsVisible ?? true,
 					IsDeleted = false,
 					PictureList = pictureRepository.GetPictureListByIdListAsync(galleryDto.PictureIdList ?? new List<int>(), session).Result

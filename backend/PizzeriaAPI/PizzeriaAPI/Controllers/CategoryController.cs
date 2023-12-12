@@ -43,7 +43,7 @@ namespace PizzeriaAPI.Controllers
 			var category = GetCategory(categoryDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await categoryRepository.InsertOrUpdateAsync(category, session);
+				await categoryRepository.InsertAsync(category, session);
 			});
 
 			return Ok("Category inserted successfully");
@@ -88,7 +88,7 @@ namespace PizzeriaAPI.Controllers
 			var category = GetCategory(categoryDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await categoryRepository.InsertOrUpdateAsync(category, session);
+				await categoryRepository.InsertAsync(category, session);
 			});
 
 			return Ok("Category updated successfully");
@@ -113,8 +113,6 @@ namespace PizzeriaAPI.Controllers
 				Id = category?.Id ?? 0,
 				Name = category.Name,
 				Link = category.Link,
-				CreateDate = category.CreateDate,
-				ModificationDate = category.ModificationDate,
 				IsVisible = category.IsVisible,
 				PictureIdList = category.PictureList.Select(x => x.PictureId).ToList(),
 				ProductIdList = category.ProductList.Select(x=>x.Id).ToList()
@@ -128,8 +126,6 @@ namespace PizzeriaAPI.Controllers
 					Id = categoryDto?.Id ?? 0,
 					Name = categoryDto.Name,
 					Link = categoryDto.Link,
-					CreateDate = categoryDto.CreateDate ?? DateTime.Now,
-					ModificationDate = categoryDto.ModificationDate ?? DateTime.Now,
 					IsVisible = categoryDto.IsVisible ?? true,
 					IsDeleted = false,
 					PictureList = pictureRepository.GetPictureListByIdListAsync(categoryDto.PictureIdList ?? new List<int>(), session).Result,

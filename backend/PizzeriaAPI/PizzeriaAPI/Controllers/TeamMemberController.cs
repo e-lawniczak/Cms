@@ -46,7 +46,7 @@ namespace PizzeriaAPI.Controllers
 			var teamMember = GetTeamMember(teamMemberDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await teamMemberRepository.InsertOrUpdateAsync(teamMember, session);
+				await teamMemberRepository.InsertAsync(teamMember, session);
 			});
 
 			return Ok("TeamMember inserted successfully");
@@ -91,7 +91,7 @@ namespace PizzeriaAPI.Controllers
 			var teamMember = GetTeamMember(TeamMemberDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await teamMemberRepository.InsertOrUpdateAsync(teamMember, session);
+				await teamMemberRepository.InsertAsync(teamMember, session);
 			});
 
 			return Ok("TeamMember updated successfully");
@@ -114,8 +114,6 @@ namespace PizzeriaAPI.Controllers
 			return new TeamMemberDto()
 			{
 				Id = teamMember.Id,
-				CreateDate = teamMember.CreateDate,
-				ModificationDate = teamMember.ModificationDate,
 				IsVisible = teamMember.IsVisible,
 				PictureIdList = teamMember.PictureList.Select(x => x.PictureId).ToList(),
 				FirstName = teamMember.FirstName,
@@ -131,8 +129,6 @@ namespace PizzeriaAPI.Controllers
 				{
 
 					Id = teamMemberDto.Id ?? 0,
-					CreateDate = teamMemberDto.CreateDate ?? DateTime.Now,
-					ModificationDate = teamMemberDto.ModificationDate ?? DateTime.Now,
 					IsVisible = teamMemberDto.IsVisible ?? true,
 					FirstName = teamMemberDto.FirstName,
 					LastName = teamMemberDto.LastName,

@@ -37,7 +37,7 @@ namespace PizzeriaAPI.Controllers
 			var menuElement = GetMenuElement(menuElementDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await menuElementRepository.InsertOrUpdateAsync(menuElement, session);
+				await menuElementRepository.InsertAsync(menuElement, session);
 			});
 
 			return Ok("MenuElement inserted successfully");
@@ -82,7 +82,7 @@ namespace PizzeriaAPI.Controllers
 			var menuElement = GetMenuElement(menuElementDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await menuElementRepository.InsertOrUpdateAsync(menuElement, session);
+				await menuElementRepository.InsertAsync(menuElement, session);
 			});
 
 			return Ok("MenuElement updated successfully");
@@ -107,8 +107,6 @@ namespace PizzeriaAPI.Controllers
 				MenuElementId = menuElement?.MenuElementId,
 				Text = menuElement.Text,
 				Link = menuElement.Link,
-				CreateDate = menuElement.CreateDate,
-				ModificationDate = menuElement.ModificationDate,
 				IsVisible = menuElement.IsVisible,
 				ParentMenuElementId = menuElement.ParentMenuElement.MenuElementId
 			};
@@ -122,8 +120,6 @@ namespace PizzeriaAPI.Controllers
 					MenuElementId = menuElementDto?.MenuElementId ?? 0,
 					Text = menuElementDto.Text,
 					Link = menuElementDto.Link,
-					CreateDate = menuElementDto.CreateDate ?? DateTime.Now,
-					ModificationDate = menuElementDto.ModificationDate ?? DateTime.Now,
 					IsVisible = menuElementDto.IsVisible ?? true,
 					IsDeleted = false,
 					ParentMenuElement = menuElementRepository.GetByIdAsync(menuElementDto.MenuElementId?? 0, session).Result

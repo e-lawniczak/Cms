@@ -11,8 +11,8 @@ namespace PizzeriaAPI.Dto
 		public  string? Link { get; set; }
 		public bool? IsMain { get; set; }
 		public int? TeamMemberId { get; set; }
-		public DateTime? CreateDate { get; set; }
-		public DateTime? ModificationDate { get; set; }
+		
+		
 		public bool? IsVisible { get; set; }
 		public IList<int>? PictureIdList { get; set; }
 		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
