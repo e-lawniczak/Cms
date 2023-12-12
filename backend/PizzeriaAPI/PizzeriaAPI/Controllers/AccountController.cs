@@ -5,18 +5,18 @@ namespace PizzeriaAPI.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class LoginController : ControllerBase
+	public class AccountController : ControllerBase
 	{
 		private readonly IAuthenticationService authenticationService;
-		public LoginController(IAuthenticationService authenticationService)
+		public AccountController(IAuthenticationService authenticationService)
 		{
 			this.authenticationService = authenticationService;
 		}
 
-		[HttpPost("authenticate", Name = "Authenticate")]
-		public async Task<ActionResult<AuthenticationResponse>> AuthenticateAsync(AuthenticationRequest request)
+		[HttpPost("login", Name = "Login")]
+		public async Task<ActionResult<AuthenticationResponse>> LoginAsync(AuthenticationRequest request)
 		{
-			return Ok(await authenticationService.AuthenticateAsync(request));
+			return Ok(await authenticationService.LoginAsync(request));
 		}
 
 		[HttpPost("register", Name = "Register")]

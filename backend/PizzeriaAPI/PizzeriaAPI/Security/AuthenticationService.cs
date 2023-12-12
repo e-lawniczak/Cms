@@ -20,8 +20,7 @@ namespace PizzeriaAPI.Security
 		}
 
 
-		public async Task<AuthenticationResponse> AuthenticateAsync
-			(AuthenticationRequest request)
+		public async Task<AuthenticationResponse> LoginAsync(AuthenticationRequest request)
 		{
 			var eduUser = await userManager.FindByEmailAsync(request.Email);
 
@@ -42,8 +41,7 @@ namespace PizzeriaAPI.Security
 
 		}
 
-		public async Task<RegistrationResponse> RegisterAsync
-			(RegistrationRequest request)
+		public async Task<RegistrationResponse> RegisterAsync(RegistrationRequest request)
 		{
 			var existingEmail = await userManager.FindByEmailAsync(request?.Email);
 

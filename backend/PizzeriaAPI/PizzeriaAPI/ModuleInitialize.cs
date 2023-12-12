@@ -111,6 +111,20 @@ namespace PizzeriaAPI
 			services.AddSingleton<ISocialMediaRepository, SocialMediaRepository>();
 			services.AddSingleton<IBannerRepository, BannerRepository>();
 			services.AddSingleton<IUserRepository, UserRepository>();
+			services.AddSingleton<IBannerRepository, BannerRepository>();
+			services.AddSingleton<IPictureRepository, PictureRepository>();
+			services.AddSingleton<ISliderRepository, SliderRepository>();
+			services.AddSingleton<ITeamMemberRepository, TeamMemberRepository>();
+			services.AddSingleton<IRoleRepository, RoleRepository>();
+			services.AddSingleton<IContactInfoRepository, ContactInfoRepository>();
+			services.AddSingleton<ITestimonialRepository, TestimonialRepository>();
+			services.AddSingleton<ITabSliderRepository, TabSliderRepository>();
+			services.AddSingleton<IInformationTabRepository, InformationTabRepository>();
+			services.AddSingleton<IGalleryRepository, GalleryRepository>();
+			services.AddSingleton<IProductRepository, ProductRepository>();
+			services.AddSingleton<ICategoryRepository, CategoryRepository>();
+			services.AddSingleton<IKeyValueRepository, KeyValueRepository>();
+			services.AddSingleton<IMenuElementRepository, MenuElementRepository>();
 
 
 			services.AddSingleton<IUpgradesService, UpgradesService>();

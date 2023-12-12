@@ -56,7 +56,7 @@ namespace PizzeriaAPI
 				c.SwaggerDoc("v1", new OpenApiInfo
 				{
 					Version = "v1",
-					Title = "Samurai API",
+					Title = "Pizzeria API",
 				});
 
 			}); builder.Services.AddCors(options =>

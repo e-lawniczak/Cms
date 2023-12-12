@@ -1,5 +1,7 @@
 ﻿using NHibernate;
 using PizzeriaAPI.Database.Entities;
+using System.Linq.Expressions;
+using static NHibernate.Cfg.Mappings;
 using ISession = NHibernate.ISession;
 
 namespace PizzeriaAPI.Repositories
@@ -15,7 +17,7 @@ namespace PizzeriaAPI.Repositories
 	{
 		public async Task<IList<T>> GetAllAsync(ISession session)
 		{
-			return await session.QueryOver<T>().ListAsync();
+			return await session.QueryOver<T>().Where(CreateColumnFalsePredicate("IsDeleted")).ListAsync();
 		}
 
 		public async Task<T> GetByIdAsync(int id, ISession session)
@@ -26,6 +28,16 @@ namespace PizzeriaAPI.Repositories
 		public async Task InsertOrUpdateAsync(T entity, ISession session)
 		{
 			await session.SaveOrUpdateAsync(entity);
+		}
+
+		private Expression<Func<T, bool>> CreateColumnFalsePredicate(string columnName)
+		{
+			var parameter = Expression.Parameter(typeof(T), "x");
+			var property = Expression.PropertyOrField(parameter, columnName);
+			var constantFalse = Expression.Constant(false);
+			var body = Expression.Equal(property, constantFalse);
+			return Expression.Lambda<Func<T, bool>>(body, parameter);
+
 		}
 	}
 }

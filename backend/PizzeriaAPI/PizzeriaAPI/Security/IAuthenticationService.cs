@@ -2,7 +2,7 @@
 {
 	public interface IAuthenticationService
 	{
-		Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request);
+		Task<AuthenticationResponse> LoginAsync(AuthenticationRequest request);
 		Task<RegistrationResponse> RegisterAsync(RegistrationRequest request);
 	}
 }

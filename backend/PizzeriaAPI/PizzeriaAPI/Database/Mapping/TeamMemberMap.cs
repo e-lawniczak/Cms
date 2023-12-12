@@ -13,7 +13,7 @@ namespace PizzeriaAPI.Database.Mapping
 			References(x => x.Role)
 				.Column("RoleId");
 
-			Table("TeamMeember");
+			Table("TeamMember");
 		}
 	}
 }
