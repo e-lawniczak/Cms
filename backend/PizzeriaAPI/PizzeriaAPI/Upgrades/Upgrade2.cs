@@ -176,7 +176,7 @@ namespace PizzeriaAPI.Upgrades
 						"TEXT TEXT NOT NULL, " +
 						"SUBTEXT TEXT, " +
 						"LINK TEXT, " +
-						"SLIDERID INT NOT NULL" +
+						"SLIDERID INT" +
 					");";
 			session.CreateSQLQuery(sql).ExecuteUpdate();
 		}
@@ -190,7 +190,7 @@ namespace PizzeriaAPI.Upgrades
 						"TITLE TEXT, " +
 						"TEXT TEXT NOT NULL, " + 
 						"BUTTONTEXT TEXT NOT NULL, " +
-						"TABSLIDERID INT NOT NULL, " +
+						"TABSLIDERID INT, " +
 						"CREATEDATE DATE NOT NULL, " +
 						"MODIFICATIONDATE DATE NOT NULL, " +
 						"isvisible BOOLEAN NOT NULL, " +
