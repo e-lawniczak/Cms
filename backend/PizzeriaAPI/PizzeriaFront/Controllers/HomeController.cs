@@ -6,6 +6,8 @@ namespace PizzeriaFrontKlient.Controllers
     {
         public IActionResult Index()
         {
+            var x = 1;
+            Console.WriteLine(x);
             return View();
         }
     }
