@@ -10,11 +10,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BuildWebCompiler" Version="1.12.405" />
+    <Compile Remove="Models\**" />
+    <Content Remove="Models\**" />
+    <EmbeddedResource Remove="Models\**" />
+    <None Remove="Models\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
+    <PackageReference Include="BuildWebCompiler" Version="1.12.405" />
   </ItemGroup>
 
 </Project>

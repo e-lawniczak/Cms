@@ -7,6 +7,8 @@ namespace PizzeriaFrontKlient.Pages.Home
     {
         public void OnGet()
         {
+            var x = 1;
+            var z = 3;
         }
     }
 }
