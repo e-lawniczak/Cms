@@ -37,7 +37,7 @@ namespace PizzeriaAPI.Controllers
 			var keyValue = GetKeyValue(keyValueDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await keyValueRepository.InsertOrUpdateAsync(keyValue, session);
+				await keyValueRepository.InsertAsync(keyValue, session);
 			});
 
 			return Ok("KeyValue inserted successfully");
@@ -67,7 +67,7 @@ namespace PizzeriaAPI.Controllers
 			var keyValue = GetKeyValue(keyValueDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await keyValueRepository.InsertOrUpdateAsync(keyValue, session);
+				await keyValueRepository.InsertAsync(keyValue, session);
 			});
 
 			return Ok("KeyValue updated successfully");

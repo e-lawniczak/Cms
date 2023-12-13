@@ -45,7 +45,7 @@ namespace PizzeriaAPI.Controllers
 			var tabSlider = GetTabSlider(tabSliderDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await tabSliderRepository.InsertOrUpdateAsync(tabSlider, session);
+				await tabSliderRepository.InsertAsync(tabSlider, session);
 			});
 
 			return Ok("TabSlider inserted successfully");
@@ -90,7 +90,7 @@ namespace PizzeriaAPI.Controllers
 			var tabSlider = GetTabSlider(tabSliderDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await tabSliderRepository.InsertOrUpdateAsync(tabSlider, session);
+				await tabSliderRepository.InsertAsync(tabSlider, session);
 			});
 
 			return Ok("TabSlider updated successfully");
@@ -114,8 +114,6 @@ namespace PizzeriaAPI.Controllers
 			{
 				Id = tabSlider?.Id ?? 0,
 				Title = tabSlider.Title,
-				CreateDate = tabSlider.CreateDate,
-				ModificationDate = tabSlider.ModificationDate,
 				IsVisible = tabSlider.IsVisible,
 				PictureIdList = tabSlider.PictureList.Select(x => x.PictureId).ToList(),
 				InformationTabIdList = tabSlider.InformationTabList.Select(x=>x.InformationTabId).ToList()
@@ -129,8 +127,6 @@ namespace PizzeriaAPI.Controllers
 
 					Id = tabSliderDto?.Id ?? 0,
 					Title = tabSliderDto.Title,
-					CreateDate = tabSliderDto.CreateDate ?? DateTime.Now,
-					ModificationDate = tabSliderDto.ModificationDate ?? DateTime.Now,
 					IsVisible = tabSliderDto.IsVisible ?? true,
 					IsDeleted = false,
 					InformationTabList = informationTabRepository.GetInformationTabListByIdListAsync(tabSliderDto.InformationTabIdList ?? new List<int>(), session).Result

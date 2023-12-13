@@ -48,7 +48,7 @@ namespace PizzeriaAPI.Security
 		public async Task<UserManagerResult> CreateAsync(User user, string password)
 		{
 			await transactionCoordinator.InCommitScope(async session => {
-				await userRepository.InsertOrUpdateAsync(user, session);
+				await userRepository.InsertAsync(user, session);
 			});
 
 			return await Task.FromResult(UserManagerResult.Success);

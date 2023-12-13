@@ -41,7 +41,7 @@ namespace PizzeriaAPI.Controllers
 			var banner = GetBanner(bannerDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await bannerRepository.InsertOrUpdateAsync(banner, session);
+				await bannerRepository.InsertAsync(banner, session);
 			});
 
 			return Ok("Banner inserted successfully");
@@ -86,7 +86,7 @@ namespace PizzeriaAPI.Controllers
 			var banner = GetBanner(bannerDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await bannerRepository.InsertOrUpdateAsync(banner, session);
+				await bannerRepository.InsertAsync(banner, session);
 			});
 
 			return Ok("Banner updated successfully");
@@ -114,8 +114,6 @@ namespace PizzeriaAPI.Controllers
 				Text = banner.Text,
 				SubText = banner.SubText,
 				Link = banner.Link,
-				CreateDate = banner.CreateDate,
-				ModificationDate = banner.ModificationDate,
 				IsVisible = banner.IsVisible,
 				PictureIdList = banner.PictureList.Select(x=>x.PictureId).ToList(),
 				SliderId = banner.Slider?.SliderId
@@ -132,8 +130,6 @@ namespace PizzeriaAPI.Controllers
 					Text = bannerDto.Text,
 					SubText = bannerDto.SubText,
 					Link = bannerDto.Link,
-					CreateDate = bannerDto.CreateDate ?? DateTime.Now,
-					ModificationDate = bannerDto.ModificationDate ?? DateTime.Now,
 					IsVisible = bannerDto.IsVisible ?? true,
 					IsDeleted = false,
 					PictureList = pictureRepository.GetPictureListByIdListAsync(bannerDto.PictureIdList ?? new List<int>(), session).Result,

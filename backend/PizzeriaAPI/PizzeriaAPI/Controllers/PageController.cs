@@ -43,7 +43,7 @@ namespace PizzeriaAPI.Controllers
 			var page = GetPage(pageDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await pageRepository.InsertOrUpdateAsync(page, session);
+				await pageRepository.InsertAsync(page, session);
 			});
 
 			return Ok("Page inserted successfully");
@@ -88,7 +88,7 @@ namespace PizzeriaAPI.Controllers
 			var page = GetPage(pageDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await pageRepository.InsertOrUpdateAsync(page, session);
+				await pageRepository.InsertAsync(page, session);
 			});
 
 			return Ok("Page updated successfully");
@@ -113,8 +113,6 @@ namespace PizzeriaAPI.Controllers
 				Id = page?.Id ?? 0,
 				Title = page.Title,
 				Content = page.Content,
-				CreateDate = page.CreateDate,
-				ModificationDate = page.ModificationDate,
 				IsVisible = page.IsVisible,
 				PictureIdList = page.PictureList.Select(x => x.PictureId).ToList(),
 			};
@@ -128,8 +126,6 @@ namespace PizzeriaAPI.Controllers
 					Id = pageDto?.Id ?? 0,
 					Title = pageDto.Title,
 					Content = pageDto.Content,
-					CreateDate = pageDto.CreateDate ?? DateTime.Now,
-					ModificationDate = pageDto.ModificationDate ?? DateTime.Now,
 					IsVisible = pageDto.IsVisible ?? true,
 					IsDeleted = false,
 					PictureList = pictureRepository.GetPictureListByIdListAsync(pageDto.PictureIdList ?? new List<int>(), session).Result,

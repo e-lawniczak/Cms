@@ -40,7 +40,7 @@ namespace PizzeriaAPI.Controllers
 			var slider = GetSlider(sliderDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await sliderRepository.InsertOrUpdateAsync(slider, session);
+				await sliderRepository.InsertAsync(slider, session);
 			});
 
 			return Ok("Slider inserted successfully");
@@ -85,7 +85,7 @@ namespace PizzeriaAPI.Controllers
 			var slider = GetSlider(sliderDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await sliderRepository.InsertOrUpdateAsync(slider, session);
+				await sliderRepository.InsertAsync(slider, session);
 			});
 
 			return Ok("Slider updated successfully");
@@ -109,8 +109,6 @@ namespace PizzeriaAPI.Controllers
 			{
 				SliderId = slider?.SliderId,
 				Name = slider.Name,
-				CreateDate = slider.CreateDate,
-				ModificationDate = slider.ModificationDate,
 				IsVisible = slider.IsVisible,
 				BannerIdList = slider.BannerList.Select(x => x.Id).ToList(),
 			};
@@ -123,8 +121,6 @@ namespace PizzeriaAPI.Controllers
 
 					SliderId = sliderDto?.SliderId ?? 0,
 					Name = sliderDto.Name,
-					CreateDate = sliderDto.CreateDate ?? DateTime.Now,
-					ModificationDate = sliderDto.ModificationDate ?? DateTime.Now,
 					IsVisible = sliderDto.IsVisible ?? true,
 					BannerList = bannerRepository.GetBannerListByIdListAsync(sliderDto.BannerIdList ?? new List<int>(), session).Result,
 

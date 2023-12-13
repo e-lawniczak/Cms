@@ -43,7 +43,7 @@ namespace PizzeriaAPI.Controllers
 			var product = GetProduct(productDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await productRepository.InsertOrUpdateAsync(product, session);
+				await productRepository.InsertAsync(product, session);
 			});
 
 			return Ok("Product inserted successfully");
@@ -88,7 +88,7 @@ namespace PizzeriaAPI.Controllers
 			var product = GetProduct(productDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await productRepository.InsertOrUpdateAsync(product, session);
+				await productRepository.InsertAsync(product, session);
 			});
 
 			return Ok("Product updated successfully");
@@ -117,8 +117,6 @@ namespace PizzeriaAPI.Controllers
 				DiscountPrice = product.DiscountPrice,
 				Score = product.Score,
 				IsRecommended = product.IsRecommended,
-				CreateDate = product.CreateDate,
-				ModificationDate = product.ModificationDate,
 				IsVisible = product.IsVisible,
 				PictureIdList = product.PictureList.Select(x => x.PictureId).ToList(),
 				CategoryId = product.Category.Id
@@ -137,8 +135,6 @@ namespace PizzeriaAPI.Controllers
 					DiscountPrice = productDto.DiscountPrice,
 					Score = productDto.Score,
 					IsRecommended = productDto.IsRecommended ?? false,
-					CreateDate = productDto.CreateDate ?? DateTime.Now,
-					ModificationDate = productDto.ModificationDate ?? DateTime.Now,
 					IsVisible = productDto.IsVisible ?? true,
 					IsDeleted = false,
 					PictureList = pictureRepository.GetPictureListByIdListAsync(productDto.PictureIdList ?? new List<int>(), session).Result,

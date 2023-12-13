@@ -46,7 +46,7 @@ namespace PizzeriaAPI.Controllers
 			var testimonial = GetTestimonial(testimonialDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await testimonialRepository.InsertOrUpdateAsync(testimonial, session);
+				await testimonialRepository.InsertAsync(testimonial, session);
 			});
 
 			return Ok("Testimonial inserted successfully");
@@ -91,7 +91,7 @@ namespace PizzeriaAPI.Controllers
 			var testimonial = GetTestimonial(testimonialDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await testimonialRepository.InsertOrUpdateAsync(testimonial, session);
+				await testimonialRepository.InsertAsync(testimonial, session);
 			});
 
 			return Ok("Testimonial updated successfully");
@@ -117,8 +117,6 @@ namespace PizzeriaAPI.Controllers
 				FirstName = testimonial.FirstName,
 				LastName = testimonial.LastName,
 				Text = testimonial.Text,
-				CreateDate = testimonial.CreateDate,
-				ModificationDate = testimonial.ModificationDate,
 				IsVisible = testimonial.IsVisible,
 				PictureIdList = testimonial.PictureList.Select(x => x.PictureId).ToList(),
 				RoleId = testimonial.Role.RoleId
@@ -134,8 +132,6 @@ namespace PizzeriaAPI.Controllers
 					FirstName = testimonialDto.FirstName,
 					LastName = testimonialDto.LastName,
 					Text = testimonialDto.Text,
-					CreateDate = testimonialDto.CreateDate ?? DateTime.Now,
-					ModificationDate = testimonialDto.ModificationDate ?? DateTime.Now,
 					IsVisible = testimonialDto.IsVisible ?? true,
 					IsDeleted = false,
 					PictureList = pictureRepository.GetPictureListByIdListAsync(testimonialDto.PictureIdList ?? new List<int>(), session).Result,
