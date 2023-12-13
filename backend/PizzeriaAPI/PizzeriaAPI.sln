@@ -5,9 +5,9 @@ VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PizzeriaAPI", "PizzeriaAPI\PizzeriaAPI.csproj", "{7227C56D-6791-4F09-9294-179CF722419D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzeriaFrontKlient", "PizzeriaFront\PizzeriaFrontKlient.csproj", "{13563460-9515-4733-9043-0E5CEE156C58}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PizzeriaFrontKlient", "PizzeriaFront\PizzeriaFrontKlient.csproj", "{13563460-9515-4733-9043-0E5CEE156C58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzeriaFrontAdmin", "PizzeriaFrontAdmin\PizzeriaFrontAdmin.csproj", "{5FEB7DDD-AB9A-429B-ABF8-5D33BF444878}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PizzeriaFrontAdmin", "PizzeriaFrontAdmin\PizzeriaFrontAdmin.csproj", "{5FEB7DDD-AB9A-429B-ABF8-5D33BF444878}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

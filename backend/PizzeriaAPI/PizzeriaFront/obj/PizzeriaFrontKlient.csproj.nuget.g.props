@@ -12,4 +12,7 @@
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <SourceRoot Include="C:\Users\Dell\.nuget\packages\" />
   </ItemGroup>
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <PkgBuildWebCompiler Condition=" '$(PkgBuildWebCompiler)' == '' ">C:\Users\Dell\.nuget\packages\buildwebcompiler\1.12.405</PkgBuildWebCompiler>
+  </PropertyGroup>
 </Project>
