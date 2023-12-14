@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace PizzeriaFrontKlient.Models
+namespace PizzeriaFrontClient.Models
 {
     public abstract class PizzeriaPageModel : PageModel
     {

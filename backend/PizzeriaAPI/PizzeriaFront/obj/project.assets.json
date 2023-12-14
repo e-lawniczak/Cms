@@ -46,9 +46,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFront\\PizzeriaFrontKlient.csproj",
-      "projectName": "PizzeriaFrontKlient",
-      "projectPath": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFront\\PizzeriaFrontKlient.csproj",
+      "projectUniqueName": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFront\\PizzeriaFrontClient.csproj",
+      "projectName": "PizzeriaFrontClient",
+      "projectPath": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFront\\PizzeriaFrontClient.csproj",
       "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
       "outputPath": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFront\\obj\\",
       "projectStyle": "PackageReference",

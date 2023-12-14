@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "G4D+nJ2Ckqz+ftcwuCKYggZbUKX25j5PQkf6EsieZP6s0ygIleV83Z8ojCJbbAS9OM5rmwppIHhXQ9u407y3JQ==",
+  "dgSpecHash": "cKmwIpgrWFFgLjeK/52JvQaN+VK5Lv3csytDVmTPSG+q2gCLwYUoZL09Gfz0FY74t6J2XY8AXAH0SIgIV/H2AA==",
   "success": true,
-  "projectFilePath": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFront\\PizzeriaFrontKlient.csproj",
+  "projectFilePath": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFront\\PizzeriaFrontClient.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Dell\\.nuget\\packages\\buildwebcompiler\\1.12.405\\buildwebcompiler.1.12.405.nupkg.sha512"
   ],
