@@ -4,12 +4,12 @@ using PizzeriaFrontKlient.Models;
 
 namespace PizzeriaFrontKlient.Pages.Home
 {
-    public class IndexModel : PizzeriaPageModel
+    public class AboutModel : PizzeriaPageModel
     {
         public override void OnGet()
         {
             base.OnGet();
-            ChildValue = "Home";
+            ChildValue = "About";
         }
     }
 }

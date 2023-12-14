@@ -46,10 +46,11 @@
         </div>
     </div>
     <div class="page">
-
-            <main role="main" class="pb-3">
-                @RenderBody()
-            </main>
+        <partial name="_Header" />
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+        <partial name="_Footer" />
     </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
