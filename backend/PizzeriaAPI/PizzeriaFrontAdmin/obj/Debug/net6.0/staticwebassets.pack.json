@@ -389,8 +389,52 @@
       "PackagePath": "staticwebassets\\img\\vr-bg.jpg"
     },
     {
+      "Id": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFrontAdmin\\wwwroot\\js\\core\\bootstrap.bundle.min.js",
+      "PackagePath": "staticwebassets\\js\\core\\bootstrap.bundle.min.js"
+    },
+    {
+      "Id": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFrontAdmin\\wwwroot\\js\\core\\bootstrap.min.js",
+      "PackagePath": "staticwebassets\\js\\core\\bootstrap.min.js"
+    },
+    {
+      "Id": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFrontAdmin\\wwwroot\\js\\core\\popper.min.js",
+      "PackagePath": "staticwebassets\\js\\core\\popper.min.js"
+    },
+    {
+      "Id": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFrontAdmin\\wwwroot\\js\\plugins\\Chart.extension.js",
+      "PackagePath": "staticwebassets\\js\\plugins\\Chart.extension.js"
+    },
+    {
+      "Id": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFrontAdmin\\wwwroot\\js\\plugins\\bootstrap-notify.js",
+      "PackagePath": "staticwebassets\\js\\plugins\\bootstrap-notify.js"
+    },
+    {
+      "Id": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFrontAdmin\\wwwroot\\js\\plugins\\chartjs.min.js",
+      "PackagePath": "staticwebassets\\js\\plugins\\chartjs.min.js"
+    },
+    {
+      "Id": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFrontAdmin\\wwwroot\\js\\plugins\\perfect-scrollbar.min.js",
+      "PackagePath": "staticwebassets\\js\\plugins\\perfect-scrollbar.min.js"
+    },
+    {
+      "Id": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFrontAdmin\\wwwroot\\js\\plugins\\smooth-scrollbar.min.js",
+      "PackagePath": "staticwebassets\\js\\plugins\\smooth-scrollbar.min.js"
+    },
+    {
       "Id": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFrontAdmin\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
+    },
+    {
+      "Id": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFrontAdmin\\wwwroot\\js\\soft-ui-dashboard-min.js",
+      "PackagePath": "staticwebassets\\js\\soft-ui-dashboard-min.js"
+    },
+    {
+      "Id": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFrontAdmin\\wwwroot\\js\\soft-ui-dashboard.js",
+      "PackagePath": "staticwebassets\\js\\soft-ui-dashboard.js"
+    },
+    {
+      "Id": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFrontAdmin\\wwwroot\\js\\soft-ui-dashboard.js.map",
+      "PackagePath": "staticwebassets\\js\\soft-ui-dashboard.js.map"
     },
     {
       "Id": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFrontAdmin\\wwwroot\\lib\\bootstrap\\LICENSE",
