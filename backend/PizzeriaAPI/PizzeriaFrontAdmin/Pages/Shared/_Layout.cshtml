@@ -18,13 +18,17 @@
     <link href="./css/nucleo-svg.css" rel="stylesheet" asp-append-version="true" />
     <link id="pagestyle" href="./css/soft-ui-dashboard.css?v=1.0.7" rel="stylesheet" />
 </head>
-<body>
+<body class="g-sidenav-show  bg-gray-100">
     <partial name="_Header" />
     <main role="main" class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         <partial name="_Navbar" />
-        @RenderBody()
-        <partial name="_Footer" />
+        <div class="container-fluid py-4">
+            @RenderBody()
+            <partial name="_Footer" />
+        </div>
     </main>
+    <partial name="_FixedPlugin" />
+
 
 
 

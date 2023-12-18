@@ -401,6 +401,10 @@
       "PackagePath": "staticwebassets\\js\\core\\popper.min.js"
     },
     {
+      "Id": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFrontAdmin\\wwwroot\\js\\old_site.js",
+      "PackagePath": "staticwebassets\\js\\old_site.js"
+    },
+    {
       "Id": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFrontAdmin\\wwwroot\\js\\plugins\\Chart.extension.js",
       "PackagePath": "staticwebassets\\js\\plugins\\Chart.extension.js"
     },
@@ -419,10 +423,6 @@
     {
       "Id": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFrontAdmin\\wwwroot\\js\\plugins\\smooth-scrollbar.min.js",
       "PackagePath": "staticwebassets\\js\\plugins\\smooth-scrollbar.min.js"
-    },
-    {
-      "Id": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFrontAdmin\\wwwroot\\js\\site.js",
-      "PackagePath": "staticwebassets\\js\\site.js"
     },
     {
       "Id": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFrontAdmin\\wwwroot\\js\\soft-ui-dashboard-min.js",

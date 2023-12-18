@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PizzeriaAPI", "PizzeriaAPI\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PizzeriaFrontClient", "PizzeriaFront\PizzeriaFrontClient.csproj", "{13563460-9515-4733-9043-0E5CEE156C58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzeriaFrontAdmin", "PizzeriaFrontAdmin\PizzeriaFrontAdmin.csproj", "{D7534253-C903-4980-BE77-E68F0A248872}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PizzeriaFrontAdmin", "PizzeriaFrontAdmin\PizzeriaFrontAdmin.csproj", "{D7534253-C903-4980-BE77-E68F0A248872}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

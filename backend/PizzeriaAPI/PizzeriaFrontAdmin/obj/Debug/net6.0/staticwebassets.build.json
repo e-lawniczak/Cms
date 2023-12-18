@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "qZ7f2ohP+XVCuQIwzo75vqW4b6omnIpKDP1GUicUyWo=",
+  "Hash": "80uO/8+8gqYh4zdXMqZ19DaCHaZABKU7EBo1XH0FfYQ=",
   "Source": "PizzeriaFrontAdmin",
   "BasePath": "_content/PizzeriaFrontAdmin",
   "Mode": "Default",
@@ -1936,6 +1936,25 @@
       "OriginalItemSpec": "wwwroot\\js\\core\\popper.min.js"
     },
     {
+      "Identity": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFrontAdmin\\wwwroot\\js\\old_site.js",
+      "SourceId": "PizzeriaFrontAdmin",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFrontAdmin\\wwwroot\\",
+      "BasePath": "_content/PizzeriaFrontAdmin",
+      "RelativePath": "js/old_site.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\old_site.js"
+    },
+    {
       "Identity": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFrontAdmin\\wwwroot\\js\\plugins\\bootstrap-notify.js",
       "SourceId": "PizzeriaFrontAdmin",
       "SourceType": "Discovered",
@@ -2029,25 +2048,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\plugins\\smooth-scrollbar.min.js"
-    },
-    {
-      "Identity": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFrontAdmin\\wwwroot\\js\\site.js",
-      "SourceId": "PizzeriaFrontAdmin",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFrontAdmin\\wwwroot\\",
-      "BasePath": "_content/PizzeriaFrontAdmin",
-      "RelativePath": "js/site.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\js\\site.js"
     },
     {
       "Identity": "C:\\Studia\\Cms\\backend\\PizzeriaAPI\\PizzeriaFrontAdmin\\wwwroot\\js\\soft-ui-dashboard.js",
