@@ -8,9 +8,14 @@ namespace PizzeriaAPI.Repositories
 	public interface IPictureRepository : IGenericRepository<Picture> 
 	{
 		public Task<IList<Picture>> GetPictureListByIdListAsync(IList<int> pictureIdList, ISession session);
+		Task DeleteAsync(int id, ISession session);
 	}
 	public class PictureRepository : GenericRepository<Picture>, IPictureRepository
 	{
+		public async Task DeleteAsync(int id, ISession session)
+		{
+			await DeleteAsync(id, session);
+		}
 		public async Task<IList<Picture>> GetPictureListByIdListAsync(IList<int> pictureIdList, ISession session)
 		{
 			return await session.QueryOver<Picture>()

@@ -20,7 +20,7 @@ namespace PizzeriaAPI.Repositories
 		{
 			var entity = await GetByIdAsync(id, session);
 			entity.IsDeleted = true;
-			await InsertAsync(entity, session);
+			await UpdateAsync(entity, session);
 		}
 
 		public override async Task InsertAsync(InformationTab entity, ISession session)

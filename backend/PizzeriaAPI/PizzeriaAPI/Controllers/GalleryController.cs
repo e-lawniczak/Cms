@@ -20,19 +20,16 @@ namespace PizzeriaAPI.Controllers
 		private readonly ITransactionCoordinator transactionCoordinator;
 		private readonly IGalleryRepository galleryRepository;
 		private readonly IPictureRepository pictureRepository;
-		private readonly ITeamMemberRepository teamMemberRepository;
 
 		public GalleryController(ILogger<GalleryController> logger,
 			ITransactionCoordinator transactionCoordinator,
 			IGalleryRepository galleryRepository,
-			IPictureRepository pictureRepository,
-			ITeamMemberRepository teamMemberRepository)
+			IPictureRepository pictureRepository)
 		{
 			this.logger = logger;
 			this.transactionCoordinator = transactionCoordinator;
 			this.galleryRepository = galleryRepository;
 			this.pictureRepository = pictureRepository;
-			this.teamMemberRepository = teamMemberRepository;
 		}
 
 		[HttpPost]

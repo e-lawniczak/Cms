@@ -15,7 +15,7 @@ namespace PizzeriaAPI.Database.Mapping
 			Map(x => x.Link);
 
 			References(x => x.Slider)
-				.Column("SliderId");
+				.Column("SliderId").Nullable().Cascade.None();
 
 			Table("Banner");
 		}
