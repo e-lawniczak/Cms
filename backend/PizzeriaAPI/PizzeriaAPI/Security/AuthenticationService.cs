@@ -69,7 +69,8 @@ namespace PizzeriaAPI.Security
 
 			if (eduUser == null)
 				throw new Exception("Not found user with given email");
-			if(!BCrypt.Net.BCrypt.EnhancedVerify(request.Password, eduUser.Password))
+
+            if (!BCrypt.Net.BCrypt.EnhancedVerify(x, eduUser.Password))
 				throw new UnauthorizedAccessException("Wrong email or password");
 			JwtSecurityToken jwtSecurityToken = await GenerateToken(eduUser);
 
