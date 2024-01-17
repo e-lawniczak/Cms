@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using PizzeriaFrontAdmin.Models;
 
 namespace PizzeriaFrontAdmin.Pages
 {
-    public class IndexModel : PageModel
+    public class IndexModel : PizzeriaPageModel
     {
         private readonly ILogger<IndexModel> _logger;
 
@@ -12,9 +13,12 @@ namespace PizzeriaFrontAdmin.Pages
             _logger = logger;
         }
 
-        public void OnGet()
+        public override void OnGet()
         {
-
+            base.OnGet();
+            Title = "Home page";
         }
+       
+
     }
 }

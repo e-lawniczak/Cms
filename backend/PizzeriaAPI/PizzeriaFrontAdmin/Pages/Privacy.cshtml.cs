@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using PizzeriaFrontAdmin.Models;
 
 namespace PizzeriaFrontAdmin.Pages
 {
-    public class PrivacyModel : PageModel
+    public class PrivacyModel : PizzeriaPageModel
     {
         private readonly ILogger<PrivacyModel> _logger;
 
@@ -12,8 +13,11 @@ namespace PizzeriaFrontAdmin.Pages
             _logger = logger;
         }
 
-        public void OnGet()
+        public override void OnGet()
         {
+            base.OnGet();
+            Title = "Privacy Policy";
+
         }
     }
 

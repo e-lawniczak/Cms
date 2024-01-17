@@ -4,11 +4,12 @@ using PizzeriaFrontAdmin.Models;
 
 namespace PizzeriaFrontAdmin.Pages
 {
-    public class PagesModel : PizzeriaPageModel
+    public class PicturesModel : PizzeriaPageModel
     {
         public override void OnGet()
         {
             base.OnGet();
+            Title = "Pictures";
         }
     }
 }

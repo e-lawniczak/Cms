@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using PizzeriaFrontAdmin.Models;
 using System.Diagnostics;
 
 namespace PizzeriaFrontAdmin.Pages
 {
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     [IgnoreAntiforgeryToken]
-    public class ErrorModel : PageModel
+    public class ErrorModel : PizzeriaPageModel
     {
         public string? RequestId { get; set; }
 
@@ -19,8 +20,9 @@ namespace PizzeriaFrontAdmin.Pages
             _logger = logger;
         }
 
-        public void OnGet()
+        public override void OnGet()
         {
+            base.OnGet();
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
         }
     }

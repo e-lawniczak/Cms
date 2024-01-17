@@ -4,11 +4,12 @@ using PizzeriaFrontAdmin.Models;
 
 namespace PizzeriaFrontAdmin.Pages
 {
-    public class PagesModel : PizzeriaPageModel
+    public class AboutUsModel : PizzeriaPageModel
     {
         public override void OnGet()
         {
             base.OnGet();
+            Title = "About us";
         }
     }
 }

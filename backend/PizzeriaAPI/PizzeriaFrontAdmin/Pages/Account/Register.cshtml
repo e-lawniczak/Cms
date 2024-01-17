@@ -1,0 +1,19 @@
+﻿@page "/Register"
+@model PizzeriaFrontAdmin.Pages.Account.RegisterModel
+@{
+    ViewData["formClass"] = this.Model.IsError ? "account-form register-form error" : "account-form register-form";
+}
+
+<div class="row">
+   <form method="post" class="@ViewData["formClass"]">
+        <div class="form-group">
+            @Html.TextBoxFor(m => m.Email, new { type = "email", className = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.TextBoxFor(m => m.Password, new { type = "password", className = "form-control" })
+        </div>
+        <button type="submit">Zarejestruj się</button>
+        <p>Lub <a href="/Login">zaloguj się</a> na istniejące konto</p>
+   </form>
+
+</div>

@@ -31,8 +31,8 @@ namespace PizzeriaFrontClient
             app.UseRouting();
 
 
-            app.UseAuthorization();
 
+            app.UseAuthorization();
             app.MapRazorPages();
 
             //app.UseEndpoints(endpoints =>
