@@ -25,14 +25,14 @@ namespace PizzeriaFrontAdmin.Pages.Account
             this.Title = "Register";
         }
 
-        public async void OnPost()
+        public async Task OnPost()
         {
             var email = Request.Form["Email"];
             var password = Request.Form["Password"];
             await SendReqisterRequest(email, password);
         }
 
-        public async Task<IActionResult> SendReqisterRequest(string email, string password)
+        public async Task SendReqisterRequest(string email, string password)
         {
             try
             {
@@ -48,12 +48,12 @@ namespace PizzeriaFrontAdmin.Pages.Account
                     var statusCode = response.StatusCode;
                     if (response.IsSuccessStatusCode)
                     {
-                        return RedirectToPage("/Login");
+                        Response.Redirect("/Login");
                     }
                     else
                     {
                         IsError = true;
-                        return Page();
+                        Response.Redirect("/Register");
                     }
                 }
             }

@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - PizzeriaFrontAdmin</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/PizzeriaFrontAdmin.styles.css" asp-append-version="true" />
 
     <!--     Fonts and icons     -->
@@ -19,12 +20,12 @@
     <link id="pagestyle" href="/css/soft-ui-dashboard.css?v=1.0.7" rel="stylesheet" />
 </head>
 <body class="g-sidenav-show  bg-gray-100">
-    @if (this.Model.Title != "Login" && this.Model.Title != "Register" && this.Model.Title != "Reset password")
+    @if (this.Model.Title != "Login" && this.Model.Title != "Register" && this.Model.Title != "Reset password" && this.Model.Title != "Logout")
     {
         <partial name="_Header" />
     }
     <main role="main" class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
-        @if (this.Model.Title != "Login" && this.Model.Title != "Register" && this.Model.Title != "Reset password")
+        @if (this.Model.Title != "Login" && this.Model.Title != "Register" && this.Model.Title != "Reset password" && this.Model.Title != "Logout")
         {
 
             <partial name="_Navbar" />
@@ -41,7 +42,7 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    @* <script src="~/js/site.js" asp-append-version="true"></script> *@
 
     <partial name="_Scripts" />
 </body>

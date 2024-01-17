@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using PizzeriaFrontAdmin.Models;
 
 namespace PizzeriaFrontAdmin.Pages.Account
@@ -25,13 +26,13 @@ namespace PizzeriaFrontAdmin.Pages.Account
 
         }
 
-        public async void OnPost()
+        public async Task OnPost()
         {
             var email = Request.Form["Email"];
             var password = Request.Form["Password"];
             await SendLoginRequest(email, password);
         }
-        public async Task<IActionResult> SendLoginRequest(string email, string password)
+        public async Task SendLoginRequest(string email, string password)
         {
             try
             {
@@ -48,14 +49,14 @@ namespace PizzeriaFrontAdmin.Pages.Account
                     var statusCode = response.StatusCode;
                     if (response.IsSuccessStatusCode && responseString != "")
                     {
-                        UserModel user = (UserModel)JsonConvert.DeserializeObject(responseString);
-                        base.SaveUser(user.email, user.token, user.id);
-                        return RedirectToPage("/");
+                        JObject user = (JObject)JsonConvert.DeserializeObject(responseString);
+                        base.SaveUser(user["email"].ToString(), user["token"].ToString(), Int32.Parse(user["id"].ToString()));
+                        Response.Redirect("/");
                     }
                     else
                     {
                         IsError = true;
-                        return Page();
+                        Response.Redirect("/Login");
                     }
                 }
             }

@@ -6,8 +6,11 @@ namespace PizzeriaFrontAdmin.Pages.Account
 {
     public class LogoutModel : PizzeriaPageModel
     {
-        public void OnGet()
+        public override void OnGet()
         {
+            base.LogOut();
+            Title = "Logout";
+            Response.Redirect("/");
         }
     }
 }
