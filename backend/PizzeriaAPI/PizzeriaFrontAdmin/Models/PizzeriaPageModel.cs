@@ -40,8 +40,8 @@ namespace PizzeriaFrontAdmin.Models
             //await Task.Run(() => { NavigationManager.NavigateTo("/Login"); });
             var url = HttpContext.Request.Path.Value;
             var query = HttpContext.Request.Query;
-            if (User == null && url != "/Login" && url != "/Register" && url != "/ResetPassword")
-                Response.Redirect("/Login");
+            //if (User == null && url != "/Login" && url != "/Register" && url != "/ResetPassword")
+            //    Response.Redirect("/Login");
         }
     }
 }

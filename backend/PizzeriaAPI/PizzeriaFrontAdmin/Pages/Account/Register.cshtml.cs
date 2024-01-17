@@ -34,7 +34,8 @@ namespace PizzeriaFrontAdmin.Pages.Account
                     HttpRequestMessage request = new HttpRequestMessage();
                     request.RequestUri = new Uri(_baseUrl + "/register");
                     request.Method = HttpMethod.Post;
-                    request.Content = JsonContent.Create( new { email = email, password = password });
+                    var hashedPass = BCrypt.Net.BCrypt.EnhancedHashPassword(password);
+                    request.Content = JsonContent.Create( new { email = email, password = hashedPass });
                     HttpResponseMessage response = await client.SendAsync(request);
                     var responseString = await response.Content.ReadAsStringAsync();
                     var statusCode = response.StatusCode;
