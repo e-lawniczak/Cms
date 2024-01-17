@@ -135,6 +135,7 @@ namespace PizzeriaAPI
 			services.AddSingleton<IUpgrade, Upgrade3>();
 
 			services.Configure<EmailSenderSettings>(configuration.GetSection("EmailSenderSettings"));
+			services.Configure<HashSettings>(configuration.GetSection("HashSettings"));
 
 		}
 

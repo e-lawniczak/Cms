@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using PizzeriaFrontAdmin.Models;
 
@@ -7,7 +8,11 @@ namespace PizzeriaFrontAdmin.Pages.Account
 {
     public class LoginModel : PizzeriaPageModel
     {
-        public string Password { get; set; } = string.Empty;
+		public LoginModel(IOptions<HashSettings> hashSettings)
+		{
+			this.hashSettings = hashSettings;
+		}
+		public string Password { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
 
         public bool IsError { get; set; }
@@ -35,7 +40,8 @@ namespace PizzeriaFrontAdmin.Pages.Account
                     HttpRequestMessage request = new HttpRequestMessage();
                     request.RequestUri = new Uri(_baseUrl + "/login");
                     request.Method = HttpMethod.Post;
-                    var hashedPass = BCrypt.Net.BCrypt.EnhancedHashPassword(password);
+                    var hashedPass = BCrypt.Net.BCrypt.HashPassword(password, hashSettings.Value.Salt);
+
                     request.Content = JsonContent.Create(new { email = email, password = hashedPass });
                     HttpResponseMessage response = await client.SendAsync(request);
                     var responseString = await response.Content.ReadAsStringAsync();

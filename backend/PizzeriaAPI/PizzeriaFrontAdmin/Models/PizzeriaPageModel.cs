@@ -2,12 +2,14 @@
 using Microsoft.AspNetCore.DataProtection.XmlEncryption;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Options;
 
 namespace PizzeriaFrontAdmin.Models
 {
     public abstract class PizzeriaPageModel : PageModel
     {
-        public new UserModel? User { get; set; }
+		public IOptions<HashSettings> hashSettings { get; set; }
+		public new UserModel? User { get; set; }
         public string Title { get; set; } = string.Empty;
         [Inject]
         public NavigationManager NavigationManager { get; set; }

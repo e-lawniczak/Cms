@@ -15,14 +15,17 @@ namespace PizzeriaAPI.Security
 		private IUserManager<User> userManager;
 		private IEmailSender emailSender;
 		private readonly JSONWebTokensSettings jwtSettings;
+		private readonly HashSettings hashSettings;
 
 		public AuthenticationService(IUserManager<User> userManager,
 			IEmailSender emailSender,
-			 IOptions<JSONWebTokensSettings> jwtSettings)
+			 IOptions<JSONWebTokensSettings> jwtSettings,
+			 IOptions<HashSettings> hashSettings)
 		{
 			this.userManager = userManager;
 			this.jwtSettings = jwtSettings.Value;
 			this.emailSender = emailSender;
+			this.hashSettings = hashSettings.Value;
 		}
 
 		public async Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordRequest resetPasswordRequest)
@@ -46,7 +49,7 @@ namespace PizzeriaAPI.Security
 			if (changePasswordRequest.Password != changePasswordRequest.ConfirmPassword)
 				throw new Exception("Passwords are not the same");
 
-			var hashPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(changePasswordRequest.Password);
+			var hashPassword = BCrypt.Net.BCrypt.HashPassword(changePasswordRequest.Password);
 
 			if (hashPassword != user.Password)
 				throw new Exception("Password is invalid");
@@ -69,8 +72,8 @@ namespace PizzeriaAPI.Security
 
 			if (eduUser == null)
 				throw new Exception("Not found user with given email");
-
-            if (!BCrypt.Net.BCrypt.EnhancedVerify(request.Password, eduUser.Password))
+			var hash = BCrypt.Net.BCrypt.HashPassword(request.Password, hashSettings.Salt);
+			if(hash != eduUser.Password)
 				throw new UnauthorizedAccessException("Wrong email or password");
 			JwtSecurityToken jwtSecurityToken = await GenerateToken(eduUser);
 
@@ -91,7 +94,7 @@ namespace PizzeriaAPI.Security
 
 			if (existingEmail == null)
 			{
-				var hashPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(request.Password);
+				var hashPassword = BCrypt.Net.BCrypt.HashPassword(request.Password, hashSettings.Salt);
 				var user = new User
 				{
 					Email = request.Email,

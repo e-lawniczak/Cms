@@ -1,3 +1,4 @@
+using PizzeriaFrontAdmin.Models;
 using Serilog;
 namespace PizzeriaFrontAdmin
 {
@@ -8,8 +9,11 @@ namespace PizzeriaFrontAdmin
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration));
-            // Add services to the container.
-            builder.Services.AddRazorPages();
+			builder.Services.Configure<HashSettings>(builder.Configuration.GetSection("HashSettings"));
+			builder.Services.AddOptions();
+
+			// Add services to the container.
+			builder.Services.AddRazorPages();
             builder.Services.AddSession(opt =>
             {
                 opt.IdleTimeout = TimeSpan.FromMinutes(30);
