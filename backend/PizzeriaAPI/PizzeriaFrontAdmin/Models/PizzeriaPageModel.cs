@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.DataProtection.XmlEncryption;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace PizzeriaFrontAdmin.Models
@@ -7,7 +9,8 @@ namespace PizzeriaFrontAdmin.Models
     {
         public new UserModel? User { get; set; }
         public string Title { get; set; } = string.Empty;
-        private readonly RequestDelegate _requestDelegate;
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
         public virtual void OnGet()
         {
             var user = HttpContext.Session.GetString("user");
@@ -30,9 +33,15 @@ namespace PizzeriaFrontAdmin.Models
             HttpContext.Session.SetString("token", token);
             HttpContext.Session.SetInt32("id", id);
         }
-        public IActionResult OnUserNotLogged()
+        public void OnUserNotLogged()
         {
-            return RedirectToPage("/Privacy");
+            //NavigationManager.NavigateTo("/Login");
+            //return RedirectToPage("/Privacy");
+            //await Task.Run(() => { NavigationManager.NavigateTo("/Login"); });
+            var url = HttpContext.Request.Path.Value;
+            var query = HttpContext.Request.Query;
+            if (User == null && url != "/Login" && url != "/Register" && url != "/ResetPassword")
+                Response.Redirect("/Login");
         }
     }
 }
