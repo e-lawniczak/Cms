@@ -1,6 +1,4 @@
-﻿using FluentNHibernate.Data;
-
-namespace PizzeriaAPI.Database.Entities
+﻿namespace PizzeriaAPI.Database.Entities
 {
 	public class Event
 	{
@@ -10,7 +8,7 @@ namespace PizzeriaAPI.Database.Entities
 		public virtual User User { get; set; }
 		public virtual string Message { get; set; }
 		public virtual DateTime CreationDate { get; set; }
-		public virtual DateTime ModificationTime{ get; set; }
+		public virtual DateTime ModificationTime { get; set; }
 
 		public override int GetHashCode()
 		{
@@ -23,7 +21,7 @@ namespace PizzeriaAPI.Database.Entities
 
 			if (ReferenceEquals(null, other)) return false;
 			if (ReferenceEquals(this, other)) return true;
-			return other.Controller == Controller && 
+			return other.Controller == Controller &&
 				other.ActionType == ActionType &&
 				other.EntityId == EntityId &&
 				other.User == User &&

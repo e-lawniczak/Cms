@@ -1,13 +1,10 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
+using PizzeriaAPI.Dto;
 using PizzeriaAPI.ORM;
 using PizzeriaAPI.Repositories;
 using Swashbuckle.Swagger.Annotations;
-using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using Microsoft.AspNetCore.Authorization;
-using PizzeriaAPI.Dto;
-using MySqlX.XDevAPI;
 
 namespace PizzeriaAPI.Controllers
 {
@@ -40,7 +37,7 @@ namespace PizzeriaAPI.Controllers
 		[SwaggerResponse(HttpStatusCode.OK, "Product inserted successfully")]
 		public async Task<ActionResult> AddProduct([FromBody] ProductDto productDto)
 		{
-			var product = GetProduct(productDto);
+			var product = await GetProduct(productDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
 				await productRepository.InsertAsync(product, session);
@@ -85,10 +82,10 @@ namespace PizzeriaAPI.Controllers
 		[SwaggerResponse(HttpStatusCode.OK, "Product updated successfully")]
 		public async Task<ActionResult> UpdateProduct([FromBody] ProductDto productDto)
 		{
-			var product = GetProduct(productDto);
+			var product = await GetProduct(productDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await productRepository.InsertAsync(product, session);
+				await productRepository.UpdateAsync(product, session);
 			});
 
 			return Ok("Product updated successfully");
@@ -122,9 +119,10 @@ namespace PizzeriaAPI.Controllers
 				CategoryId = product.Category.Id
 			};
 		}
-		private Product GetProduct(ProductDto productDto)
+		private async Task<Product> GetProduct(ProductDto productDto)
 		{
-			return transactionCoordinator.InRollbackScope(session => {
+			return await transactionCoordinator.InRollbackScopeAsync(async session =>
+			{
 				return new Product()
 				{
 
@@ -137,8 +135,8 @@ namespace PizzeriaAPI.Controllers
 					IsRecommended = productDto.IsRecommended ?? false,
 					IsVisible = productDto.IsVisible ?? true,
 					IsDeleted = false,
-					PictureList = pictureRepository.GetPictureListByIdListAsync(productDto.PictureIdList ?? new List<int>(), session).Result,
-					Category = categoryRepository.GetByIdAsync(productDto.CategoryId ?? 0, session).Result
+					PictureList = await pictureRepository.GetPictureListByIdListAsync(productDto.PictureIdList ?? new List<int>(), session),
+					Category = await categoryRepository.GetByIdAsync(productDto.CategoryId ?? 0, session)
 
 				};
 			});

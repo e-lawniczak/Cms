@@ -3,7 +3,8 @@ using ISession = NHibernate.ISession;
 
 namespace PizzeriaAPI.Repositories
 {
-	public interface IInformationTabRepository : IGenericRepository<InformationTab> {
+	public interface IInformationTabRepository : IGenericRepository<InformationTab>
+	{
 		Task<IList<InformationTab>> GetInformationTabListByIdListAsync(IList<int> InformationTabIdList, ISession session);
 		Task DeleteAsync(int id, ISession session);
 	}

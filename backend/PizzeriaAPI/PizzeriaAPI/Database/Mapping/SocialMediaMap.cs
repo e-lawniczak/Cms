@@ -14,7 +14,7 @@ namespace PizzeriaAPI.Database.Mapping
 
 			References(x => x.TeamMember)
 				.Column("TeamMemberId");
-			
+
 			Table("SocialMedia");
 		}
 	}

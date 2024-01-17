@@ -1,5 +1,4 @@
-﻿using PizzeriaAPI.Database.Entities;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace PizzeriaAPI.Dto
 {
@@ -9,7 +8,7 @@ namespace PizzeriaAPI.Dto
 		public string? Title { get; set; }
 		public string? Text { get; set; }
 		public string? SubText { get; set; }
-		public string? Link { get; set; }	
+		public string? Link { get; set; }
 		public bool? IsVisible { get; set; }
 		public IList<int>? PictureIdList { get; set; }
 		public int? SliderId { get; set; }

@@ -1,11 +1,9 @@
-﻿using NHibernate;
-using NHibernate.Type;
-using PizzeriaAPI.Database.Entities;
+﻿using PizzeriaAPI.Database.Entities;
 using ISession = NHibernate.ISession;
 
 namespace PizzeriaAPI.Repositories
 {
-	public interface IPictureRepository : IGenericRepository<Picture> 
+	public interface IPictureRepository : IGenericRepository<Picture>
 	{
 		public Task<IList<Picture>> GetPictureListByIdListAsync(IList<int> pictureIdList, ISession session);
 		Task DeleteAsync(int id, ISession session);

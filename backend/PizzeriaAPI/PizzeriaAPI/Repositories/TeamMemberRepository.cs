@@ -8,7 +8,7 @@ namespace PizzeriaAPI.Repositories
 		Task DeleteAsync(int id, ISession session);
 
 	}
-	public class TeamMemberRepository :  GenericRepository<TeamMember>, ITeamMemberRepository
+	public class TeamMemberRepository : GenericRepository<TeamMember>, ITeamMemberRepository
 	{
 		public async Task DeleteAsync(int id, ISession session)
 		{

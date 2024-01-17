@@ -1,13 +1,10 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
+using PizzeriaAPI.Dto;
 using PizzeriaAPI.ORM;
 using PizzeriaAPI.Repositories;
 using Swashbuckle.Swagger.Annotations;
-using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using Microsoft.AspNetCore.Authorization;
-using PizzeriaAPI.Dto;
-using MySqlX.XDevAPI;
 
 namespace PizzeriaAPI.Controllers
 {
@@ -43,7 +40,7 @@ namespace PizzeriaAPI.Controllers
 		[SwaggerResponse(HttpStatusCode.OK, "Testimonial inserted successfully")]
 		public async Task<ActionResult> AddTestimonial([FromBody] TestimonialDto testimonialDto)
 		{
-			var testimonial = GetTestimonial(testimonialDto);
+			var testimonial = await GetTestimonial(testimonialDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
 				await testimonialRepository.InsertAsync(testimonial, session);
@@ -88,10 +85,10 @@ namespace PizzeriaAPI.Controllers
 		[SwaggerResponse(HttpStatusCode.OK, "Testimonial updated successfully")]
 		public async Task<ActionResult> UpdateTestimonial([FromBody] TestimonialDto testimonialDto)
 		{
-			var testimonial = GetTestimonial(testimonialDto);
+			var testimonial = await GetTestimonial(testimonialDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await testimonialRepository.InsertAsync(testimonial, session);
+				await testimonialRepository.UpdateAsync(testimonial, session);
 			});
 
 			return Ok("Testimonial updated successfully");
@@ -122,9 +119,10 @@ namespace PizzeriaAPI.Controllers
 				RoleId = testimonial.Role.RoleId
 			};
 		}
-		private Testimonial GetTestimonial(TestimonialDto testimonialDto)
+		private async Task<Testimonial> GetTestimonial(TestimonialDto testimonialDto)
 		{
-			return transactionCoordinator.InRollbackScope(session => {
+			return await transactionCoordinator.InRollbackScopeAsync(async session =>
+			{
 				return new Testimonial()
 				{
 
@@ -134,8 +132,8 @@ namespace PizzeriaAPI.Controllers
 					Text = testimonialDto.Text,
 					IsVisible = testimonialDto.IsVisible ?? true,
 					IsDeleted = false,
-					PictureList = pictureRepository.GetPictureListByIdListAsync(testimonialDto.PictureIdList ?? new List<int>(), session).Result,
-					Role = roleRepository.GetByIdAsync(testimonialDto.RoleId ?? 0, session).Result
+					PictureList = await pictureRepository.GetPictureListByIdListAsync(testimonialDto.PictureIdList ?? new List<int>(), session),
+					Role = await roleRepository.GetByIdAsync(testimonialDto.RoleId ?? 0, session)
 
 				};
 			});

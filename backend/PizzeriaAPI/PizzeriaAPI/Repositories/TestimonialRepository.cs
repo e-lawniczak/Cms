@@ -3,7 +3,7 @@ using ISession = NHibernate.ISession;
 
 namespace PizzeriaAPI.Repositories
 {
-	public interface ITestimonialRepository : IGenericRepository<Testimonial> 
+	public interface ITestimonialRepository : IGenericRepository<Testimonial>
 	{
 		Task DeleteAsync(int id, ISession session);
 

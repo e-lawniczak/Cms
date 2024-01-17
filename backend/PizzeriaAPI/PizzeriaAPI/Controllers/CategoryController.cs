@@ -1,13 +1,10 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
+using PizzeriaAPI.Dto;
 using PizzeriaAPI.ORM;
 using PizzeriaAPI.Repositories;
 using Swashbuckle.Swagger.Annotations;
-using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using Microsoft.AspNetCore.Authorization;
-using PizzeriaAPI.Dto;
-using MySqlX.XDevAPI;
 
 namespace PizzeriaAPI.Controllers
 {
@@ -40,7 +37,7 @@ namespace PizzeriaAPI.Controllers
 		[SwaggerResponse(HttpStatusCode.OK, "Category inserted successfully")]
 		public async Task<ActionResult> AddCategory([FromBody] CategoryDto categoryDto)
 		{
-			var category = GetCategory(categoryDto);
+			var category = await GetCategory(categoryDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
 				await categoryRepository.InsertAsync(category, session);
@@ -85,10 +82,10 @@ namespace PizzeriaAPI.Controllers
 		[SwaggerResponse(HttpStatusCode.OK, "Category updated successfully")]
 		public async Task<ActionResult> UpdateCategory([FromBody] CategoryDto categoryDto)
 		{
-			var category = GetCategory(categoryDto);
+			var category = await GetCategory(categoryDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await categoryRepository.InsertAsync(category, session);
+				await categoryRepository.UpdateAsync(category, session);
 			});
 
 			return Ok("Category updated successfully");
@@ -115,12 +112,13 @@ namespace PizzeriaAPI.Controllers
 				Link = category.Link,
 				IsVisible = category.IsVisible,
 				PictureIdList = category.PictureList.Select(x => x.PictureId).ToList(),
-				ProductIdList = category.ProductList.Select(x=>x.Id).ToList()
+				ProductIdList = category.ProductList.Select(x => x.Id).ToList()
 			};
 		}
-		private Category GetCategory(CategoryDto categoryDto)
+		private async Task<Category> GetCategory(CategoryDto categoryDto)
 		{
-			return transactionCoordinator.InRollbackScope(session => {
+			return await transactionCoordinator.InRollbackScopeAsync(async session =>
+			{
 				return new Category()
 				{
 					Id = categoryDto?.Id ?? 0,
@@ -128,8 +126,8 @@ namespace PizzeriaAPI.Controllers
 					Link = categoryDto.Link,
 					IsVisible = categoryDto.IsVisible ?? true,
 					IsDeleted = false,
-					PictureList = pictureRepository.GetPictureListByIdListAsync(categoryDto.PictureIdList ?? new List<int>(), session).Result,
-					ProductList = productRepository.GetProductListByIdListAsync(categoryDto.ProductIdList ?? new List<int>(), session).Result
+					PictureList = await pictureRepository.GetPictureListByIdListAsync(categoryDto.PictureIdList ?? new List<int>(), session),
+					ProductList = await productRepository.GetProductListByIdListAsync(categoryDto.ProductIdList ?? new List<int>(), session)
 
 				};
 			});

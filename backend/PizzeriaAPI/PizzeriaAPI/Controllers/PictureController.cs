@@ -1,13 +1,10 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
+using PizzeriaAPI.Dto;
 using PizzeriaAPI.ORM;
 using PizzeriaAPI.Repositories;
 using Swashbuckle.Swagger.Annotations;
-using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using Microsoft.AspNetCore.Authorization;
-using PizzeriaAPI.Dto;
-using MySqlX.XDevAPI;
 
 namespace PizzeriaAPI.Controllers
 {
@@ -34,7 +31,7 @@ namespace PizzeriaAPI.Controllers
 		[SwaggerResponse(HttpStatusCode.OK, "Picture inserted successfully")]
 		public async Task<ActionResult> AddPicture([FromBody] PictureDto pictureDto)
 		{
-			var picture = GetPicture(pictureDto);
+			var picture = await GetPicture(pictureDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
 				await pictureRepository.InsertAsync(picture, session);
@@ -64,10 +61,10 @@ namespace PizzeriaAPI.Controllers
 		[SwaggerResponse(HttpStatusCode.OK, "Picture updated successfully")]
 		public async Task<ActionResult> UpdatePicture([FromBody] PictureDto pictureDto)
 		{
-			var picture = GetPicture(pictureDto);
+			var picture = await GetPicture(pictureDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await pictureRepository.InsertAsync(picture, session);
+				await pictureRepository.UpdateAsync(picture, session);
 			});
 
 			return Ok("Picture updated successfully");
@@ -97,9 +94,10 @@ namespace PizzeriaAPI.Controllers
 				EntityWithPictureIdList = picture.EntityWithPictureList.Select(x => x.Id).ToList(),
 			};
 		}
-		private Picture GetPicture(PictureDto pictureDto)
+		private async Task<Picture> GetPicture(PictureDto pictureDto)
 		{
-			return transactionCoordinator.InRollbackScope(session => {
+			return await transactionCoordinator.InRollbackScopeAsync(async session =>
+			{
 				return new Picture()
 				{
 
@@ -108,7 +106,7 @@ namespace PizzeriaAPI.Controllers
 					Link = pictureDto.Link,
 					ResizedFile = pictureDto.ResizedFile,
 					File = pictureDto.File,
-					//EntityWithPictureList = pictureRepository.GetPictureListByIdListAsync(pictureDto.PictureIdList ?? new List<int>(), session).Result,
+					//EntityWithPictureList = await pictureRepository.GetPictureListByIdListAsync(pictureDto.EntityWithPictureIdList ?? new List<int>(), session),
 				};
 			});
 		}

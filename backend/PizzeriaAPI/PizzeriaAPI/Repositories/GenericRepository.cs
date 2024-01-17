@@ -1,7 +1,4 @@
-﻿using NHibernate;
-using PizzeriaAPI.Database.Entities;
-using System.Linq.Expressions;
-using static NHibernate.Cfg.Mappings;
+﻿using System.Linq.Expressions;
 using ISession = NHibernate.ISession;
 
 namespace PizzeriaAPI.Repositories

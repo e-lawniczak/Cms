@@ -23,7 +23,7 @@ namespace PizzeriaAPI.ORM
 		private ILogger<TransactionCoordinator> logger;
 
 		public TransactionCoordinator(
-			INHibernateHelper nHibernateHelper, 
+			INHibernateHelper nHibernateHelper,
 			ILogger<TransactionCoordinator> logger)
 		{
 			this.nHibernateHelper = nHibernateHelper;

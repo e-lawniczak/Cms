@@ -3,10 +3,11 @@ using ISession = NHibernate.ISession;
 
 namespace PizzeriaAPI.Repositories
 {
-	public interface IRoleRepository : IGenericRepository<Role> { }
-	public class RoleRepository: GenericRepository<Role>, IRoleRepository
+	public interface IRoleRepository : IGenericRepository<Role>
 	{
-
+	}
+	public class RoleRepository : GenericRepository<Role>, IRoleRepository
+	{
 		public override async Task InsertAsync(Role entity, ISession session)
 		{
 			entity.CreationDate = DateTime.Now;

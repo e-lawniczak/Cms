@@ -1,13 +1,10 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
+using PizzeriaAPI.Dto;
 using PizzeriaAPI.ORM;
 using PizzeriaAPI.Repositories;
 using Swashbuckle.Swagger.Annotations;
-using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using Microsoft.AspNetCore.Authorization;
-using PizzeriaAPI.Dto;
-using MySqlX.XDevAPI;
 
 namespace PizzeriaAPI.Controllers
 {
@@ -43,7 +40,7 @@ namespace PizzeriaAPI.Controllers
 		[SwaggerResponse(HttpStatusCode.OK, "TeamMember inserted successfully")]
 		public async Task<ActionResult> AddTeamMember([FromBody] TeamMemberDto teamMemberDto)
 		{
-			var teamMember = GetTeamMember(teamMemberDto);
+			var teamMember = await GetTeamMember(teamMemberDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
 				await teamMemberRepository.InsertAsync(teamMember, session);
@@ -88,10 +85,10 @@ namespace PizzeriaAPI.Controllers
 		[SwaggerResponse(HttpStatusCode.OK, "TeamMember updated successfully")]
 		public async Task<ActionResult> UpdateTeamMember([FromBody] TeamMemberDto TeamMemberDto)
 		{
-			var teamMember = GetTeamMember(TeamMemberDto);
+			var teamMember = await GetTeamMember(TeamMemberDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await teamMemberRepository.InsertAsync(teamMember, session);
+				await teamMemberRepository.UpdateAsync(teamMember, session);
 			});
 
 			return Ok("TeamMember updated successfully");
@@ -122,9 +119,10 @@ namespace PizzeriaAPI.Controllers
 				SocialMediaIdList = teamMember.SocialMediaList.Select(x => x.Id).ToList(),
 			};
 		}
-		private TeamMember GetTeamMember(TeamMemberDto teamMemberDto)
+		private async Task<TeamMember> GetTeamMember(TeamMemberDto teamMemberDto)
 		{
-			return transactionCoordinator.InRollbackScope(session => {
+			return await transactionCoordinator.InRollbackScopeAsync( async session =>
+			{
 				return new TeamMember()
 				{
 
@@ -133,9 +131,9 @@ namespace PizzeriaAPI.Controllers
 					FirstName = teamMemberDto.FirstName,
 					LastName = teamMemberDto.LastName,
 					IsDeleted = false,
-					Role = roleRepository.GetByIdAsync(teamMemberDto.RoleId?? 0, session).Result,
-					SocialMediaList = socialMediaRepository.GetSocialMediaListByIdListAsync(teamMemberDto.SocialMediaIdList ?? new List<int>(), session).Result,
-					PictureList = pictureRepository.GetPictureListByIdListAsync(teamMemberDto.PictureIdList ?? new List<int>(), session).Result,
+					Role = await roleRepository.GetByIdAsync(teamMemberDto.RoleId ?? 0, session),
+					SocialMediaList = await socialMediaRepository.GetSocialMediaListByIdListAsync(teamMemberDto.SocialMediaIdList ?? new List<int>(), session),
+					PictureList = await pictureRepository.GetPictureListByIdListAsync(teamMemberDto.PictureIdList ?? new List<int>(), session),
 				};
 			});
 		}

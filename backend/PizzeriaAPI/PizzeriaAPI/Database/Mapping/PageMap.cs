@@ -5,13 +5,14 @@ namespace PizzeriaAPI.Database.Mapping
 {
 	public class PageMap : SubclassMap<Page>
 	{
-		public PageMap() {
+		public PageMap()
+		{
 			KeyColumn("Id");
 			Map(x => x.Title);
 			Map(x => x.Content);
 
 			Table("Page");
-			
+
 		}
 	}
 }

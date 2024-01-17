@@ -1,4 +1,6 @@
-﻿using System.Security.Claims;
+﻿using PizzeriaAPI.Database.Entities;
+using PizzeriaAPI.Domain;
+using System.Security.Claims;
 
 namespace PizzeriaAPI.Security
 {
@@ -8,5 +10,8 @@ namespace PizzeriaAPI.Security
 		Task<List<Claim>> GetClaimsAsync(TUser user);
 		Task<TUser> FindByEmailAsync(string email);
 		Task<UserManagerResult> CreateAsync(TUser user, string password);
+		Task<UserManagerResult> UpdateAsync(User user);
+		Task<string> SaveTokenAsync(User user, string token);
+
 	}
 }

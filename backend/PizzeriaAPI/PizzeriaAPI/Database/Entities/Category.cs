@@ -4,7 +4,7 @@
 	{
 		public virtual string Name { get; set; }
 		public virtual string? Link { get; set; }
-		public virtual IList<Product> ProductList{ get; set; }
+		public virtual IList<Product> ProductList { get; set; }
 
 	}
 }

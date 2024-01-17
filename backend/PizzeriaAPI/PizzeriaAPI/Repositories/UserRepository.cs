@@ -4,19 +4,19 @@ using ISession = NHibernate.ISession;
 
 namespace PizzeriaAPI.Repositories
 {
-    public interface IUserRepository : IGenericRepository<User>
+	public interface IUserRepository : IGenericRepository<User>
 	{
-		User GetUserByEmail(string email, ISession session);
+		Task<User> GetUserByEmailAsync(string email, ISession session);
 	}
 	public class UserRepository : GenericRepository<User>, IUserRepository
 	{
-		public User GetUserByEmail(string email, ISession session)
+		public async Task<User> GetUserByEmailAsync(string email, ISession session)
 		{
-			return session.QueryOver<User>().Where(Restrictions.Eq("Email", email)).SingleOrDefault();
+			return await session.QueryOver<User>().Where(Restrictions.Eq("Email", email)).SingleOrDefaultAsync();
 		}
 		public override async Task InsertAsync(User entity, ISession session)
 		{
-			entity.CreationDate = DateTime.Now;
+			entity.CreateDate = DateTime.Now;
 			entity.ModificationDate = DateTime.Now;
 			await base.InsertAsync(entity, session);
 		}

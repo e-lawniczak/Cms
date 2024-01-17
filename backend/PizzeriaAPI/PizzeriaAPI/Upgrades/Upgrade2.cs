@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using NHibernate;
-using PizzeriaAPI.Database.Entities;
-using System.Data.Common;
-using System.Security.Cryptography.Xml;
-using ISession = NHibernate.ISession;
+﻿using ISession = NHibernate.ISession;
 
 namespace PizzeriaAPI.Upgrades
 {
@@ -45,8 +40,8 @@ namespace PizzeriaAPI.Upgrades
 					"CREATE TABLE IF NOT EXISTS ENTITYWITHPICTURE" +
 					"(" +
 						"ID INT PRIMARY KEY NOT NULL, " +
-						"CREATEDATE DATE NOT NULL, " +
-						"MODIFICATIONDATE DATE NOT NULL, " +
+						"CREATEDATE TIMESTAMP NOT NULL, " +
+						"MODIFICATIONDATE TIMESTAMP NOT NULL, " +
 						"isvisible BOOLEAN NOT NULL, " +
 						"ISDELETED BOOLEAN NOT NULL" +
 					");";
@@ -86,8 +81,8 @@ namespace PizzeriaAPI.Upgrades
 					"(" +
 						"ROLEID INT PRIMARY KEY NOT NULL, " +
 						"NAME TEXT NOT NULL, " +
-						"CREATEDATE DATE NOT NULL, " +
-						"MODIFICATIONDATE DATE NOT NULL, " +
+						"CREATEDATE TIMESTAMP NOT NULL, " +
+						"MODIFICATIONDATE TIMESTAMP NOT NULL, " +
 						"isvisible BOOLEAN NOT NULL, " +
 						"ISDELETED BOOLEAN NOT NULL" +
 					");";
@@ -158,8 +153,8 @@ namespace PizzeriaAPI.Upgrades
 					"(" +
 						"SLIDERID INT PRIMARY KEY NOT NULL, " +
 						"NAME TEXT NOT NULL, " +
-						"CREATEDATE DATE NOT NULL, " +
-						"MODIFICATIONDATE DATE NOT NULL, " +
+						"CREATEDATE TIMESTAMP NOT NULL, " +
+						"MODIFICATIONDATE TIMESTAMP NOT NULL, " +
 						"isvisible BOOLEAN NOT NULL, " +
 						"ISDELETED BOOLEAN NOT NULL" +
 					");";
@@ -188,11 +183,11 @@ namespace PizzeriaAPI.Upgrades
 					"(" +
 						"INFORMATIONTABID INT PRIMARY KEY NOT NULL, " +
 						"TITLE TEXT, " +
-						"TEXT TEXT NOT NULL, " + 
+						"TEXT TEXT NOT NULL, " +
 						"BUTTONTEXT TEXT NOT NULL, " +
 						"TABSLIDERID INT, " +
-						"CREATEDATE DATE NOT NULL, " +
-						"MODIFICATIONDATE DATE NOT NULL, " +
+						"CREATEDATE TIMESTAMP NOT NULL, " +
+						"MODIFICATIONDATE TIMESTAMP NOT NULL, " +
 						"isvisible BOOLEAN NOT NULL, " +
 						"ISDELETED BOOLEAN NOT NULL" +
 					");";
@@ -249,7 +244,7 @@ namespace PizzeriaAPI.Upgrades
 		}
 		private void CreateTablePicture(ISession session)
 		{
-			var sql = 
+			var sql =
 					"CREATE TABLE IF NOT EXISTS PICTURE" +
 					"(" +
 						"PICTUREID INT PRIMARY KEY NOT NULL, " +
@@ -257,8 +252,8 @@ namespace PizzeriaAPI.Upgrades
 						"Link TEXT NOT NULL, " +
 						"FILE BYTEA NOT NULL, " +
 						"RESIZEDFILE BYTEA NOT NULL, " +
-						"CREATEDATE DATE NOT NULL, " +
-						"MODIFICATIONDATE DATE NOT NULL" +
+						"CREATEDATE TIMESTAMP NOT NULL, " +
+						"MODIFICATIONDATE TIMESTAMP NOT NULL" +
 					");";
 			session.CreateSQLQuery(sql).ExecuteUpdate();
 		}
@@ -273,8 +268,8 @@ namespace PizzeriaAPI.Upgrades
 							"ENTITYID INT NOT NULL, " +
 							"USERID	INT NOT NULL, " +
 							"MESSAGE TEXT NOT NULL, " +
-							"CREATEDATE DATE NOT NULL, " +
-							"MODIFICATIONDATE DATE NOT NULL," +
+							"CREATEDATE TIMESTAMP NOT NULL, " +
+							"MODIFICATIONDATE TIMESTAMP NOT NULL," +
 							"PRIMARY KEY (CONTROLLERID, ACTIONTYPEID, ENTITYID)" +
 						");";
 
@@ -284,13 +279,13 @@ namespace PizzeriaAPI.Upgrades
 		private void CreateTableUser(ISession session)
 		{
 			var sql =
-						"CREATE TABLE IF NOT EXISTS \"USER\"" +
+						"CREATE TABLE IF NOT EXISTS \"User\"" +
 						"(" +
 							"USERID INT PRIMARY KEY NOT NULL, " +
 							"EMAIL TEXT NOT NULL, " +
 							"PASSWORD TEXT NOT NULL, " +
-							"CREATEDATE DATE NOT NULL, " +
-							"MODIFICATIONDATE DATE NOT NULL" + 
+							"CREATEDATE TIMESTAMP NOT NULL, " +
+							"MODIFICATIONDATE TIMESTAMP NOT NULL" +
 						");";
 
 			session.CreateSQLQuery(sql).ExecuteUpdate();
@@ -314,7 +309,7 @@ namespace PizzeriaAPI.Upgrades
 						"CREATE TABLE IF NOT EXISTS CONTROLLER" +
 						"(" +
 							"CONTROLLERID INT PRIMARY KEY NOT NULL, " +
-							"NAME TEXT NOT NULL" +	
+							"NAME TEXT NOT NULL" +
 						");";
 
 			session.CreateSQLQuery(sql).ExecuteUpdate();
@@ -329,8 +324,8 @@ namespace PizzeriaAPI.Upgrades
 							"TEXT TEXT NOT NULL, " +
 							"LINK TEXT NOT NULL, " +
 							"PARENTMENUELEMENTID Int, " +
-							"CREATEDATE DATE NOT NULL, " +
-							"MODIFICATIONDATE DATE NOT NULL, " +
+							"CREATEDATE TIMESTAMP NOT NULL, " +
+							"MODIFICATIONDATE TIMESTAMP NOT NULL, " +
 							"ISVISIBLE BOOLEAN NOT NULL, " +
 							"ISDELETED BOOLEAN NOT NULL" +
 						");";
@@ -375,7 +370,7 @@ namespace PizzeriaAPI.Upgrades
 				"REFERENCES SLIDER(SLIDERID);";
 
 			session.CreateSQLQuery(bannerToSlider).ExecuteUpdate();
-			
+
 			var categoryToEntityWithPicture = "ALTER TABLE CATEGORY " +
 				"ADD CONSTRAINT FK_CATEGORY_TO_ENTITYWITHPICTURE " +
 				"FOREIGN KEY (ID) " +
@@ -422,7 +417,7 @@ namespace PizzeriaAPI.Upgrades
 			var eventToUser = "ALTER TABLE EVENT " +
 				"ADD CONSTRAINT FK_EVENT_TO_USER " +
 				"FOREIGN KEY (USERID) " +
-				"REFERENCES \"USER\"(USERID);";
+				"REFERENCES \"User\"(USERID);";
 
 			session.CreateSQLQuery(eventToUser).ExecuteUpdate();
 
@@ -449,7 +444,7 @@ namespace PizzeriaAPI.Upgrades
 			session.CreateSQLQuery(pageToEntityWithPicture).ExecuteUpdate();
 
 
-			var productToCategory= "ALTER TABLE PRODUCT " +
+			var productToCategory = "ALTER TABLE PRODUCT " +
 				"ADD CONSTRAINT FK_PRODUCT_TO_CATEGORY " +
 				"FOREIGN KEY (CATEGORYID) " +
 				"REFERENCES CATEGORY(ID);";
@@ -489,7 +484,7 @@ namespace PizzeriaAPI.Upgrades
 
 
 
-			var teamMemberToRole= "ALTER TABLE TEAMMEMBER " +
+			var teamMemberToRole = "ALTER TABLE TEAMMEMBER " +
 				"ADD CONSTRAINT FK_TEAMMEMBER_TO_ROLE " +
 				"FOREIGN KEY (ROLEID) " +
 				"REFERENCES ROLE(ROLEID);";
@@ -501,12 +496,12 @@ namespace PizzeriaAPI.Upgrades
 				"REFERENCES ENTITYWITHPICTURE(ID);";
 			session.CreateSQLQuery(testimonialToEntityWithPicture).ExecuteUpdate();
 
-			var testimonialToRole= "ALTER TABLE TESTIMONIAL " +
+			var testimonialToRole = "ALTER TABLE TESTIMONIAL " +
 				"ADD CONSTRAINT FK_TESTIMONIAL_TO_ROLE " +
 				"FOREIGN KEY (ROLEID) " +
 				"REFERENCES ROLE(ROLEID);";
 			session.CreateSQLQuery(testimonialToRole).ExecuteUpdate();
 
-	}
+		}
 	}
 }

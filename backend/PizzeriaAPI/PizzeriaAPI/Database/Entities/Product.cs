@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Components.Web.Virtualization;
-
-namespace PizzeriaAPI.Database.Entities
+﻿namespace PizzeriaAPI.Database.Entities
 {
 	public class Product : EntityWithPicture
 	{

@@ -1,13 +1,10 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
+using PizzeriaAPI.Dto;
 using PizzeriaAPI.ORM;
 using PizzeriaAPI.Repositories;
 using Swashbuckle.Swagger.Annotations;
-using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using Microsoft.AspNetCore.Authorization;
-using PizzeriaAPI.Dto;
-using MySqlX.XDevAPI;
 
 namespace PizzeriaAPI.Controllers
 {
@@ -34,7 +31,7 @@ namespace PizzeriaAPI.Controllers
 		[SwaggerResponse(HttpStatusCode.OK, "MenuElement inserted successfully")]
 		public async Task<ActionResult> AddMenuElement([FromBody] MenuElementDto menuElementDto)
 		{
-			var menuElement = GetMenuElement(menuElementDto);
+			var menuElement = await GetMenuElement(menuElementDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
 				await menuElementRepository.InsertAsync(menuElement, session);
@@ -79,10 +76,10 @@ namespace PizzeriaAPI.Controllers
 		[SwaggerResponse(HttpStatusCode.OK, "MenuElement updated successfully")]
 		public async Task<ActionResult> UpdateMenuElement([FromBody] MenuElementDto menuElementDto)
 		{
-			var menuElement = GetMenuElement(menuElementDto);
+			var menuElement = await GetMenuElement(menuElementDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await menuElementRepository.InsertAsync(menuElement, session);
+				await menuElementRepository.UpdateAsync(menuElement, session);
 			});
 
 			return Ok("MenuElement updated successfully");
@@ -111,9 +108,10 @@ namespace PizzeriaAPI.Controllers
 				ParentMenuElementId = menuElement.ParentMenuElement.MenuElementId
 			};
 		}
-		private MenuElement GetMenuElement(MenuElementDto menuElementDto)
+		private async Task<MenuElement> GetMenuElement(MenuElementDto menuElementDto)
 		{
-			return transactionCoordinator.InRollbackScope(session => {
+			return await transactionCoordinator.InRollbackScopeAsync(async session =>
+			{
 				return new MenuElement()
 				{
 
@@ -122,7 +120,7 @@ namespace PizzeriaAPI.Controllers
 					Link = menuElementDto.Link,
 					IsVisible = menuElementDto.IsVisible ?? true,
 					IsDeleted = false,
-					ParentMenuElement = menuElementRepository.GetByIdAsync(menuElementDto.MenuElementId?? 0, session).Result
+					ParentMenuElement = await menuElementRepository.GetByIdAsync(menuElementDto.MenuElementId ?? 0, session)
 
 				};
 			});

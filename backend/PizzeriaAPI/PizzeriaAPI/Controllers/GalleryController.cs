@@ -1,13 +1,10 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
+using PizzeriaAPI.Dto;
 using PizzeriaAPI.ORM;
 using PizzeriaAPI.Repositories;
 using Swashbuckle.Swagger.Annotations;
-using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using Microsoft.AspNetCore.Authorization;
-using PizzeriaAPI.Dto;
-using MySqlX.XDevAPI;
 
 namespace PizzeriaAPI.Controllers
 {
@@ -37,7 +34,7 @@ namespace PizzeriaAPI.Controllers
 		[SwaggerResponse(HttpStatusCode.OK, "Gallery inserted successfully")]
 		public async Task<ActionResult> AddGallery([FromBody] GalleryDto galleryDto)
 		{
-			var gallery = GetGallery(galleryDto);
+			var gallery = await GetGallery(galleryDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
 				await galleryRepository.InsertAsync(gallery, session);
@@ -82,10 +79,10 @@ namespace PizzeriaAPI.Controllers
 		[SwaggerResponse(HttpStatusCode.OK, "Gallery updated successfully")]
 		public async Task<ActionResult> UpdateGallery([FromBody] GalleryDto galleryDto)
 		{
-			var gallery = GetGallery(galleryDto);
+			var gallery = await GetGallery(galleryDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await galleryRepository.InsertAsync(gallery, session);
+				await galleryRepository.UpdateAsync(gallery, session);
 			});
 
 			return Ok("Gallery updated successfully");
@@ -115,9 +112,10 @@ namespace PizzeriaAPI.Controllers
 				PictureIdList = gallery.PictureList.Select(x => x.PictureId).ToList(),
 			};
 		}
-		private Gallery GetGallery(GalleryDto galleryDto)
+		private async Task<Gallery> GetGallery(GalleryDto galleryDto)
 		{
-			return transactionCoordinator.InRollbackScope(session => {
+			return await transactionCoordinator.InRollbackScopeAsync(async session =>
+			{
 				return new Gallery()
 				{
 
@@ -127,7 +125,7 @@ namespace PizzeriaAPI.Controllers
 					SubText = galleryDto.SubText,
 					IsVisible = galleryDto.IsVisible ?? true,
 					IsDeleted = false,
-					PictureList = pictureRepository.GetPictureListByIdListAsync(galleryDto.PictureIdList ?? new List<int>(), session).Result
+					PictureList = await pictureRepository.GetPictureListByIdListAsync(galleryDto.PictureIdList ?? new List<int>(), session)
 				};
 			});
 		}

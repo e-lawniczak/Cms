@@ -1,9 +1,9 @@
 ﻿using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
-using ISession = NHibernate.ISession;
 using NHibernate.Tool.hbm2ddl;
 using System.Reflection;
+using ISession = NHibernate.ISession;
 
 namespace PizzeriaAPI.ORM
 {
@@ -48,7 +48,8 @@ namespace PizzeriaAPI.ORM
 		}
 		private IPersistenceConfigurer GetDatabaseConfiguration()
 		{
-			return PostgreSQLConfiguration.Standard.ConnectionString(c => {
+			return PostgreSQLConfiguration.Standard.ConnectionString(c =>
+			{
 				c.Host("127.0.0.1");
 				c.Database("CMSDatabase");
 				c.Port(5432);

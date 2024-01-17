@@ -1,10 +1,7 @@
 
 using API.HealthChecks;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
-using NHibernate;
+using PizzeriaAPI.Security;
 using Serilog;
 
 namespace PizzeriaAPI
@@ -18,12 +15,13 @@ namespace PizzeriaAPI
 			builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration));
 
 			builder.Services.AddControllers();
-			builder.Services.AddServices();
+			builder.Services.AddServices(builder.Configuration);
 			builder.Services.AddSecurityServices(builder.Configuration);
 			builder.Services.AddEndpointsApiExplorer();
-			builder.Services.AddSwaggerGen(c =>
+			builder.Services.AddOptions();
+			builder.Services.AddSwaggerGen(options =>
 			{
-				c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+				options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
 				{
 					Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
               Enter 'Bearer' [space] and then your token in the text input below.
@@ -34,32 +32,17 @@ namespace PizzeriaAPI
 					Scheme = "Bearer"
 				});
 
-				c.AddSecurityRequirement(new OpenApiSecurityRequirement()
-		  {
-			{
-			  new OpenApiSecurityScheme
-			  {
-				Reference = new OpenApiReference
-				  {
-					Type = ReferenceType.SecurityScheme,
-					Id = "Bearer"
-				  },
-				  Scheme = "oauth2",
-				  Name = "Bearer",
-				  In = ParameterLocation.Header,
+				options.OperationFilter<SecurityRequirementsOperationFilter>();
 
-				},
-				new List<string>()
-			  }
-			});
-
-				c.SwaggerDoc("v1", new OpenApiInfo
+				options.SwaggerDoc("v1", new OpenApiInfo
 				{
 					Version = "v1",
 					Title = "Pizzeria API",
+					Description = "API using .NET 6"
 				});
+			});
 
-			}); builder.Services.AddCors(options =>
+			builder.Services.AddCors(options =>
 			{
 				options.AddPolicy("Open",
 					builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());

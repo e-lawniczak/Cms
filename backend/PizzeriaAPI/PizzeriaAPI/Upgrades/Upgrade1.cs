@@ -1,7 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
-using System.Data.Common;
-
-namespace PizzeriaAPI.Upgrades
+﻿namespace PizzeriaAPI.Upgrades
 {
 	public class Upgrade1 : IUpgrade
 	{

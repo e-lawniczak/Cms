@@ -1,6 +1,4 @@
-﻿using PizzeriaAPI.Database.Entities;
-using static System.Net.Mime.MediaTypeNames;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace PizzeriaAPI.Dto
 {
@@ -8,11 +6,11 @@ namespace PizzeriaAPI.Dto
 	{
 		public int? Id { get; set; }
 		public string? Name { get; set; }
-		public  string? Link { get; set; }
+		public string? Link { get; set; }
 		public bool? IsMain { get; set; }
 		public int? TeamMemberId { get; set; }
-		
-		
+
+
 		public bool? IsVisible { get; set; }
 		public IList<int>? PictureIdList { get; set; }
 		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

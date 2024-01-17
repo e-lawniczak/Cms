@@ -5,7 +5,7 @@ namespace PizzeriaAPI.Database.Mapping
 {
 	public class InformationTabMap : ClassMap<InformationTab>
 	{
-		public InformationTabMap() 
+		public InformationTabMap()
 		{
 			Id(x => x.InformationTabId).Not.Nullable().GeneratedBy.Increment();
 			Map(x => x.Title).Not.Nullable();

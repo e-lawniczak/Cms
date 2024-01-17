@@ -1,29 +1,31 @@
 ﻿using API.HealthChecks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using PizzeriaAPI.Database.Entities;
+using PizzeriaAPI.Domain;
 using PizzeriaAPI.ORM;
 using PizzeriaAPI.Repositories;
 using PizzeriaAPI.Security;
+using PizzeriaAPI.Settings;
 using PizzeriaAPI.Upgrades;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using PizzeriaAPI.Database.Entities;
-using PizzeriaAPI.Domain;
+
 
 namespace PizzeriaAPI
 {
-    public static class ModuleInitialize
+	public static class ModuleInitialize
 	{
-		public static void AddSecurityServices(this IServiceCollection services,
-		IConfiguration configuration)
+		public static void AddSecurityServices(this IServiceCollection services, IConfiguration configuration)
 		{
 			services.Configure<JSONWebTokensSettings>
 				(configuration.GetSection("JSONWebTokensSettings"));
 
 
 			services.AddSingleton<IUserManager<User>, UserManager>();
+			services.AddTransient<IEmailSender, EmailSender>();
 			services.AddTransient<IAuthenticationService, AuthenticationService>();
 
 			services.AddAuthentication(options =>
@@ -102,7 +104,7 @@ namespace PizzeriaAPI
 				});
 			});
 		}
-		public static void AddServices(this IServiceCollection services)
+		public static void AddServices(this IServiceCollection services, IConfiguration configuration)
 		{
 			services.AddSingleton<INHibernateHelper, NHibernateHelper>();
 			services.AddSingleton<ITransactionCoordinator, TransactionCoordinator>();
@@ -125,12 +127,14 @@ namespace PizzeriaAPI
 			services.AddSingleton<ICategoryRepository, CategoryRepository>();
 			services.AddSingleton<IKeyValueRepository, KeyValueRepository>();
 			services.AddSingleton<IMenuElementRepository, MenuElementRepository>();
-
-
+			services.AddSingleton<IUserTokenRepository, UserTokenRepository>();
 			services.AddSingleton<IUpgradesService, UpgradesService>();
 
 			services.AddSingleton<IUpgrade, Upgrade1>();
 			services.AddSingleton<IUpgrade, Upgrade2>();
+
+			services.Configure<EmailSenderSettings>(configuration.GetSection("EmailSenderSettings"));
+
 		}
 
 		public static void OnInitialize(this IServiceProvider services)

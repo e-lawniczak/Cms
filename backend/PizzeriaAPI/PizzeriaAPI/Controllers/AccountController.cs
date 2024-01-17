@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PizzeriaAPI.Domain;
 using PizzeriaAPI.Security;
 
 namespace PizzeriaAPI.Controllers
@@ -23,6 +24,19 @@ namespace PizzeriaAPI.Controllers
 		public async Task<ActionResult<RegistrationResponse>> RegisterAsync(RegistrationRequest request)
 		{
 			return Ok(await authenticationService.RegisterAsync(request));
+		}
+		[HttpPost]
+		[Route("/ChangePassword")]
+		public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordRequest changePasswordRequest)
+		{
+			return Ok(await authenticationService.ChangePasswordAsync(changePasswordRequest));
+		}
+
+		[HttpPost]
+		[Route("/ResetPassword")]
+		public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordRequest resetPasswordRequest)
+		{
+			return Ok(await authenticationService.ResetPasswordAsync(resetPasswordRequest));
 		}
 	}
 }

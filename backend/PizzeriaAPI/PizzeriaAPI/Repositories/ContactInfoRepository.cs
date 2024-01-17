@@ -3,8 +3,8 @@ using ISession = NHibernate.ISession;
 
 namespace PizzeriaAPI.Repositories
 {
-	public interface IContactInfoRepository : IGenericRepository<ContactInfo> 
-	{ 
+	public interface IContactInfoRepository : IGenericRepository<ContactInfo>
+	{
 		Task DeleteAsync(int id, ISession session);
 	}
 	public class ContactInfoRepository : GenericRepository<ContactInfo>, IContactInfoRepository

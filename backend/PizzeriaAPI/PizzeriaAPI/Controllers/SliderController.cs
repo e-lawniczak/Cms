@@ -1,13 +1,10 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
+using PizzeriaAPI.Dto;
 using PizzeriaAPI.ORM;
 using PizzeriaAPI.Repositories;
 using Swashbuckle.Swagger.Annotations;
-using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using Microsoft.AspNetCore.Authorization;
-using PizzeriaAPI.Dto;
-using MySqlX.XDevAPI;
 
 namespace PizzeriaAPI.Controllers
 {
@@ -37,7 +34,7 @@ namespace PizzeriaAPI.Controllers
 		[SwaggerResponse(HttpStatusCode.OK, "Slider inserted successfully")]
 		public async Task<ActionResult> AddSlider([FromBody] SliderDto sliderDto)
 		{
-			var slider = GetSlider(sliderDto);
+			var slider = await GetSlider(sliderDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
 				await sliderRepository.InsertAsync(slider, session);
@@ -82,10 +79,10 @@ namespace PizzeriaAPI.Controllers
 		[SwaggerResponse(HttpStatusCode.OK, "Slider updated successfully")]
 		public async Task<ActionResult> UpdateSlider([FromBody] SliderDto sliderDto)
 		{
-			var slider = GetSlider(sliderDto);
+			var slider = await GetSlider(sliderDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await sliderRepository.InsertAsync(slider, session);
+				await sliderRepository.UpdateAsync(slider, session);
 			});
 
 			return Ok("Slider updated successfully");
@@ -113,16 +110,17 @@ namespace PizzeriaAPI.Controllers
 				BannerIdList = slider.BannerList.Select(x => x.Id).ToList(),
 			};
 		}
-		private Slider GetSlider(SliderDto sliderDto)
+		private async Task<Slider> GetSlider(SliderDto sliderDto)
 		{
-			return transactionCoordinator.InRollbackScope(session => {
+			return await transactionCoordinator.InRollbackScopeAsync(async session =>
+			{
 				return new Slider()
 				{
 
 					SliderId = sliderDto?.SliderId ?? 0,
 					Name = sliderDto.Name,
 					IsVisible = sliderDto.IsVisible ?? true,
-					BannerList = bannerRepository.GetBannerListByIdListAsync(sliderDto.BannerIdList ?? new List<int>(), session).Result,
+					BannerList = await bannerRepository.GetBannerListByIdListAsync(sliderDto.BannerIdList ?? new List<int>(), session),
 
 				};
 			});

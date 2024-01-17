@@ -1,5 +1,4 @@
 ﻿using FluentNHibernate.Mapping;
-using NHibernate.Mapping;
 using PizzeriaAPI.Database.Entities;
 
 namespace PizzeriaAPI.Database.Mapping

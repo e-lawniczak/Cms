@@ -5,7 +5,8 @@ namespace PizzeriaAPI.Database.Mapping
 {
 	public class TeamMemberMap : SubclassMap<TeamMember>
 	{
-		public TeamMemberMap() {
+		public TeamMemberMap()
+		{
 			KeyColumn("Id");
 			Map(x => x.FirstName).Not.Nullable();
 			Map(x => x.LastName).Not.Nullable();

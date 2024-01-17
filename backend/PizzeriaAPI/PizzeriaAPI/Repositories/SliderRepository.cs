@@ -4,7 +4,7 @@ using ISession = NHibernate.ISession;
 namespace PizzeriaAPI.Repositories
 {
 	public interface ISliderRepository : IGenericRepository<Slider>
-	{ 
+	{
 		Task DeleteAsync(int id, ISession session);
 	}
 	public class SliderRepository : GenericRepository<Slider>, ISliderRepository

@@ -5,7 +5,8 @@ namespace PizzeriaAPI.Database.Mapping
 {
 	public class CategoryMap : SubclassMap<Category>
 	{
-		public CategoryMap() {
+		public CategoryMap()
+		{
 			KeyColumn("Id");
 			Map(x => x.Name).Not.Nullable();
 			Map(x => x.Link);

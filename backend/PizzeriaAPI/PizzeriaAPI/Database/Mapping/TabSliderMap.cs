@@ -5,7 +5,8 @@ namespace PizzeriaAPI.Database.Mapping
 {
 	public class TabSliderMap : SubclassMap<TabSlider>
 	{
-		public TabSliderMap() {
+		public TabSliderMap()
+		{
 			KeyColumn("Id");
 			Map(x => x.Title).Not.Nullable();
 			HasMany(x => x.InformationTabList)

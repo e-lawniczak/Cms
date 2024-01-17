@@ -5,7 +5,7 @@ namespace PizzeriaAPI.Database.Mapping
 {
 	public class ControllerMap : ClassMap<Controller>
 	{
-		public ControllerMap() 
+		public ControllerMap()
 		{
 			Id(x => x.ControllerId).Not.Nullable().GeneratedBy.Increment();
 			Map(x => x.Name).Not.Nullable();

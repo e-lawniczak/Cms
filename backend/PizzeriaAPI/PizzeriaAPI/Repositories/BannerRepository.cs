@@ -4,7 +4,7 @@ using ISession = NHibernate.ISession;
 namespace PizzeriaAPI.Repositories
 {
 
-	public interface IBannerRepository: IGenericRepository<Banner>
+	public interface IBannerRepository : IGenericRepository<Banner>
 	{
 		Task<IList<Banner>> GetBannerListByIdListAsync(IList<int> bannerIdList, ISession session);
 		Task DeleteAsync(int id, ISession session);
@@ -24,7 +24,7 @@ namespace PizzeriaAPI.Repositories
 			await UpdateAsync(entity, session);
 		}
 		public override async Task InsertAsync(Banner entity, ISession session)
-		{ 
+		{
 			entity.CreateDate = DateTime.Now;
 			entity.ModificationDate = DateTime.Now;
 			await base.InsertAsync(entity, session);

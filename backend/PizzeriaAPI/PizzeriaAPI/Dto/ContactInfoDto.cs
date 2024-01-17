@@ -1,6 +1,4 @@
-﻿using PizzeriaAPI.Database.Entities;
-
-namespace PizzeriaAPI.Dto
+﻿namespace PizzeriaAPI.Dto
 {
 	public class ContactInfoDto
 	{

@@ -1,5 +1,4 @@
-﻿using MySqlX.XDevAPI;
-using PizzeriaAPI.Database.Entities;
+﻿using PizzeriaAPI.Database.Entities;
 using ISession = NHibernate.ISession;
 
 

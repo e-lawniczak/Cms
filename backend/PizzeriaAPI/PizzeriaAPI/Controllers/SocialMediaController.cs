@@ -1,13 +1,10 @@
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
+using PizzeriaAPI.Dto;
 using PizzeriaAPI.ORM;
 using PizzeriaAPI.Repositories;
 using Swashbuckle.Swagger.Annotations;
-using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using Microsoft.AspNetCore.Authorization;
-using PizzeriaAPI.Dto;
-using MySqlX.XDevAPI;
 
 namespace PizzeriaAPI.Controllers
 {
@@ -40,7 +37,7 @@ namespace PizzeriaAPI.Controllers
 		[SwaggerResponse(HttpStatusCode.OK, "SocialMedia inserted successfully")]
 		public async Task<ActionResult> AddSocialMedia([FromBody] SocialMediaDto socialMediaDto)
 		{
-			var socialMedia = GetSocialMedia(socialMediaDto);
+			var socialMedia = await GetSocialMedia(socialMediaDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
 				await socialMediaRepository.InsertAsync(socialMedia, session);
@@ -85,10 +82,10 @@ namespace PizzeriaAPI.Controllers
 		[SwaggerResponse(HttpStatusCode.OK, "SocialMedia updated successfully")]
 		public async Task<ActionResult> UpdateSocialMedia([FromBody] SocialMediaDto socialMediaDto)
 		{
-			var socialMedia = GetSocialMedia(socialMediaDto);
+			var socialMedia = await GetSocialMedia(socialMediaDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await socialMediaRepository.InsertAsync(socialMedia, session);
+				await socialMediaRepository.UpdateAsync(socialMedia, session);
 			});
 
 			return Ok("SocialMedia updated successfully");
@@ -105,7 +102,7 @@ namespace PizzeriaAPI.Controllers
 
 			return Ok("SocialMedia was deleted successfully");
 		}
-	
+
 		private SocialMediaDto GetSocialMediaDto(SocialMedia socialMedia)
 		{
 			return new SocialMediaDto()
@@ -115,13 +112,14 @@ namespace PizzeriaAPI.Controllers
 				Link = socialMedia.Link,
 				IsMain = socialMedia.IsMain,
 				IsVisible = socialMedia.IsVisible,
-				PictureIdList = socialMedia.PictureList.Select(x=>x.PictureId).ToList(),
+				PictureIdList = socialMedia.PictureList.Select(x => x.PictureId).ToList(),
 				TeamMemberId = socialMedia.TeamMember.Id
 			};
 		}
-		private SocialMedia GetSocialMedia(SocialMediaDto socialMediaDto)
+		private async Task<SocialMedia> GetSocialMedia(SocialMediaDto socialMediaDto)
 		{
-			return transactionCoordinator.InRollbackScope(session => {
+			return await transactionCoordinator.InRollbackScopeAsync(async session =>
+			{
 				return new SocialMedia()
 				{
 
@@ -131,8 +129,8 @@ namespace PizzeriaAPI.Controllers
 					IsMain = socialMediaDto.IsMain ?? false,
 					IsVisible = socialMediaDto.IsVisible ?? true,
 					IsDeleted = false,
-					PictureList = pictureRepository.GetPictureListByIdListAsync(socialMediaDto.PictureIdList ?? new List<int>(), session).Result,
-					TeamMember = teamMemberRepository.GetByIdAsync(socialMediaDto.TeamMemberId ?? 0, session).Result
+					PictureList = await pictureRepository.GetPictureListByIdListAsync(socialMediaDto.PictureIdList ?? new List<int>(), session),
+					TeamMember = await teamMemberRepository.GetByIdAsync(socialMediaDto.TeamMemberId ?? 0, session)
 
 				};
 			});

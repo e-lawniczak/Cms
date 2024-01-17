@@ -1,12 +1,10 @@
-﻿using PizzeriaAPI.Database.Entities;
-
-namespace PizzeriaAPI.Dto
+﻿namespace PizzeriaAPI.Dto
 {
 	public class TestimonialDto
 	{
 		public int? Id { get; set; }
-		
-		
+
+
 		public bool? IsVisible { get; set; }
 		public bool? IsDeleted { get; set; }
 		public string? FirstName { get; set; }

@@ -1,13 +1,10 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
+using PizzeriaAPI.Dto;
 using PizzeriaAPI.ORM;
 using PizzeriaAPI.Repositories;
 using Swashbuckle.Swagger.Annotations;
-using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using Microsoft.AspNetCore.Authorization;
-using PizzeriaAPI.Dto;
-using MySqlX.XDevAPI;
 
 namespace PizzeriaAPI.Controllers
 {
@@ -67,7 +64,7 @@ namespace PizzeriaAPI.Controllers
 			var keyValue = GetKeyValue(keyValueDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await keyValueRepository.InsertAsync(keyValue, session);
+				await keyValueRepository.UpdateAsync(keyValue, session);
 			});
 
 			return Ok("KeyValue updated successfully");
@@ -90,22 +87,18 @@ namespace PizzeriaAPI.Controllers
 			return new KeyValueDto()
 			{
 				Id = keyValue.Id,
-				Key = keyValue.Key, 
+				Key = keyValue.Key,
 				Value = keyValue.Value,
 			};
 		}
 		private KeyValue GetKeyValue(KeyValueDto keyValueDto)
 		{
-			return transactionCoordinator.InRollbackScope(session => {
-				return new KeyValue()
-				{
-
-					Id = keyValueDto?.Id ?? 0,
-					Key = keyValueDto.Key,
-					Value = keyValueDto.Value,
-
-				};
-			});
+			return new KeyValue()
+			{
+				Id = keyValueDto?.Id ?? 0,
+				Key = keyValueDto.Key,
+				Value = keyValueDto.Value,
+			};
 		}
 	}
 }

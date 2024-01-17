@@ -1,13 +1,10 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
+using PizzeriaAPI.Dto;
 using PizzeriaAPI.ORM;
 using PizzeriaAPI.Repositories;
 using Swashbuckle.Swagger.Annotations;
-using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using Microsoft.AspNetCore.Authorization;
-using PizzeriaAPI.Dto;
-using MySqlX.XDevAPI;
 
 namespace PizzeriaAPI.Controllers
 {
@@ -40,7 +37,7 @@ namespace PizzeriaAPI.Controllers
 		[SwaggerResponse(HttpStatusCode.OK, "ContactInfo inserted successfully")]
 		public async Task<ActionResult> AddContactInfo([FromBody] ContactInfoDto contactInfoDto)
 		{
-			var contactInfo = GetContactInfo(contactInfoDto);
+			var contactInfo = await GetContactInfo(contactInfoDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
 				await contactInfoRepository.InsertAsync(contactInfo, session);
@@ -85,10 +82,10 @@ namespace PizzeriaAPI.Controllers
 		[SwaggerResponse(HttpStatusCode.OK, "ContactInfo updated successfully")]
 		public async Task<ActionResult> UpdateContactInfo([FromBody] ContactInfoDto contactInfoDto)
 		{
-			var contactInfo = GetContactInfo(contactInfoDto);
+			var contactInfo = await GetContactInfo(contactInfoDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await contactInfoRepository.InsertAsync(contactInfo, session);
+				await contactInfoRepository.UpdateAsync(contactInfo, session);
 			});
 
 			return Ok("ContactInfo updated successfully");
@@ -113,12 +110,13 @@ namespace PizzeriaAPI.Controllers
 				Id = contactInfo?.Id,
 				IsVisible = contactInfo.IsVisible,
 				Text = contactInfo.Text,
-				PictureIdList = contactInfo.PictureList.Select(x=>x.PictureId).ToList()
+				PictureIdList = contactInfo.PictureList.Select(x => x.PictureId).ToList()
 			};
 		}
-		private ContactInfo GetContactInfo(ContactInfoDto contactInfoDto)
+		private async Task<ContactInfo> GetContactInfo(ContactInfoDto contactInfoDto)
 		{
-			return transactionCoordinator.InRollbackScope(session => {
+			return await transactionCoordinator.InRollbackScopeAsync(async session =>
+			{
 				return new ContactInfo()
 				{
 
@@ -126,7 +124,7 @@ namespace PizzeriaAPI.Controllers
 					IsVisible = contactInfoDto.IsVisible ?? true,
 					IsDeleted = false,
 					Text = contactInfoDto.Text,
-					PictureList = pictureRepository.GetPictureListByIdListAsync(contactInfoDto.PictureIdList ?? new List<int>(), session).Result
+					PictureList = await pictureRepository.GetPictureListByIdListAsync(contactInfoDto.PictureIdList ?? new List<int>(), session)
 				};
 			});
 		}

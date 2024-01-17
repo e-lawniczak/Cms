@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace PizzeriaAPI.Database.Entities
+﻿namespace PizzeriaAPI.Database.Entities
 {
 	public abstract class EntityWithPicture
 	{

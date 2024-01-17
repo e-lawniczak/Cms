@@ -1,4 +1,4 @@
-﻿namespace PizzeriaAPI.Security
+﻿namespace PizzeriaAPI.Domain
 {
 	public class RegistrationResponse
 	{

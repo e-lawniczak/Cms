@@ -1,13 +1,10 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
+using PizzeriaAPI.Dto;
 using PizzeriaAPI.ORM;
 using PizzeriaAPI.Repositories;
 using Swashbuckle.Swagger.Annotations;
-using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using Microsoft.AspNetCore.Authorization;
-using PizzeriaAPI.Dto;
-using MySqlX.XDevAPI;
 
 namespace PizzeriaAPI.Controllers
 {
@@ -42,7 +39,7 @@ namespace PizzeriaAPI.Controllers
 		[SwaggerResponse(HttpStatusCode.OK, "TabSlider inserted successfully")]
 		public async Task<ActionResult> AddTabSlider([FromBody] TabSliderDto tabSliderDto)
 		{
-			var tabSlider = GetTabSlider(tabSliderDto);
+			var tabSlider = await GetTabSlider(tabSliderDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
 				await tabSliderRepository.InsertAsync(tabSlider, session);
@@ -87,10 +84,10 @@ namespace PizzeriaAPI.Controllers
 		[SwaggerResponse(HttpStatusCode.OK, "TabSlider updated successfully")]
 		public async Task<ActionResult> UpdateTabSlider([FromBody] TabSliderDto tabSliderDto)
 		{
-			var tabSlider = GetTabSlider(tabSliderDto);
+			var tabSlider = await GetTabSlider(tabSliderDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await tabSliderRepository.InsertAsync(tabSlider, session);
+				await tabSliderRepository.UpdateAsync(tabSlider, session);
 			});
 
 			return Ok("TabSlider updated successfully");
@@ -116,12 +113,13 @@ namespace PizzeriaAPI.Controllers
 				Title = tabSlider.Title,
 				IsVisible = tabSlider.IsVisible,
 				PictureIdList = tabSlider.PictureList.Select(x => x.PictureId).ToList(),
-				InformationTabIdList = tabSlider.InformationTabList.Select(x=>x.InformationTabId).ToList()
+				InformationTabIdList = tabSlider.InformationTabList.Select(x => x.InformationTabId).ToList()
 			};
 		}
-		private TabSlider GetTabSlider(TabSliderDto tabSliderDto)
+		private async Task<TabSlider> GetTabSlider(TabSliderDto tabSliderDto)
 		{
-			return transactionCoordinator.InRollbackScope(session => {
+			return await transactionCoordinator.InRollbackScopeAsync(async session =>
+			{
 				return new TabSlider()
 				{
 
@@ -129,7 +127,7 @@ namespace PizzeriaAPI.Controllers
 					Title = tabSliderDto.Title,
 					IsVisible = tabSliderDto.IsVisible ?? true,
 					IsDeleted = false,
-					InformationTabList = informationTabRepository.GetInformationTabListByIdListAsync(tabSliderDto.InformationTabIdList ?? new List<int>(), session).Result
+					InformationTabList = await informationTabRepository.GetInformationTabListByIdListAsync(tabSliderDto.InformationTabIdList ?? new List<int>(), session)
 
 				};
 			});

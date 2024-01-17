@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto;
 using PizzeriaAPI.ORM;
 using PizzeriaAPI.Repositories;
 using Swashbuckle.Swagger.Annotations;
 using System.Net;
-using System.Web.Http.Controllers;
 
 namespace PizzeriaAPI.Controllers
 {
@@ -34,11 +34,12 @@ namespace PizzeriaAPI.Controllers
 
 
 		[HttpPost]
+		[Authorize]
 		[Route("/AddBanner")]
 		[SwaggerResponse(HttpStatusCode.OK, "Banner inserted successfully")]
 		public async Task<ActionResult> AddBanner([FromBody] BannerDto bannerDto)
 		{
-			var banner = GetBanner(bannerDto);
+			var banner = await GetBanner(bannerDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
 				await bannerRepository.InsertAsync(banner, session);
@@ -72,7 +73,7 @@ namespace PizzeriaAPI.Controllers
 			await transactionCoordinator.InRollbackScopeAsync(async session =>
 			{
 				var bannerList = await bannerRepository.GetAllAsync(session);
-				bannerDtoList = bannerList.Where(x=>x.IsVisible).Select(GetBannerDto).ToList();
+				bannerDtoList = bannerList.Where(x => x.IsVisible).Select(GetBannerDto).ToList();
 			});
 
 			return Ok(bannerDtoList);
@@ -83,10 +84,10 @@ namespace PizzeriaAPI.Controllers
 		[SwaggerResponse(HttpStatusCode.OK, "Banner updated successfully")]
 		public async Task<ActionResult> UpdateBanner([FromBody] BannerDto bannerDto)
 		{
-			var banner = GetBanner(bannerDto);
+			var banner = await GetBanner(bannerDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
-				await bannerRepository.InsertAsync(banner, session);
+				await bannerRepository.UpdateAsync(banner, session);
 			});
 
 			return Ok("Banner updated successfully");
@@ -115,13 +116,14 @@ namespace PizzeriaAPI.Controllers
 				SubText = banner.SubText,
 				Link = banner.Link,
 				IsVisible = banner.IsVisible,
-				PictureIdList = banner.PictureList.Select(x=>x.PictureId).ToList(),
+				PictureIdList = banner.PictureList.Select(x => x.PictureId).ToList(),
 				SliderId = banner.Slider?.SliderId
 			};
 		}
-		private Banner GetBanner(BannerDto bannerDto)
+		private async Task<Banner> GetBanner(BannerDto bannerDto)
 		{
-			return transactionCoordinator.InRollbackScope(session => {
+			return await transactionCoordinator.InRollbackScopeAsync(async session =>
+			{
 				return new Banner()
 				{
 
@@ -132,8 +134,8 @@ namespace PizzeriaAPI.Controllers
 					Link = bannerDto.Link,
 					IsVisible = bannerDto.IsVisible ?? true,
 					IsDeleted = false,
-					PictureList = pictureRepository.GetPictureListByIdListAsync(bannerDto.PictureIdList ?? new List<int>(), session).Result,
-					Slider = sliderRepository.GetByIdAsync(bannerDto.SliderId ?? 0, session).Result
+					PictureList = await pictureRepository.GetPictureListByIdListAsync(bannerDto.PictureIdList ?? new List<int>(), session),
+					Slider = await sliderRepository.GetByIdAsync(bannerDto.SliderId ?? 0, session)
 				};
 			});
 		}

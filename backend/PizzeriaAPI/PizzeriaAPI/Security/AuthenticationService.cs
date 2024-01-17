@@ -1,25 +1,61 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PizzeriaAPI.Database.Entities;
+using PizzeriaAPI.Domain;
+using PizzeriaAPI.Settings;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
 namespace PizzeriaAPI.Security
 {
-    public class AuthenticationService : IAuthenticationService
+	public class AuthenticationService : IAuthenticationService
 	{
 		private IUserManager<User> userManager;
+		private IEmailSender emailSender;
 		private readonly JSONWebTokensSettings jwtSettings;
 
 		public AuthenticationService(IUserManager<User> userManager,
+			IEmailSender emailSender,
 			 IOptions<JSONWebTokensSettings> jwtSettings)
 		{
 			this.userManager = userManager;
 			this.jwtSettings = jwtSettings.Value;
+			this.emailSender = emailSender;
+		}
+
+		public async Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordRequest resetPasswordRequest)
+		{
+			var user = await userManager.FindByEmailAsync(resetPasswordRequest.Email);
+			if (user == null)
+				throw new Exception("Not found user with given email");
+
+			var message = await CreateMessage(user);
+			await emailSender.SendEmailAsync(resetPasswordRequest.Email, "Reset password", message);
+
+			return new ResetPasswordResponse() { Message = "Sended mail successfully" };
 		}
 
 
+		public async Task<ChangePasswordResponse> ChangePasswordAsync(ChangePasswordRequest changePasswordRequest)
+		{
+			var user = await userManager.FindByEmailAsync(changePasswordRequest.Email);
+			if (user == null)
+				throw new Exception("Not found user with given email");
+			if (changePasswordRequest.Password != changePasswordRequest.ConfirmPassword)
+				throw new Exception("Passwords are not the same");
+			user.Password = changePasswordRequest.Password;
+			var result = await userManager.UpdateAsync(user);
+
+			if (result.Succeeded)
+			{
+				return new ChangePasswordResponse() { UserId = user.UserId };
+			}
+			else
+			{
+				throw new Exception($"{result.Errors}");
+			}
+		}
 		public async Task<AuthenticationResponse> LoginAsync(AuthenticationRequest request)
 		{
 			var eduUser = await userManager.FindByEmailAsync(request.Email);
@@ -68,6 +104,20 @@ namespace PizzeriaAPI.Security
 			{
 				throw new Exception($"Email {request.Email} already exists.");
 			}
+		}
+
+		private async Task<string> CreateMessage(User user)
+		{
+			var generatedRandomNumber = GenerateRandomNumber();
+			var userToken = await userManager.SaveTokenAsync(user, generatedRandomNumber.ToString());
+			return $"Your reset password code is: {userToken}";
+
+		}
+
+		private int GenerateRandomNumber()
+		{
+			var random = new Random();
+			return random.Next(100000, 999999);
 		}
 
 		private async Task<JwtSecurityToken> GenerateToken(User user)

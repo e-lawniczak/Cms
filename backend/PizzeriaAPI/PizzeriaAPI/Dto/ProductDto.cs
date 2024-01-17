@@ -1,6 +1,4 @@
-﻿using PizzeriaAPI.Database.Entities;
-
-namespace PizzeriaAPI.Dto
+﻿namespace PizzeriaAPI.Dto
 {
 	public class ProductDto
 	{
@@ -12,7 +10,7 @@ namespace PizzeriaAPI.Dto
 		public decimal? Score { get; set; }
 		public bool? IsRecommended { get; set; }
 		public int? CategoryId { get; set; }
-		public int? Id { get; set; }		
+		public int? Id { get; set; }
 		public bool? IsVisible { get; set; }
 		public IList<int>? PictureIdList { get; set; }
 	}

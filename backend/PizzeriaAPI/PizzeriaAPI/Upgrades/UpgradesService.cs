@@ -1,5 +1,4 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using PizzeriaAPI.Controllers;
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.ORM;
 
@@ -56,9 +55,9 @@ namespace PizzeriaAPI.Upgrades
 			}
 			catch { }
 			if (upgradesExecuted.IsNullOrEmpty())
-				return upgrades.OrderBy(x=>x.Number).ToList();
+				return upgrades.OrderBy(x => x.Number).ToList();
 
-			return upgrades.Where(x=> !upgradesExecuted.Any(y=>y == x.Number)).OrderBy(x=>x.Number).ToList();
+			return upgrades.Where(x => !upgradesExecuted.Any(y => y == x.Number)).OrderBy(x => x.Number).ToList();
 		}
 	}
 }

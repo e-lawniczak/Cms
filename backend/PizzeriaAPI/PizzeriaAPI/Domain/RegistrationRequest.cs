@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PizzeriaAPI.Security
+namespace PizzeriaAPI.Domain
 {
-	public class AuthenticationRequest
+	public class RegistrationRequest
 	{
 		[Required]
 		public string? Email { get; set; }
