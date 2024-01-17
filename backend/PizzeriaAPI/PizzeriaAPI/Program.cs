@@ -2,6 +2,7 @@
 using API.HealthChecks;
 using Microsoft.OpenApi.Models;
 using PizzeriaAPI.Security;
+using Quartz;
 using Serilog;
 
 namespace PizzeriaAPI
@@ -19,6 +20,7 @@ namespace PizzeriaAPI
 			builder.Services.AddSecurityServices(builder.Configuration);
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddOptions();
+			builder.Services.AddJobs();
 			builder.Services.AddSwaggerGen(options =>
 			{
 				options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme

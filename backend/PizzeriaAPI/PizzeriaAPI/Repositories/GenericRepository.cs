@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using System.Reflection;
 using ISession = NHibernate.ISession;
 
 namespace PizzeriaAPI.Repositories
@@ -15,7 +16,10 @@ namespace PizzeriaAPI.Repositories
 	{
 		public async Task<IList<T>> GetAllAsync(ISession session)
 		{
-			return await session.QueryOver<T>().Where(CreateColumnFalsePredicate("IsDeleted")).ListAsync();
+			if(HasProperty<T>("IsDeleted"))
+				return await session.QueryOver<T>().Where(CreateColumnFalsePredicate<T>("IsDeleted")).ListAsync();
+			else
+				return await session.QueryOver<T>().ListAsync();
 		}
 
 		public async Task<T> GetByIdAsync(int id, ISession session)
@@ -31,7 +35,7 @@ namespace PizzeriaAPI.Repositories
 		{
 			await session.SaveAsync(entity);
 		}
-		private Expression<Func<T, bool>> CreateColumnFalsePredicate(string columnName)
+		private Expression<Func<T, bool>> CreateColumnFalsePredicate<T>(string columnName)
 		{
 			var parameter = Expression.Parameter(typeof(T), "x");
 			var property = Expression.PropertyOrField(parameter, columnName);
@@ -39,6 +43,15 @@ namespace PizzeriaAPI.Repositories
 			var body = Expression.Equal(property, constantFalse);
 			return Expression.Lambda<Func<T, bool>>(body, parameter);
 
+		}
+		private bool HasProperty<T>(string propertyName)
+		{
+			var entity = Activator.CreateInstance<T>();
+			Type entityType = entity.GetType();
+
+			PropertyInfo property = entityType.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance);
+
+			return property != null;
 		}
 	}
 }

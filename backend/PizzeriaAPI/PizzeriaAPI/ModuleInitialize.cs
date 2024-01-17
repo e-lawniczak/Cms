@@ -6,12 +6,17 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Domain;
+using PizzeriaAPI.Job;
 using PizzeriaAPI.ORM;
 using PizzeriaAPI.Repositories;
 using PizzeriaAPI.Security;
 using PizzeriaAPI.Settings;
 using PizzeriaAPI.Upgrades;
+using Quartz.Impl;
+using Quartz.Spi;
+using Quartz;
 using System.Text;
+using Google.Protobuf.WellKnownTypes;
 
 
 namespace PizzeriaAPI
@@ -138,9 +143,23 @@ namespace PizzeriaAPI
 			services.Configure<HashSettings>(configuration.GetSection("HashSettings"));
 
 		}
+		public static void AddJobs(this IServiceCollection services)
+		{
+			services.AddSingleton<IJobFactory, JobFactory>();
+			services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
+			services.AddHostedService<QuartzHostedService>();
+
+			services.AddSingleton<DeleteExpiredUserTokenJob>();
+
+			services.AddSingleton(new JobSchedule(
+				jobType: typeof(DeleteExpiredUserTokenJob),
+				cronExpression: "0 15 10 * * ?"));
+		}
 
 		public static void OnInitialize(this IServiceProvider services)
 		{
+			services.GetRequiredService<ISchedulerFactory>().GetScheduler().Result.Start();
+
 			var upgradeService = services.GetRequiredService<IUpgradesService>();
 
 			upgradeService.UpgradeServices();
