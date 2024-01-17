@@ -12,7 +12,7 @@
 		{
 			var sql = $"CREATE TABLE UserToken" +
 				$"(" +
-					"USERTOKENID PRIMARY KEY, " +
+					"USERTOKENID INT PRIMARY KEY, " +
 					"USERID INTEGER NOT NULL, " +
 					"TOKEN VARCHAR(255) NOT NULL, " +
 					"EXPIREDATE TIMESTAMP NOT NULL, " +

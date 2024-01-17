@@ -44,6 +44,8 @@ namespace PizzeriaAPI.Security
 				throw new Exception("Not found user with given email");
 			if (changePasswordRequest.Password != changePasswordRequest.ConfirmPassword)
 				throw new Exception("Passwords are not the same");
+			if (changePasswordRequest.Password != user.Password)
+				throw new Exception("Password is invalid");
 			user.Password = changePasswordRequest.Password;
 			var result = await userManager.UpdateAsync(user);
 
