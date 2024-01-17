@@ -3,7 +3,11 @@
 @{
     ViewData["formClass"] = this.Model.IsError ? "account-form register-form error" : "account-form register-form";
 }
-
+<div class="row">
+    <div class="img-container">
+        <img src="/img/logo-198x66.png" />
+    </div>
+</div>
 <div class="row">
    <form method="post" class="@ViewData["formClass"]">
         <div class="form-group">

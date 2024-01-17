@@ -13,3 +13,11 @@ form.account-form{
         padding:0;
     }
 }
+.account-form-logo{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    .img-container{
+        width:fit-content;
+    }
+}
