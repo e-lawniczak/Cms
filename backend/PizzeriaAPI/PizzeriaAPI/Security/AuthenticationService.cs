@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Org.BouncyCastle.Crypto.Generators;
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Domain;
 using PizzeriaAPI.Settings;
@@ -44,9 +45,13 @@ namespace PizzeriaAPI.Security
 				throw new Exception("Not found user with given email");
 			if (changePasswordRequest.Password != changePasswordRequest.ConfirmPassword)
 				throw new Exception("Passwords are not the same");
-			if (changePasswordRequest.Password != user.Password)
+
+			var hashPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(changePasswordRequest.Password);
+
+			if (hashPassword != user.Password)
 				throw new Exception("Password is invalid");
-			user.Password = changePasswordRequest.Password;
+
+			user.Password = hashPassword;
 			var result = await userManager.UpdateAsync(user);
 
 			if (result.Succeeded)
@@ -64,7 +69,7 @@ namespace PizzeriaAPI.Security
 
 			if (eduUser == null)
 				throw new Exception("Not found user with given email");
-			if (request.Password != eduUser.Password)
+			if(!BCrypt.Net.BCrypt.EnhancedVerify(request.Password, eduUser.Password))
 				throw new UnauthorizedAccessException("Wrong email or password");
 			JwtSecurityToken jwtSecurityToken = await GenerateToken(eduUser);
 
@@ -85,10 +90,11 @@ namespace PizzeriaAPI.Security
 
 			if (existingEmail == null)
 			{
+				var hashPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(request.Password);
 				var user = new User
 				{
 					Email = request.Email,
-					Password = request.Password
+					Password = hashPassword
 				};
 
 				var result = await userManager.CreateAsync(user, request.Password);
