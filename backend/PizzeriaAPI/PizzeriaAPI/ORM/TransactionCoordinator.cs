@@ -18,8 +18,6 @@ namespace PizzeriaAPI.ORM
 	public class TransactionCoordinator : ITransactionCoordinator
 	{
 		private INHibernateHelper nHibernateHelper;
-		private ISession session;
-		private ITransaction transaction;
 		private ILogger<TransactionCoordinator> logger;
 
 		public TransactionCoordinator(
@@ -34,120 +32,130 @@ namespace PizzeriaAPI.ORM
 		public async Task<T> InRollbackScopeAsync<T>(Func<ISession, Task<T>> action)
 		{
 			T? result;
-			try
+			using (var session = nHibernateHelper.OpenSession())
+			using (var transaction = session.BeginTransaction())
 			{
-				session = nHibernateHelper.OpenSession();
-				transaction = session.BeginTransaction();
-				result = await action(session);
+				try
+				{
+					result = await action(session);
+				}
+				catch
+				{
+					throw;
+				}
+				finally
+				{
+					transaction?.Rollback();
+					session?.Close();
+				}
+				return result;
 			}
-			catch
-			{
-				throw;
-			}
-			finally
-			{
-				transaction?.Rollback();
-				session?.Close();
-			}
-			return result;
 		}
 		public async Task InRollbackScopeAsync(Func<ISession, Task> action)
 		{
-			try
+			using (var session = nHibernateHelper.OpenSession())
+			using (var transaction = session.BeginTransaction())
 			{
-				session = nHibernateHelper.OpenSession();
-				transaction = session.BeginTransaction();
-				await action(session);
-			}
-			catch
-			{
-				throw;
-			}
-			finally
-			{
-				await transaction?.RollbackAsync();
-				transaction.Dispose();
-				session?.Close();
-				session.Dispose();
+				try
+				{
+					await action(session);
+				}
+				catch
+				{
+					throw;
+				}
+				finally
+				{
+					await transaction?.RollbackAsync();
+					session?.Close();
+				}
 			}
 		}
 
 		public T InRollbackScope<T>(Func<ISession, T> action)
 		{
 			T? result;
-			try
+			using (var session = nHibernateHelper.OpenSession())
+			using (var transaction = session.BeginTransaction())
 			{
-				session = nHibernateHelper.OpenSession();
-				transaction = session.BeginTransaction();
-				result = action(session);
+				try
+				{
+					result = action(session);
+				}
+				catch
+				{
+					throw;
+				}
+				finally
+				{
+					transaction?.Rollback();
+					session?.Close();
+				}
+				return result;
 			}
-			catch
-			{
-				throw;
-			}
-			finally
-			{
-				transaction?.Rollback();
-				session?.Close();
-			}
-			return result;
 		}
 
 		public void InRollbackScope<T>(Action<ISession> action)
 		{
-			try
+			using (var session = nHibernateHelper.OpenSession())
+			using (var transaction = session.BeginTransaction())
 			{
-				session = nHibernateHelper.OpenSession();
-				transaction = session.BeginTransaction();
-				action(session);
-			}
-			catch
-			{
-				throw;
-			}
-			finally
-			{
-				transaction?.Rollback();
-				session?.Close();
+				try
+				{
+					action(session);
+				}
+				catch
+				{
+					throw;
+				}
+				finally
+				{
+					transaction?.Rollback();
+					session?.Close();
+				}
 			}
 		}
 		public void InCommitScope(Action<ISession> action)
 		{
-			try
+			using (var session = nHibernateHelper.OpenSession())
+			using (var transaction = session.BeginTransaction())
 			{
-				session = nHibernateHelper.OpenSession();
-				transaction = session.BeginTransaction();
-				action(session);
-				transaction.Commit();
-			}
-			catch
-			{
-				transaction?.Rollback();
-				throw;
-			}
-			finally
-			{
-				session?.Close();
+				try
+				{
+					action(session);
+					transaction.Commit();
+				}
+				catch
+				{
+					transaction?.Rollback();
+					throw;
+				}
+				finally
+				{
+					session?.Close();
+				}
 			}
 		}
 		public T InCommitScope<T>(Func<ISession, T> action)
 		{
 			T? result;
-			try
+			using (var session = nHibernateHelper.OpenSession())
+			using (var transaction = session.BeginTransaction())
 			{
-				session = nHibernateHelper.OpenSession();
-				transaction = session.BeginTransaction();
-				result = action(session);
-				transaction.Commit();
-			}
-			catch
-			{
-				transaction?.Rollback();
-				throw;
-			}
-			finally
-			{
-				session?.Close();
+				try
+				{
+					result = action(session);
+					transaction.Commit();
+				}
+				catch
+				{
+					transaction?.Rollback();
+					throw;
+				}
+				finally
+				{
+					session?.Close();
+				}
 			}
 			return result;
 		}
@@ -155,45 +163,47 @@ namespace PizzeriaAPI.ORM
 		public async Task<T> InCommitScopeAsync<T>(Func<ISession, Task<T>> action)
 		{
 			T? result;
-			try
+			using (var session = nHibernateHelper.OpenSession())
+			using (var transaction = session.BeginTransaction())
 			{
-				session = nHibernateHelper.OpenSession();
-				transaction = session.BeginTransaction();
-				result = await action(session);
-				await transaction.CommitAsync();
+				try
+				{
+					result = await action(session);
+					await transaction.CommitAsync();
+				}
+				catch
+				{
+					await transaction?.RollbackAsync();
+					throw;
+				}
+				finally
+				{
+					session?.Close();
+				}
+
+				return result;
+
 			}
-			catch
-			{
-				await transaction?.RollbackAsync();
-				transaction?.Dispose();
-				throw;
-			}
-			finally
-			{
-				session?.Close();
-				session?.Dispose();
-			}
-			return result;
 		}
 		public async Task InCommitScopeAsync(Func<ISession, Task> action)
 		{
-			try
+			using (var session = nHibernateHelper.OpenSession())
+			using (var transaction = session.BeginTransaction())
 			{
-				session = nHibernateHelper.OpenSession();
-				transaction = session.BeginTransaction();
-				action(session);
-				await transaction.CommitAsync();
-			}
-			catch
-			{
-				await transaction?.RollbackAsync();
-				transaction?.Dispose();
-				throw;
-			}
-			finally
-			{
-				session?.Close();
-				session?.Dispose();
+				try
+				{
+					await action(session);
+					await transaction.CommitAsync();
+				}
+				catch
+				{
+					await transaction?.RollbackAsync();
+					throw;
+				}
+				finally
+				{
+					session?.Close();
+				}
 			}
 		}
 	}

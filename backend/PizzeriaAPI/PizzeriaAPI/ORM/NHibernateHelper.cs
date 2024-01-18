@@ -39,6 +39,7 @@ namespace PizzeriaAPI.ORM
 				.Database(GetDatabaseConfiguration)
 				.Mappings(m =>
 					m.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly()))
+
 				.ExposeConfiguration(cfg => new SchemaExport(cfg))
 				.Cache(
 					c => c.UseQueryCache()
@@ -48,14 +49,14 @@ namespace PizzeriaAPI.ORM
 		}
 		private IPersistenceConfigurer GetDatabaseConfiguration()
 		{
-			return PostgreSQLConfiguration.Standard.ConnectionString(c =>
+			return PostgreSQLConfiguration.PostgreSQL83.ConnectionString(c =>
 			{
 				c.Host("127.0.0.1");
 				c.Database("CMSDatabase");
 				c.Port(5432);
 				c.Username("CMSUser");
 				c.Password("CMSPassword");
-			});
+			}).AdoNetBatchSize(5000);
 		}
 	}
 }

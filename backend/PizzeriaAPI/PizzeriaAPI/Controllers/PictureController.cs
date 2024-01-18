@@ -4,6 +4,7 @@ using PizzeriaAPI.Dto;
 using PizzeriaAPI.ORM;
 using PizzeriaAPI.Repositories;
 using Swashbuckle.Swagger.Annotations;
+using System.Drawing;
 using System.Net;
 
 namespace PizzeriaAPI.Controllers
@@ -32,6 +33,8 @@ namespace PizzeriaAPI.Controllers
 		public async Task<ActionResult> AddPicture([FromBody] PictureDto pictureDto)
 		{
 			var picture = await GetPicture(pictureDto);
+
+			picture.ResizedFile = ResizeImage(picture.File, 1920, 1080);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
 				await pictureRepository.InsertAsync(picture, session);
@@ -109,6 +112,39 @@ namespace PizzeriaAPI.Controllers
 					//EntityWithPictureList = await pictureRepository.GetPictureListByIdListAsync(pictureDto.EntityWithPictureIdList ?? new List<int>(), session),
 				};
 			});
+		}
+		private byte[] ResizeImage(byte[] originalImageBytes, int maxWidth, int maxHeight)
+		{
+			using (MemoryStream originalStream = new MemoryStream(originalImageBytes))
+			using (Image originalImage = Image.FromStream(originalStream))
+			{
+				int newWidth, newHeight;
+
+				// Calculate new dimensions while maintaining aspect ratio
+				if (originalImage.Width > originalImage.Height)
+				{
+					newWidth = maxWidth;
+					newHeight = (int)((float)originalImage.Height / originalImage.Width * maxHeight);
+				}
+				else
+				{
+					newWidth = (int)((float)originalImage.Width / originalImage.Height * maxWidth);
+					newHeight = maxHeight;
+				}
+
+				using (Bitmap resizedImage = new Bitmap(newWidth, newHeight))
+				using (Graphics g = Graphics.FromImage(resizedImage))
+				{
+					g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+					g.DrawImage(originalImage, 0, 0, newWidth, newHeight);
+
+					using (MemoryStream resizedStream = new MemoryStream())
+					{
+						resizedImage.Save(resizedStream, originalImage.RawFormat);
+						return resizedStream.ToArray();
+					}
+				}
+			}
 		}
 	}
 }
