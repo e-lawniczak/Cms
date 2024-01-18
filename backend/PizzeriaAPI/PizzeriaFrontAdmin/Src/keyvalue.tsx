@@ -36,15 +36,15 @@ export const KeyValuePage = () => {
                     <table className="table align-items-center mb-0">
                         <thead>
                             <tr>
-                                <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Id</th>
-                                <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Key</th>
-                                <th className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Value</th>
-                                <th className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Options</th>
+                                <th style={{ width: 50 }} className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Id</th>
+                                <th style={{ width: 150 }} className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Key</th>
+                                <th style={{ width: 'auto' }} className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Value</th>
+                                <th style={{ width: 200 }} className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Options</th>
                             </tr>
                         </thead>
                         <tbody>
                             {addingNew && newRow}
-                            {list.sort((a,b) => {return b.id - a.id}).map((l, idk) => <TableRow key={idk} item={l} refreshFunc={getData} isNew={false} />)}
+                            {list.sort((a, b) => { return b.id - a.id }).map((l, idk) => <TableRow key={l.id} item={l} refreshFunc={getData} isNew={false} />)}
                         </tbody>
                     </table>
                 </div>
@@ -52,10 +52,10 @@ export const KeyValuePage = () => {
         </form>
     </div>
 }
-export const TableRow = (props: { item: KeyValueDto, refreshFunc: any, isNew?: boolean, resetAdd?:any }) => {
+export const TableRow = (props: { item: KeyValueDto, refreshFunc: any, isNew?: boolean, resetAdd?: any }) => {
     const { item, refreshFunc, isNew = false, resetAdd } = props,
         [key, setKey] = useState(item.key),
-        [value, setValue] = useState(item.key),
+        [value, setValue] = useState(item.value),
 
 
         editItem = async () => {
@@ -85,12 +85,12 @@ export const TableRow = (props: { item: KeyValueDto, refreshFunc: any, isNew?: b
         </td>
         <td>
             <div className="d-flex px-2 py-1">
-                <input value={key} onInput={(e: any) => setKey(e.target.value)} />
+                <input style={{width:'100%'}} value={key} onInput={(e: any) => setKey(e.target.value)} />
             </div>
         </td>
         <td>
             <div className="d-flex px-2 py-1">
-                <input value={value} onInput={(e: any) => setValue(e.target.value)} />
+                <input style={{width:'100%'}} value={value} onInput={(e: any) => setValue(e.target.value)} />
             </div>
         </td>
         <td>
