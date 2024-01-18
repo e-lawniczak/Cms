@@ -38,6 +38,21 @@ form.account-form p {
   color: #fff;
   background-color: #0060ca;
 }
+.admin-form .btn-delete {
+  background-color: #ff2958;
+  color: #fff;
+}
+.admin-form .btn-delete:hover {
+  color: #fff;
+  background-color: #ff2958;
+}
+
+.button-col {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+}
 
 .form-top-container {
   padding: 10px;

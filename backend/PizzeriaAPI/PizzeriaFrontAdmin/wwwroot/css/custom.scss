@@ -18,7 +18,7 @@ form.account-form{
     justify-content:center;
     align-items:center;
     .img-container{
-        width:fit-content;
+        width:fit-content; 
     }
 }
 .tiny-editor {
@@ -30,7 +30,7 @@ form.account-form{
 
     .btn {
         width: fit-content !important;
-    }
+    } 
 
     .btn-save {
         background-color: #0060ce;
@@ -41,6 +41,21 @@ form.account-form{
             background-color: #0060ca;
         }
     }
+    .btn-delete{
+        background-color: #ff2958;
+        color: #fff;
+
+        &:hover {
+            color: #fff;
+            background-color: #ff2958;
+        }
+    }
+}
+.button-col{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
 }
 .form-top-container {
     padding: 10px ;

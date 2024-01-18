@@ -16,15 +16,15 @@ namespace PizzeriaFrontAdmin.Models
 
         public virtual void OnGet()
         {
-            var user = HttpContext.Session.GetString("user");
-            var token = HttpContext.Session.GetString("token");
-            var id = HttpContext.Session.GetInt32("id");
-            //var user = Request.Cookie["user"];
-            //var token = Request.Cookie["token"];
-            //var id = Request.Cookies["id"];
+            //var user = HttpContext.Session.GetString("user");
+            //var token = HttpContext.Session.GetString("token");
+            //var id = HttpContext.Session.GetInt32("id");
+            var user = Request.Cookies["user"];
+            var token = Request.Cookies["token"];
+            var id = Request.Cookies["id"];
             if (token != null && user != null && id != null)
             {
-                User = new UserModel(user, token, (int)id);
+                User = new UserModel(user, token, Int32.Parse(id));
             }
             else
             {
@@ -34,15 +34,15 @@ namespace PizzeriaFrontAdmin.Models
         }
         public virtual Task OnAsyncGet()
         {
-            var user = HttpContext.Session.GetString("user");
-            var token = HttpContext.Session.GetString("token");
-            var id = HttpContext.Session.GetInt32("id");
-            //var user = Request.Cookie["user"];
-            //var token = Request.Cookie["token"];
-            //var id = Request.Cookies["id"];
+            //var user = HttpContext.Session.GetString("user");
+            //var token = HttpContext.Session.GetString("token");
+            //var id = HttpContext.Session.GetInt32("id");
+            var user = Request.Cookies["user"];
+            var token = Request.Cookies["token"];
+            var id = Request.Cookies["id"];
             if (token != null && user != null && id != null)
             {
-                User = new UserModel(user, token, (int)id);
+                User = new UserModel(user, token, Int32.Parse(id));
             }
             else
             {
@@ -54,14 +54,25 @@ namespace PizzeriaFrontAdmin.Models
         protected void SaveUser(string email, string token, int id)
         {
             User = new UserModel(email, token, id);
-            HttpContext.Session.SetString("user", email);
-            HttpContext.Session.SetString("token", token);
-            HttpContext.Session.SetInt32("id", id);
+            //HttpContext.Session.SetString("user", email);
+            //HttpContext.Session.SetString("token", token);
+            //HttpContext.Session.SetInt32("id", id);
+            Response.Cookies.Append("user", email);
+            Response.Cookies.Append("token", token);
+            Response.Cookies.Append("id", id.ToString()); 
+      
+
+
+
         }
         protected void LogOut()
         {
             User = null;
             HttpContext.Session.Clear();
+            Response.Cookies.Delete("user");
+            Response.Cookies.Delete("token");
+            Response.Cookies.Delete("id");
+
         }
         public void OnUserNotLogged()
         {
