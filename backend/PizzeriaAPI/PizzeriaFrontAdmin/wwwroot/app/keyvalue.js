@@ -55,7 +55,7 @@ var KeyValuePage = function () {
                     return [2 /*return*/];
             }
         });
-    }); }, newRow = React.createElement(exports.TableRow, { item: { id: -1, key: "", value: "" }, refreshFunc: getData, isNew: true });
+    }); }, newRow = React.createElement(exports.TableRow, { item: { id: -1, key: "", value: "" }, refreshFunc: getData, isNew: true, resetAdd: setAddingNew });
     React.useEffect(function () {
         getData();
     }, []);
@@ -68,44 +68,70 @@ var KeyValuePage = function () {
                     React.createElement("table", { className: "table align-items-center mb-0" },
                         React.createElement("thead", null,
                             React.createElement("tr", null,
-                                React.createElement("th", { className: "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" }, " Id"),
-                                React.createElement("th", { className: "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" }, " Key"),
-                                React.createElement("th", { className: "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" }, "Value"),
-                                React.createElement("th", { className: "text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" }, "Options"))),
+                                React.createElement("th", { style: { width: 50 }, className: "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" }, " Id"),
+                                React.createElement("th", { style: { width: 150 }, className: "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" }, " Key"),
+                                React.createElement("th", { style: { width: 'auto' }, className: "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" }, "Value"),
+                                React.createElement("th", { style: { width: 200 }, className: "text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" }, "Options"))),
                         React.createElement("tbody", null,
                             addingNew && newRow,
-                            list.map(function (l, idk) { return React.createElement(exports.TableRow, { key: idk, item: l, refreshFunc: getData }); })))))));
+                            list.sort(function (a, b) { return b.id - a.id; }).map(function (l, idk) { return React.createElement(exports.TableRow, { key: l.id, item: l, refreshFunc: getData, isNew: false }); })))))));
 };
 exports.KeyValuePage = KeyValuePage;
 var TableRow = function (props) {
-    var item = props.item, refreshFunc = props.refreshFunc, _a = props.isNew, isNew = _a === void 0 ? false : _a, _b = (0, react_1.useState)(item.key), key = _b[0], setKey = _b[1], _c = (0, react_1.useState)(item.key), value = _c[0], setValue = _c[1], editItem = function () {
-        var url = common_1.baseApiUrl + isNew ? "/AddKeyValue" : "/UpdateKeyValue";
-        if (isNew) {
-            if (key != "" && value != "")
-                axios_1.default.post(url, { id: -1, key: key, value: value }, common_1.axiosBaseConfig);
-        }
-        else {
-            axios_1.default.put(url, { id: item.id, key: key, value: value }, common_1.axiosBaseConfig);
-        }
-        refreshFunc();
-    }, deleteItem = function () {
-        var url = common_1.baseApiUrl + "/DeleteKeyValue/".concat(item.id);
-        axios_1.default.delete(url, common_1.axiosBaseConfig);
-        refreshFunc();
-    };
+    var item = props.item, refreshFunc = props.refreshFunc, _a = props.isNew, isNew = _a === void 0 ? false : _a, resetAdd = props.resetAdd, _b = (0, react_1.useState)(item.key), key = _b[0], setKey = _b[1], _c = (0, react_1.useState)(item.value), value = _c[0], setValue = _c[1], editItem = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var url;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    url = common_1.baseApiUrl + "/UpdateKeyValue";
+                    return [4 /*yield*/, axios_1.default.put(url, { id: item.id, key: key, value: value }, common_1.axiosBaseConfig)];
+                case 1:
+                    _a.sent();
+                    refreshFunc();
+                    return [2 /*return*/];
+            }
+        });
+    }); }, addItem = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var url;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    url = common_1.baseApiUrl + "/AddKeyValue";
+                    return [4 /*yield*/, axios_1.default.post(url, { id: -1, key: key, value: value }, common_1.axiosBaseConfig)];
+                case 1:
+                    _a.sent();
+                    refreshFunc();
+                    resetAdd();
+                    return [2 /*return*/];
+            }
+        });
+    }); }, deleteItem = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var url;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    url = common_1.baseApiUrl + "/DeleteKeyValue/".concat(item.id);
+                    return [4 /*yield*/, axios_1.default.delete(url, common_1.axiosBaseConfig)];
+                case 1:
+                    _a.sent();
+                    refreshFunc();
+                    return [2 /*return*/];
+            }
+        });
+    }); };
     return React.createElement("tr", null,
         React.createElement("td", null,
             React.createElement("div", { className: "d-flex px-2 py-1" },
                 React.createElement("div", null, item.id))),
         React.createElement("td", null,
             React.createElement("div", { className: "d-flex px-2 py-1" },
-                React.createElement("input", { value: key, onInput: function (e) { return setKey(e.target.value); } }))),
+                React.createElement("input", { style: { width: '100%' }, value: key, onInput: function (e) { return setKey(e.target.value); } }))),
         React.createElement("td", null,
             React.createElement("div", { className: "d-flex px-2 py-1" },
-                React.createElement("input", { value: value, onInput: function (e) { return setValue(e.target.value); } }))),
+                React.createElement("input", { style: { width: '100%' }, value: value, onInput: function (e) { return setValue(e.target.value); } }))),
         React.createElement("td", null,
             React.createElement("div", { className: "d-flex px-2 py-1 button-col" }, isNew ?
-                React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: editItem }, "Dodaj")
+                React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: addItem }, "Dodaj")
                 : React.createElement(React.Fragment, null,
                     React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: editItem }, "Edit"),
                     React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-delete", onClick: deleteItem }, "Delete")))));

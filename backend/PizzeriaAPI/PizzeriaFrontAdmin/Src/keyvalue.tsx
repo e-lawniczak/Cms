@@ -30,7 +30,7 @@ export const KeyValuePage = () => {
 
     return <div className="card mb-4">
         <form method="post" className="admin-form keyvalue-form" >
-            <div className="form-top-container"><div className="btn btn-white btn-sm w-100 mb-0 btn-save" onClick={() => setAddingNew(true)} >Dodaj nowy</div></div>
+            <div className="form-top-container"><div className="btn btn-white btn-sm w-100 mb-0 btn-save" onClick={() => setAddingNew(true)} >Add new</div></div>
             <div className="card-body px-0 pt-0 pb-2">
                 <div className="table-responsive p-0">
                     <table className="table align-items-center mb-0">
@@ -60,7 +60,7 @@ export const TableRow = (props: { item: KeyValueDto, refreshFunc: any, isNew?: b
 
         editItem = async () => {
             const url = baseApiUrl + "/UpdateKeyValue"
-            await axios.put(url, { id: item.id, key: key, value: value }, axiosBaseConfig)
+            await axios.patch(url, { id: item.id, key: key, value: value }, axiosBaseConfig)
             refreshFunc()
 
         },
@@ -96,7 +96,7 @@ export const TableRow = (props: { item: KeyValueDto, refreshFunc: any, isNew?: b
         <td>
             <div className="d-flex px-2 py-1 button-col">
                 {isNew ?
-                    <div className="btn btn-white btn-sm w-100 mb-0 btn-save" onClick={addItem}>Dodaj</div>
+                    <div className="btn btn-white btn-sm w-100 mb-0 btn-save" onClick={addItem}>Add</div>
                     : <>
                         <div className="btn btn-white btn-sm w-100 mb-0 btn-save" onClick={editItem}>Edit</div>
                         <div className="btn btn-white btn-sm w-100 mb-0 btn-delete" onClick={deleteItem}>Delete</div></>}
