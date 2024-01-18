@@ -1,0 +1,56 @@
+﻿@page
+@model PizzeriaFrontAdmin.Pages.KeyValueModel
+@{
+}
+
+<div class="card mb-4">
+    <form method="post" class="admin-form keyvalue-form" >
+        <div class="form-top-container"><button class="btn btn-white btn-sm w-100 mb-0 btn-save" type="submit">Zapisz</button></div>
+        <div class="card-body px-0 pt-0 pb-2">
+            <div class="table-responsive p-0">
+                <table class="table align-items-center mb-0">
+                    <thead>
+                        <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Key</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Value</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                           
+                            <td>
+                                <div class="d-flex px-2 py-1">
+                                    <input value="@Model.NewValue.Key" asp-for="@Model.NewValue.Key" />
+
+                                </div>
+                            <td>
+                                <div class="d-flex px-2 py-1">
+                                    <input value="@Model.NewValue.Value" asp-for="@Model.NewValue.Value" />
+
+                                </div>
+                            </td>
+                        </tr>
+                        @foreach (var item in Model.KeyValueList)
+                        {
+                            <tr>
+                                
+                                <td>
+                                    <div class="d-flex px-2 py-1">
+                                        <input value="@item.Key" asp-for="@item.Key" />
+
+                                    </div>
+                                <td>
+                                    <div class="d-flex px-2 py-1">
+                                        <input value="@item.Value" asp-for="@item.Value" />
+
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+</div>

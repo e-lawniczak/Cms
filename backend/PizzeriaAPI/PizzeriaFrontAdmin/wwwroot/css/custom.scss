@@ -21,3 +21,31 @@ form.account-form{
         width:fit-content;
     }
 }
+.tiny-editor {
+    &+.tox.tox-tinymce{
+        padding:0 ;
+    }
+}
+.admin-form {
+
+    .btn {
+        width: fit-content !important;
+    }
+
+    .btn-save {
+        background-color: #0060ce;
+        color: #fff;
+
+        &:hover {
+            color: #fff;
+            background-color: #0060ca;
+        }
+    }
+}
+.form-top-container {
+    padding: 10px ;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 15px;
+}
