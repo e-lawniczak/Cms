@@ -1,4 +1,6 @@
-﻿namespace PizzeriaAPI.Dto.KeyValue
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PizzeriaAPI.Dto.KeyValue
 {
     public class AddKeyValueDto
     {
