@@ -5,6 +5,7 @@ using PizzeriaAPI.ORM;
 using PizzeriaAPI.Repositories;
 using Swashbuckle.Swagger.Annotations;
 using System.Net;
+using PizzeriaAPI.Dto.KeyValue;
 
 namespace PizzeriaAPI.Controllers
 {
@@ -29,7 +30,7 @@ namespace PizzeriaAPI.Controllers
 		[HttpPost]
 		[Route("/AddKeyValue")]
 		[SwaggerResponse(HttpStatusCode.OK, "KeyValue inserted successfully")]
-		public async Task<ActionResult> AddKeyValue([FromBody] KeyValueDto keyValueDto)
+		public async Task<ActionResult> AddKeyValue([FromBody] AddKeyValueDto keyValueDto)
 		{
 			var keyValue = GetKeyValue(keyValueDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
@@ -39,6 +40,21 @@ namespace PizzeriaAPI.Controllers
 
 			return Ok("KeyValue inserted successfully");
 		}
+
+		[HttpGet]
+		[Route("/GetKeyValue/{Key}")]
+		[SwaggerResponse(HttpStatusCode.OK, "KeyValue got successfully", typeof(KeyValueDto))]
+		public async Task<ActionResult<KeyValueDto>> GetKeyValue([FromRoute] string Key)
+		{
+            KeyValueDto keyValueDto = null;
+            await transactionCoordinator.InRollbackScopeAsync(async session =>
+			{
+                var keyValue = await keyValueRepository.GetByKeyAsync(Key, session);
+                keyValueDto = GetKeyValueDto(keyValue);
+            });
+
+            return Ok(keyValueDto);
+        }
 
 
 		[HttpGet]
@@ -55,6 +71,20 @@ namespace PizzeriaAPI.Controllers
 
 			return Ok(keyValueDtoList);
 		}
+		[HttpGet]
+		[Route("/GetKeyValue/{keyValueId}")]
+		[SwaggerResponse(HttpStatusCode.OK, "KeyValue got successfully", typeof(KeyValueDto))]
+		public async Task<ActionResult<KeyValueDto>> GetKeyValue([FromRoute] int keyValueId)
+		{
+            KeyValueDto keyValueDto = null;
+            await transactionCoordinator.InRollbackScopeAsync(async session =>
+			{
+                var keyValue = await keyValueRepository.GetByIdAsync(keyValueId, session);
+                keyValueDto = GetKeyValueDto(keyValue);
+            });
+
+            return Ok(keyValueDto);
+        }
 
 		[HttpPatch]
 		[Route("/UpdateKeyValue")]
@@ -100,5 +130,13 @@ namespace PizzeriaAPI.Controllers
 				Value = keyValueDto.Value,
 			};
 		}
+		private KeyValue GetKeyValue(AddKeyValueDto keyValueDto)
+		{
+            return new KeyValue()
+			{
+                Key = keyValueDto.Key,
+                Value = keyValueDto.Value,
+            };
+        }
 	}
 }

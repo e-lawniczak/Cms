@@ -1,19 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
-using PizzeriaAPI.Dto;
+using PizzeriaAPI.Dto.Picture;
 using PizzeriaAPI.ORM;
 using PizzeriaAPI.Repositories;
 using Swashbuckle.Swagger.Annotations;
 using System.Drawing;
 using System.Net;
+using System.IO;
+
 
 namespace PizzeriaAPI.Controllers
 {
-	[ApiController]
+    [ApiController]
 	[Route("[controller]")]
 	public class PictureController : ControllerBase
 	{
-
+		private readonly string currentDirectory;
+		private readonly string originalImageDirectory;
+		private readonly string resizedImageDirectory;
 		private readonly ILogger<PictureController> logger;
 		private readonly ITransactionCoordinator transactionCoordinator;
 		private readonly IPictureRepository pictureRepository;
@@ -25,24 +29,42 @@ namespace PizzeriaAPI.Controllers
 			this.logger = logger;
 			this.transactionCoordinator = transactionCoordinator;
 			this.pictureRepository = pictureRepository;
+			currentDirectory = AppContext.BaseDirectory; 
+			originalImageDirectory = currentDirectory + "Images/Original/";
+			resizedImageDirectory = currentDirectory + "Images/Resized/";
 		}
 
 		[HttpPost]
 		[Route("/AddPicture")]
 		[SwaggerResponse(HttpStatusCode.OK, "Picture inserted successfully")]
-		public async Task<ActionResult> AddPicture([FromBody] PictureDto pictureDto)
+		public async Task<ActionResult> AddPicture([FromForm] AddPictureDto pictureDto)
 		{
-			var picture = await GetPicture(pictureDto);
-
-			picture.ResizedFile = ResizeImage(picture.File, 1920, 1080);
+			var resizedImage = ResizeImage(ConvertIFormFileToByteArray(pictureDto.Picture), 1920, 1080);
+			await SavePictureToLocalFileSystem(pictureDto, resizedImage);
+			var picture = GetPicture(pictureDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
 				await pictureRepository.InsertAsync(picture, session);
 			});
 
-			return Ok("Picture inserted successfully");
+			return Ok($"https://{HttpContext.Request.Host.Value}/GetPicture/{picture.PictureId}");
 		}
-
+		[HttpGet]
+		[Route("/GetPicture/{pictureId}")]
+		[SwaggerResponse(HttpStatusCode.OK, "Picture got successfully", typeof(byte[]))]
+		public async Task<ActionResult> GetPicture([FromRoute] int pictureId)
+		{
+			var picture = await transactionCoordinator.InRollbackScopeAsync(async session =>
+			{
+				return await pictureRepository.GetByIdAsync(pictureId, session);
+			});
+			if(picture == null)
+			{
+				return NotFound();
+			}
+			byte[] binaryImage = System.IO.File.ReadAllBytes(picture.ResizedFilePath);
+			return File(binaryImage, GetPictureExtension(picture.Name));
+		}
 
 		[HttpGet]
 		[Route("/GetAllPictureList")]
@@ -77,6 +99,13 @@ namespace PizzeriaAPI.Controllers
 		[SwaggerResponse(HttpStatusCode.OK, "Picture was deleted successfully")]
 		public async Task<ActionResult> DeletPicture([FromRoute] int pictureId)
 		{
+			var picture = await transactionCoordinator.InRollbackScopeAsync(async session =>
+			{
+				return await pictureRepository.GetByIdAsync(pictureId, session);
+			});
+
+			System.IO.File.Delete(picture.ResizedFilePath);
+			System.IO.File.Delete(picture.FilePath);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
 			{
 				await pictureRepository.DeleteAsync(pictureId, session);
@@ -92,8 +121,8 @@ namespace PizzeriaAPI.Controllers
 				PictureId = picture?.PictureId,
 				Name = picture.Name,
 				Link = picture.Link,
-				File = picture.File,
-				ResizedFile = picture.ResizedFile,
+				FilePath = picture.FilePath,
+				ResizedFilePath = picture.ResizedFilePath,
 				EntityWithPictureIdList = picture.EntityWithPictureList.Select(x => x.Id).ToList(),
 			};
 		}
@@ -107,12 +136,73 @@ namespace PizzeriaAPI.Controllers
 					PictureId = pictureDto?.PictureId ?? 0,
 					Name = pictureDto.Name,
 					Link = pictureDto.Link,
-					ResizedFile = pictureDto.ResizedFile,
-					File = pictureDto.File,
+					ResizedFilePath = pictureDto.ResizedFilePath,
+					FilePath = pictureDto.FilePath,
 					//EntityWithPictureList = await pictureRepository.GetPictureListByIdListAsync(pictureDto.EntityWithPictureIdList ?? new List<int>(), session),
 				};
 			});
 		}
+		private Picture GetPicture(AddPictureDto addPictureDto)
+		{
+			return new Picture()
+			{
+				Name = addPictureDto.Name,
+				Link = addPictureDto.Link,
+				ResizedFilePath = resizedImageDirectory + addPictureDto.Name,
+				FilePath = originalImageDirectory + addPictureDto.Name,
+			};
+		}
+		private async Task SavePictureToLocalFileSystem(AddPictureDto pictureDto, byte[]? resizedImage)
+		{
+			if (Directory.Exists(originalImageDirectory) == false)
+			{
+				Directory.CreateDirectory(originalImageDirectory);
+			}
+			if (Directory.Exists(resizedImageDirectory) == false)
+			{
+				Directory.CreateDirectory(resizedImageDirectory);
+			}
+
+			if (resizedImage != null)
+			{
+				using (var fileStream = new FileStream(resizedImageDirectory + pictureDto.Name, FileMode.Create, FileAccess.Write))
+				{
+					fileStream.Write(resizedImage, 0, resizedImage.Length);
+				}
+			}
+			if (pictureDto.Picture != null)
+			{
+				using (var fileStream = new FileStream(originalImageDirectory + pictureDto.Name, FileMode.Create, FileAccess.Write))
+				{
+					await pictureDto.Picture.CopyToAsync(fileStream);
+				}
+			}
+		}
+		private byte[] ConvertIFormFileToByteArray(IFormFile file)
+		{
+			using (MemoryStream memoryStream = new MemoryStream())
+			{
+				file.CopyTo(memoryStream);
+				return memoryStream.ToArray();
+			}
+		}
+		private IFormFile ConvertBytesToFormFile(byte[] fileBytes, string fullFileName)
+		{
+			var stream = new MemoryStream(fileBytes);
+			var formFile = new FormFile(stream, 0, stream.Length, null, fullFileName);
+			return formFile;
+		}
+		private string GetPictureExtension(string fileName)
+		{
+			if (fileName.EndsWith("jpg"))
+				return "Image/jpg";
+			if (fileName.EndsWith("png"))
+				return "Image/png";
+			if (fileName.EndsWith("jpeg"))
+				return "Image/jpeg";
+			return "Image/jpg";
+		}
+		
 		private byte[] ResizeImage(byte[] originalImageBytes, int maxWidth, int maxHeight)
 		{
 			using (MemoryStream originalStream = new MemoryStream(originalImageBytes))

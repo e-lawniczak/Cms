@@ -12,7 +12,10 @@ namespace PizzeriaAPI.Repositories
 	{
 		public async Task DeleteAsync(int id, ISession session)
 		{
-			await DeleteAsync(id, session);
+			var obj = await session.GetAsync<Picture>(id);
+			if (obj == null)
+				return;
+			await session.DeleteAsync(obj);
 		}
 		public async Task<IList<Picture>> GetPictureListByIdListAsync(IList<int> pictureIdList, ISession session)
 		{
