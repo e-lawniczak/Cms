@@ -4,12 +4,12 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as ReactDOM from 'react-dom';
 
-export function Select(props: { register: any, data: any, name: any, selectProps?: any }) {
-  const { name, data, register, selectProps } = props
+export function Select(props: { register: any, data: any, name: any, selectProps?: any, defaultValue?: any }) {
+  const { name, data, register, selectProps, defaultValue = null } = props
   return (
     <select {...register(name)} {...selectProps}>
       {data.map((item: any, idx: any) => (
-        <option key={idx} value={item.value}>
+        <option key={idx} value={item.value} selected={defaultValue != null && defaultValue == item.value}>
           {item.label}
         </option>
       ))}
@@ -33,7 +33,7 @@ export const PageWrapper = (props: { children?: any, className?: string }) => {
   </div>
 }
 export interface TeamMemberDto {
-  id: 0,
+  id: number,
   isVisible: boolean,
   pictureIdList: any[],
   firstName: string,
@@ -129,7 +129,7 @@ export const PInput = (props: InputProps) => {
 // }
 export const mapObjectToSelect = (object: any, keyLabel: any, valueLabel: any) => {
   let retObj = [] as { label: string, value: any }[]
-  object.forEach((item: any, idx: any) => {
+  object?.forEach((item: any, idx: any) => {
     retObj.push({ label: item[keyLabel], value: item[valueLabel] })
   });
   return retObj;

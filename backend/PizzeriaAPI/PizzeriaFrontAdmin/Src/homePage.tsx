@@ -11,7 +11,6 @@ export const HomePage = () => {
 
 
     React.useEffect(() => {
-        console.log("xd");
     }, [])
 
     return <PageWrapper>
@@ -88,11 +87,9 @@ const SocialMediaSection = () => {
         [socialMedia, setSocialMedia] = useState<SocialMediaDto[]>(),
         getSocials = async () => {
             let res = await axios.get(baseApiUrl + `/GetAllSocialMediaList`)
+            console.log(res);
             setSocialMedia(res.data)
         }
-
-
-
 
     React.useEffect(() => {
         getSocials()

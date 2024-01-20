@@ -29,6 +29,10 @@ a.normal-link {
     display: grid;
     grid-template-columns: 1fr;
     gap: 10px;
+
+    .card {
+        padding: 25px;
+    }
 }
 
 .img-container {
