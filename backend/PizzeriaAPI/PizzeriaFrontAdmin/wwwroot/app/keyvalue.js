@@ -67,6 +67,7 @@ var React = __importStar(require("react"));
 var react_1 = require("react");
 var ReactDOM = __importStar(require("react-dom"));
 var common_1 = require("./common");
+var common_2 = require("./common");
 var axios_1 = __importDefault(require("axios"));
 var KeyValuePage = function () {
     var _a = (0, react_1.useState)([]), list = _a[0], setList = _a[1], _b = (0, react_1.useState)(false), addingNew = _b[0], setAddingNew = _b[1], getData = function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -85,22 +86,23 @@ var KeyValuePage = function () {
     React.useEffect(function () {
         getData();
     }, []);
-    return React.createElement("div", { className: "card mb-4" },
-        React.createElement("form", { method: "post", className: "admin-form keyvalue-form" },
-            React.createElement("div", { className: "form-top-container" },
-                React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: function () { return setAddingNew(true); } }, "Add new")),
-            React.createElement("div", { className: "card-body px-0 pt-0 pb-2" },
-                React.createElement("div", { className: "table-responsive p-0" },
-                    React.createElement("table", { className: "table align-items-center mb-0" },
-                        React.createElement("thead", null,
-                            React.createElement("tr", null,
-                                React.createElement("th", { style: { width: 50 }, className: "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" }, " Id"),
-                                React.createElement("th", { style: { width: 150 }, className: "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" }, " Key"),
-                                React.createElement("th", { style: { width: 'auto' }, className: "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" }, "Value"),
-                                React.createElement("th", { style: { width: 200 }, className: "text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" }, "Options"))),
-                        React.createElement("tbody", null,
-                            addingNew && newRow,
-                            list.sort(function (a, b) { return b.id - a.id; }).map(function (l, idk) { return React.createElement(exports.TableRow, { key: l.id, item: l, refreshFunc: getData, isNew: false }); })))))));
+    return React.createElement(common_2.PageWrapper, null,
+        React.createElement("div", { className: "card mb-4" },
+            React.createElement("form", { method: "post", className: "admin-form keyvalue-form" },
+                React.createElement("div", { className: "form-top-container" },
+                    React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: function () { return setAddingNew(true); } }, "Add new")),
+                React.createElement("div", { className: "card-body px-0 pt-0 pb-2" },
+                    React.createElement("div", { className: "table-responsive p-0" },
+                        React.createElement("table", { className: "table align-items-center mb-0" },
+                            React.createElement("thead", null,
+                                React.createElement("tr", null,
+                                    React.createElement("th", { style: { width: 50 }, className: "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" }, " Id"),
+                                    React.createElement("th", { style: { width: 150 }, className: "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" }, " Key"),
+                                    React.createElement("th", { style: { width: 'auto' }, className: "text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" }, "Value"),
+                                    React.createElement("th", { style: { width: 200 }, className: "text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" }, "Options"))),
+                            React.createElement("tbody", null,
+                                addingNew && newRow,
+                                list.sort(function (a, b) { return b.id - a.id; }).map(function (l, idk) { return React.createElement(exports.TableRow, { key: l.id, item: l, refreshFunc: getData, isNew: false }); }))))))));
 };
 exports.KeyValuePage = KeyValuePage;
 var TableRow = function (props) {

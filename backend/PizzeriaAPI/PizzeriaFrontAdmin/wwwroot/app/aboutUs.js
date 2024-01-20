@@ -27,11 +27,12 @@ exports.AboutUsPage = void 0;
 var React = __importStar(require("react"));
 var react_1 = require("react");
 var ReactDOM = __importStar(require("react-dom"));
+var common_1 = require("./common");
 var AboutUsPage = function () {
     var _a = (0, react_1.useState)([]), data = _a[0], setData = _a[1];
     React.useEffect(function () {
     }, []);
-    return React.createElement(React.Fragment, null);
+    return React.createElement(common_1.PageWrapper, null);
 };
 exports.AboutUsPage = AboutUsPage;
 var root = document.getElementById("react_root");

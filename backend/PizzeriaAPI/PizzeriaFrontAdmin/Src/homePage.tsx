@@ -13,11 +13,16 @@ export const HomePage = () => {
     React.useEffect(() => {
     }, [])
 
-    return <>
-        Home page
-    </>
+    return <PageWrapper>
+        
+    </PageWrapper>
 }
 
+export const PageSettingsSection = () =>{
+    return <section className="settings-section">
+
+    </section>
+}
 
 const root = document.getElementById("react_root");
 ReactDOM.render(<HomePage />, root);

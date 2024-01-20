@@ -79,6 +79,7 @@ var react_1 = require("react");
 var react_hook_form_1 = require("react-hook-form");
 var ReactDOM = __importStar(require("react-dom"));
 var common_1 = require("./common");
+var common_2 = require("./common");
 var axios_1 = __importDefault(require("axios"));
 var PicturesPage = function () {
     var _a = (0, react_hook_form_1.useForm)(), register = _a.register, handleSubmit = _a.handleSubmit, _b = (0, react_1.useState)([]), data = _b[0], setData = _b[1], _c = (0, react_1.useState)(false), showUpload = _c[0], setUpload = _c[1], getData = function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -126,7 +127,7 @@ var PicturesPage = function () {
     React.useEffect(function () {
         getData();
     }, []);
-    return React.createElement(React.Fragment, null,
+    return React.createElement(common_2.PageWrapper, null,
         React.createElement("div", { className: "card mb-4" },
             React.createElement("div", { className: "form-top-container" }, !showUpload && React.createElement("div", { className: "btn btn-white btn-sm mb-0 btn-save", onClick: function () { return setUpload(true); } }, "Add new")),
             showUpload && pictureUpload,
