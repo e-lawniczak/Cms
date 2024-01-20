@@ -52,6 +52,10 @@ namespace PizzeriaAPI.Controllers
                 var keyValue = await keyValueRepository.GetByKeyAsync(Key, session);
                 keyValueDto = GetKeyValueDto(keyValue);
             });
+			if(keyValueDto == null)
+			{
+                return NotFound();
+            }
 
             return Ok(keyValueDto);
         }

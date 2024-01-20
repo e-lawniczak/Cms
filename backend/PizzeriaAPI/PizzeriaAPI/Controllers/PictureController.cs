@@ -15,6 +15,8 @@ namespace PizzeriaAPI.Controllers
 	[Route("[controller]")]
 	public class PictureController : ControllerBase
 	{
+		private readonly int MAX_IMAGE_HEIGHT = 250;
+		private readonly int MAX_IMAGE_WIDTH = 250;
 		private readonly string currentDirectory;
 		private readonly string originalImageDirectory;
 		private readonly string resizedImageDirectory;
@@ -39,7 +41,8 @@ namespace PizzeriaAPI.Controllers
 		[SwaggerResponse(HttpStatusCode.OK, "Picture inserted successfully")]
 		public async Task<ActionResult> AddPicture([FromForm] AddPictureDto pictureDto)
 		{
-			var resizedImage = ResizeImage(ConvertIFormFileToByteArray(pictureDto.Picture), 1920, 1080);
+			var imageBytes = ConvertIFormFileToByteArray(pictureDto.Picture);
+            var resizedImage = ResizeImage(imageBytes, MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT);
 			await SavePictureToLocalFileSystem(pictureDto, resizedImage);
 			var picture = GetPicture(pictureDto);
 			await transactionCoordinator.InCommitScopeAsync(async session =>
@@ -50,9 +53,9 @@ namespace PizzeriaAPI.Controllers
 			return Ok($"https://{HttpContext.Request.Host.Value}/GetPicture/{picture.PictureId}");
 		}
 		[HttpGet]
-		[Route("/GetPicture/{pictureId}")]
+		[Route("/GetPicture/Full/{pictureId}")]
 		[SwaggerResponse(HttpStatusCode.OK, "Picture got successfully", typeof(byte[]))]
-		public async Task<ActionResult> GetPicture([FromRoute] int pictureId)
+		public async Task<ActionResult> GetPictureFull([FromRoute] int pictureId)
 		{
 			var picture = await transactionCoordinator.InRollbackScopeAsync(async session =>
 			{
@@ -62,9 +65,25 @@ namespace PizzeriaAPI.Controllers
 			{
 				return NotFound();
 			}
-			byte[] binaryImage = System.IO.File.ReadAllBytes(picture.ResizedFilePath);
+			byte[] binaryImage = System.IO.File.ReadAllBytes(picture.FilePath);
 			return File(binaryImage, GetPictureExtension(picture.Name));
 		}
+		[HttpGet]
+		[Route("/GetPicture/Mini/{pictureId}")]
+		[SwaggerResponse(HttpStatusCode.OK, "Picture got successfully", typeof(byte[]))]
+		public async Task<ActionResult> GetPictureMini([FromRoute] int pictureId)
+		{
+            var picture = await transactionCoordinator.InRollbackScopeAsync(async session =>
+			{
+                return await pictureRepository.GetByIdAsync(pictureId, session);
+            });
+            if (picture == null)
+			{
+                return NotFound();
+            }
+			byte[] binaryImage = System.IO.File.ReadAllBytes(picture.ResizedFilePath);
+            return File(binaryImage, GetPictureExtension(picture.Name));
+        }
 
 		[HttpGet]
 		[Route("/GetAllPictureList")]
