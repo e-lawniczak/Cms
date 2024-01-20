@@ -106,7 +106,7 @@ var PicturesPage = function () {
                     if (!(i < arr.length)) return [3 /*break*/, 4];
                     form = new FormData();
                     form.append("Name", arr[i].name);
-                    form.append("Link", "xd");
+                    form.append("Link", "");
                     form.append("Picture", arr[i]);
                     return [4 /*yield*/, axios_1.default.post(common_1.baseApiUrl + "/AddPicture", form)];
                 case 2:
@@ -136,7 +136,7 @@ exports.PicturesPage = PicturesPage;
 var PictureListElement = function (props) {
     var item = props.item;
     return React.createElement("div", { className: 'picture-list-element' },
-        React.createElement(common_1.Image, { src: item.link }));
+        React.createElement(common_1.Image, { src: item.link, item: item }));
 };
 var root = document.getElementById("react_root");
 ReactDOM.render(React.createElement(exports.PicturesPage, null), root);

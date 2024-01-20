@@ -8,6 +8,20 @@ module.exports = {
   entry: {
     keyvalue: { import: "./Src/keyvalue.tsx", dependOn: "common" },
     pictures: { import: "./Src/pictures.tsx", dependOn: "common" },
+    banners: { import: "./Src/banners.tsx", dependOn: "common" },
+    categories: { import: "./Src/categories.tsx", dependOn: "common" },
+    contactInfo: { import: "./Src/contactInfo.tsx", dependOn: "common" },
+    gallery: { import: "./Src/gallery.tsx", dependOn: "common" },
+    informationTab: { import: "./Src/informationTab.tsx", dependOn: "common" },
+    menu: { import: "./Src/menu.tsx", dependOn: "common" },
+    products: { import: "./Src/products.tsx", dependOn: "common" },
+    sliders: { import: "./Src/sliders.tsx", dependOn: "common" },
+    socialMedia: { import: "./Src/socialMedia.tsx", dependOn: "common" },
+    teamMember: { import: "./Src/teamMember.tsx", dependOn: "common" },
+    testimonials: { import: "./Src/testimonials.tsx", dependOn: "common" },
+    aboutUs: { import: "./Src/aboutUs.tsx", dependOn: "common" },
+    pages: { import: "./Src/pages.tsx", dependOn: "common" },
+    homePage: { import: "./Src/homePage.tsx", dependOn: "common" },
     common: "./Src/common.tsx"
   },
   output: {

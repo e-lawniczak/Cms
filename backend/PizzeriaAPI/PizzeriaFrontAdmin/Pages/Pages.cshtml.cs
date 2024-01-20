@@ -9,6 +9,7 @@ namespace PizzeriaFrontAdmin.Pages
         public override void OnGet()
         {
             base.OnGet();
+            Title = "Pages";
         }
     }
 }

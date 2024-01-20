@@ -73,8 +73,8 @@ function getCookie(cname) {
 }
 exports.getCookie = getCookie;
 var Image = function (props) {
-    var imageClass = props.imageClass, src = props.src;
-    return React.createElement("div", { className: ['img-container', imageClass].join(" ") },
+    var imageClass = props.imageClass, src = props.src, _a = props.onImageClick, onImageClick = _a === void 0 ? function () { } : _a, item = props.item;
+    return React.createElement("div", { className: ['img-container', imageClass].join(" "), onClick: function (e) { return onImageClick(item, e); } },
         React.createElement("img", { src: src }));
 };
 exports.Image = Image;

@@ -1,6 +1,11 @@
 @import './popup';
 @import './pictures';
-
+.navbar-vertical.navbar-expand-xs .navbar-collapse{
+    height: unset !important;
+}
+.side-nav-separator{
+    margin-top:15px;
+}
 .img-container {
     display: flex;
     justify-content: center;

@@ -60,10 +60,6 @@ namespace PizzeriaFrontAdmin.Models
             Response.Cookies.Append("user", email);
             Response.Cookies.Append("token", token);
             Response.Cookies.Append("id", id.ToString()); 
-      
-
-
-
         }
         protected void LogOut()
         {
@@ -72,7 +68,6 @@ namespace PizzeriaFrontAdmin.Models
             Response.Cookies.Delete("user");
             Response.Cookies.Delete("token");
             Response.Cookies.Delete("id");
-
         }
         public void OnUserNotLogged()
         {
