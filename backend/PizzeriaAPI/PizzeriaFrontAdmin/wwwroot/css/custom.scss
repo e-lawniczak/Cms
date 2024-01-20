@@ -1,36 +1,57 @@
-form.account-form{
-    margin:200px 0 400px 0;
-    width:100%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-    button{
-        margin-bottom:20px;
-    }
-    p{
-        margin:0;
-        padding:0;
+@import './popup';
+@import './pictures';
+
+.img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+        width: 100%;
+        max-height: 100%;
     }
 }
-.account-form-logo{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    .img-container{
-        width:fit-content; 
+
+form.account-form {
+    margin: 200px 0 400px 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    button {
+        margin-bottom: 20px;
+    }
+
+    p {
+        margin: 0;
+        padding: 0;
     }
 }
+
+.account-form-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .img-container {
+        width: fit-content;
+    }
+}
+
 .tiny-editor {
-    &+.tox.tox-tinymce{
-        padding:0 ;
+    &+.tox.tox-tinymce {
+        padding: 0;
     }
 }
-.admin-form {
+
+form,
+.form-top-container {
 
     .btn {
         width: fit-content !important;
-    } 
+    }
 
     .btn-save {
         background-color: #0060ce;
@@ -41,7 +62,8 @@ form.account-form{
             background-color: #0060ca;
         }
     }
-    .btn-delete{
+
+    .btn-delete {
         background-color: #ff2958;
         color: #fff;
 
@@ -51,14 +73,16 @@ form.account-form{
         }
     }
 }
-.button-col{
+
+.button-col {
     display: flex;
     justify-content: flex-start;
     align-items: center;
     gap: 10px;
 }
+
 .form-top-container {
-    padding: 10px ;
+    padding: 10px;
     display: flex;
     justify-content: flex-start;
     align-items: center;

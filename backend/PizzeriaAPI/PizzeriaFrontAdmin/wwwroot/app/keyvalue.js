@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,13 +58,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TableRow = exports.KeyValuePage = void 0;
-var React = require("react");
+var React = __importStar(require("react"));
 var react_1 = require("react");
-var ReactDOM = require("react-dom");
+var ReactDOM = __importStar(require("react-dom"));
 var common_1 = require("./common");
-var axios_1 = require("axios");
+var axios_1 = __importDefault(require("axios"));
 var KeyValuePage = function () {
     var _a = (0, react_1.useState)([]), list = _a[0], setList = _a[1], _b = (0, react_1.useState)(false), addingNew = _b[0], setAddingNew = _b[1], getData = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res;
@@ -62,7 +88,7 @@ var KeyValuePage = function () {
     return React.createElement("div", { className: "card mb-4" },
         React.createElement("form", { method: "post", className: "admin-form keyvalue-form" },
             React.createElement("div", { className: "form-top-container" },
-                React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: function () { return setAddingNew(true); } }, "Dodaj nowy")),
+                React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: function () { return setAddingNew(true); } }, "Add new")),
             React.createElement("div", { className: "card-body px-0 pt-0 pb-2" },
                 React.createElement("div", { className: "table-responsive p-0" },
                     React.createElement("table", { className: "table align-items-center mb-0" },
@@ -84,7 +110,7 @@ var TableRow = function (props) {
             switch (_a.label) {
                 case 0:
                     url = common_1.baseApiUrl + "/UpdateKeyValue";
-                    return [4 /*yield*/, axios_1.default.put(url, { id: item.id, key: key, value: value }, common_1.axiosBaseConfig)];
+                    return [4 /*yield*/, axios_1.default.patch(url, { id: item.id, key: key, value: value }, common_1.axiosBaseConfig)];
                 case 1:
                     _a.sent();
                     refreshFunc();
@@ -131,7 +157,7 @@ var TableRow = function (props) {
                 React.createElement("input", { style: { width: '100%' }, value: value, onInput: function (e) { return setValue(e.target.value); } }))),
         React.createElement("td", null,
             React.createElement("div", { className: "d-flex px-2 py-1 button-col" }, isNew ?
-                React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: addItem }, "Dodaj")
+                React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: addItem }, "Add")
                 : React.createElement(React.Fragment, null,
                     React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: editItem }, "Edit"),
                     React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-delete", onClick: deleteItem }, "Delete")))));

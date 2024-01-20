@@ -1,4 +1,42 @@
-﻿form.account-form {
+.popup-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup {
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  width: 600px;
+  margin: 0 auto;
+  top: 100px;
+  min-height: 200px;
+  z-index: 100;
+}
+
+.file-upload-form {
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.img-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.img-container img {
+  width: 100%;
+  max-height: 100%;
+}
+
+form.account-form {
   margin: 200px 0 400px 0;
   width: 100%;
   display: flex;
@@ -20,6 +58,7 @@ form.account-form p {
   align-items: center;
 }
 .account-form-logo .img-container {
+  width: -moz-fit-content;
   width: fit-content;
 }
 
@@ -27,22 +66,28 @@ form.account-form p {
   padding: 0;
 }
 
-.admin-form .btn {
+form .btn,
+.form-top-container .btn {
+  width: -moz-fit-content !important;
   width: fit-content !important;
 }
-.admin-form .btn-save {
+form .btn-save,
+.form-top-container .btn-save {
   background-color: #0060ce;
   color: #fff;
 }
-.admin-form .btn-save:hover {
+form .btn-save:hover,
+.form-top-container .btn-save:hover {
   color: #fff;
   background-color: #0060ca;
 }
-.admin-form .btn-delete {
+form .btn-delete,
+.form-top-container .btn-delete {
   background-color: #ff2958;
   color: #fff;
 }
-.admin-form .btn-delete:hover {
+form .btn-delete:hover,
+.form-top-container .btn-delete:hover {
   color: #fff;
   background-color: #ff2958;
 }
