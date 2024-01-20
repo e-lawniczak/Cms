@@ -3,19 +3,10 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as ReactDOM from 'react-dom';
 
-import { PInput, axiosBaseConfig, baseApiUrl, Image, getCookie, testFunc } from './common';
+import { PInput, axiosBaseConfig, baseApiUrl, Image, getCookie, testFunc, PictureDto } from './common';
 import axios from 'axios';
 
 
-interface PictureDto {
-    pictureId: any
-    name: any
-    link: any
-    filePath: any
-    resizedFilePath: any
-    entityWithPictureIdList: any[]
-
-}
 
 export const PicturesPage = () => {
     const
@@ -27,15 +18,18 @@ export const PicturesPage = () => {
             console.log(res);
             setData(res.data)
         },
-        onSubmit = (data: any) => {
-            if (data.fileUpload && data.fileUpload.length > 0)
-                data.fileUpload.forEach(async (i:any) => {
+        onSubmit = async (data: any) => {
+            if (data.fileUpload && data.fileUpload.length > 0) {
+                let arr = data.fileUpload
+                for (let i = 0; i < arr.length; i++) {
                     let form = new FormData()
-                    form.append("Name", i.name)
-                    form.append("Picture", i)
+                    form.append("Name", arr[i].name)
+                    form.append("Link", "")
+                    form.append("Picture", arr[i])
                     let req = await axios.post(baseApiUrl + "/AddPicture", form)
                     console.log(req);
-                })
+                }
+            }
         },
         pictureUpload = <div className="picture-upload">
             <form className='file-upload-form' onSubmit={handleSubmit(onSubmit)}>
@@ -63,7 +57,7 @@ export const PicturesPage = () => {
 const PictureListElement = (props: { item: PictureDto, [x: string]: any }) => {
     const { item } = props;
     return <div className='picture-list-element'>
-        <Image src={item.link} />
+        <Image src={item.link} item={item} />
     </div>
 }
 

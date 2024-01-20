@@ -85,7 +85,7 @@ var PicturesPage = function () {
         var res;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetAllKeyValueList")];
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetAllPictureList")];
                 case 1:
                     res = _a.sent();
                     console.log(res);
@@ -93,18 +93,42 @@ var PicturesPage = function () {
                     return [2 /*return*/];
             }
         });
-    }); }, onSubmit = function (data) {
-        console.log(data);
-    }, pictureUpload = React.createElement("div", { className: "picture-upload" },
+    }); }, onSubmit = function (data) { return __awaiter(void 0, void 0, void 0, function () {
+        var arr, i, form, req;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!(data.fileUpload && data.fileUpload.length > 0)) return [3 /*break*/, 4];
+                    arr = data.fileUpload;
+                    i = 0;
+                    _a.label = 1;
+                case 1:
+                    if (!(i < arr.length)) return [3 /*break*/, 4];
+                    form = new FormData();
+                    form.append("Name", arr[i].name);
+                    form.append("Link", "xd");
+                    form.append("Picture", arr[i]);
+                    return [4 /*yield*/, axios_1.default.post(common_1.baseApiUrl + "/AddPicture", form)];
+                case 2:
+                    req = _a.sent();
+                    console.log(req);
+                    _a.label = 3;
+                case 3:
+                    i++;
+                    return [3 /*break*/, 1];
+                case 4: return [2 /*return*/];
+            }
+        });
+    }); }, pictureUpload = React.createElement("div", { className: "picture-upload" },
         React.createElement("form", { className: 'file-upload-form', onSubmit: handleSubmit(onSubmit) },
-            React.createElement(common_1.PInput, { register: __assign({}, register("fileUpload")), inputProps: { type: 'file' } })));
+            React.createElement(common_1.PInput, { register: __assign({}, register("fileUpload")), inputProps: { type: 'file', multiple: true } }),
+            React.createElement("button", { className: 'btn btn-white btn-sm mb-0 btn-save', type: 'submit' }, "Add")));
     React.useEffect(function () {
         getData();
     }, []);
     return React.createElement(React.Fragment, null,
         React.createElement("div", { className: "card mb-4" },
-            React.createElement("div", { className: "form-top-container" },
-                React.createElement("div", { className: "btn btn-white btn-sm mb-0 btn-save", onClick: function () { return setUpload(true); } }, "Add new")),
+            React.createElement("div", { className: "form-top-container" }, !showUpload && React.createElement("div", { className: "btn btn-white btn-sm mb-0 btn-save", onClick: function () { return setUpload(true); } }, "Add new")),
             showUpload && pictureUpload,
             React.createElement("div", { className: "picture-list" }, data.map(function (d, idx) { return React.createElement(PictureListElement, { key: idx, item: d }); }))));
 };
@@ -112,7 +136,7 @@ exports.PicturesPage = PicturesPage;
 var PictureListElement = function (props) {
     var item = props.item;
     return React.createElement("div", { className: 'picture-list-element' },
-        React.createElement(common_1.Image, { src: item.FilePath }));
+        React.createElement(common_1.Image, { src: item.link }));
 };
 var root = document.getElementById("react_root");
 ReactDOM.render(React.createElement(exports.PicturesPage, null), root);
