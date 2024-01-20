@@ -69,6 +69,12 @@ export function getCookie(cname: any) {
 //   </div>
 // }
 
+export const PageWrapper = (props: { children?: any, className?: string }) => {
+  return <div className={["react-page", props.className].join(" ")}>
+    {props.children}
+  </div>
+}
+
 export interface PictureDto {
   pictureId: any
   name: any
@@ -82,7 +88,7 @@ export interface ImageProps {
   imageProps?: {
     [x: string]: any
   }
-  onImageClick?: (item?: PictureDto, e?:any) => void;
+  onImageClick?: (item?: PictureDto, e?: any) => void;
   item?: PictureDto
   src: string
   imageClass?: string
@@ -90,9 +96,9 @@ export interface ImageProps {
 }
 export const Image = (props: ImageProps) => {
   const
-    { imageClass, src, onImageClick = () => {}, item } = props;
-  return <div className={['img-container', imageClass].join(" ")} onClick={(e)=>onImageClick(item, e)}>
-    <img src={src}  />
+    { imageClass, src, onImageClick = () => { }, item } = props;
+  return <div className={['img-container', imageClass].join(" ")} onClick={(e) => onImageClick(item, e)}>
+    <img src={src} />
   </div>
 }
 export interface InputProps {

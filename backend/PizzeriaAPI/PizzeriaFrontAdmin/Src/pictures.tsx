@@ -4,8 +4,8 @@ import { useForm } from 'react-hook-form';
 import * as ReactDOM from 'react-dom';
 
 import { PInput, axiosBaseConfig, baseApiUrl, Image, getCookie, testFunc, PictureDto } from './common';
+import { PageWrapper } from './common';
 import axios from 'axios';
-
 
 
 export const PicturesPage = () => {
@@ -43,7 +43,7 @@ export const PicturesPage = () => {
         getData();
     }, [])
 
-    return <>
+    return <PageWrapper>
         <div className="card mb-4">
             <div className="form-top-container">{!showUpload && <div className="btn btn-white btn-sm mb-0 btn-save" onClick={() => setUpload(true)} >Add new</div>}</div>
             {showUpload && pictureUpload}
@@ -51,7 +51,7 @@ export const PicturesPage = () => {
                 {data.map((d: PictureDto, idx) => <PictureListElement key={idx} item={d} />)}
             </div>
         </div>
-    </>
+    </PageWrapper>
 }
 
 const PictureListElement = (props: { item: PictureDto, [x: string]: any }) => {

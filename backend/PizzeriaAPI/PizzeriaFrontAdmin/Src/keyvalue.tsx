@@ -2,8 +2,8 @@ import * as React from 'react';
 import { useState } from 'react';
 import * as ReactDOM from 'react-dom';
 import { axiosBaseConfig, baseApiUrl, getCookie, testFunc } from './common';
+import { PageWrapper } from './common';
 import axios from 'axios';
-
 
 interface KeyValueDto {
     id: number,
@@ -28,29 +28,31 @@ export const KeyValuePage = () => {
         getData();
     }, [])
 
-    return <div className="card mb-4">
-        <form method="post" className="admin-form keyvalue-form" >
-            <div className="form-top-container"><div className="btn btn-white btn-sm w-100 mb-0 btn-save" onClick={() => setAddingNew(true)} >Add new</div></div>
-            <div className="card-body px-0 pt-0 pb-2">
-                <div className="table-responsive p-0">
-                    <table className="table align-items-center mb-0">
-                        <thead>
-                            <tr>
-                                <th style={{ width: 50 }} className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Id</th>
-                                <th style={{ width: 150 }} className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Key</th>
-                                <th style={{ width: 'auto' }} className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Value</th>
-                                <th style={{ width: 200 }} className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Options</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {addingNew && newRow}
-                            {list.sort((a, b) => { return b.id - a.id }).map((l, idk) => <TableRow key={l.id} item={l} refreshFunc={getData} isNew={false} />)}
-                        </tbody>
-                    </table>
+    return <PageWrapper>
+        <div className="card mb-4">
+            <form method="post" className="admin-form keyvalue-form" >
+                <div className="form-top-container"><div className="btn btn-white btn-sm w-100 mb-0 btn-save" onClick={() => setAddingNew(true)} >Add new</div></div>
+                <div className="card-body px-0 pt-0 pb-2">
+                    <div className="table-responsive p-0">
+                        <table className="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th style={{ width: 50 }} className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Id</th>
+                                    <th style={{ width: 150 }} className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"> Key</th>
+                                    <th style={{ width: 'auto' }} className="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Value</th>
+                                    <th style={{ width: 200 }} className="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Options</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {addingNew && newRow}
+                                {list.sort((a, b) => { return b.id - a.id }).map((l, idk) => <TableRow key={l.id} item={l} refreshFunc={getData} isNew={false} />)}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-        </form>
-    </div>
+            </form>
+        </div>
+    </PageWrapper>
 }
 export const TableRow = (props: { item: KeyValueDto, refreshFunc: any, isNew?: boolean, resetAdd?: any }) => {
     const { item, refreshFunc, isNew = false, resetAdd } = props,
@@ -85,12 +87,12 @@ export const TableRow = (props: { item: KeyValueDto, refreshFunc: any, isNew?: b
         </td>
         <td>
             <div className="d-flex px-2 py-1">
-                <input style={{width:'100%'}} value={key} onInput={(e: any) => setKey(e.target.value)} />
+                <input style={{ width: '100%' }} value={key} onInput={(e: any) => setKey(e.target.value)} />
             </div>
         </td>
         <td>
             <div className="d-flex px-2 py-1">
-                <input style={{width:'100%'}} value={value} onInput={(e: any) => setValue(e.target.value)} />
+                <input style={{ width: '100%' }} value={value} onInput={(e: any) => setValue(e.target.value)} />
             </div>
         </td>
         <td>

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import * as ReactDOM from 'react-dom';
 import axios from 'axios';
+import { PageWrapper } from './common';
 
 
 export const PagesPage = () => {
@@ -13,7 +14,7 @@ export const PagesPage = () => {
     React.useEffect(() => {
     }, [])
 
-    return <></>
+    return <PageWrapper></PageWrapper>
 }
 
 

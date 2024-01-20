@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useState } from 'react';
 import * as ReactDOM from 'react-dom';
+import { PageWrapper } from './common';
 import axios from 'axios';
-
 
 export const TestimonialPage = () => {
     const
@@ -13,7 +13,7 @@ export const TestimonialPage = () => {
     React.useEffect(() => {
     }, [])
 
-    return <></>
+    return <PageWrapper></PageWrapper>
 }
 
 
