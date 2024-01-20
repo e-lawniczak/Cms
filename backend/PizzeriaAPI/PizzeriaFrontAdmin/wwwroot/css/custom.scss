@@ -1,18 +1,36 @@
 @import './popup';
 @import './pictures';
 @import './pageSettings';
-.navbar-vertical.navbar-expand-xs .navbar-collapse{
+@import './socialList';
+
+.navbar-vertical.navbar-expand-xs .navbar-collapse {
     height: unset !important;
 }
-.side-nav-separator{
-    margin-top:15px;
+
+.side-nav-separator {
+    margin-top: 15px;
 }
-.input-wrapper{
+
+.input-wrapper {
     width: 100%;
-    input{
+
+    input {
         width: 100%;
     }
 }
+
+a.normal-link {
+    color: #0060ca !important;
+    text-decoration: underline;
+
+}
+
+.react-page {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
 .img-container {
     display: flex;
     justify-content: center;

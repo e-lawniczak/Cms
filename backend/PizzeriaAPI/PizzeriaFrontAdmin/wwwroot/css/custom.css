@@ -55,7 +55,7 @@
 }
 .section-form > div {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: flex-start;
   flex-direction: column;
   gap: 10px;
@@ -65,6 +65,10 @@
   width: 100%;
   display: grid;
   grid-template-columns: 50px 150px auto;
+}
+
+.social-row .row {
+  grid-template-columns: 25px 150px 200px 100px 25px 25px 200px 100px;
 }
 
 .navbar-vertical.navbar-expand-xs .navbar-collapse {
@@ -80,6 +84,17 @@
 }
 .input-wrapper input {
   width: 100%;
+}
+
+a.normal-link {
+  color: #0060ca !important;
+  text-decoration: underline;
+}
+
+.react-page {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
 }
 
 .img-container {

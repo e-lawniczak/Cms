@@ -32,11 +32,29 @@ export const PageWrapper = (props: { children?: any, className?: string }) => {
     {props.children}
   </div>
 }
+export interface TeamMemberDto {
+  id: 0,
+  isVisible: boolean,
+  pictureIdList: any[],
+  firstName: string,
+  lastName: string,
+  roleId: 0,
+  socialMediaIdList: any[]
+}
 export interface KeyValueDto {
   id: number,
   key: string,
   value: string,
 
+}
+export interface SocialMediaDto {
+  id: any,
+  name: string,
+  link: string,
+  isMain: any,
+  teamMemberId: any,
+  isVisible: boolean,
+  pictureIdList: any[]
 }
 export interface PictureDto {
   pictureId: any

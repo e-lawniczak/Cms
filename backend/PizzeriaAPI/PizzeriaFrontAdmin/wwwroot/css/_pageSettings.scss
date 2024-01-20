@@ -1,31 +1,38 @@
-.section-title{
+.section-title {
     width: 100%;
     font-size: 19px;
 
 }
-.section-subtext{
+
+.section-subtext {
     width: 100%;
     font-size: 11px;
     color: #aeaeae;
-    margin-bottom: 25px;;
+    margin-bottom: 25px;
+    ;
 }
-.settings-section{
+
+.settings-section {
     padding: 15px;
 }
-.section-form{
+
+.section-form {
     display: grid;
     grid-template-columns: 6fr 1fr;
     gap: 10px;
-    &>div{
+
+    &>div {
         display: flex;
-        justify-content: center;
+        justify-content: flex-end;
         align-items: flex-start;
         flex-direction: column;
-        gap:10px;
+        gap: 10px;
     }
 }
-.form-content{
-    .row{
+
+.form-content {
+
+    .row {
         width: 100%;
         display: grid;
         grid-template-columns: 50px 150px auto;
