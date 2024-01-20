@@ -1,10 +1,17 @@
 @import './popup';
 @import './pictures';
+@import './pageSettings';
 .navbar-vertical.navbar-expand-xs .navbar-collapse{
     height: unset !important;
 }
 .side-nav-separator{
     margin-top:15px;
+}
+.input-wrapper{
+    width: 100%;
+    input{
+        width: 100%;
+    }
 }
 .img-container {
     display: flex;

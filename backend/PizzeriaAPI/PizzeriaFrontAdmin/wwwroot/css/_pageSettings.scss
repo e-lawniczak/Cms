@@ -1,0 +1,33 @@
+.section-title{
+    width: 100%;
+    font-size: 19px;
+
+}
+.section-subtext{
+    width: 100%;
+    font-size: 11px;
+    color: #aeaeae;
+    margin-bottom: 25px;;
+}
+.settings-section{
+    padding: 15px;
+}
+.section-form{
+    display: grid;
+    grid-template-columns: 6fr 1fr;
+    gap: 10px;
+    &>div{
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-direction: column;
+        gap:10px;
+    }
+}
+.form-content{
+    .row{
+        width: 100%;
+        display: grid;
+        grid-template-columns: 50px 150px auto;
+    }
+}

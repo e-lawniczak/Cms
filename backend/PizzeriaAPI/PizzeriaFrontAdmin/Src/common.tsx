@@ -4,12 +4,86 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as ReactDOM from 'react-dom';
 
-export const PageSettingsSection = () => {
-  return <section className="settings-section">
-    
+export function Select(props: { register: any, data: any, name: any, selectProps?: any }) {
+  const { name, data, register, selectProps } = props
+  return (
+    <select {...register(name)} {...selectProps}>
+      {data.map((item: any, idx: any) => (
+        <option key={idx} value={item.value}>
+          {item.label}
+        </option>
+      ))}
+    </select>
+  );
+}
+
+export const PageSettingsSection = (props: { className?: any, title?: any, subtext?: any, children?: any, }) => {
+  return <section className={["card settings-section", props.className || ""].join(" ")}>
+    {props.title && <div className="section-title">{props.title}</div>}
+    {props.subtext && <div className="section-subtext">{props.subtext}</div>}
+    <div className="section-content">
+      {props.children}
+    </div>
   </section>
 }
 
+export const PageWrapper = (props: { children?: any, className?: string }) => {
+  return <div className={["react-page", props.className || ""].join(" ")}>
+    {props.children}
+  </div>
+}
+export interface KeyValueDto {
+  id: number,
+  key: string,
+  value: string,
+
+}
+export interface PictureDto {
+  pictureId: any
+  name: any
+  link: any
+  filePath: any
+  resizedFilePath: any
+  entityWithPictureIdList: any[]
+
+}
+
+export interface ImageProps {
+  imageProps?: {
+    [x: string]: any
+  }
+  onImageClick?: (item?: PictureDto, e?: any) => void;
+  item?: PictureDto
+  src: string
+  imageClass?: string
+  [x: string]: any
+}
+
+export const Image = (props: ImageProps) => {
+  const
+    { imageClass, src, onImageClick = () => { }, item } = props;
+  return <div className={['img-container', imageClass || ""].join(" ")} onClick={(e) => onImageClick(item, e)}>
+    <img src={src} />
+  </div>
+}
+
+export interface InputProps {
+  register: any,
+  inputProps: {
+    [x: string]: any
+  }
+  inputClass?: string
+  wrapperClass?: string
+  [x: string]: any
+}
+
+export const PInput = (props: InputProps) => {
+  const
+    { register, inputClass, wrapperClass, inputProps } = props;
+  return <div className={['input-wrapper', wrapperClass || ""].join(" ")}>
+    <input {...register} className={['input-field', inputClass || ""].join(" ")} {...inputProps} />
+  </div>
+}
 
 // export interface PopupProps {
 //   popupClass?: string
@@ -35,54 +109,12 @@ export const PageSettingsSection = () => {
 //     </div>
 //   </div>
 // }
-
-export const PageWrapper = (props: { children?: any, className?: string }) => {
-  return <div className={["react-page", props.className].join(" ")}>
-    {props.children}
-  </div>
-}
-
-export interface PictureDto {
-  pictureId: any
-  name: any
-  link: any
-  filePath: any
-  resizedFilePath: any
-  entityWithPictureIdList: any[]
-
-}
-export interface ImageProps {
-  imageProps?: {
-    [x: string]: any
-  }
-  onImageClick?: (item?: PictureDto, e?: any) => void;
-  item?: PictureDto
-  src: string
-  imageClass?: string
-  [x: string]: any
-}
-export const Image = (props: ImageProps) => {
-  const
-    { imageClass, src, onImageClick = () => { }, item } = props;
-  return <div className={['img-container', imageClass].join(" ")} onClick={(e) => onImageClick(item, e)}>
-    <img src={src} />
-  </div>
-}
-export interface InputProps {
-  register: any,
-  inputProps: {
-    [x: string]: any
-  }
-  inputClass?: string
-  wrapperClass?: string
-  [x: string]: any
-}
-export const PInput = (props: InputProps) => {
-  const
-    { register, inputClass, wrapperClass, inputProps } = props;
-  return <div className={['input-wrapper', wrapperClass].join(" ")}>
-    <input {...register} className={['input-field', inputClass].join(" ")} {...inputProps} />
-  </div>
+export const mapObjectToSelect = (object: any, keyLabel: any, valueLabel: any) => {
+  let retObj = [] as { label: string, value: any }[]
+  object.forEach((item: any, idx: any) => {
+    retObj.push({ label: item[keyLabel], value: item[valueLabel] })
+  });
+  return retObj;
 }
 
 export const baseApiUrl = "https://localhost:7156";

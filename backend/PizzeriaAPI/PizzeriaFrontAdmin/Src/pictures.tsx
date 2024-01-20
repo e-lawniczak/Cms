@@ -14,7 +14,7 @@ export const PicturesPage = () => {
         [data, setData] = useState([]),
         [showUpload, setUpload] = useState(false),
         getData = async () => {
-            let res = await axios.get(baseApiUrl + "/GetAllPictureList")
+            let res = await axios.get(baseApiUrl + "/GetAllPictureList", axiosBaseConfig)
             console.log(res);
             setData(res.data)
         },
@@ -26,7 +26,7 @@ export const PicturesPage = () => {
                     form.append("Name", arr[i].name)
                     form.append("Link", "")
                     form.append("Picture", arr[i])
-                    let req = await axios.post(baseApiUrl + "/AddPicture", form)
+                    let req = await axios.post(baseApiUrl + "/AddPicture", form, axiosBaseConfig)
                     console.log(req);
                 }
             }

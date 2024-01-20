@@ -1,16 +1,11 @@
 import * as React from 'react';
 import { useState } from 'react';
 import * as ReactDOM from 'react-dom';
-import { axiosBaseConfig, baseApiUrl, getCookie, testFunc } from './common';
+import { KeyValueDto, axiosBaseConfig, baseApiUrl, getCookie, testFunc } from './common';
 import { PageWrapper } from './common';
 import axios from 'axios';
 
-interface KeyValueDto {
-    id: number,
-    key: string,
-    value: string,
 
-}
 
 export const KeyValuePage = () => {
     const
