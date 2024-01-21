@@ -3,15 +3,15 @@ using PizzeriaAPI.Database.Entities;
 
 namespace PizzeriaAPI.Database.Mapping
 {
-	public class KeyValueMap : ClassMap<KeyValue>
-	{
-		public KeyValueMap()
-		{
-			Id(x => x.Id).Not.Nullable().GeneratedBy.Increment();
-			Map(x => x.Key).Not.Nullable();
-			Map(x => x.Value).Not.Nullable();
+    public class KeyValueMap : ClassMap<KeyValue>
+    {
+        public KeyValueMap()
+        {
+            Id(x => x.Id).Not.Nullable().GeneratedBy.Increment();
+            Map(x => x.Key).Not.Nullable().Unique();
+            Map(x => x.Value).Not.Nullable();
 
-			Table("KeyValue");
-		}
-	}
+            Table("KeyValue");
+        }
+    }
 }

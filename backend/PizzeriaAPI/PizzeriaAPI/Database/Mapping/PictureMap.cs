@@ -3,25 +3,24 @@ using PizzeriaAPI.Database.Entities;
 
 namespace PizzeriaAPI.Database.Mapping
 {
-	public class PictureMap : ClassMap<Picture>
-	{
-		public PictureMap()
-		{
-			Id(x => x.PictureId).Not.Nullable().GeneratedBy.Increment();
-			Map(x => x.Name).Not.Nullable();
-			Map(x => x.FilePath).Not.Nullable();
-			Map(x => x.ResizedFilePath).Not.Nullable();
-			Map(x => x.Link);
-			Map(x => x.CreateDate).Not.Nullable();
-			Map(x => x.ModificationDate).Not.Nullable();
+    public class PictureMap : ClassMap<Picture>
+    {
+        public PictureMap()
+        {
+            Table("Picture");
 
-			HasManyToMany(x => x.EntityWithPictureList)
-				.Cascade.All()
-				.Table("EntityPicture")
-				.ParentKeyColumn("PictureId")
-				.ChildKeyColumn("EntityWithPictureId");
+            Id(p => p.PictureId).Not.Nullable().GeneratedBy.Increment();
 
-			Table("Picture");
-		}
-	}
+            Map(p => p.Name).Not.Nullable().Unique();
+            Map(p => p.Link).Nullable();
+            Map(p => p.FilePath).Not.Nullable();
+            Map(p => p.ResizedFilePath).Not.Nullable();
+            Map(p => p.CreationDate).Not.Nullable();
+            Map(p => p.ModificationDate).Not.Nullable();
+
+            HasManyToMany(x => x.EntityWithPictureList)
+           .Cascade.All()
+           .Table("entitypicture").ParentKeyColumn("pictureid").ChildKeyColumn("entitywithpictureid");
+        }
+    }
 }

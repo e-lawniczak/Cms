@@ -1,7 +1,7 @@
 ﻿namespace PizzeriaAPI.Domain
 {
-	public class ResetPasswordResponse
-	{
-		public string Message { get; set; }
-	}
+    public class ResetPasswordResponse
+    {
+        public string Message { get; set; }
+    }
 }

@@ -3,23 +3,23 @@ using PizzeriaAPI.Database.Entities;
 
 namespace PizzeriaAPI.Database.Mapping
 {
-	public class EntityWithPictureMap : ClassMap<EntityWithPicture>
-	{
-		public EntityWithPictureMap()
-		{
-			Id(x => x.Id).Not.Nullable().GeneratedBy.Increment();
-			Map(x => x.CreateDate).Not.Nullable();
-			Map(x => x.ModificationDate).Not.Nullable();
-			Map(x => x.IsVisible).Not.Nullable();
-			Map(x => x.IsDeleted).Not.Nullable();
+    public class EntityWithPictureMap : ClassMap<EntityWithPicture>
+    {
+        public EntityWithPictureMap()
+        {
+            Table("EntityWithPicture");
 
-			HasManyToMany(x => x.PictureList)
-				.Cascade.All()
-				.Table("EntityPicture")
-				.ParentKeyColumn("EntityWithPictureId")
-				.ChildKeyColumn("PictureId");
+            Id(e => e.Id).Not.Nullable().GeneratedBy.Increment();
 
-			Table("EntityWithPicture");
-		}
-	}
+            Map(e => e.CreationDate).Not.Nullable();
+            Map(e => e.ModificationDate).Not.Nullable();
+            Map(e => e.IsVisible).Not.Nullable();
+            Map(e => e.IsDeleted).Not.Nullable();
+
+            HasManyToMany(x => x.PictureList)
+           .Cascade.All()
+           .Inverse()
+           .Table("entitypicture").ParentKeyColumn("entitywithpictureid").ChildKeyColumn("pictureid");
+        }
+    }
 }

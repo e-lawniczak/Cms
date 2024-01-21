@@ -1,146 +1,161 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
-using PizzeriaAPI.Dto;
+using PizzeriaAPI.Dto.KeyValue;
 using PizzeriaAPI.ORM;
 using PizzeriaAPI.Repositories;
 using Swashbuckle.Swagger.Annotations;
 using System.Net;
-using PizzeriaAPI.Dto.KeyValue;
 
 namespace PizzeriaAPI.Controllers
 {
-	[ApiController]
-	[Route("[controller]")]
-	public class KeyValueController : ControllerBase
-	{
+    [ApiController]
+    [Route("[controller]")]
+    public class KeyValueController : ControllerBase
+    {
 
-		private readonly ILogger<KeyValueController> logger;
-		private readonly ITransactionCoordinator transactionCoordinator;
-		private readonly IKeyValueRepository keyValueRepository;
+        private readonly ILogger<KeyValueController> logger;
+        private readonly ITransactionCoordinator transactionCoordinator;
+        private readonly IKeyValueRepository keyValueRepository;
 
-		public KeyValueController(ILogger<KeyValueController> logger,
-			ITransactionCoordinator transactionCoordinator,
-			IKeyValueRepository keyValueRepository)
-		{
-			this.logger = logger;
-			this.transactionCoordinator = transactionCoordinator;
-			this.keyValueRepository = keyValueRepository;
-		}
+        public KeyValueController(ILogger<KeyValueController> logger,
+            ITransactionCoordinator transactionCoordinator,
+            IKeyValueRepository keyValueRepository)
+        {
+            this.logger = logger;
+            this.transactionCoordinator = transactionCoordinator;
+            this.keyValueRepository = keyValueRepository;
+        }
 
-		[HttpPost]
-		[Route("/AddKeyValue")]
-		[SwaggerResponse(HttpStatusCode.OK, "KeyValue inserted successfully")]
-		public async Task<ActionResult> AddKeyValue([FromBody] AddKeyValueDto keyValueDto)
-		{
-			var keyValue = GetKeyValue(keyValueDto);
-			await transactionCoordinator.InCommitScopeAsync(async session =>
-			{
-				await keyValueRepository.InsertAsync(keyValue, session);
-			});
+        [HttpPost]
+        [Route("/AddKeyValue")]
+        [SwaggerResponse(HttpStatusCode.OK, "KeyValue inserted successfully")]
+        public async Task<ActionResult> AddKeyValue([FromBody] AddKeyValueDto keyValueDto)
+        {
+            var keyValue = GetKeyValue(keyValueDto);
+            await transactionCoordinator.InCommitScopeAsync(async session =>
+            {
+                await keyValueRepository.InsertAsync(keyValue, session);
+            });
 
-			return Ok("KeyValue inserted successfully");
-		}
+            return Ok("KeyValue inserted successfully");
+        }
 
-		[HttpGet]
-		[Route("/GetKeyValue/{Key}")]
-		[SwaggerResponse(HttpStatusCode.OK, "KeyValue got successfully", typeof(KeyValueDto))]
-		public async Task<ActionResult<KeyValueDto>> GetKeyValue([FromRoute] string Key)
-		{
-            KeyValueDto keyValueDto = null;
+        [HttpGet]
+        [Route("/GetKeyValueByKey/{Key}")]
+        [SwaggerResponse(HttpStatusCode.OK, "KeyValue got successfully", typeof(KeyValueDto))]
+        public async Task<ActionResult<KeyValueDto>> GetKeyValueByKey([FromRoute] string Key)
+        {
+            KeyValueDto? keyValueDto = null;
             await transactionCoordinator.InRollbackScopeAsync(async session =>
-			{
+            {
                 var keyValue = await keyValueRepository.GetByKeyAsync(Key, session);
-                keyValueDto = GetKeyValueDto(keyValue);
+                if (keyValue != null)
+                    keyValueDto = GetKeyValueDto(keyValue);
             });
-			if(keyValueDto == null)
-			{
-                return NotFound();
-            }
 
             return Ok(keyValueDto);
         }
 
 
-		[HttpGet]
-		[Route("/GetAllKeyValueList")]
-		[SwaggerResponse(HttpStatusCode.OK, "KeyValue List")]
-		public async Task<ActionResult<IList<KeyValueDto>>> GetAllKeyValueList()
-		{
-			IList<KeyValueDto> keyValueDtoList = null;
-			await transactionCoordinator.InRollbackScopeAsync(async session =>
-			{
-				var keyValueList = await keyValueRepository.GetAllAsync(session);
-				keyValueDtoList = keyValueList.Select(GetKeyValueDto).ToList();
-			});
-
-			return Ok(keyValueDtoList);
-		}
-		[HttpGet]
-		[Route("/GetKeyValue/{keyValueId}")]
-		[SwaggerResponse(HttpStatusCode.OK, "KeyValue got successfully", typeof(KeyValueDto))]
-		public async Task<ActionResult<KeyValueDto>> GetKeyValue([FromRoute] int keyValueId)
-		{
-            KeyValueDto keyValueDto = null;
+        [HttpGet]
+        [Route("/GetAllKeyValueList")]
+        [SwaggerResponse(HttpStatusCode.OK, "KeyValue List")]
+        public async Task<ActionResult<IList<KeyValueDto>>> GetAllKeyValueList()
+        {
+            IList<KeyValueDto> keyValueDtoList = new List<KeyValueDto>();
             await transactionCoordinator.InRollbackScopeAsync(async session =>
-			{
+            {
+                var keyValueList = await keyValueRepository.GetAllAsync(session);
+                if (keyValueList != null)
+                    keyValueDtoList = keyValueList.Select(GetKeyValueDto).ToList();
+            });
+
+            return Ok(keyValueDtoList);
+        }
+        [HttpGet]
+        [Route("/GetKeyValueById/{keyValueId}")]
+        [SwaggerResponse(HttpStatusCode.OK, "KeyValue got successfully", typeof(KeyValueDto))]
+        public async Task<ActionResult<KeyValueDto>> GetKeyValue([FromRoute] int keyValueId)
+        {
+            KeyValueDto? keyValueDto = null;
+            await transactionCoordinator.InRollbackScopeAsync(async session =>
+            {
                 var keyValue = await keyValueRepository.GetByIdAsync(keyValueId, session);
-                keyValueDto = GetKeyValueDto(keyValue);
+                if (keyValue != null)
+                    keyValueDto = GetKeyValueDto(keyValue);
             });
 
             return Ok(keyValueDto);
         }
 
-		[HttpPatch]
-		[Route("/UpdateKeyValue")]
-		[SwaggerResponse(HttpStatusCode.OK, "KeyValue updated successfully")]
-		public async Task<ActionResult> UpdateKeyValue([FromBody] KeyValueDto keyValueDto)
-		{
-			var keyValue = GetKeyValue(keyValueDto);
-			await transactionCoordinator.InCommitScopeAsync(async session =>
-			{
-				await keyValueRepository.UpdateAsync(keyValue, session);
-			});
+        [HttpPatch]
+        [Route("/UpdateKeyValueById")]
+        [SwaggerResponse(HttpStatusCode.OK, "KeyValue updated successfully")]
+        public async Task<ActionResult> UpdateKeyValueById([FromBody] KeyValueDto keyValueDto)
+        {
+            var keyValue = await transactionCoordinator.InRollbackScopeAsync(async session =>
+            {
+                return await keyValueRepository.GetByIdAsync(keyValueDto.Id, session);
+            });
 
-			return Ok("KeyValue updated successfully");
-		}
-		[HttpDelete]
-		[Route("/DeleteKeyValue/{keyValueId}")]
-		[SwaggerResponse(HttpStatusCode.OK, "KeyValue was deleted successfully")]
-		public async Task<ActionResult> DeletKeyValue([FromRoute] int keyValueId)
-		{
-			await transactionCoordinator.InCommitScopeAsync(async session =>
-			{
-				await keyValueRepository.DeleteAsync(keyValueId, session);
-			});
+            keyValue.Value = keyValueDto.Value;
 
-			return Ok("KeyValue was deleted successfully");
-		}
+            await transactionCoordinator.InCommitScopeAsync(async session =>
+            {
+                await keyValueRepository.UpdateAsync(keyValue, session);
+            });
 
-		private KeyValueDto GetKeyValueDto(KeyValue keyValue)
-		{
-			return new KeyValueDto()
-			{
-				Id = keyValue.Id,
-				Key = keyValue.Key,
-				Value = keyValue.Value,
-			};
-		}
-		private KeyValue GetKeyValue(KeyValueDto keyValueDto)
-		{
-			return new KeyValue()
-			{
-				Id = keyValueDto?.Id ?? 0,
-				Key = keyValueDto.Key,
-				Value = keyValueDto.Value,
-			};
-		}
-		private KeyValue GetKeyValue(AddKeyValueDto keyValueDto)
-		{
+            return Ok("KeyValue updated successfully");
+        }
+        [HttpPatch]
+        [Route("/UpdateKeyValueByKey")]
+        [SwaggerResponse(HttpStatusCode.OK, "KeyValue updated successfully")]
+        public async Task<ActionResult> UpdateKeyValueByKey([FromBody] KeyValueDto keyValueDto)
+        {
+            var keyValue = await transactionCoordinator.InRollbackScopeAsync(async session =>
+            {
+                return await keyValueRepository.GetByKeyAsync(keyValueDto.Key, session);
+            });
+
+            keyValue.Value = keyValueDto.Value;
+
+            await transactionCoordinator.InCommitScopeAsync(async session =>
+            {
+                await keyValueRepository.UpdateAsync(keyValue, session);
+            });
+
+            return Ok("KeyValue updated successfully");
+        }
+        [HttpDelete]
+        [Route("/DeleteKeyValue/{keyValueId}")]
+        [SwaggerResponse(HttpStatusCode.OK, "KeyValue was deleted successfully")]
+        public async Task<ActionResult> DeletKeyValue([FromRoute] int keyValueId)
+        {
+            await transactionCoordinator.InCommitScopeAsync(async session =>
+            {
+                await keyValueRepository.DeleteAsync(keyValueId, session);
+            });
+
+            return Ok("KeyValue was deleted successfully");
+        }
+
+        private KeyValueDto GetKeyValueDto(KeyValue keyValue)
+        {
+            return new KeyValueDto()
+            {
+                Id = keyValue.Id,
+                Key = keyValue.Key,
+                Value = keyValue.Value,
+            };
+        }
+
+        private KeyValue GetKeyValue(AddKeyValueDto keyValueDto)
+        {
             return new KeyValue()
-			{
+            {
                 Key = keyValueDto.Key,
                 Value = keyValueDto.Value,
             };
         }
-	}
+    }
 }
