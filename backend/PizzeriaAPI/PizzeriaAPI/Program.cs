@@ -64,6 +64,7 @@ namespace PizzeriaAPI
 
             app.Services.OnInitialize();
             app.UseCors("Open");
+            app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseRouting();
 
@@ -79,7 +80,6 @@ namespace PizzeriaAPI
                 endpoints.MapHealthChecks("/health");
             });
             app.UseHealthChecks("/health");
-            app.UseHttpsRedirection();
 
             app.Run();
 
