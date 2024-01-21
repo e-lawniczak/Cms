@@ -4,6 +4,13 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as ReactDOM from 'react-dom';
 
+export const PictureListElement = (props: { item: PictureDto, onClick?: any, [x: string]: any }) => {
+  const { item, onClick } = props;
+  return <div className='picture-list-element' onClick={onClick}>
+    <Image src={item.link} item={item} />
+  </div>
+}
+
 export function Select(props: { register: any, data: any, name: any, selectProps?: any, defaultValue?: any }) {
   const { name, data, register, selectProps, defaultValue = null } = props
   return (
@@ -31,6 +38,29 @@ export const PageWrapper = (props: { children?: any, className?: string }) => {
   return <div className={["react-page", props.className || ""].join(" ")}>
     {props.children}
   </div>
+}
+export interface BannerDto {
+  id: number,
+  title: string,
+  text: string,
+  subText: string,
+  link: string,
+  isVisible: boolean,
+  pictureIdList: any[],
+  sliderId: number
+}
+export interface SliderDto {
+  sliderId: number,
+  name: string,
+  isVisible: boolean,
+  bannerIdList: any[]
+}
+export interface MenuElementDto {
+  menuElementId: number,
+  text: string,
+  link: string,
+  isVisible: boolean,
+  parentMenuElementId: number
 }
 export interface TeamMemberDto {
   id: number,
@@ -138,7 +168,7 @@ export const mapObjectToSelect = (object: any, keyLabel: any, valueLabel: any) =
 export const baseApiUrl = "https://localhost:7156";
 export const axiosBaseConfig = {
   headers: {
-    'Bearer': getCookie("token"),
+    'Bearer': "Bearer: " + getCookie("token"),
   }
 }
 

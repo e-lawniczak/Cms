@@ -34,12 +34,42 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCookie = exports.callApi = exports.testFunc = exports.axiosBaseConfig = exports.baseApiUrl = exports.PInput = exports.Image = exports.PageWrapper = exports.PageSettingsSection = void 0;
+exports.getCookie = exports.callApi = exports.testFunc = exports.axiosBaseConfig = exports.baseApiUrl = exports.mapObjectToSelect = exports.PInput = exports.Image = exports.PageWrapper = exports.PageSettingsSection = exports.Select = exports.PictureListElement = void 0;
 var React = __importStar(require("react"));
-var PageSettingsSection = function () {
-    return React.createElement("section", { className: "settings-section" });
+var PictureListElement = function (props) {
+    var item = props.item, onClick = props.onClick;
+    return React.createElement("div", { className: 'picture-list-element', onClick: onClick },
+        React.createElement(exports.Image, { src: item.link, item: item }));
+};
+exports.PictureListElement = PictureListElement;
+function Select(props) {
+    var name = props.name, data = props.data, register = props.register, selectProps = props.selectProps, _a = props.defaultValue, defaultValue = _a === void 0 ? null : _a;
+    return (React.createElement("select", __assign({}, register(name), selectProps), data.map(function (item, idx) { return (React.createElement("option", { key: idx, value: item.value, selected: defaultValue != null && defaultValue == item.value }, item.label)); })));
+}
+exports.Select = Select;
+var PageSettingsSection = function (props) {
+    return React.createElement("section", { className: ["card settings-section", props.className || ""].join(" ") },
+        props.title && React.createElement("div", { className: "section-title" }, props.title),
+        props.subtext && React.createElement("div", { className: "section-subtext" }, props.subtext),
+        React.createElement("div", { className: "section-content" }, props.children));
 };
 exports.PageSettingsSection = PageSettingsSection;
+var PageWrapper = function (props) {
+    return React.createElement("div", { className: ["react-page", props.className || ""].join(" ") }, props.children);
+};
+exports.PageWrapper = PageWrapper;
+var Image = function (props) {
+    var imageClass = props.imageClass, src = props.src, _a = props.onImageClick, onImageClick = _a === void 0 ? function () { } : _a, item = props.item;
+    return React.createElement("div", { className: ['img-container', imageClass || ""].join(" "), onClick: function (e) { return onImageClick(item, e); } },
+        React.createElement("img", { src: src }));
+};
+exports.Image = Image;
+var PInput = function (props) {
+    var register = props.register, inputClass = props.inputClass, wrapperClass = props.wrapperClass, inputProps = props.inputProps;
+    return React.createElement("div", { className: ['input-wrapper', wrapperClass || ""].join(" ") },
+        React.createElement("input", __assign({}, register, { className: ['input-field', inputClass || ""].join(" ") }, inputProps)));
+};
+exports.PInput = PInput;
 // export interface PopupProps {
 //   popupClass?: string
 //   popupBody?: any,
@@ -63,22 +93,14 @@ exports.PageSettingsSection = PageSettingsSection;
 //     </div>
 //   </div>
 // }
-var PageWrapper = function (props) {
-    return React.createElement("div", { className: ["react-page", props.className].join(" ") }, props.children);
+var mapObjectToSelect = function (object, keyLabel, valueLabel) {
+    var retObj = [];
+    object === null || object === void 0 ? void 0 : object.forEach(function (item, idx) {
+        retObj.push({ label: item[keyLabel], value: item[valueLabel] });
+    });
+    return retObj;
 };
-exports.PageWrapper = PageWrapper;
-var Image = function (props) {
-    var imageClass = props.imageClass, src = props.src, _a = props.onImageClick, onImageClick = _a === void 0 ? function () { } : _a, item = props.item;
-    return React.createElement("div", { className: ['img-container', imageClass].join(" "), onClick: function (e) { return onImageClick(item, e); } },
-        React.createElement("img", { src: src }));
-};
-exports.Image = Image;
-var PInput = function (props) {
-    var register = props.register, inputClass = props.inputClass, wrapperClass = props.wrapperClass, inputProps = props.inputProps;
-    return React.createElement("div", { className: ['input-wrapper', wrapperClass].join(" ") },
-        React.createElement("input", __assign({}, register, { className: ['input-field', inputClass].join(" ") }, inputProps)));
-};
-exports.PInput = PInput;
+exports.mapObjectToSelect = mapObjectToSelect;
 exports.baseApiUrl = "https://localhost:7156";
 exports.axiosBaseConfig = {
     headers: {

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as ReactDOM from 'react-dom';
 
-import { PInput, axiosBaseConfig, baseApiUrl, Image, getCookie, testFunc, PictureDto } from './common';
+import { PInput, axiosBaseConfig, baseApiUrl, Image, getCookie, testFunc, PictureDto, PictureListElement } from './common';
 import { PageWrapper } from './common';
 import axios from 'axios';
 
@@ -54,12 +54,7 @@ export const PicturesPage = () => {
     </PageWrapper>
 }
 
-const PictureListElement = (props: { item: PictureDto, [x: string]: any }) => {
-    const { item } = props;
-    return <div className='picture-list-element'>
-        <Image src={item.link} item={item} />
-    </div>
-}
+
 
 
 

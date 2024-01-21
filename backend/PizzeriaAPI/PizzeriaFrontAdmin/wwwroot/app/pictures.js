@@ -86,7 +86,7 @@ var PicturesPage = function () {
         var res;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetAllPictureList")];
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetAllPictureList", common_1.axiosBaseConfig)];
                 case 1:
                     res = _a.sent();
                     console.log(res);
@@ -109,7 +109,7 @@ var PicturesPage = function () {
                     form.append("Name", arr[i].name);
                     form.append("Link", "");
                     form.append("Picture", arr[i]);
-                    return [4 /*yield*/, axios_1.default.post(common_1.baseApiUrl + "/AddPicture", form)];
+                    return [4 /*yield*/, axios_1.default.post(common_1.baseApiUrl + "/AddPicture", form, common_1.axiosBaseConfig)];
                 case 2:
                     req = _a.sent();
                     console.log(req);
@@ -131,14 +131,9 @@ var PicturesPage = function () {
         React.createElement("div", { className: "card mb-4" },
             React.createElement("div", { className: "form-top-container" }, !showUpload && React.createElement("div", { className: "btn btn-white btn-sm mb-0 btn-save", onClick: function () { return setUpload(true); } }, "Add new")),
             showUpload && pictureUpload,
-            React.createElement("div", { className: "picture-list" }, data.map(function (d, idx) { return React.createElement(PictureListElement, { key: idx, item: d }); }))));
+            React.createElement("div", { className: "picture-list" }, data.map(function (d, idx) { return React.createElement(common_1.PictureListElement, { key: idx, item: d }); }))));
 };
 exports.PicturesPage = PicturesPage;
-var PictureListElement = function (props) {
-    var item = props.item;
-    return React.createElement("div", { className: 'picture-list-element' },
-        React.createElement(common_1.Image, { src: item.link, item: item }));
-};
 var root = document.getElementById("react_root");
 ReactDOM.render(React.createElement(exports.PicturesPage, null), root);
 //# sourceMappingURL=pictures.js.map
