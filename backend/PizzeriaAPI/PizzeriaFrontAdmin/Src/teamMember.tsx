@@ -106,7 +106,7 @@ return <form className='section-form' >
             <PInput register={{ ...register("lastName") }} inputProps={{ type: 'text' }} />
             <div>
                 {socialData.length > 0 &&
-                    <Select register={register} data={socialData} defaultValue={item?.socialMediaIdList[0] || []} name={"teamMemberId"} selectProps={{multiselect:true}} />
+                    <Select register={register} data={socialData} defaultValue={item?.socialMediaIdList[0] || []} name={"teamMemberId"} selectProps={{multiple:true}} />
                 }
             </div>
             <div className="role">ROLA</div>

@@ -10,13 +10,31 @@ export const PictureListElement = (props: { item: PictureDto, onClick?: any, [x:
     <Image src={item.link} item={item} />
   </div>
 }
-
+export const sortFunc = (a: any, b: any, key?: string) => {
+  if (!key) {
+    return b.id - a.id
+  } else {
+    return b[key] - a[key]
+  }
+}
 export function Select(props: { register: any, data: any, name: any, selectProps?: any, defaultValue?: any }) {
-  const { name, data, register, selectProps, defaultValue = null } = props
+  const { name, data, register, selectProps, defaultValue = null } = props,
+    isSelected = (item: any, value: any) => {
+      let flag = false;
+      if (selectProps?.multiple) {
+        value.forEach((i: any) => {
+          if (i == item.value) flag = true
+        });
+        return flag
+      } else {
+        return item.value == value
+      }
+    }
+
   return (
-    <select {...register(name)} {...selectProps}>
+    <select className='select-comp' {...register(name)} {...selectProps}>
       {data.map((item: any, idx: any) => (
-        <option key={idx} value={item.value} selected={defaultValue != null && defaultValue == item.value}>
+        <option key={idx} value={item.value} selected={isSelected(item, defaultValue)}>
           {item.label}
         </option>
       ))}
@@ -168,7 +186,7 @@ export const mapObjectToSelect = (object: any, keyLabel: any, valueLabel: any) =
 export const baseApiUrl = "https://localhost:7156";
 export const axiosBaseConfig = {
   headers: {
-    'Bearer': "Bearer: " + getCookie("token"),
+    'Bearer': getCookie("token"),
   }
 }
 

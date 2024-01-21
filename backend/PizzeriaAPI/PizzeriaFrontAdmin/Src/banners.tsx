@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import * as ReactDOM from 'react-dom';
 import axios from 'axios';
-import { BannerDto, KeyValueDto, PInput, PageWrapper, PictureDto, Select, SliderDto, axiosBaseConfig, baseApiUrl, mapObjectToSelect } from './common';
+import { BannerDto, KeyValueDto, PInput, PageWrapper, PictureDto, Select, SliderDto, axiosBaseConfig, baseApiUrl, mapObjectToSelect, sortFunc } from './common';
 import { useForm } from 'react-hook-form';
 
 
@@ -32,7 +32,7 @@ const BannerSection = () => {
         },
         getBanners = async () => {
             let res = await axios.get(baseApiUrl + `/GetAllBannerList`)
-            setBannersData(res.data)
+            setBannersData(res.data.sort((a:any,b:any) => sortFunc(a,b)))
         },
 
         getpictures = async () => {

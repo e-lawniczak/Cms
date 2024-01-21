@@ -7,6 +7,36 @@
     height: unset !important;
 }
 
+.input-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    input[type=checkbox] {
+        width: fit-content;
+    }
+}
+
+.select-comp {
+    width: 100%;
+
+    &::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #444444aa;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: #555555aa;
+    }
+}
+
 .side-nav-separator {
     margin-top: 15px;
 }
