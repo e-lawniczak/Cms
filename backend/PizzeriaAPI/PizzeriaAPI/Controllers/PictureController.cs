@@ -31,8 +31,8 @@ namespace PizzeriaAPI.Controllers
             this.transactionCoordinator = transactionCoordinator;
             this.pictureRepository = pictureRepository;
             currentDirectory = AppContext.BaseDirectory;
-            originalImageDirectory = currentDirectory + "Images/Original/";
-            resizedImageDirectory = currentDirectory + "Images/Resized/";
+            originalImageDirectory = currentDirectory + "Images\\Original\\";
+            resizedImageDirectory = currentDirectory + "Images\\Resized\\";
         }
 
         [HttpPost]
@@ -170,7 +170,7 @@ namespace PizzeriaAPI.Controllers
         [SwaggerResponse(HttpStatusCode.OK, "Picture updated successfully")]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Picture not found")]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Failed to update picture")]
-        public async Task<ActionResult> UpdatePicture([FromBody] UpdatePictureDto pictureDto)
+        public async Task<ActionResult> UpdatePicture([FromForm] UpdatePictureDto pictureDto)
         {
             var picture = await transactionCoordinator.InRollbackScopeAsync(async session =>
             {
@@ -180,7 +180,12 @@ namespace PizzeriaAPI.Controllers
             if (picture == null)
                 return BadRequest("Picture not found");
 
-
+            var pictureFilePath = picture.FilePath.Clone().ToString();
+            var pictureResizedFilePath = picture.ResizedFilePath.Clone().ToString();
+            var tmpPictureFilePath = pictureFilePath + "tmp";
+            var tmpPictureResizedFilePath = pictureResizedFilePath + "tmp";
+            System.IO.File.Move(pictureFilePath, tmpPictureFilePath);
+            System.IO.File.Move(pictureResizedFilePath, tmpPictureResizedFilePath);
             try
             {
                 var imageBytes = ConvertIFormFileToByteArray(pictureDto.Picture);
@@ -189,24 +194,20 @@ namespace PizzeriaAPI.Controllers
             }
             catch (Exception e)
             {
+                System.IO.File.Move(tmpPictureFilePath, pictureFilePath);
+                System.IO.File.Move(tmpPictureResizedFilePath, pictureResizedFilePath);
                 logger.LogError($"Failed to save picture to filesystem: {e.Message}", e);
                 return Problem($"Failed to save picture to filesystem: {e.Message}");
             }
-
-            var pictureFilePath = picture.FilePath.Clone().ToString();
-            var pictureResizedFilePath = picture.ResizedFilePath.Clone().ToString();
-            var tmpPictureFilePath = pictureFilePath + "tmp";
-            var tmpPictureResizedFilePath = pictureResizedFilePath + "tmp";
             try
             {
-                System.IO.File.Move(pictureFilePath, tmpPictureFilePath);
-                System.IO.File.Move(pictureResizedFilePath, tmpPictureResizedFilePath);
-
                 await UpdatePicture(picture, pictureDto);
                 await transactionCoordinator.InCommitScopeAsync(async session =>
                 {
                     await pictureRepository.UpdateAsync(picture, session);
                 });
+                System.IO.File.Delete(tmpPictureFilePath);
+                System.IO.File.Delete(tmpPictureResizedFilePath);
 
             }
             catch (Exception e)
@@ -236,7 +237,7 @@ namespace PizzeriaAPI.Controllers
         [HttpDelete]
         [Route("/DeletePicture/{pictureId}")]
         [SwaggerResponse(HttpStatusCode.OK, "Picture was deleted successfully")]
-        public async Task<ActionResult> DeletPicture([FromRoute] int pictureId)
+        public async Task<ActionResult> DeletePicture([FromRoute] int pictureId)
         {
             var picture = await transactionCoordinator.InRollbackScopeAsync(async session =>
             {
