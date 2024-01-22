@@ -37,7 +37,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPost]
         [Route("/AddPicture")]
-        [SwaggerResponse(HttpStatusCode.OK, "Picture inserted successfully", typeof(string))]
+        [SwaggerResponse(HttpStatusCode.OK, "Picture inserted successfully")]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Failed to save file to filesystem")]
         public async Task<ActionResult> AddPicture([FromForm] AddPictureDto pictureDto)
         {
@@ -67,7 +67,7 @@ namespace PizzeriaAPI.Controllers
                 return Problem($"Failed to save picture to database: {e.Message}");
             }
 
-            return Ok($"https://{HttpContext.Request.Host.Value}/GetPicture/{picture.PictureId}");
+            return Ok("Picture inserted successfully");
         }
 
         private void DeletePictureFromFilesystem(Picture picture)
