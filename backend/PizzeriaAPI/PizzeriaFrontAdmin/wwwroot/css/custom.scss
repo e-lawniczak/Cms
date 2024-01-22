@@ -2,6 +2,7 @@
 @import './pictures';
 @import './pageSettings';
 @import './socialList';
+@import './gallery';
 
 .navbar-vertical.navbar-expand-xs .navbar-collapse {
     height: unset !important;
@@ -10,11 +11,17 @@
 .input-wrapper {
     display: flex;
     justify-content: flex-start;
-    align-items: flex-start;
+    align-items: center;
 
     input[type=checkbox] {
         width: fit-content;
     }
+}
+
+.number-of-pics {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .select-comp {

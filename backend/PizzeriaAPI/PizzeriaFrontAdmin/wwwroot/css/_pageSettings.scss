@@ -162,22 +162,35 @@
     align-items: flex-start;
     gap: 10px;
 }
+
 .product-row.row {
     display: grid;
-    grid-template-columns: 50px 100px 100px 100px auto repeat(5,100px) 300px;
+    grid-template-columns: 50px 100px 100px 100px auto repeat(5, 100px) 300px;
 }
-.form-top-container+div{
+
+.form-top-container+div {
     display: grid;
     grid-template-columns: 1fr;
-    gap:10px;
-    &.picture-list{
+    gap: 10px;
+
+    &.picture-list {
         display: flex;
         gap: 5px;
     }
 }
-.generic-list .row{
+
+.generic-list .row {
     display: grid;
+    padding: 5px 0;
+    &:hover {
+        background-color: #d5defd7d;
+    }
 }
-.testimonial-row.row{
-grid-template-columns: 50px 200px 200px auto 70px 150px 150px 300px ;
+
+.testimonial-row.row {
+    grid-template-columns: 50px 200px 200px auto 70px 150px 150px 300px;
+}
+
+.gallery-row.row {
+    grid-template-columns: 50px 150px auto auto 70px 100px 300px;
 }

@@ -124,6 +124,7 @@ var PicturesPage = function () {
     }); }, deletePicture = function (item) {
         var res = axios_1.default.delete(common_1.baseApiUrl + "/DeletePicture/".concat(item.pictureId), common_1.axiosBaseConfig);
         getData();
+        location.reload();
     }, pictureUpload = React.createElement("div", { className: "picture-upload" },
         React.createElement("form", { className: 'file-upload-form', onSubmit: handleSubmit(onSubmit) },
             React.createElement(common_1.PInput, { register: __assign({}, register("fileUpload")), inputProps: { type: 'file', multiple: true } }),

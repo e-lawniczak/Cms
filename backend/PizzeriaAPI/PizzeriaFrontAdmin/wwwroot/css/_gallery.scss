@@ -1,0 +1,16 @@
+.gallery-pic-list {
+    .selected {
+        border: 2px solid greenyellow;
+    }
+
+    .not-selected {
+        border: 2px solid transparent;
+    }
+}
+
+.current-pic-list {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 5px;
+}

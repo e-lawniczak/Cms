@@ -242,10 +242,18 @@
 
 .generic-list .row {
   display: grid;
+  padding: 5px 0;
+}
+.generic-list .row:hover {
+  background-color: rgba(213, 222, 253, 0.4901960784);
 }
 
 .testimonial-row.row {
   grid-template-columns: 50px 200px 200px auto 70px 150px 150px 300px;
+}
+
+.gallery-row.row {
+  grid-template-columns: 50px 150px auto auto 70px 100px 300px;
 }
 
 .social-row.row {
@@ -261,6 +269,20 @@
   align-items: flex-start;
 }
 
+.gallery-pic-list .selected {
+  border: 2px solid greenyellow;
+}
+.gallery-pic-list .not-selected {
+  border: 2px solid transparent;
+}
+
+.current-pic-list {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 5px;
+}
+
 .navbar-vertical.navbar-expand-xs .navbar-collapse {
   height: unset !important;
 }
@@ -268,11 +290,17 @@
 .input-wrapper {
   display: flex;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
 }
 .input-wrapper input[type=checkbox] {
   width: -moz-fit-content;
   width: fit-content;
+}
+
+.number-of-pics {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .select-comp {

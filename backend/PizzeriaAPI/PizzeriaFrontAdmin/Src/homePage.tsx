@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import * as ReactDOM from 'react-dom';
-import { Image, KeyValueDto, MenuElementDto, PInput, PageSettingsSection, PageWrapper, PictureDto, PictureListElement, Select, SliderDto, SocialMediaDto, axiosBaseConfig, baseApiUrl, mapObjectToSelect } from './common';
+import { BannerDto, Image, KeyValueDto, MenuElementDto, PInput, PageSettingsSection, PageWrapper, PictureDto, PictureListElement, Select, SliderDto, SocialMediaDto, axiosBaseConfig, baseApiUrl, mapObjectToSelect } from './common';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 
@@ -22,12 +22,78 @@ export const HomePage = () => {
         <SliderSection />
         <BannerSection banner_key={'banner_1'} title={"First banner"} />
         <BannerSection banner_key={'banner_2'} title={"Second banner banner"} />
+        {Array.from({ length: 6 }, (_, i) => i + 1).map((i: any, idx: any) => <GallerySection key={idx} gallery_key={`gallery_${i}`} title={`Home page gallery ${i}`} />)}
+
     </PageWrapper>
 }
-const BannerSection = (props:{banner_key:string, title:string}) => {
+const GallerySection = (props: { gallery_key: string, title: string }) => {
+    const
+        [galllery, setSlider] = useState<KeyValueDto>(),
+        [galleries, setGalleries] = useState<SliderDto[]>(),
+        { register, handleSubmit, setValue } = useForm(),
+        sKey = props.gallery_key,
+        onSubmit = (data: any) => {
+            if (!galllery)
+                addItem(sKey, data.bannerValue)
+            else
+                editItem(galllery.id, galllery.key, data.bannerValue)
+            getKeyValues()
+        },
+        getGalleries = async () => {
+            let res = await axios.get(baseApiUrl + `/GetVisibleGalleryList`)
+            setGalleries(res.data)
+        },
+        getKeyValues = async () => {
+            let res = await axios.get(baseApiUrl + `/GetKeyValueByKey/${sKey}`)
+            setSlider(res.data)
+        },
+        editItem = async (id: any, key: string, value: any) => {
+            const url = baseApiUrl + "/UpdateKeyValueById"
+            await axios.patch(url, { id: id, key: key, value: value }, axiosBaseConfig)
+            getKeyValues()
+
+        },
+        addItem = async (key: string, value: any) => {
+            const url = baseApiUrl + "/AddKeyValue";
+            await axios.post(url, { id: -1, key: key, value: value }, axiosBaseConfig)
+            getKeyValues()
+        }
+
+    React.useEffect(() => {
+        getKeyValues()
+        getGalleries()
+    }, [])
+    return <PageSettingsSection title={props.title} subtext={"Choose a gallery to be displayed as one of the 6 on the home page"} >
+
+        <div>
+            <form action="" className="section-form" onSubmit={handleSubmit(onSubmit)}>
+                <div className="form-content ">
+                    <div className="row">
+                        <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>id</div>
+                        <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>key</div>
+                        <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>value</div>
+                    </div>
+                    <div className="row">
+                        <div className="id">{galllery?.id || -1}</div>
+                        <div className="key">{galllery?.key || sKey}</div>
+                        <div>
+                            {galleries && galleries.length > 0 &&
+                                <Select register={register} defaultValue={galllery?.value} data={mapObjectToSelect(galleries, "name", "name")} name={"bannerValue"} />
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div className="buttons-container">
+                    <button type='submit' className="btn btn-white btn-sm w-100 mb-0 btn-save" >Save</button>
+                </div>
+            </form>
+        </div>
+    </PageSettingsSection>
+}
+const BannerSection = (props: { banner_key: string, title: string }) => {
     const
         [banner, setSlider] = useState<KeyValueDto>(),
-        [bannerData, setSliderData] = useState<SliderDto[]>(),
+        [bannerData, setSliderData] = useState<BannerDto[]>(),
         { register, handleSubmit, setValue } = useForm(),
         sKey = props.banner_key,
         onSubmit = (data: any) => {
@@ -38,7 +104,7 @@ const BannerSection = (props:{banner_key:string, title:string}) => {
             getKeyValues()
         },
         getSliders = async () => {
-            let res = await axios.get(baseApiUrl + `/GetAllBannerList`)
+            let res = await axios.get(baseApiUrl + `/GetVisibleBannerList`)
             setSliderData(res.data)
         },
         getKeyValues = async () => {
@@ -103,7 +169,7 @@ const SliderSection = () => {
             getKeyValues()
         },
         getSliders = async () => {
-            let res = await axios.get(baseApiUrl + `/GetAllSliderList`)
+            let res = await axios.get(baseApiUrl + `/GetVisibleSliderList`)
             setSliderData(res.data)
         },
         getKeyValues = async () => {
@@ -204,7 +270,7 @@ const MenuElementRow = (props: { parentElements: any[], item: MenuElementDto, el
                 isVisible: data?.isVisible || false,
                 link: data?.link || "",
                 menuElementId: item?.menuElementId || -1,
-                parentMenuElementId: data?.parentMenuElementId/1 || null,
+                parentMenuElementId: data?.parentMenuElementId / 1 || null,
                 text: data?.text || ""
             } as MenuElementDto
         },

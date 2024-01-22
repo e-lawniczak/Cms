@@ -143,8 +143,16 @@ export interface TestimonialDto {
   pictureIdList: any[]
 
 }
-export interface RoleDto{
-  
+export interface GalleryDto {
+  name: string,
+  mainText: string,
+  subText: string,
+  id: number,
+  isVisible: boolean,
+  pictureIdList: any[]
+}
+export interface RoleDto {
+
 }
 export interface InputProps {
   register: any,
