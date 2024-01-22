@@ -34,17 +34,18 @@ const SliderSection = () => {
                 addItem(sKey, data.sliderValue)
             else
                 editItem(slider.id, slider.key, data.sliderValue)
+            getKeyValues()
         },
         getSliders = async () => {
             let res = await axios.get(baseApiUrl + `/GetAllSliderList`)
             setSliderData(res.data)
         },
         getKeyValues = async () => {
-            let res = await axios.get(baseApiUrl + `/GetKeyValue/${sKey}`)
+            let res = await axios.get(baseApiUrl + `/GetKeyValueByKey/${sKey}`)
             setSlider(res.data)
         },
         editItem = async (id: any, key: string, value: any) => {
-            const url = baseApiUrl + "/UpdateKeyValue"
+            const url = baseApiUrl + "/UpdateKeyValueById"
             await axios.patch(url, { id: id, key: key, value: value }, axiosBaseConfig)
             getKeyValues()
 
@@ -97,10 +98,10 @@ const MenuSection = () => {
             let res = await axios.get(baseApiUrl + `/GetAllMenuElementList`)
             console.log(res);
             setElements(res.data)
-            setParentElements(res.data.filter((m: MenuElementDto, idx: any) => !(m.parentMenuElementId && m.parentMenuElementId > 0)))
+            setParentElements(res.data.filter((m: MenuElementDto, idx: any) => m.parentMenuElementId == null))
         },
         parentData = mapObjectToSelect(parentElements, "text", "menuElementId"),
-        newItem = <MenuElementRow parentData={parentData} item={null} refreshFunc={getMenuElements} isNew={true} />
+        newItem = <MenuElementRow elements={elements} parentData={parentData} item={null} refreshFunc={getMenuElements} isNew={true} setShow={setNew} />
 
 
     React.useEffect(() => {
@@ -116,19 +117,20 @@ const MenuSection = () => {
                     <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>label</div>
                     <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>link</div>
                     <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>visible</div>
-                    <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>parent</div>
+                    <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>select parent</div>
+                    <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>current parent</div>
                     <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>options</div>
                 </div>
                 {showNew && newItem}
-                {elements && elements.map((e: MenuElementDto, idx: any) => <MenuElementRow parentData={parentData} item={e} key={idx} refreshFunc={getMenuElements} />)}
+                {elements && elements.map((e: MenuElementDto, idx: any) => <MenuElementRow parentData={parentData} elements={elements} item={e} key={idx} refreshFunc={getMenuElements} />)}
 
             </div>
         </form>
     </PageSettingsSection>
 }
-const MenuElementRow = (props: { parentData: any[], item: MenuElementDto, isNew?: boolean, refreshFunc: any }) => {
+const MenuElementRow = (props: { parentData: any[], item: MenuElementDto, elements: any, isNew?: boolean, refreshFunc: any, setShow?: any }) => {
     const
-        { item, parentData, isNew = false, refreshFunc } = props,
+        { item, parentData, isNew = false, refreshFunc, elements, setShow = () => { } } = props,
         { register, handleSubmit, setValue, getValues } = useForm({ defaultValues: { ...item } }),
         onSubmit = (data: any) => {
             console.log(data);
@@ -138,7 +140,7 @@ const MenuElementRow = (props: { parentData: any[], item: MenuElementDto, isNew?
                 isVisible: data?.isVisible || false,
                 link: data?.link || "",
                 menuElementId: item?.menuElementId || -1,
-                parentMenuElementId: data?.parentMenuElementId || null,
+                parentMenuElementId: data?.parentMenuElementId as number || null,
                 text: data?.text || ""
             } as MenuElementDto
         },
@@ -147,7 +149,7 @@ const MenuElementRow = (props: { parentData: any[], item: MenuElementDto, isNew?
             const url = baseApiUrl + "/AddMenuElement";
             await axios.post(url, item, axiosBaseConfig)
             refreshFunc()
-
+            setShow(false)
         },
         deleteItem = async (data: any) => {
             let item = makeItem(data)
@@ -167,8 +169,11 @@ const MenuElementRow = (props: { parentData: any[], item: MenuElementDto, isNew?
         <PInput register={{ ...register("link") }} inputProps={{ type: 'text' }} />
         <PInput register={{ ...register("isVisible") }} inputProps={{ type: 'checkbox' }} />
         <div>
-            {parentData && parentData.length > 0 &&
-                <Select register={register} defaultValue={item.parentMenuElementId} data={parentData} name={"parentMenuElementId"} />}
+            {parentData && parentData?.length > 0 &&
+                <Select register={register} defaultValue={item?.parentMenuElementId} data={parentData} name={"parentMenuElementId"} />}
+        </div>
+        <div>
+            {elements && elements.filter((e: any) => item?.menuElementId == e?.id)[0]?.text}
         </div>
         <div className="buttons-container">
             {isNew ?
@@ -195,13 +200,16 @@ const LogoSection = (props: { logo_key: string, title: string }) => {
                 addItem(props.logo_key, data.logoValue)
             else
                 editItem(logoPicture.id, logoPicture.key, data.logoValue)
+            getKeyValues()
+
         },
         getKeyValues = async () => {
-            let res = await axios.get(baseApiUrl + `/GetKeyValue/${props.logo_key}`)
+            let res = await axios.get(baseApiUrl + `/GetKeyValueByKey/${props.logo_key}`)
             setLogo(res.data)
+            setValue("logoValue", res.data.value)
         },
         editItem = async (id: any, key: string, value: any) => {
-            const url = baseApiUrl + "/UpdateKeyValue"
+            const url = baseApiUrl + "/UpdateKeyValueById"
             await axios.patch(url, { id: id, key: key, value: value }, axiosBaseConfig)
             getKeyValues()
 
@@ -212,15 +220,16 @@ const LogoSection = (props: { logo_key: string, title: string }) => {
             getKeyValues()
         },
         onPictureClick = (pic: PictureDto) => {
-            setValue("logoValue", `/GetPicture/Full/${pic.pictureId}`)
+            setValue("logoValue", `/GetPicture/Mini/${pic.pictureId}`)
         }
 
     React.useEffect(() => {
         getPictures()
-    })
+        getKeyValues()
+    }, [])
     return <PageSettingsSection title={props.title} className={'two-col'} subtext={'Click on the picture from the list. Then click the save button'} >
         <div className="logo-preview">
-            <Image src={logoPicture?.value || ""} />
+            <Image src={baseApiUrl + logoPicture?.value || ""} />
         </div>
         <div>
             <form action="" className="section-form" onSubmit={handleSubmit(onSubmit)}>
@@ -241,7 +250,7 @@ const LogoSection = (props: { logo_key: string, title: string }) => {
                 </div>
             </form>
             <div className="picture-list">
-                {pictures?.map((d: PictureDto, idx) => <PictureListElement key={idx} item={d} onClick={() => onPictureClick(d)} />)}
+                {pictures?.map((d: PictureDto, idx) => <div className='picture-container'><PictureListElement key={idx} item={d} onClick={() => onPictureClick(d)} /> <div>{d.name}</div>  </div>)}
             </div>
         </div>
     </PageSettingsSection>
@@ -250,39 +259,48 @@ const ContactSection = () => {
     const
         [phone, setPhone] = useState<KeyValueDto>(),
         [address, setAddress] = useState<KeyValueDto>(),
-        { register, handleSubmit } = useForm(),
+        { register, handleSubmit, setValue } = useForm({
+            defaultValues: { phoneValue: phone?.value || "", addressValue: address?.value || "" }
+        }),
         onSubmit = (data: any) => {
             console.log(data);
-            if (!phone)
+            if (!phone) {
                 addItem("phone", data.phoneValue)
-            else
+            }
+            else {
                 editItem(phone.id, phone.key, data.phoneValue)
-            if (!address)
+            }
+            if (!address) {
                 addItem("address", data.addressValue)
-            else
+            }
+            else {
                 editItem(address.id, address.key, data.addressValue)
+            }
+            getKeyValues()
+
         },
         getKeyValues = async () => {
-            let pres = await axios.get(baseApiUrl + `/GetKeyValue/phone`)
-            let ares = await axios.get(baseApiUrl + `/GetKeyValue/address`)
+            let pres = await axios.get(baseApiUrl + `/GetKeyValueByKey/phone`)
+            let ares = await axios.get(baseApiUrl + `/GetKeyValueByKey/address`)
             setPhone(pres.data)
+            setValue("phoneValue", pres.data.value)
             setAddress(ares.data)
+            setValue("addressValue", ares.data.value)
+
         },
         editItem = async (id: any, key: string, value: any) => {
-            const url = baseApiUrl + "/UpdateKeyValue"
+            const url = baseApiUrl + "/UpdateKeyValueById"
             await axios.patch(url, { id: id, key: key, value: value }, axiosBaseConfig)
-            getKeyValues()
 
         },
         addItem = async (key: string, value: any) => {
             const url = baseApiUrl + "/AddKeyValue";
             await axios.post(url, { id: -1, key: key, value: value }, axiosBaseConfig)
-            getKeyValues()
         }
 
     React.useEffect(() => {
         getKeyValues()
-    })
+    }, [])
     return <PageSettingsSection title={"Contact info"} subtext={"Choose 2 from key-value entries. Value -1 of id means that the value is not yet set"}>
         <form className='section-form' onSubmit={handleSubmit(onSubmit)}>
             <div className="form-content ">
@@ -320,7 +338,7 @@ const SocialMediaSection = () => {
 
     React.useEffect(() => {
         getSocials()
-    })
+    }, [])
     return <PageSettingsSection title={"Social media"} subtext={`Socials with "Main" checked will be displayed at the main page`}>
         <form className='section-form' >
             <div className="form-content ps ps--active-y">
@@ -335,7 +353,7 @@ const SocialMediaSection = () => {
 }
 const SocialMediaRow = (props: { item: SocialMediaDto, [x: string]: any }) => {
     const { item, setData, data, getSocials } = props,
-        thisItemMain = data.filter((i: any) => i.originalItem.name == item.name)[0],
+        thisItemMain = data?.filter((i: any) => i.originalItem.name == item.name)[0],
         handleCheckboxChange = (e: any, type: string) => {
             let formItem = item
             if (type == "main") {
@@ -352,12 +370,16 @@ const SocialMediaRow = (props: { item: SocialMediaDto, [x: string]: any }) => {
         }
 
 
-    return <div className="row">
+    return <div className="social-home-row row">
         <div className="name">{item.name}</div>
-        <label htmlFor={item.name}>Wyświetlić jako główne?</label>
-        <input type="checkbox" name={item.name} id={item.name} checked={thisItemMain?.isMain || false} onChange={(e) => handleCheckboxChange(e, "main")} />
-        <label htmlFor={item.name}>Czy wyświelać?</label>
-        <input type="checkbox" name={item.name} id={item.name} checked={thisItemMain?.isMain || false} onChange={(e) => handleCheckboxChange(e, "visible")} />
+        <div>
+            <label htmlFor={item.name}>Wyświetlić jako główne?</label>
+            <input type="checkbox" name={item.name} id={item.name} checked={thisItemMain?.isMain || false} onChange={(e) => handleCheckboxChange(e, "main")} />
+        </div>
+        <div>
+            <label htmlFor={item.name}>Czy wyświelać?</label>
+            <input type="checkbox" name={item.name} id={item.name} checked={thisItemMain?.isMain || false} onChange={(e) => handleCheckboxChange(e, "visible")} />
+        </div>
     </div>
 }
 

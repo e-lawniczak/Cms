@@ -53,6 +53,11 @@
     grid-template-columns: 1fr 2fr;
 }
 
+.section-content{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
 .section-form .picture-list {
     max-height: 300px;
     overflow-y: scroll;
@@ -81,7 +86,12 @@
 }
 
 .menu-element-row.row {
-    grid-template-columns: 50px 150px 200px 100px 150px 300px;
+    grid-template-columns: 50px 150px 200px 100px 150px 150px 300px;
+
+}
+
+.social-home-row.row {
+    grid-template-columns: 100px 300px 300px;
 
 }
 

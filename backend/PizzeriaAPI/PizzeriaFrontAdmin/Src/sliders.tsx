@@ -23,6 +23,7 @@ const SliderSection = () => {
         [banner, setBanner] = useState<KeyValueDto>(),
         [sliders, setSlidersData] = useState<SliderDto[]>(),
         [banners, setBanners] = useState<BannerDto[]>(),
+        [pictures, setPictures] = useState<PictureDto[]>(),
         [showNew, setNew] = useState(false),
         { register, handleSubmit, setValue } = useForm(),
         getBanners = async () => {
@@ -36,7 +37,7 @@ const SliderSection = () => {
 
         getpictures = async () => {
             let res = await axios.get(baseApiUrl + `/GetAllPictureList`, axiosBaseConfig)
-            setBanners(res.data)
+            setPictures(res.data)
         },
         getData = () => {
             getBanners()
@@ -63,13 +64,13 @@ const SliderSection = () => {
                 <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>selected banners</div>
             </div>
             {showNew && addNew}
-            {sliders && sliders.map((item: SliderDto, idx: any) => <SliderRow key={idx} item={item} isNew={false} banners={banners} refreshFunc={getData} />)}
+            {sliders && banners && sliders.map((item: SliderDto, idx: any) => <SliderRow key={idx} item={item} isNew={false} banners={banners} refreshFunc={getData} />)}
         </div>
     </div>
 }
 const SliderRow = (props: { item: SliderDto, isNew: boolean, banners: any[], refreshFunc: any, showFunc?: any }) => {
     const
-        { item, isNew, banners, refreshFunc, showFunc } = props,
+        { item, isNew, banners = [], refreshFunc, showFunc } = props,
         bannersData = mapObjectToSelect(banners, "title", "id"),
         [pickedBanners, setPickedBanners] = useState([]),
         { register, handleSubmit, formState, getValues } = useForm({
@@ -124,7 +125,7 @@ const SliderRow = (props: { item: SliderDto, isNew: boolean, banners: any[], ref
                 </div>
                 <div className="selected-banners">
 
-                    {banners?.filter((b: BannerDto, idx: any) => {
+                    {banners.filter((b: BannerDto, idx: any) => {
                         for (let i = 0; i < item.bannerIdList.length; i++) {
                             if (item.bannerIdList[i] == b.id) return true;
                         }

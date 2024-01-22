@@ -5,9 +5,9 @@ import { useForm } from 'react-hook-form';
 import * as ReactDOM from 'react-dom';
 
 export const PictureListElement = (props: { item: PictureDto, onClick?: any, [x: string]: any }) => {
-  const { item, onClick } = props;
+  const { item, onClick, src } = props;
   return <div className='picture-list-element' onClick={onClick}>
-    <Image src={item.link} item={item} />
+    <Image src={src || baseApiUrl + `/GetPicture/Mini/${item.pictureId}`} item={item} />
   </div>
 }
 export const sortFunc = (a: any, b: any, key?: string) => {
@@ -21,6 +21,7 @@ export function Select(props: { register: any, data: any, name: any, selectProps
   const { name, data, register, selectProps, defaultValue = null } = props,
     isSelected = (item: any, value: any) => {
       let flag = false;
+      if (!defaultValue) return false
       if (selectProps?.multiple) {
         value.forEach((i: any) => {
           if (i == item.value) flag = true
@@ -185,9 +186,8 @@ export const mapObjectToSelect = (object: any, keyLabel: any, valueLabel: any) =
 
 export const baseApiUrl = "https://localhost:7156";
 export const axiosBaseConfig = {
-  headers: {
-    'Bearer': getCookie("token"),
-  }
+  headers: { Authorization: `Bearer ${getCookie("token")}` }
+
 }
 
 export const testFunc = () => {

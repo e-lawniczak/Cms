@@ -27,9 +27,63 @@
 }
 
 .picture-list {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  margin-top: 15px;
   gap: 5px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.picture-container {
+  max-height: 300px;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 5px;
+  overflow: hidden;
+}
+.picture-container .img-container {
+  max-height: 250px;
+  overflow: hidden;
+}
+.picture-container .overlay {
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  display: none;
+  position: absolute;
+  background-color: rgba(235, 235, 235, 0.6666666667);
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+.picture-container .overlay div {
+  font-size: 22px;
+  color: white;
+}
+.picture-container:hover .overlay {
+  display: flex;
+}
+
+.picture-list-element {
+  max-height: 300px;
+}
+.picture-list-element .img-container {
+  max-height: 250px;
+  overflow: hidden;
+}
+
+.picture-list .picture-list-element {
+  cursor: pointer;
+}
+
+.logo-preview {
+  justify-content: center;
+  width: 100%;
+  height: 250px;
+  display: flex;
 }
 
 .section-title {
@@ -79,6 +133,12 @@
   grid-template-columns: 1fr 2fr;
 }
 
+.section-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
 .section-form .picture-list {
   max-height: 300px;
   overflow-y: scroll;
@@ -101,7 +161,11 @@
 }
 
 .menu-element-row.row {
-  grid-template-columns: 50px 150px 200px 100px 150px 300px;
+  grid-template-columns: 50px 150px 200px 100px 150px 150px 300px;
+}
+
+.social-home-row.row {
+  grid-template-columns: 100px 300px 300px;
 }
 
 .banners-row.row {
@@ -124,7 +188,7 @@
   display: grid;
   gap: 10px;
   align-content: flex-end;
-  grid-template-columns: 50px 150px 200px 100px 100px 200px 100px;
+  grid-template-columns: 50px 150px 200px 100px 100px 200px 300px;
 }
 
 .buttons-container {
@@ -194,8 +258,8 @@ a.normal-link {
   align-items: center;
 }
 .img-container img {
-  width: 100%;
-  max-height: 100%;
+  max-width: 100%;
+  height: 100%;
 }
 
 form.account-form {

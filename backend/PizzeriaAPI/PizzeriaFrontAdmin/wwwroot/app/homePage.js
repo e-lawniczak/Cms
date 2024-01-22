@@ -330,7 +330,7 @@ var LogoSection = function (props) {
     };
     React.useEffect(function () {
         getPictures();
-    });
+    }, []);
     return React.createElement(common_1.PageSettingsSection, { title: props.title, className: 'two-col', subtext: 'Click on the picture from the list. Then click the save button' },
         React.createElement("div", { className: "logo-preview" },
             React.createElement(common_1.Image, { src: (logoPicture === null || logoPicture === void 0 ? void 0 : logoPicture.value) || "" })),
@@ -404,7 +404,7 @@ var ContactSection = function () {
     }); };
     React.useEffect(function () {
         getKeyValues();
-    });
+    }, []);
     return React.createElement(common_1.PageSettingsSection, { title: "Contact info", subtext: "Choose 2 from key-value entries. Value -1 of id means that the value is not yet set" },
         React.createElement("form", { className: 'section-form', onSubmit: handleSubmit(onSubmit) },
             React.createElement("div", { className: "form-content " },
@@ -439,7 +439,7 @@ var SocialMediaSection = function () {
     }); };
     React.useEffect(function () {
         getSocials();
-    });
+    }, []);
     return React.createElement(common_1.PageSettingsSection, { title: "Social media", subtext: "Socials with \"Main\" checked will be displayed at the main page" },
         React.createElement("form", { className: 'section-form' },
             React.createElement("div", { className: "form-content ps ps--active-y" },

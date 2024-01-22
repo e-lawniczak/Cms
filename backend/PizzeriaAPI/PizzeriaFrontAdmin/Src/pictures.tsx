@@ -31,6 +31,9 @@ export const PicturesPage = () => {
                 }
             }
         },
+        deletePicture = (item: PictureDto) => {
+
+        },
         pictureUpload = <div className="picture-upload">
             <form className='file-upload-form' onSubmit={handleSubmit(onSubmit)}>
                 <PInput register={{ ...register("fileUpload") }} inputProps={{ type: 'file', multiple: true }} />
@@ -48,7 +51,7 @@ export const PicturesPage = () => {
             <div className="form-top-container">{!showUpload && <div className="btn btn-white btn-sm mb-0 btn-save" onClick={() => setUpload(true)} >Add new</div>}</div>
             {showUpload && pictureUpload}
             <div className="picture-list">
-                {data.map((d: PictureDto, idx) => <PictureListElement key={idx} item={d} />)}
+                {data.map((d: PictureDto, idx) => <div className='picture-container' onClick={() => { deletePicture(d) }}><div className='overlay'><div className="">X</div></div> <PictureListElement key={idx} item={d} /><div>{d.name}</div></div>)}
             </div>
         </div>
     </PageWrapper>

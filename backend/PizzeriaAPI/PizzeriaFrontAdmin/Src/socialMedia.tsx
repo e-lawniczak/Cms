@@ -26,7 +26,7 @@ export const SocialMediaPage = () => {
             await getSocials()
             await getpictures()
         },
-        addNew = <SocialMediaRow item={null} isNew={true} pictures={pictures} refreshFunc={getData} />
+        addNew = <SocialMediaRow item={null} isNew={true} pictures={pictures} refreshFunc={getData} setNew={setNew} />
 
 
 
@@ -56,9 +56,9 @@ export const SocialMediaPage = () => {
     </PageWrapper>
 }
 
-const SocialMediaRow = (props: { item: SocialMediaDto, isNew: boolean, pictures: any[], refreshFunc: any }) => {
+const SocialMediaRow = (props: { item: SocialMediaDto, isNew: boolean, setNew?: any, pictures: any[], refreshFunc: any }) => {
     const
-        { item, isNew, pictures, refreshFunc } = props,
+        { item, isNew, pictures, refreshFunc, setNew } = props,
         picData = mapObjectToSelect(pictures, "name", "pictureId"),
         { register, handleSubmit, formState, getValues } = useForm({
             defaultValues: { ...item }
@@ -70,7 +70,7 @@ const SocialMediaRow = (props: { item: SocialMediaDto, isNew: boolean, pictures:
                 isVisible: data?.isVisible || false,
                 link: data?.link || "",
                 name: data?.name || "",
-                pictureIdList: data.selectedPicture ? [data.selectedPicture] : [],
+                pictureIdList: data?.pictureIdList ? [data.pictureIdList / 1] : [],
                 teamMemberId: item?.teamMemberId || 0,
 
             } as SocialMediaDto
@@ -80,7 +80,7 @@ const SocialMediaRow = (props: { item: SocialMediaDto, isNew: boolean, pictures:
             const url = baseApiUrl + "/AddSocialMedia";
             await axios.post(url, item, axiosBaseConfig)
             refreshFunc()
-
+            setNew(false)
         },
         deleteItem = async (data: any) => {
             let item = makeItem(data)
@@ -105,7 +105,7 @@ const SocialMediaRow = (props: { item: SocialMediaDto, isNew: boolean, pictures:
                 <PInput register={{ ...register("isVisible") }} inputProps={{ type: 'checkbox' }} />
                 <div>
                     {picData.length > 0 &&
-                        <Select register={register} data={picData} defaultValue={item?.pictureIdList[0] || []} name={"selectedPicture"} />
+                        <Select register={register} data={picData} defaultValue={item?.pictureIdList[0] || []} name={"pictureIdList"} />
                     }
                 </div>
                 <div className="buttons-container">

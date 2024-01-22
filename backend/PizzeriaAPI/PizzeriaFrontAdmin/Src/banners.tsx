@@ -34,7 +34,6 @@ const BannerSection = () => {
             let res = await axios.get(baseApiUrl + `/GetAllBannerList`)
             setBannersData(res.data.sort((a:any,b:any) => sortFunc(a,b)))
         },
-
         getpictures = async () => {
             let res = await axios.get(baseApiUrl + `/GetAllPictureList`, axiosBaseConfig)
             setPictures(res.data)
@@ -43,7 +42,7 @@ const BannerSection = () => {
             await getBanners()
             await getpictures()
         },
-        addNew = <BannerRow item={null} isNew={true} pictures={pictures} refreshFunc={getData} />
+        addNew = <BannerRow item={null} isNew={true} pictures={pictures} refreshFunc={getData} setNew={setNew} />
 
 
     React.useEffect(() => {
@@ -64,13 +63,13 @@ const BannerSection = () => {
                 <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>options</div>
             </div>
             {showNew && addNew}
-            {bannersData && bannersData.map((item: BannerDto, idx: any) => <BannerRow key={idx} item={item} isNew={false} pictures={pictures} refreshFunc={getData} />)}
+            {bannersData && bannersData.map((item: BannerDto, idx: any) => <BannerRow key={idx} item={item}  isNew={false} pictures={pictures} refreshFunc={getData} />)}
         </div>
     </div>
 }
-const BannerRow = (props: { item: BannerDto, isNew: boolean, pictures: any[], refreshFunc: any }) => {
+const BannerRow = (props: { item: BannerDto, isNew: boolean, pictures: any[], refreshFunc: any, setNew?:any }) => {
     const
-        { item, isNew, pictures, refreshFunc } = props,
+        { item, isNew, pictures, refreshFunc,setNew } = props,
         picData = mapObjectToSelect(pictures, "name", "pictureId"),
         { register, handleSubmit, formState, getValues } = useForm({
             defaultValues: { ...item }
@@ -80,12 +79,11 @@ const BannerRow = (props: { item: BannerDto, isNew: boolean, pictures: any[], re
                 id: item?.id || -1,
                 isVisible: data?.isVisible || item?.isVisible || false,
                 link: data?.link || item?.link || "",
-                pictureIdList: data.selectedPicture ? [data.selectedPicture] : [],
+                pictureIdList: data?.pictureIdList ? [data?.pictureIdList/1] : [],
                 sliderId: data?.sliderId || item?.sliderId || null,
                 subText: data?.subText || item?.subText || "",
                 text: data?.text || item?.text || "",
                 title: data?.title || item?.title || ""
-
             } as BannerDto
         },
         addItem = async (data: any) => {
@@ -93,7 +91,7 @@ const BannerRow = (props: { item: BannerDto, isNew: boolean, pictures: any[], re
             const url = baseApiUrl + "/AddBanner";
             await axios.post(url, item, axiosBaseConfig)
             refreshFunc()
-
+            setNew(false)
         },
         deleteItem = async (data: any) => {
             let item = makeItem(data)
@@ -119,7 +117,7 @@ const BannerRow = (props: { item: BannerDto, isNew: boolean, pictures: any[], re
                 <PInput register={{ ...register("isVisible") }} inputProps={{ type: 'checkbox' }} />
                 <div>
                     {picData.length > 0 &&
-                        <Select register={register} data={picData} defaultValue={item?.pictureIdList[0] || null} name={"selectedPicture"} />
+                        <Select register={register} data={picData} defaultValue={item?.pictureIdList[0] || null} name={"pictureIdList"} />
                     }
                 </div>
                 <div className="buttons-container">

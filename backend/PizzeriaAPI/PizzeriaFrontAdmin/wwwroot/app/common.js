@@ -34,17 +34,40 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCookie = exports.callApi = exports.testFunc = exports.axiosBaseConfig = exports.baseApiUrl = exports.mapObjectToSelect = exports.PInput = exports.Image = exports.PageWrapper = exports.PageSettingsSection = exports.Select = exports.PictureListElement = void 0;
+exports.getCookie = exports.callApi = exports.testFunc = exports.axiosBaseConfig = exports.baseApiUrl = exports.mapObjectToSelect = exports.PInput = exports.Image = exports.PageWrapper = exports.PageSettingsSection = exports.Select = exports.sortFunc = exports.PictureListElement = void 0;
 var React = __importStar(require("react"));
 var PictureListElement = function (props) {
     var item = props.item, onClick = props.onClick;
     return React.createElement("div", { className: 'picture-list-element', onClick: onClick },
-        React.createElement(exports.Image, { src: item.link, item: item }));
+        React.createElement(exports.Image, { src: exports.baseApiUrl + "/GetPicture/Mini/".concat(item.pictureId), item: item }));
 };
 exports.PictureListElement = PictureListElement;
+var sortFunc = function (a, b, key) {
+    if (!key) {
+        return b.id - a.id;
+    }
+    else {
+        return b[key] - a[key];
+    }
+};
+exports.sortFunc = sortFunc;
 function Select(props) {
-    var name = props.name, data = props.data, register = props.register, selectProps = props.selectProps, _a = props.defaultValue, defaultValue = _a === void 0 ? null : _a;
-    return (React.createElement("select", __assign({}, register(name), selectProps), data.map(function (item, idx) { return (React.createElement("option", { key: idx, value: item.value, selected: defaultValue != null && defaultValue == item.value }, item.label)); })));
+    var name = props.name, data = props.data, register = props.register, selectProps = props.selectProps, _a = props.defaultValue, defaultValue = _a === void 0 ? null : _a, isSelected = function (item, value) {
+        var flag = false;
+        if (!defaultValue)
+            return false;
+        if (selectProps === null || selectProps === void 0 ? void 0 : selectProps.multiple) {
+            value.forEach(function (i) {
+                if (i == item.value)
+                    flag = true;
+            });
+            return flag;
+        }
+        else {
+            return item.value == value;
+        }
+    };
+    return (React.createElement("select", __assign({ className: 'select-comp' }, register(name), selectProps), data.map(function (item, idx) { return (React.createElement("option", { key: idx, value: item.value, selected: isSelected(item, defaultValue) }, item.label)); })));
 }
 exports.Select = Select;
 var PageSettingsSection = function (props) {
@@ -103,9 +126,7 @@ var mapObjectToSelect = function (object, keyLabel, valueLabel) {
 exports.mapObjectToSelect = mapObjectToSelect;
 exports.baseApiUrl = "https://localhost:7156";
 exports.axiosBaseConfig = {
-    headers: {
-        'Bearer': getCookie("token"),
-    }
+    headers: { Authorization: "Bearer ".concat(getCookie("token")) }
 };
 var testFunc = function () {
     console.log("działasswss");

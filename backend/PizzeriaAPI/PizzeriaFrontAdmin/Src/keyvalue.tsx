@@ -56,7 +56,7 @@ export const TableRow = (props: { item: KeyValueDto, refreshFunc: any, isNew?: b
 
 
         editItem = async () => {
-            const url = baseApiUrl + "/UpdateKeyValue"
+            const url = baseApiUrl + "/UpdateKeyValueById"
             await axios.patch(url, { id: item.id, key: key, value: value }, axiosBaseConfig)
             refreshFunc()
 

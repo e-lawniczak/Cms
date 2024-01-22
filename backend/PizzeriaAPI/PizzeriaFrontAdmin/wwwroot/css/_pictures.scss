@@ -1,10 +1,69 @@
 .file-upload-form {
     padding: 10px;
     display: flex;
-    gap:10px;
+    gap: 10px;
+}
+
+.picture-list {
+    margin-top: 15px;
+    gap: 5px;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.picture-container {
+    max-height: 300px;
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 5px;
+    overflow: hidden;
+    .img-container {
+        max-height: 250px;
+        overflow: hidden;
+    }
+
+    .overlay {
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+        display: none;
+        position: absolute;
+        background-color: #ebebebaa;
+        justify-content: center;
+        align-items: center;
+        z-index: 2;
+
+        div {
+            font-size: 22px;
+            color: white;
+        }
+    }
+
+    &:hover {
+        .overlay {
+            display: flex;
+        }
+    }
+}
+.picture-list-element{
+    max-height: 300px;
+    .img-container {
+        max-height: 250px;
+        overflow: hidden;
+    }
 }
 .picture-list{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    gap: 5px;
+    .picture-list-element{
+        cursor: pointer;
+    }
+}
+.logo-preview{
+    justify-content: center;
+    width: 100%;
+    height: 250px;
+    display: flex;
 }
