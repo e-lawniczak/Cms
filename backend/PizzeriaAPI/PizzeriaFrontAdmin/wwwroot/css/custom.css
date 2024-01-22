@@ -30,7 +30,7 @@
   margin-top: 15px;
   gap: 5px;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: flex-end;
   align-content: flex-start;
   display: flex;
   flex-wrap: wrap;
@@ -165,7 +165,7 @@
 }
 
 .social-home-row.row {
-  grid-template-columns: 100px 300px 300px;
+  grid-template-columns: 50px 200px 300px 300px;
 }
 .social-home-row.row > div {
   display: flex;

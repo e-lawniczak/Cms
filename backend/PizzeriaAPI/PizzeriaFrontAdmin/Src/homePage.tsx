@@ -342,6 +342,12 @@ const SocialMediaSection = () => {
     return <PageSettingsSection title={"Social media"} subtext={`Socials with "Main" checked will be displayed at the main page`}>
         <form className='section-form' >
             <div className="form-content ps ps--active-y">
+                <div className="social-home-row row">
+                    <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>id</div>
+                    <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>name</div>
+                    <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>main</div>
+                    <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>visible</div>
+                </div>
                 {socialMedia && socialMedia.length <= 0 && <div>Create <a className='normal-link' href="/SocialMedia">Social media</a> link first</div>}
                 {socialMedia && socialMedia.map((item: SocialMediaDto, idx: any) => <SocialMediaRow data={socialMedia} getSocials={getSocials} item={item} />)}
             </div>
@@ -371,13 +377,14 @@ const SocialMediaRow = (props: { item: SocialMediaDto, [x: string]: any }) => {
 
 
     return <div className="social-home-row row">
+        <div className="name">{item.id}</div>
         <div className="name">{item.name}</div>
         <div>
-            <label htmlFor={item.name}>Wyświetlić jako główne?</label>
+            {/* <label htmlFor={item.name}>Set as main?</label> */}
             <input type="checkbox" name={item.name} id={item.name} checked={thisItemMain?.isMain || false} onChange={(e) => handleCheckboxChange(e, "main")} />
         </div>
         <div>
-            <label htmlFor={item.name}>Czy wyświelać?</label>
+            {/* <label htmlFor={item.name}>Visible?</label> */}
             <input type="checkbox" name={item.name} id={item.name} checked={thisItemMain?.isVisible || false} onChange={(e) => handleCheckboxChange(e, "visible")} />
         </div>
     </div>
