@@ -53,11 +53,12 @@
     grid-template-columns: 1fr 2fr;
 }
 
-.section-content{
+.section-content {
     display: grid;
     grid-template-columns: 1fr;
     gap: 10px;
 }
+
 .section-form .picture-list {
     max-height: 300px;
     overflow-y: scroll;
@@ -92,6 +93,20 @@
 
 .social-home-row.row {
     grid-template-columns: 100px 300px 300px;
+
+    &>div {
+        display: flex;
+        flex-wrap: wrap;
+        gap:5px;
+
+    }
+
+
+    label {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
 
 }
 

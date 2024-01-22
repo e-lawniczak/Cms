@@ -32,7 +32,8 @@ export const PicturesPage = () => {
             }
         },
         deletePicture = (item: PictureDto) => {
-
+            let res = axios.delete(baseApiUrl + `/DeletePicture/${item.pictureId}`, axiosBaseConfig)
+            getData()
         },
         pictureUpload = <div className="picture-upload">
             <form className='file-upload-form' onSubmit={handleSubmit(onSubmit)}>

@@ -167,6 +167,16 @@
 .social-home-row.row {
   grid-template-columns: 100px 300px 300px;
 }
+.social-home-row.row > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.social-home-row.row label {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
 
 .banners-row.row {
   grid-template-columns: 50px 150px 200px auto 200px 150px 200px 300px;

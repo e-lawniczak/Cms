@@ -343,7 +343,7 @@ const SocialMediaSection = () => {
         <form className='section-form' >
             <div className="form-content ps ps--active-y">
                 {socialMedia && socialMedia.length <= 0 && <div>Create <a className='normal-link' href="/SocialMedia">Social media</a> link first</div>}
-                {socialMedia && socialMedia.map((item: SocialMediaDto, idx: any) => <SocialMediaRow getSocials={getSocials} item={item} />)}
+                {socialMedia && socialMedia.map((item: SocialMediaDto, idx: any) => <SocialMediaRow data={socialMedia} getSocials={getSocials} item={item} />)}
             </div>
             <div className="buttons-container">
                 {/* {socialMedia && socialMedia.length > 0 && <button type='submit' className="btn btn-white btn-sm w-100 mb-0 btn-save" >Save</button>} */}
@@ -353,19 +353,19 @@ const SocialMediaSection = () => {
 }
 const SocialMediaRow = (props: { item: SocialMediaDto, [x: string]: any }) => {
     const { item, setData, data, getSocials } = props,
-        thisItemMain = data?.filter((i: any) => i.originalItem.name == item.name)[0],
+        thisItemMain = data?.filter((i: any) => i.name == item.name)[0],
         handleCheckboxChange = (e: any, type: string) => {
             let formItem = item
             if (type == "main") {
-                formItem.isMain = e.target.value
+                formItem.isMain = e.target.checked
             } else {
-                formItem.isVisible = e.target.value
+                formItem.isVisible = e.target.checked
             }
             editSocials(formItem)
         },
         editSocials = async (formItem: any) => {
             const url = baseApiUrl + "/UpdateSocialMedia"
-            await axios.patch(url, { formItem }, axiosBaseConfig)
+            await axios.patch(url, { ...formItem }, axiosBaseConfig)
             getSocials()
         }
 
@@ -378,7 +378,7 @@ const SocialMediaRow = (props: { item: SocialMediaDto, [x: string]: any }) => {
         </div>
         <div>
             <label htmlFor={item.name}>Czy wyświelać?</label>
-            <input type="checkbox" name={item.name} id={item.name} checked={thisItemMain?.isMain || false} onChange={(e) => handleCheckboxChange(e, "visible")} />
+            <input type="checkbox" name={item.name} id={item.name} checked={thisItemMain?.isVisible || false} onChange={(e) => handleCheckboxChange(e, "visible")} />
         </div>
     </div>
 }
