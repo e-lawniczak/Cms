@@ -200,8 +200,17 @@
   width: 100%;
 }
 
+.generic-list {
+  padding: 15px;
+}
+
 .banners-row.row {
   grid-template-columns: 50px 150px 200px auto 200px 150px 200px 300px;
+}
+
+.category-row.row {
+  display: grid;
+  grid-template-columns: 50px 150px 150px 150px 150px 150px 300px;
 }
 
 .sliders-row.row {
@@ -213,6 +222,17 @@
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: flex-start;
+  gap: 10px;
+}
+
+.product-row.row {
+  display: grid;
+  grid-template-columns: 50px 100px 100px 100px auto repeat(5, 100px) 300px;
+}
+
+.form-top-container + div {
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 10px;
 }
 

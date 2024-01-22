@@ -99,7 +99,7 @@ var PicturesPage = function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    if (!(data.fileUpload && data.fileUpload.length > 0)) return [3 /*break*/, 4];
+                    if (!(data.fileUpload && data.fileUpload.length > 0)) return [3 /*break*/, 5];
                     arr = data.fileUpload;
                     i = 0;
                     _a.label = 1;
@@ -117,10 +117,16 @@ var PicturesPage = function () {
                 case 3:
                     i++;
                     return [3 /*break*/, 1];
-                case 4: return [2 /*return*/];
+                case 4:
+                    getData();
+                    _a.label = 5;
+                case 5: return [2 /*return*/];
             }
         });
-    }); }, pictureUpload = React.createElement("div", { className: "picture-upload" },
+    }); }, deletePicture = function (item) {
+        var res = axios_1.default.delete(common_1.baseApiUrl + "/DeletePicture/".concat(item.pictureId), common_1.axiosBaseConfig);
+        getData();
+    }, pictureUpload = React.createElement("div", { className: "picture-upload" },
         React.createElement("form", { className: 'file-upload-form', onSubmit: handleSubmit(onSubmit) },
             React.createElement(common_1.PInput, { register: __assign({}, register("fileUpload")), inputProps: { type: 'file', multiple: true } }),
             React.createElement("button", { className: 'btn btn-white btn-sm mb-0 btn-save', type: 'submit' }, "Add")));
@@ -131,7 +137,12 @@ var PicturesPage = function () {
         React.createElement("div", { className: "card mb-4" },
             React.createElement("div", { className: "form-top-container" }, !showUpload && React.createElement("div", { className: "btn btn-white btn-sm mb-0 btn-save", onClick: function () { return setUpload(true); } }, "Add new")),
             showUpload && pictureUpload,
-            React.createElement("div", { className: "picture-list" }, data.map(function (d, idx) { return React.createElement(common_1.PictureListElement, { key: idx, item: d }); }))));
+            React.createElement("div", { className: "picture-list" }, data.map(function (d, idx) { return React.createElement("div", { className: 'picture-container', onClick: function () { deletePicture(d); } },
+                React.createElement("div", { className: 'overlay' },
+                    React.createElement("div", { className: "" }, "X")),
+                " ",
+                React.createElement(common_1.PictureListElement, { key: idx, item: d }),
+                React.createElement("div", null, d.name)); }))));
 };
 exports.PicturesPage = PicturesPage;
 var root = document.getElementById("react_root");

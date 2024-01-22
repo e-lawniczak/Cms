@@ -116,7 +116,7 @@ var SocialMediaPage = function () {
                     return [2 /*return*/];
             }
         });
-    }); }, addNew = React.createElement(SocialMediaRow, { item: null, isNew: true, pictures: pictures, refreshFunc: getData });
+    }); }, addNew = React.createElement(SocialMediaRow, { item: null, isNew: true, pictures: pictures, refreshFunc: getData, setNew: setNew });
     React.useEffect(function () {
         getSocials();
         getpictures();
@@ -138,7 +138,7 @@ var SocialMediaPage = function () {
 };
 exports.SocialMediaPage = SocialMediaPage;
 var SocialMediaRow = function (props) {
-    var item = props.item, isNew = props.isNew, pictures = props.pictures, refreshFunc = props.refreshFunc, picData = (0, common_1.mapObjectToSelect)(pictures, "name", "pictureId"), _a = (0, react_hook_form_1.useForm)({
+    var item = props.item, isNew = props.isNew, pictures = props.pictures, refreshFunc = props.refreshFunc, setNew = props.setNew, picData = (0, common_1.mapObjectToSelect)(pictures, "name", "pictureId"), _a = (0, react_hook_form_1.useForm)({
         defaultValues: __assign({}, item)
     }), register = _a.register, handleSubmit = _a.handleSubmit, formState = _a.formState, getValues = _a.getValues, makeItem = function (data) {
         return {
@@ -147,7 +147,7 @@ var SocialMediaRow = function (props) {
             isVisible: (data === null || data === void 0 ? void 0 : data.isVisible) || false,
             link: (data === null || data === void 0 ? void 0 : data.link) || "",
             name: (data === null || data === void 0 ? void 0 : data.name) || "",
-            pictureIdList: data.selectedPicture ? [data.selectedPicture] : [],
+            pictureIdList: (data === null || data === void 0 ? void 0 : data.pictureIdList) ? [data.pictureIdList / 1] : [],
             teamMemberId: (item === null || item === void 0 ? void 0 : item.teamMemberId) || 0,
         };
     }, addItem = function (data) { return __awaiter(void 0, void 0, void 0, function () {
@@ -161,6 +161,7 @@ var SocialMediaRow = function (props) {
                 case 1:
                     _a.sent();
                     refreshFunc();
+                    setNew(false);
                     return [2 /*return*/];
             }
         });
@@ -202,7 +203,7 @@ var SocialMediaRow = function (props) {
                 React.createElement(common_1.PInput, { register: __assign({}, register("isMain")), inputProps: { type: 'checkbox' } }),
                 React.createElement(common_1.PInput, { register: __assign({}, register("isVisible")), inputProps: { type: 'checkbox' } }),
                 React.createElement("div", null, picData.length > 0 &&
-                    React.createElement(common_1.Select, { register: register, data: picData, defaultValue: (item === null || item === void 0 ? void 0 : item.pictureIdList[0]) || [], name: "selectedPicture" })),
+                    React.createElement(common_1.Select, { register: register, data: picData, defaultValue: (item === null || item === void 0 ? void 0 : item.pictureIdList[0]) || [], name: "pictureIdList" })),
                 React.createElement("div", { className: "buttons-container" }, isNew ?
                     React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: function (e) { return addItem(getValues()); } }, "Add")
                     : React.createElement(React.Fragment, null,

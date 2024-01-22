@@ -28,7 +28,6 @@ const BannerSection = () => {
         { register, handleSubmit, setValue } = useForm(),
         sKey = "home_page_slider",
         onSubmit = (data: any) => {
-            console.log(data);
         },
         getBanners = async () => {
             let res = await axios.get(baseApiUrl + `/GetAllBannerList`)

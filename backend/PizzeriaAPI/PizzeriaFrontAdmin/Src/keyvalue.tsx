@@ -13,7 +13,6 @@ export const KeyValuePage = () => {
         [addingNew, setAddingNew] = useState(false),
         getData = async () => {
             let res = await axios.get(baseApiUrl + "/GetAllKeyValueList")
-            console.log(res);
             setList(res.data)
         },
         newRow = <TableRow item={{ id: -1, key: "", value: "" }} refreshFunc={getData} isNew={true} resetAdd={setAddingNew} />

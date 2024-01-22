@@ -111,7 +111,7 @@ var TableRow = function (props) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    url = common_1.baseApiUrl + "/UpdateKeyValue";
+                    url = common_1.baseApiUrl + "/UpdateKeyValueById";
                     return [4 /*yield*/, axios_1.default.patch(url, { id: item.id, key: key, value: value }, common_1.axiosBaseConfig)];
                 case 1:
                     _a.sent();

@@ -37,9 +37,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getCookie = exports.callApi = exports.testFunc = exports.axiosBaseConfig = exports.baseApiUrl = exports.mapObjectToSelect = exports.PInput = exports.Image = exports.PageWrapper = exports.PageSettingsSection = exports.Select = exports.sortFunc = exports.PictureListElement = void 0;
 var React = __importStar(require("react"));
 var PictureListElement = function (props) {
-    var item = props.item, onClick = props.onClick;
+    var item = props.item, onClick = props.onClick, src = props.src;
     return React.createElement("div", { className: 'picture-list-element', onClick: onClick },
-        React.createElement(exports.Image, { src: exports.baseApiUrl + "/GetPicture/Mini/".concat(item.pictureId), item: item }));
+        React.createElement(exports.Image, { src: src || exports.baseApiUrl + "/GetPicture/Mini/".concat(item.pictureId), item: item }));
 };
 exports.PictureListElement = PictureListElement;
 var sortFunc = function (a, b, key) {

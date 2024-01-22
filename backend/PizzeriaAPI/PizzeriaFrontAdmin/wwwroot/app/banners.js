@@ -153,7 +153,7 @@ var BannerRow = function (props) {
             id: (item === null || item === void 0 ? void 0 : item.id) || -1,
             isVisible: (data === null || data === void 0 ? void 0 : data.isVisible) || (item === null || item === void 0 ? void 0 : item.isVisible) || false,
             link: (data === null || data === void 0 ? void 0 : data.link) || (item === null || item === void 0 ? void 0 : item.link) || "",
-            pictureIdList: data.selectedPicture ? [data.selectedPicture] : [],
+            pictureIdList: (data === null || data === void 0 ? void 0 : data.pictureIdList) ? [(data === null || data === void 0 ? void 0 : data.pictureIdList) / 1] : [],
             sliderId: (data === null || data === void 0 ? void 0 : data.sliderId) || (item === null || item === void 0 ? void 0 : item.sliderId) || null,
             subText: (data === null || data === void 0 ? void 0 : data.subText) || (item === null || item === void 0 ? void 0 : item.subText) || "",
             text: (data === null || data === void 0 ? void 0 : data.text) || (item === null || item === void 0 ? void 0 : item.text) || "",
@@ -213,7 +213,7 @@ var BannerRow = function (props) {
                 React.createElement(common_1.PInput, { register: __assign({}, register("link")), inputProps: { type: 'text' } }),
                 React.createElement(common_1.PInput, { register: __assign({}, register("isVisible")), inputProps: { type: 'checkbox' } }),
                 React.createElement("div", null, picData.length > 0 &&
-                    React.createElement(common_1.Select, { register: register, data: picData, defaultValue: (item === null || item === void 0 ? void 0 : item.pictureIdList[0]) || null, name: "selectedPicture" })),
+                    React.createElement(common_1.Select, { register: register, data: picData, defaultValue: (item === null || item === void 0 ? void 0 : item.pictureIdList[0]) || null, name: "pictureIdList" })),
                 React.createElement("div", { className: "buttons-container" }, isNew ?
                     React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: function (e) { return addItem(getValues()); } }, "Add")
                     : React.createElement(React.Fragment, null,

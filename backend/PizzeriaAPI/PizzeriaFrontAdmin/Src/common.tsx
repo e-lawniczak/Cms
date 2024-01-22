@@ -143,6 +143,26 @@ export interface InputProps {
   wrapperClass?: string
   [x: string]: any
 }
+export interface ProductDto {
+  name: string,
+  price: number,
+  description: string,
+  discountPrice: number,
+  score: number,
+  isRecommended: boolean,
+  categoryId: number,
+  id: number,
+  isVisible: boolean,
+  pictureIdList: any[]
+}
+export interface CategoryDto {
+  id: number,
+  isVisible: boolean,
+  name: string,
+  link: string,
+  productIdList: any,
+  pictureIdList: any
+}
 
 export const PInput = (props: InputProps) => {
   const
@@ -191,7 +211,6 @@ export const axiosBaseConfig = {
 }
 
 export const testFunc = () => {
-  console.log("działasswss");
 }
 
 

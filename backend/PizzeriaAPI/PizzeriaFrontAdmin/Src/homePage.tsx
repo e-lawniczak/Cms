@@ -29,7 +29,6 @@ const SliderSection = () => {
         { register, handleSubmit, setValue } = useForm(),
         sKey = "home_page_slider",
         onSubmit = (data: any) => {
-            console.log(data);
             if (!slider)
                 addItem(sKey, data.sliderValue)
             else
@@ -96,12 +95,10 @@ const MenuSection = () => {
         [showNew, setNew] = useState(false),
         getMenuElements = async () => {
             let res = await axios.get(baseApiUrl + `/GetAllMenuElementList`)
-            console.log(res);
             setElements(res.data)
             setParentElements(res.data.filter((m: MenuElementDto, idx: any) => m.parentMenuElementId == null))
         },
-        parentData = mapObjectToSelect(parentElements, "text", "menuElementId"),
-        newItem = <MenuElementRow elements={elements} parentData={parentData} item={null} refreshFunc={getMenuElements} isNew={true} setShow={setNew} />
+        newItem = <MenuElementRow elements={elements} parentElements={parentElements} item={null} refreshFunc={getMenuElements} isNew={true} setShow={setNew} />
 
 
     React.useEffect(() => {
@@ -122,25 +119,25 @@ const MenuSection = () => {
                     <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>options</div>
                 </div>
                 {showNew && newItem}
-                {elements && elements.map((e: MenuElementDto, idx: any) => <MenuElementRow parentData={parentData} elements={elements} item={e} key={idx} refreshFunc={getMenuElements} />)}
+                {elements && elements.map((e: MenuElementDto, idx: any) => <MenuElementRow parentElements={parentElements} elements={elements} item={e} key={idx} refreshFunc={getMenuElements} />)}
 
             </div>
         </form>
     </PageSettingsSection>
 }
-const MenuElementRow = (props: { parentData: any[], item: MenuElementDto, elements: any, isNew?: boolean, refreshFunc: any, setShow?: any }) => {
+const MenuElementRow = (props: { parentElements: any[], item: MenuElementDto, elements: any, isNew?: boolean, refreshFunc: any, setShow?: any }) => {
     const
-        { item, parentData, isNew = false, refreshFunc, elements, setShow = () => { } } = props,
+        { item, parentElements, isNew = false, refreshFunc, elements, setShow = () => { } } = props,
         { register, handleSubmit, setValue, getValues } = useForm({ defaultValues: { ...item } }),
+        parentData = mapObjectToSelect(parentElements, "text", "menuElementId").filter((i: any) => i.value != item?.menuElementId),
         onSubmit = (data: any) => {
-            console.log(data);
         },
         makeItem = (data: any) => {
             return {
                 isVisible: data?.isVisible || false,
                 link: data?.link || "",
                 menuElementId: item?.menuElementId || -1,
-                parentMenuElementId: data?.parentMenuElementId as number || null,
+                parentMenuElementId: data?.parentMenuElementId/1 || null,
                 text: data?.text || ""
             } as MenuElementDto
         },
@@ -173,7 +170,7 @@ const MenuElementRow = (props: { parentData: any[], item: MenuElementDto, elemen
                 <Select register={register} defaultValue={item?.parentMenuElementId} data={parentData} name={"parentMenuElementId"} />}
         </div>
         <div>
-            {elements && elements.filter((e: any) => item?.menuElementId == e?.id)[0]?.text}
+            {elements && elements.filter((e: MenuElementDto) => item?.parentMenuElementId != null && e.menuElementId == item.parentMenuElementId)[0]?.text}
         </div>
         <div className="buttons-container">
             {isNew ?
@@ -190,12 +187,10 @@ const LogoSection = (props: { logo_key: string, title: string }) => {
         [logoPicture, setLogo] = useState<KeyValueDto>(),
         getPictures = async () => {
             let res = await axios.get(baseApiUrl + `/GetAllPictureList`)
-            console.log(res);
             setPictures(res.data)
         },
         { register, handleSubmit, setValue } = useForm(),
         onSubmit = (data: any) => {
-            console.log(data);
             if (!logoPicture)
                 addItem(props.logo_key, data.logoValue)
             else
@@ -263,7 +258,6 @@ const ContactSection = () => {
             defaultValues: { phoneValue: phone?.value || "", addressValue: address?.value || "" }
         }),
         onSubmit = (data: any) => {
-            console.log(data);
             if (!phone) {
                 addItem("phone", data.phoneValue)
             }
@@ -332,7 +326,6 @@ const SocialMediaSection = () => {
         [socialMedia, setSocialMedia] = useState<SocialMediaDto[]>(),
         getSocials = async () => {
             let res = await axios.get(baseApiUrl + `/GetAllSocialMediaList`)
-            console.log(res);
             setSocialMedia(res.data)
         }
 

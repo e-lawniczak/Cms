@@ -100,6 +100,7 @@ var SliderSection = function () {
             addItem(sKey, data.sliderValue);
         else
             editItem(slider.id, slider.key, data.sliderValue);
+        getKeyValues();
     }, getSliders = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res;
         return __generator(this, function (_a) {
@@ -115,7 +116,7 @@ var SliderSection = function () {
         var res;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValue/".concat(sKey))];
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValueByKey/".concat(sKey))];
                 case 1:
                     res = _a.sent();
                     setSlider(res.data);
@@ -127,7 +128,7 @@ var SliderSection = function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    url = common_1.baseApiUrl + "/UpdateKeyValue";
+                    url = common_1.baseApiUrl + "/UpdateKeyValueById";
                     return [4 /*yield*/, axios_1.default.patch(url, { id: id, key: key, value: value }, common_1.axiosBaseConfig)];
                 case 1:
                     _a.sent();
@@ -180,11 +181,11 @@ var MenuSection = function () {
                     res = _a.sent();
                     console.log(res);
                     setElements(res.data);
-                    setParentElements(res.data.filter(function (m, idx) { return !(m.parentMenuElementId && m.parentMenuElementId > 0); }));
+                    setParentElements(res.data.filter(function (m, idx) { return m.parentMenuElementId == null; }));
                     return [2 /*return*/];
             }
         });
-    }); }, parentData = (0, common_1.mapObjectToSelect)(parentElements, "text", "menuElementId"), newItem = React.createElement(MenuElementRow, { parentData: parentData, item: null, refreshFunc: getMenuElements, isNew: true });
+    }); }, parentData = (0, common_1.mapObjectToSelect)(parentElements, "text", "menuElementId"), newItem = React.createElement(MenuElementRow, { elements: elements, parentData: parentData, item: null, refreshFunc: getMenuElements, isNew: true, setShow: setNew });
     React.useEffect(function () {
         getMenuElements();
     }, []);
@@ -197,13 +198,15 @@ var MenuSection = function () {
                     React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "label"),
                     React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "link"),
                     React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "visible"),
-                    React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "parent"),
+                    React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "select parent"),
+                    React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "current parent"),
                     React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "options")),
                 showNew && newItem,
-                elements && elements.map(function (e, idx) { return React.createElement(MenuElementRow, { parentData: parentData, item: e, key: idx, refreshFunc: getMenuElements }); }))));
+                elements && elements.map(function (e, idx) { return React.createElement(MenuElementRow, { parentData: parentData, elements: elements, item: e, key: idx, refreshFunc: getMenuElements }); }))));
 };
 var MenuElementRow = function (props) {
-    var item = props.item, parentData = props.parentData, _a = props.isNew, isNew = _a === void 0 ? false : _a, refreshFunc = props.refreshFunc, _b = (0, react_hook_form_1.useForm)({ defaultValues: __assign({}, item) }), register = _b.register, handleSubmit = _b.handleSubmit, setValue = _b.setValue, getValues = _b.getValues, onSubmit = function (data) {
+    var _a;
+    var item = props.item, parentData = props.parentData, _b = props.isNew, isNew = _b === void 0 ? false : _b, refreshFunc = props.refreshFunc, elements = props.elements, _c = props.setShow, setShow = _c === void 0 ? function () { } : _c, _d = (0, react_hook_form_1.useForm)({ defaultValues: __assign({}, item) }), register = _d.register, handleSubmit = _d.handleSubmit, setValue = _d.setValue, getValues = _d.getValues, onSubmit = function (data) {
         console.log(data);
     }, makeItem = function (data) {
         return {
@@ -224,6 +227,7 @@ var MenuElementRow = function (props) {
                 case 1:
                     _a.sent();
                     refreshFunc();
+                    setShow(false);
                     return [2 /*return*/];
             }
         });
@@ -261,8 +265,9 @@ var MenuElementRow = function (props) {
         React.createElement(common_1.PInput, { register: __assign({}, register("text")), inputProps: { type: 'text' } }),
         React.createElement(common_1.PInput, { register: __assign({}, register("link")), inputProps: { type: 'text' } }),
         React.createElement(common_1.PInput, { register: __assign({}, register("isVisible")), inputProps: { type: 'checkbox' } }),
-        React.createElement("div", null, parentData && parentData.length > 0 &&
-            React.createElement(common_1.Select, { register: register, defaultValue: item.parentMenuElementId, data: parentData, name: "parentMenuElementId" })),
+        React.createElement("div", null, parentData && (parentData === null || parentData === void 0 ? void 0 : parentData.length) > 0 &&
+            React.createElement(common_1.Select, { register: register, defaultValue: item === null || item === void 0 ? void 0 : item.parentMenuElementId, data: parentData, name: "parentMenuElementId" })),
+        React.createElement("div", null, elements && ((_a = elements.filter(function (e) { return (item === null || item === void 0 ? void 0 : item.menuElementId) == (e === null || e === void 0 ? void 0 : e.id); })[0]) === null || _a === void 0 ? void 0 : _a.text)),
         React.createElement("div", { className: "buttons-container" }, isNew ?
             React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: function (e) { return addItem(getValues()); } }, "Add")
             : React.createElement(React.Fragment, null,
@@ -288,14 +293,16 @@ var LogoSection = function (props) {
             addItem(props.logo_key, data.logoValue);
         else
             editItem(logoPicture.id, logoPicture.key, data.logoValue);
+        getKeyValues();
     }, getKeyValues = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValue/".concat(props.logo_key))];
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValueByKey/".concat(props.logo_key))];
                 case 1:
                     res = _a.sent();
                     setLogo(res.data);
+                    setValue("logoValue", res.data.value);
                     return [2 /*return*/];
             }
         });
@@ -304,7 +311,7 @@ var LogoSection = function (props) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    url = common_1.baseApiUrl + "/UpdateKeyValue";
+                    url = common_1.baseApiUrl + "/UpdateKeyValueById";
                     return [4 /*yield*/, axios_1.default.patch(url, { id: id, key: key, value: value }, common_1.axiosBaseConfig)];
                 case 1:
                     _a.sent();
@@ -326,14 +333,15 @@ var LogoSection = function (props) {
             }
         });
     }); }, onPictureClick = function (pic) {
-        setValue("logoValue", "/GetPicture/Full/".concat(pic.pictureId));
+        setValue("logoValue", "/GetPicture/Mini/".concat(pic.pictureId));
     };
     React.useEffect(function () {
         getPictures();
+        getKeyValues();
     }, []);
     return React.createElement(common_1.PageSettingsSection, { title: props.title, className: 'two-col', subtext: 'Click on the picture from the list. Then click the save button' },
         React.createElement("div", { className: "logo-preview" },
-            React.createElement(common_1.Image, { src: (logoPicture === null || logoPicture === void 0 ? void 0 : logoPicture.value) || "" })),
+            React.createElement(common_1.Image, { src: common_1.baseApiUrl + (logoPicture === null || logoPicture === void 0 ? void 0 : logoPicture.value) || "" })),
         React.createElement("div", null,
             React.createElement("form", { action: "", className: "section-form", onSubmit: handleSubmit(onSubmit) },
                 React.createElement("div", { className: "form-content " },
@@ -347,31 +355,44 @@ var LogoSection = function (props) {
                         React.createElement(common_1.PInput, { register: __assign({}, register("logoValue")), inputProps: { type: 'text' } }))),
                 React.createElement("div", { className: "buttons-container" },
                     React.createElement("button", { type: 'submit', className: "btn btn-white btn-sm w-100 mb-0 btn-save" }, "Save"))),
-            React.createElement("div", { className: "picture-list" }, pictures === null || pictures === void 0 ? void 0 : pictures.map(function (d, idx) { return React.createElement(common_1.PictureListElement, { key: idx, item: d, onClick: function () { return onPictureClick(d); } }); }))));
+            React.createElement("div", { className: "picture-list" }, pictures === null || pictures === void 0 ? void 0 : pictures.map(function (d, idx) { return React.createElement("div", { className: 'picture-container' },
+                React.createElement(common_1.PictureListElement, { key: idx, item: d, onClick: function () { return onPictureClick(d); } }),
+                " ",
+                React.createElement("div", null, d.name),
+                "  "); }))));
 };
 var ContactSection = function () {
-    var _a = (0, react_1.useState)(), phone = _a[0], setPhone = _a[1], _b = (0, react_1.useState)(), address = _b[0], setAddress = _b[1], _c = (0, react_hook_form_1.useForm)(), register = _c.register, handleSubmit = _c.handleSubmit, onSubmit = function (data) {
+    var _a = (0, react_1.useState)(), phone = _a[0], setPhone = _a[1], _b = (0, react_1.useState)(), address = _b[0], setAddress = _b[1], _c = (0, react_hook_form_1.useForm)({
+        defaultValues: { phoneValue: (phone === null || phone === void 0 ? void 0 : phone.value) || "", addressValue: (address === null || address === void 0 ? void 0 : address.value) || "" }
+    }), register = _c.register, handleSubmit = _c.handleSubmit, setValue = _c.setValue, onSubmit = function (data) {
         console.log(data);
-        if (!phone)
+        if (!phone) {
             addItem("phone", data.phoneValue);
-        else
+        }
+        else {
             editItem(phone.id, phone.key, data.phoneValue);
-        if (!address)
+        }
+        if (!address) {
             addItem("address", data.addressValue);
-        else
+        }
+        else {
             editItem(address.id, address.key, data.addressValue);
+        }
+        getKeyValues();
     }, getKeyValues = function () { return __awaiter(void 0, void 0, void 0, function () {
         var pres, ares;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValue/phone")];
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValueByKey/phone")];
                 case 1:
                     pres = _a.sent();
-                    return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValue/address")];
+                    return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValueByKey/address")];
                 case 2:
                     ares = _a.sent();
                     setPhone(pres.data);
+                    setValue("phoneValue", pres.data.value);
                     setAddress(ares.data);
+                    setValue("addressValue", ares.data.value);
                     return [2 /*return*/];
             }
         });
@@ -380,11 +401,10 @@ var ContactSection = function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    url = common_1.baseApiUrl + "/UpdateKeyValue";
+                    url = common_1.baseApiUrl + "/UpdateKeyValueById";
                     return [4 /*yield*/, axios_1.default.patch(url, { id: id, key: key, value: value }, common_1.axiosBaseConfig)];
                 case 1:
                     _a.sent();
-                    getKeyValues();
                     return [2 /*return*/];
             }
         });
@@ -397,7 +417,6 @@ var ContactSection = function () {
                     return [4 /*yield*/, axios_1.default.post(url, { id: -1, key: key, value: value }, common_1.axiosBaseConfig)];
                 case 1:
                     _a.sent();
-                    getKeyValues();
                     return [2 /*return*/];
             }
         });
@@ -443,21 +462,26 @@ var SocialMediaSection = function () {
     return React.createElement(common_1.PageSettingsSection, { title: "Social media", subtext: "Socials with \"Main\" checked will be displayed at the main page" },
         React.createElement("form", { className: 'section-form' },
             React.createElement("div", { className: "form-content ps ps--active-y" },
+                React.createElement("div", { className: "social-home-row row" },
+                    React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "id"),
+                    React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "name"),
+                    React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "main"),
+                    React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "visible")),
                 socialMedia && socialMedia.length <= 0 && React.createElement("div", null,
                     "Create ",
                     React.createElement("a", { className: 'normal-link', href: "/SocialMedia" }, "Social media"),
                     " link first"),
-                socialMedia && socialMedia.map(function (item, idx) { return React.createElement(SocialMediaRow, { getSocials: getSocials, item: item }); })),
+                socialMedia && socialMedia.map(function (item, idx) { return React.createElement(SocialMediaRow, { data: socialMedia, getSocials: getSocials, item: item }); })),
             React.createElement("div", { className: "buttons-container" })));
 };
 var SocialMediaRow = function (props) {
-    var item = props.item, setData = props.setData, data = props.data, getSocials = props.getSocials, thisItemMain = data.filter(function (i) { return i.originalItem.name == item.name; })[0], handleCheckboxChange = function (e, type) {
+    var item = props.item, setData = props.setData, data = props.data, getSocials = props.getSocials, thisItemMain = data === null || data === void 0 ? void 0 : data.filter(function (i) { return i.name == item.name; })[0], handleCheckboxChange = function (e, type) {
         var formItem = item;
         if (type == "main") {
-            formItem.isMain = e.target.value;
+            formItem.isMain = e.target.checked;
         }
         else {
-            formItem.isVisible = e.target.value;
+            formItem.isVisible = e.target.checked;
         }
         editSocials(formItem);
     }, editSocials = function (formItem) { return __awaiter(void 0, void 0, void 0, function () {
@@ -466,7 +490,7 @@ var SocialMediaRow = function (props) {
             switch (_a.label) {
                 case 0:
                     url = common_1.baseApiUrl + "/UpdateSocialMedia";
-                    return [4 /*yield*/, axios_1.default.patch(url, { formItem: formItem }, common_1.axiosBaseConfig)];
+                    return [4 /*yield*/, axios_1.default.patch(url, __assign({}, formItem), common_1.axiosBaseConfig)];
                 case 1:
                     _a.sent();
                     getSocials();
@@ -474,12 +498,13 @@ var SocialMediaRow = function (props) {
             }
         });
     }); };
-    return React.createElement("div", { className: "row" },
+    return React.createElement("div", { className: "social-home-row row" },
+        React.createElement("div", { className: "name" }, item.id),
         React.createElement("div", { className: "name" }, item.name),
-        React.createElement("label", { htmlFor: item.name }, "Wy\u015Bwietli\u0107 jako g\u0142\u00F3wne?"),
-        React.createElement("input", { type: "checkbox", name: item.name, id: item.name, checked: (thisItemMain === null || thisItemMain === void 0 ? void 0 : thisItemMain.isMain) || false, onChange: function (e) { return handleCheckboxChange(e, "main"); } }),
-        React.createElement("label", { htmlFor: item.name }, "Czy wy\u015Bwiela\u0107?"),
-        React.createElement("input", { type: "checkbox", name: item.name, id: item.name, checked: (thisItemMain === null || thisItemMain === void 0 ? void 0 : thisItemMain.isMain) || false, onChange: function (e) { return handleCheckboxChange(e, "visible"); } }));
+        React.createElement("div", null,
+            React.createElement("input", { type: "checkbox", name: item.name, id: item.name, checked: (thisItemMain === null || thisItemMain === void 0 ? void 0 : thisItemMain.isMain) || false, onChange: function (e) { return handleCheckboxChange(e, "main"); } })),
+        React.createElement("div", null,
+            React.createElement("input", { type: "checkbox", name: item.name, id: item.name, checked: (thisItemMain === null || thisItemMain === void 0 ? void 0 : thisItemMain.isVisible) || false, onChange: function (e) { return handleCheckboxChange(e, "visible"); } })));
 };
 var root = document.getElementById("react_root");
 ReactDOM.render(React.createElement(exports.HomePage, null), root);

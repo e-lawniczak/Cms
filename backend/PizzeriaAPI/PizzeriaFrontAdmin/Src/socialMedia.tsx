@@ -14,7 +14,6 @@ export const SocialMediaPage = () => {
         [data, setData] = useState([]),
         getSocials = async () => {
             let res = await axios.get(baseApiUrl + `/GetAllSocialMediaList`, axiosBaseConfig)
-            console.log("Xd");
             setSocialMedia(res.data)
         },
         getpictures = async () => {

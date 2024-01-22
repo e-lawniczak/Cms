@@ -89,7 +89,7 @@ var SlidersPage = function () {
 };
 exports.SlidersPage = SlidersPage;
 var SliderSection = function () {
-    var _a = (0, react_1.useState)(), banner = _a[0], setBanner = _a[1], _b = (0, react_1.useState)(), sliders = _b[0], setSlidersData = _b[1], _c = (0, react_1.useState)(), banners = _c[0], setBanners = _c[1], _d = (0, react_1.useState)(false), showNew = _d[0], setNew = _d[1], _e = (0, react_hook_form_1.useForm)(), register = _e.register, handleSubmit = _e.handleSubmit, setValue = _e.setValue, getBanners = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var _a = (0, react_1.useState)(), banner = _a[0], setBanner = _a[1], _b = (0, react_1.useState)(), sliders = _b[0], setSlidersData = _b[1], _c = (0, react_1.useState)(), banners = _c[0], setBanners = _c[1], _d = (0, react_1.useState)(), pictures = _d[0], setPictures = _d[1], _e = (0, react_1.useState)(false), showNew = _e[0], setNew = _e[1], _f = (0, react_hook_form_1.useForm)(), register = _f.register, handleSubmit = _f.handleSubmit, setValue = _f.setValue, getBanners = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -118,7 +118,7 @@ var SliderSection = function () {
                 case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetAllPictureList", common_1.axiosBaseConfig)];
                 case 1:
                     res = _a.sent();
-                    setBanners(res.data);
+                    setPictures(res.data);
                     return [2 /*return*/];
             }
         });
