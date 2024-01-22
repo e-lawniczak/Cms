@@ -139,20 +139,42 @@
   gap: 10px;
 }
 
-.section-form .picture-list {
-  max-height: 300px;
+.section-form + .picture-list {
+  max-height: 450px;
   overflow-y: scroll;
 }
-.section-form .picture-list::-webkit-scrollbar {
-  width: 5px;
+.section-form + .picture-list::-webkit-scrollbar {
+  width: 15px;
+  border-radius: 50px;
 }
-.section-form .picture-list::-webkit-scrollbar-track {
-  background: transparent;
+.section-form + .picture-list::-webkit-scrollbar-track {
+  border-radius: 50px;
+  background: #eee;
 }
-.section-form .picture-list::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0);
+.section-form + .picture-list::-webkit-scrollbar-thumb {
+  border-radius: 50px;
+  background: rgba(0, 0, 0, 0.6666666667);
 }
-.section-form .picture-list::-webkit-scrollbar-thumb:hover {
+.section-form + .picture-list::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.custom-scroll {
+  overflow-y: scroll;
+}
+.custom-scroll::-webkit-scrollbar {
+  width: 15px;
+  border-radius: 50px;
+}
+.custom-scroll::-webkit-scrollbar-track {
+  border-radius: 50px;
+  background: #eee;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+  border-radius: 50px;
+  background: rgba(0, 0, 0, 0.6666666667);
+}
+.custom-scroll::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 

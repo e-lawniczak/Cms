@@ -29,6 +29,7 @@ export const PicturesPage = () => {
                     let req = await axios.post(baseApiUrl + "/AddPicture", form, axiosBaseConfig)
                     console.log(req);
                 }
+                getData();
             }
         },
         deletePicture = (item: PictureDto) => {
