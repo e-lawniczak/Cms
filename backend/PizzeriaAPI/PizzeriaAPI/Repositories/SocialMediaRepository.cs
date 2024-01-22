@@ -12,23 +12,31 @@ namespace PizzeriaAPI.Repositories
     }
     public class SocialMediaRepository : GenericRepository<SocialMedia>, ISocialMediaRepository
     {
+        public new async Task<IList<SocialMedia>> GetAllAsync(ISession session)
+        {
+            var result = await base.GetAllAsync(session);
+            return result.OrderBy(x => x.Id).ToList();
+        }
         public async Task<IList<SocialMedia>> GetMainSocialMedia(ISession session)
         {
             return await session.QueryOver<SocialMedia>()
-                                    .Where(x => x.IsMain == true)
+                                    .Where(x => x.IsMain == true).OrderBy(x => x.Id).Asc
                                     .ListAsync<SocialMedia>();
         }
         public async Task<IList<SocialMedia>> GetSocialMediaListByIdListAsync(IList<int> socialMediaIdList, ISession session)
         {
             return await session.QueryOver<SocialMedia>()
-                                    .WhereRestrictionOn(x => x.Id).IsIn(socialMediaIdList.ToArray())
+                                    .WhereRestrictionOn(x => x.Id).IsIn(socialMediaIdList.ToArray()).OrderBy(x => x.Id).Asc
                                     .ListAsync<SocialMedia>();
         }
         public async Task DeleteAsync(int id, ISession session)
         {
             var entity = await GetByIdAsync(id, session);
             entity.IsDeleted = true;
-            await InsertAsync(entity, session);
+            entity.PictureList?.Clear();
+            entity?.TeamMember?.SocialMediaList.Remove(entity);
+            
+            await UpdateAsync(entity, session);
         }
         public override async Task InsertAsync(SocialMedia entity, ISession session)
         {

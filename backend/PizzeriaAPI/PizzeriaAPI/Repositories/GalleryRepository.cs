@@ -10,6 +10,11 @@ namespace PizzeriaAPI.Repositories
     }
     public class GalleryRepository : GenericRepository<Gallery>, IGalleryRepository
     {
+        public new async Task<IList<Gallery>> GetAllAsync(ISession session)
+        {
+            var result = await base.GetAllAsync(session);
+            return result.OrderBy(x => x.Id).ToList();
+        }
         public async Task<Gallery> GetGalleryByNameAsync(string galleryname, ISession session)
         {
             return await session.QueryOver<Gallery>()
@@ -20,6 +25,7 @@ namespace PizzeriaAPI.Repositories
         {
             var entity = await GetByIdAsync(id, session);
             entity.IsDeleted = true;
+            entity.PictureList?.Clear();
             await UpdateAsync(entity, session);
         }
 

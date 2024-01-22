@@ -9,6 +9,11 @@ namespace PizzeriaAPI.Repositories
     }
     public class PageRepository : GenericRepository<Page>, IPageRepository
     {
+        public new async Task<IList<Page>> GetAllAsync(ISession session)
+        {
+            var result = await base.GetAllAsync(session);
+            return result.OrderBy(x => x.Id).ToList();
+        }
         public async Task DeleteAsync(int id, ISession session)
         {
             var entity = await GetByIdAsync(id, session);

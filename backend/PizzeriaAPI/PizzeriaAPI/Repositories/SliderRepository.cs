@@ -11,6 +11,11 @@ namespace PizzeriaAPI.Repositories
     }
     public class SliderRepository : GenericRepository<Slider>, ISliderRepository
     {
+        public new async Task<IList<Slider>> GetAllAsync(ISession session)
+        {
+            var result = await base.GetAllAsync(session);
+            return result.OrderBy(x => x.SliderId).ToList();
+        }
         public async Task<Slider> GetSliderByNameAsync(string name, ISession session)
         {
             return await session.QueryOver<Slider>()
@@ -21,7 +26,11 @@ namespace PizzeriaAPI.Repositories
         {
             var entity = await GetByIdAsync(id, session);
             entity.IsDeleted = true;
-            await InsertAsync(entity, session);
+            foreach(var banner in entity.BannerList)
+            {
+                banner.Slider = null;
+            }
+            await UpdateAsync(entity, session);
         }
 
         public override async Task InsertAsync(Slider entity, ISession session)

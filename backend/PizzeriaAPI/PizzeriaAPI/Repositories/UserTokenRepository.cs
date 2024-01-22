@@ -9,6 +9,11 @@ namespace PizzeriaAPI.Repositories
     }
     public class UserTokenRepository : GenericRepository<UserToken>, IUserTokenRepository
     {
+        public new async Task<IList<UserToken>> GetAllAsync(ISession session)
+        {
+            var result = await base.GetAllAsync(session);
+            return result.OrderBy(x => x.UserTokenId).ToList();
+        }
         public async Task DeleteAsync(UserToken entity, ISession session)
         {
             await session.DeleteAsync(entity);

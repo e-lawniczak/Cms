@@ -105,7 +105,7 @@ namespace PizzeriaAPI.Controllers
             if (gallery == null)
                 return BadRequest("Gallery not found");
 
-            UpdateGallery(gallery, galleryDto);
+            await UpdateGallery(gallery, galleryDto);
             await transactionCoordinator.InCommitScopeAsync(async session =>
             {
                 await galleryRepository.UpdateAsync(gallery, session);

@@ -10,7 +10,7 @@
         public virtual DateTime ModificationDate { get; set; }
         public virtual bool IsVisible { get; set; }
         public virtual bool IsDeleted { get; set; }
-        public virtual TabSlider TabSlider { get; set; }
+        public virtual TabSlider? TabSlider { get; set; }
 
     }
 }

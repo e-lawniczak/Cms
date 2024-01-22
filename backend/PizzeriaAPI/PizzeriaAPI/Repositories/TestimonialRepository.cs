@@ -10,11 +10,17 @@ namespace PizzeriaAPI.Repositories
     }
     public class TestimonialRepository : GenericRepository<Testimonial>, ITestimonialRepository
     {
+        public new async Task<IList<Testimonial>> GetAllAsync(ISession session)
+        {
+            var result = await base.GetAllAsync(session);
+            return result.OrderBy(x => x.Id).ToList();
+        }
         public async Task DeleteAsync(int id, ISession session)
         {
             var entity = await GetByIdAsync(id, session);
             entity.IsDeleted = true;
-            await InsertAsync(entity, session);
+            entity.PictureList?.Clear();
+            await UpdateAsync(entity, session);
         }
         public override async Task InsertAsync(Testimonial entity, ISession session)
         {

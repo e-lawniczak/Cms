@@ -13,6 +13,11 @@ namespace PizzeriaAPI.Repositories
     }
     public class BannerRepository : GenericRepository<Banner>, IBannerRepository
     {
+        public new async Task<IList<Banner>> GetAllAsync(ISession session)
+        {
+            var bannerList = await base.GetAllAsync(session);
+            return bannerList.OrderBy(x => x.Id).ToList();
+        }
         public async Task<Banner> GetBannerByTitleAsync(string bannerTitle, ISession session)
         {
             return await session.QueryOver<Banner>()
@@ -23,12 +28,14 @@ namespace PizzeriaAPI.Repositories
         {
             return await session.QueryOver<Banner>()
                                     .WhereRestrictionOn(x => x.Id).IsIn(bannerIdList.ToArray())
+                                    .OrderBy(x => x.Id).Asc
                                     .ListAsync<Banner>();
         }
         public async Task DeleteAsync(int id, ISession session)
         {
             var entity = await GetByIdAsync(id, session);
-            entity.IsDeleted = true;
+            entity.IsDeleted = true; 
+            entity.PictureList?.Clear();
             await UpdateAsync(entity, session);
         }
         public override async Task InsertAsync(Banner entity, ISession session)

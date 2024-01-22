@@ -11,6 +11,17 @@ namespace PizzeriaAPI.Repositories
     }
     public class CategoryRepository : GenericRepository<Category>, ICategoryRepository
     {
+        private readonly IProductRepository productRepository;
+        public CategoryRepository(IProductRepository productRepository)
+        {
+            this.productRepository = productRepository;
+        }
+        public new async Task<IList<Category>> GetAllAsync(ISession session)
+        {
+            var categoryList = await base.GetAllAsync(session);
+            return categoryList.OrderBy(x => x.Id).ToList();
+        }
+
         public async Task<Category> GetCategoryByNameAsync(string categoryName, ISession session)
         {
             return await session.QueryOver<Category>()
@@ -21,6 +32,14 @@ namespace PizzeriaAPI.Repositories
         {
             var entity = await GetByIdAsync(id, session);
             entity.IsDeleted = true;
+            
+            foreach (var product in entity.ProductList)
+            {
+                await productRepository.DeleteAsync(product.Id, session);
+            }
+            entity.ProductList.Clear();
+            entity.PictureList?.Clear();
+
             await UpdateAsync(entity, session);
         }
 

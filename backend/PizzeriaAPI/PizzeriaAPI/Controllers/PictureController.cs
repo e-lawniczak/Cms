@@ -45,7 +45,7 @@ namespace PizzeriaAPI.Controllers
             {
                 var imageBytes = ConvertIFormFileToByteArray(pictureDto.Picture);
                 var resizedImage = ResizeImage(imageBytes, MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT);
-                await SavePictureToLocalFileSystem(pictureDto, resizedImage);
+                await SavePictureToLocalFileSystem(pictureDto.Name, pictureDto.Picture, resizedImage);
             }
             catch (Exception e)
             {
@@ -169,7 +169,8 @@ namespace PizzeriaAPI.Controllers
         [Route("/UpdatePicture")]
         [SwaggerResponse(HttpStatusCode.OK, "Picture updated successfully")]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Picture not found")]
-        public async Task<ActionResult> UpdatePicture([FromBody] PictureDto pictureDto)
+        [SwaggerResponse(HttpStatusCode.InternalServerError, "Failed to update picture")]
+        public async Task<ActionResult> UpdatePicture([FromBody] UpdatePictureDto pictureDto)
         {
             var picture = await transactionCoordinator.InRollbackScopeAsync(async session =>
             {
@@ -179,24 +180,56 @@ namespace PizzeriaAPI.Controllers
             if (picture == null)
                 return BadRequest("Picture not found");
 
-            await UpdatePicture(picture, pictureDto);
-            await transactionCoordinator.InCommitScopeAsync(async session =>
+
+            try
             {
-                await pictureRepository.UpdateAsync(picture, session);
-            });
+                var imageBytes = ConvertIFormFileToByteArray(pictureDto.Picture);
+                var resizedImage = ResizeImage(imageBytes, MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT);
+                await SavePictureToLocalFileSystem(pictureDto.Name, pictureDto.Picture, resizedImage);
+            }
+            catch (Exception e)
+            {
+                logger.LogError($"Failed to save picture to filesystem: {e.Message}", e);
+                return Problem($"Failed to save picture to filesystem: {e.Message}");
+            }
+
+            var pictureFilePath = picture.FilePath.Clone().ToString();
+            var pictureResizedFilePath = picture.ResizedFilePath.Clone().ToString();
+            var tmpPictureFilePath = pictureFilePath + "tmp";
+            var tmpPictureResizedFilePath = pictureResizedFilePath + "tmp";
+            try
+            {
+                System.IO.File.Move(pictureFilePath, tmpPictureFilePath);
+                System.IO.File.Move(pictureResizedFilePath, tmpPictureResizedFilePath);
+
+                await UpdatePicture(picture, pictureDto);
+                await transactionCoordinator.InCommitScopeAsync(async session =>
+                {
+                    await pictureRepository.UpdateAsync(picture, session);
+                });
+
+            }
+            catch (Exception e)
+            {
+                System.IO.File.Move(tmpPictureFilePath, pictureFilePath);
+                System.IO.File.Move(tmpPictureResizedFilePath, pictureResizedFilePath);
+
+                logger.LogError($"Failed to update picture: {e.Message}", e);
+                return Problem($"Failed to update picture: {e.Message}");
+            }
 
             return Ok("Picture updated successfully");
         }
 
-        private async Task UpdatePicture(Picture picture, PictureDto pictureDto)
+        private async Task UpdatePicture(Picture picture, UpdatePictureDto updatePictureDto)
         {
             await transactionCoordinator.InRollbackScopeAsync(async session =>
             {
-                picture.Name = pictureDto.Name;
-                picture.Link = pictureDto.Link;
-                picture.FilePath = pictureDto.FilePath;
-                picture.ResizedFilePath = pictureDto.ResizedFilePath;
-                picture.EntityWithPictureList = await pictureRepository.GetEntityWithPictureByIdsAsync(pictureDto.EntityWithPictureIdList, session);
+                picture.ResizedFilePath = resizedImageDirectory + updatePictureDto.Name;
+                picture.FilePath = originalImageDirectory + updatePictureDto.Name;
+                picture.Name = updatePictureDto.Name;
+                picture.Link = updatePictureDto.Link;
+                picture.EntityWithPictureList = await pictureRepository.GetEntityWithPictureByIdsAsync(updatePictureDto.EntityWithPictureIdList ?? new List<int>(), session);
             });
         }
 
@@ -226,26 +259,8 @@ namespace PizzeriaAPI.Controllers
                 PictureId = picture?.PictureId ?? 0,
                 Name = picture?.Name ?? "",
                 Link = picture?.Link ?? "",
-                FilePath = picture?.FilePath ?? "",
-                ResizedFilePath = picture?.ResizedFilePath ?? "",
                 EntityWithPictureIdList = picture?.EntityWithPictureList?.Select(x => x.Id).ToList(),
             };
-        }
-        private async Task<Picture> GetPicture(PictureDto pictureDto)
-        {
-            return await transactionCoordinator.InRollbackScopeAsync(async session =>
-            {
-                return new Picture()
-                {
-
-                    PictureId = pictureDto?.PictureId ?? 0,
-                    Name = pictureDto?.Name ?? "",
-                    Link = pictureDto?.Link ?? "",
-                    ResizedFilePath = pictureDto?.ResizedFilePath ?? "",
-                    FilePath = pictureDto?.FilePath ?? "",
-                    EntityWithPictureList = await pictureRepository.GetEntityWithPictureByIdsAsync(pictureDto?.EntityWithPictureIdList ?? new List<int>(), session),
-                };
-            });
         }
         private Picture GetPicture(AddPictureDto addPictureDto)
         {
@@ -257,7 +272,7 @@ namespace PizzeriaAPI.Controllers
                 FilePath = originalImageDirectory + addPictureDto.Name,
             };
         }
-        private async Task SavePictureToLocalFileSystem(AddPictureDto pictureDto, byte[]? resizedImage)
+        private async Task SavePictureToLocalFileSystem(string pictureName, IFormFile picture, byte[]? resizedImage)
         {
             if (Directory.Exists(originalImageDirectory) == false)
             {
@@ -270,16 +285,16 @@ namespace PizzeriaAPI.Controllers
 
             if (resizedImage != null)
             {
-                using (var fileStream = new FileStream(resizedImageDirectory + pictureDto.Name, FileMode.Create, FileAccess.Write))
+                using (var fileStream = new FileStream(resizedImageDirectory + pictureName, FileMode.Create, FileAccess.Write))
                 {
                     fileStream.Write(resizedImage, 0, resizedImage.Length);
                 }
             }
-            if (pictureDto.Picture != null)
+            if (picture != null)
             {
-                using (var fileStream = new FileStream(originalImageDirectory + pictureDto.Name, FileMode.Create, FileAccess.Write))
+                using (var fileStream = new FileStream(originalImageDirectory + pictureName, FileMode.Create, FileAccess.Write))
                 {
-                    await pictureDto.Picture.CopyToAsync(fileStream);
+                    await picture.CopyToAsync(fileStream);
                 }
             }
         }

@@ -85,7 +85,7 @@ namespace PizzeriaAPI.Controllers
                 return BadRequest("InformationTab not found");
             }
 
-            UpdateInformationTab(informationTab, InformationTabDto);
+            await UpdateInformationTab(informationTab, InformationTabDto);
             await transactionCoordinator.InCommitScopeAsync(async session =>
             {
                 await informationTabRepository.UpdateAsync(informationTab, session);

@@ -24,7 +24,16 @@ namespace PizzeriaAPI.Repositories
 
         public async Task<T> GetByIdAsync(int id, ISession session)
         {
-            return await session.GetAsync<T>(id);
+            if (HasProperty<T>("IsDeleted"))
+            {
+                var entity = await session.GetAsync<T>(id);
+                if (entity != null && (bool)entity.GetType().GetProperty("IsDeleted").GetValue(entity))
+                    return null;
+                else
+                    return entity;
+            }
+            else
+                return await session.GetAsync<T>(id);
         }
         public async virtual Task UpdateAsync(T entity, ISession session)
         {

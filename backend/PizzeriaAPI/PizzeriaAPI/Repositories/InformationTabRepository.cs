@@ -11,16 +11,23 @@ namespace PizzeriaAPI.Repositories
     public class InformationTabRepository : GenericRepository<InformationTab>, IInformationTabRepository
     {
 
+        public new async Task<IList<InformationTab>> GetAllAsync(ISession session)
+        {
+            var result = await base.GetAllAsync(session);
+            return result.OrderBy(x => x.InformationTabId).ToList();
+        }
         public async Task<IList<InformationTab>> GetInformationTabListByIdListAsync(IList<int> InformationTabIdList, ISession session)
         {
             return await session.QueryOver<InformationTab>()
                                     .WhereRestrictionOn(x => x.InformationTabId).IsIn(InformationTabIdList.ToArray())
+                                    .OrderBy(x => x.InformationTabId).Asc
                                     .ListAsync<InformationTab>();
         }
         public async Task DeleteAsync(int id, ISession session)
         {
             var entity = await GetByIdAsync(id, session);
             entity.IsDeleted = true;
+            entity.TabSlider = null;
             await UpdateAsync(entity, session);
         }
 

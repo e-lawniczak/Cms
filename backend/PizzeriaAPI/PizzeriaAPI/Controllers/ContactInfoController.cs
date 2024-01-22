@@ -92,7 +92,7 @@ namespace PizzeriaAPI.Controllers
             if (contactInfo == null)
                 return BadRequest("ContactInfo not found");
 
-            UpdateContactInfo(contactInfo, contactInfoDto);
+            await UpdateContactInfo(contactInfo, contactInfoDto);
             await transactionCoordinator.InCommitScopeAsync(async session =>
             {
                 await contactInfoRepository.UpdateAsync(contactInfo, session);

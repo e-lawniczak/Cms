@@ -10,11 +10,18 @@ namespace PizzeriaAPI.Repositories
     }
     public class TeamMemberRepository : GenericRepository<TeamMember>, ITeamMemberRepository
     {
+        public new async Task<IList<TeamMember>> GetAllAsync(ISession session)
+        {
+            var result = await base.GetAllAsync(session);
+            return result.OrderBy(x => x.Id).ToList();
+        }
         public async Task DeleteAsync(int id, ISession session)
         {
             var entity = await GetByIdAsync(id, session);
             entity.IsDeleted = true;
-            await InsertAsync(entity, session);
+            entity.PictureList?.Clear();
+            entity.SocialMediaList?.Clear();
+            await UpdateAsync(entity, session);
         }
         public override async Task InsertAsync(TeamMember entity, ISession session)
         {

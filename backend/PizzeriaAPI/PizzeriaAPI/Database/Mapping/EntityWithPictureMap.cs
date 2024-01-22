@@ -17,9 +17,10 @@ namespace PizzeriaAPI.Database.Mapping
             Map(e => e.IsDeleted).Not.Nullable();
 
             HasManyToMany(x => x.PictureList)
-           .Cascade.All()
-           .Inverse()
-           .Table("entitypicture").ParentKeyColumn("entitywithpictureid").ChildKeyColumn("pictureid");
+                 .Cascade.SaveUpdate()
+                 .Table("entitypicture")
+                 .ParentKeyColumn("entitywithpictureid")
+                 .ChildKeyColumn("pictureid");
         }
     }
 }

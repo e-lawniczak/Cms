@@ -1,4 +1,5 @@
-﻿using FluentNHibernate.Mapping;
+﻿using FluentNHibernate.Conventions.AcceptanceCriteria;
+using FluentNHibernate.Mapping;
 using PizzeriaAPI.Database.Entities;
 
 namespace PizzeriaAPI.Database.Mapping
@@ -17,10 +18,12 @@ namespace PizzeriaAPI.Database.Mapping
             Map(p => p.ResizedFilePath).Not.Nullable();
             Map(p => p.CreationDate).Not.Nullable();
             Map(p => p.ModificationDate).Not.Nullable();
-
             HasManyToMany(x => x.EntityWithPictureList)
-           .Cascade.All()
-           .Table("entitypicture").ParentKeyColumn("pictureid").ChildKeyColumn("entitywithpictureid");
+               .Cascade.SaveUpdate()
+               .Inverse()
+               .Table("entitypicture")
+               .ParentKeyColumn("entitywithpictureid")
+               .ChildKeyColumn("pictureid");
         }
     }
 }

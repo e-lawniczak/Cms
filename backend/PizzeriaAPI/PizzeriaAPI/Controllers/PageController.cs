@@ -93,7 +93,7 @@ namespace PizzeriaAPI.Controllers
             if (page == null)
                 return BadRequest("Page not found");
 
-            UpdatePage(page, pageDto);
+            await UpdatePage(page, pageDto);
             await transactionCoordinator.InCommitScopeAsync(async session =>
             {
                 await pageRepository.UpdateAsync(page, session);

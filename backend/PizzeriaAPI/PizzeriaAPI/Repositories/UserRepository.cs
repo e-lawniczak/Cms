@@ -10,6 +10,11 @@ namespace PizzeriaAPI.Repositories
     }
     public class UserRepository : GenericRepository<User>, IUserRepository
     {
+        public new async Task<IList<User>> GetAllAsync(ISession session)
+        {
+            var result = await base.GetAllAsync(session);
+            return result.OrderBy(x => x.UserId).ToList();
+        }
         public async Task<User> GetUserByEmailAsync(string email, ISession session)
         {
             return await session.QueryOver<User>().Where(Restrictions.Eq("Email", email)).SingleOrDefaultAsync();
