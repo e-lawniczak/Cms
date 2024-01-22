@@ -92,9 +92,86 @@ var HomePage = function () {
         React.createElement(MenuSection, null),
         React.createElement(SliderSection, null),
         React.createElement(BannerSection, { banner_key: 'banner_1', title: "First banner" }),
-        React.createElement(BannerSection, { banner_key: 'banner_2', title: "Second banner banner" }));
+        React.createElement(BannerSection, { banner_key: 'banner_2', title: "Second banner banner" }),
+        Array.from({ length: 6 }, function (_, i) { return i + 1; }).map(function (i, idx) { return React.createElement(GallerySection, { key: idx, gallery_key: "gallery_".concat(i), title: "Home page gallery ".concat(i) }); }));
 };
 exports.HomePage = HomePage;
+var GallerySection = function (props) {
+    var _a = (0, react_1.useState)(), galllery = _a[0], setSlider = _a[1], _b = (0, react_1.useState)(), galleries = _b[0], setGalleries = _b[1], _c = (0, react_hook_form_1.useForm)(), register = _c.register, handleSubmit = _c.handleSubmit, setValue = _c.setValue, sKey = props.gallery_key, onSubmit = function (data) {
+        if (!galllery)
+            addItem(sKey, data.bannerValue);
+        else
+            editItem(galllery.id, galllery.key, data.bannerValue);
+        getKeyValues();
+    }, getGalleries = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetVisibleGalleryList")];
+                case 1:
+                    res = _a.sent();
+                    setGalleries(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, getKeyValues = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValueByKey/".concat(sKey))];
+                case 1:
+                    res = _a.sent();
+                    setSlider(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, editItem = function (id, key, value) { return __awaiter(void 0, void 0, void 0, function () {
+        var url;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    url = common_1.baseApiUrl + "/UpdateKeyValueById";
+                    return [4 /*yield*/, axios_1.default.patch(url, { id: id, key: key, value: value }, common_1.axiosBaseConfig)];
+                case 1:
+                    _a.sent();
+                    getKeyValues();
+                    return [2 /*return*/];
+            }
+        });
+    }); }, addItem = function (key, value) { return __awaiter(void 0, void 0, void 0, function () {
+        var url;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    url = common_1.baseApiUrl + "/AddKeyValue";
+                    return [4 /*yield*/, axios_1.default.post(url, { id: -1, key: key, value: value }, common_1.axiosBaseConfig)];
+                case 1:
+                    _a.sent();
+                    getKeyValues();
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    React.useEffect(function () {
+        getKeyValues();
+        getGalleries();
+    }, []);
+    return React.createElement(common_1.PageSettingsSection, { title: props.title, subtext: "Choose a gallery to be displayed as one of the 6 on the home page" },
+        React.createElement("div", null,
+            React.createElement("form", { action: "", className: "section-form", onSubmit: handleSubmit(onSubmit) },
+                React.createElement("div", { className: "form-content " },
+                    React.createElement("div", { className: "row" },
+                        React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "id"),
+                        React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "key"),
+                        React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "value")),
+                    React.createElement("div", { className: "row" },
+                        React.createElement("div", { className: "id" }, (galllery === null || galllery === void 0 ? void 0 : galllery.id) || -1),
+                        React.createElement("div", { className: "key" }, (galllery === null || galllery === void 0 ? void 0 : galllery.key) || sKey),
+                        React.createElement("div", null, galleries && galleries.length > 0 &&
+                            React.createElement(common_1.Select, { register: register, defaultValue: galllery === null || galllery === void 0 ? void 0 : galllery.value, data: (0, common_1.mapObjectToSelect)(galleries, "name", "name"), name: "bannerValue" })))),
+                React.createElement("div", { className: "buttons-container" },
+                    React.createElement("button", { type: 'submit', className: "btn btn-white btn-sm w-100 mb-0 btn-save" }, "Save")))));
+};
 var BannerSection = function (props) {
     var _a = (0, react_1.useState)(), banner = _a[0], setSlider = _a[1], _b = (0, react_1.useState)(), bannerData = _b[0], setSliderData = _b[1], _c = (0, react_hook_form_1.useForm)(), register = _c.register, handleSubmit = _c.handleSubmit, setValue = _c.setValue, sKey = props.banner_key, onSubmit = function (data) {
         if (!banner)
@@ -106,7 +183,7 @@ var BannerSection = function (props) {
         var res;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetAllBannerList")];
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetVisibleBannerList")];
                 case 1:
                     res = _a.sent();
                     setSliderData(res.data);
@@ -183,7 +260,7 @@ var SliderSection = function () {
         var res;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetAllSliderList")];
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetVisibleSliderList")];
                 case 1:
                     res = _a.sent();
                     setSliderData(res.data);

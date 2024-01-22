@@ -244,7 +244,7 @@
   display: grid;
   padding: 5px 0;
 }
-.generic-list .row:hover {
+.generic-list .form-content:hover {
   background-color: rgba(213, 222, 253, 0.4901960784);
 }
 
@@ -254,6 +254,18 @@
 
 .gallery-row.row {
   grid-template-columns: 50px 150px auto auto 70px 100px 300px;
+}
+
+.information-tab-row.row {
+  grid-template-columns: 50px 150px auto 150px 150px 150px 300px;
+}
+
+.tab-slider-row.row {
+  grid-template-columns: 50px 150px 70px 150px auto 300px;
+}
+
+.contact-row.row {
+  grid-template-columns: 50px 150px 70px 150px 300px;
 }
 
 .social-row.row {

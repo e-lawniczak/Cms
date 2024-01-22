@@ -206,7 +206,7 @@ var ProductRow = function (props) {
                 React.createElement("div", { className: "id" }, (item === null || item === void 0 ? void 0 : item.id) || -1),
                 React.createElement(common_1.PInput, { register: __assign({}, register("name")), inputProps: { type: 'text' } }),
                 React.createElement(common_1.PInput, { register: __assign({}, register("price")), inputProps: { type: 'number', min: 0 } }),
-                React.createElement(common_1.PInput, { register: __assign({}, register("discountPrice")), inputProps: { type: 'number', min: 0 } }),
+                React.createElement(common_1.PInput, { register: __assign({}, register("discountPrice")), inputProps: { type: 'number', min: 0, max: 99 } }),
                 React.createElement(common_1.PInput, { register: __assign({}, register("description")), inputProps: { type: 'text' } }),
                 React.createElement(common_1.PInput, { register: __assign({}, register("score")), inputProps: { type: 'number', min: 0, max: 5 } }),
                 React.createElement(common_1.PInput, { register: __assign({}, register("isRecommended")), inputProps: { type: 'checkbox' } }),

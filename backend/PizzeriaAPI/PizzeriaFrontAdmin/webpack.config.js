@@ -23,6 +23,7 @@ module.exports = {
     pages: { import: "./Src/pages.tsx", dependOn: "common" },
     homePage: { import: "./Src/homePage.tsx", dependOn: "common" },
     role: { import: "./Src/role.tsx", dependOn: "common" },
+    tabSlider: { import: "./Src/tabSlider.tsx", dependOn: "common" },
     common: "./Src/common.tsx"
   },
   output: {

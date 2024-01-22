@@ -179,11 +179,17 @@
     }
 }
 
-.generic-list .row {
-    display: grid;
-    padding: 5px 0;
-    &:hover {
-        background-color: #d5defd7d;
+.generic-list {
+    .row {
+        display: grid;
+        padding: 5px 0;
+
+    }
+
+    .form-content {
+        &:hover {
+            background-color: #d5defd7d;
+        }
     }
 }
 
@@ -193,4 +199,16 @@
 
 .gallery-row.row {
     grid-template-columns: 50px 150px auto auto 70px 100px 300px;
+}
+
+.information-tab-row.row {
+    grid-template-columns: 50px 150px auto 150px 150px 150px 300px;
+
+}
+
+.tab-slider-row.row {
+    grid-template-columns: 50px 150px 70px 150px auto 300px;
+}
+.contact-row.row{
+    grid-template-columns: 50px 150px 70px 150px 300px;
 }

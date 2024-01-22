@@ -105,6 +105,27 @@ export interface SocialMediaDto {
   isVisible: boolean,
   pictureIdList: any[]
 }
+export interface ContactInfoDto {
+  id: number,
+  isVisible: boolean,
+  text: string,
+  pictureIdList: number[]
+}
+export interface TabSliderDto {
+  id: number,
+  isVisible: boolean,
+  title: string,
+  informationTabIdList: any[],
+  pictureIdList: any[]
+}
+export interface InformationTabDto {
+  informationTabId: number,
+  title: string,
+  text: string,
+  buttonText: string,
+  isVisible: boolean,
+  tabSliderId: number
+}
 export interface PictureDto {
   pictureId: any
   name: any
