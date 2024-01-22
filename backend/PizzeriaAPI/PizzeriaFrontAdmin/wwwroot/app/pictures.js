@@ -89,7 +89,6 @@ var PicturesPage = function () {
                 case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetAllPictureList", common_1.axiosBaseConfig)];
                 case 1:
                     res = _a.sent();
-                    console.log(res);
                     setData(res.data);
                     return [2 /*return*/];
             }
@@ -112,7 +111,6 @@ var PicturesPage = function () {
                     return [4 /*yield*/, axios_1.default.post(common_1.baseApiUrl + "/AddPicture", form, common_1.axiosBaseConfig)];
                 case 2:
                     req = _a.sent();
-                    console.log(req);
                     _a.label = 3;
                 case 3:
                     i++;

@@ -95,7 +95,6 @@ var HomePage = function () {
 exports.HomePage = HomePage;
 var SliderSection = function () {
     var _a = (0, react_1.useState)(), slider = _a[0], setSlider = _a[1], _b = (0, react_1.useState)(), slidersData = _b[0], setSliderData = _b[1], _c = (0, react_hook_form_1.useForm)(), register = _c.register, handleSubmit = _c.handleSubmit, setValue = _c.setValue, sKey = "home_page_slider", onSubmit = function (data) {
-        console.log(data);
         if (!slider)
             addItem(sKey, data.sliderValue);
         else
@@ -179,13 +178,12 @@ var MenuSection = function () {
                 case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetAllMenuElementList")];
                 case 1:
                     res = _a.sent();
-                    console.log(res);
                     setElements(res.data);
                     setParentElements(res.data.filter(function (m, idx) { return m.parentMenuElementId == null; }));
                     return [2 /*return*/];
             }
         });
-    }); }, parentData = (0, common_1.mapObjectToSelect)(parentElements, "text", "menuElementId"), newItem = React.createElement(MenuElementRow, { elements: elements, parentData: parentData, item: null, refreshFunc: getMenuElements, isNew: true, setShow: setNew });
+    }); }, newItem = React.createElement(MenuElementRow, { elements: elements, parentElements: parentElements, item: null, refreshFunc: getMenuElements, isNew: true, setShow: setNew });
     React.useEffect(function () {
         getMenuElements();
     }, []);
@@ -202,18 +200,17 @@ var MenuSection = function () {
                     React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "current parent"),
                     React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "options")),
                 showNew && newItem,
-                elements && elements.map(function (e, idx) { return React.createElement(MenuElementRow, { parentData: parentData, elements: elements, item: e, key: idx, refreshFunc: getMenuElements }); }))));
+                elements && elements.map(function (e, idx) { return React.createElement(MenuElementRow, { parentElements: parentElements, elements: elements, item: e, key: idx, refreshFunc: getMenuElements }); }))));
 };
 var MenuElementRow = function (props) {
     var _a;
-    var item = props.item, parentData = props.parentData, _b = props.isNew, isNew = _b === void 0 ? false : _b, refreshFunc = props.refreshFunc, elements = props.elements, _c = props.setShow, setShow = _c === void 0 ? function () { } : _c, _d = (0, react_hook_form_1.useForm)({ defaultValues: __assign({}, item) }), register = _d.register, handleSubmit = _d.handleSubmit, setValue = _d.setValue, getValues = _d.getValues, onSubmit = function (data) {
-        console.log(data);
+    var item = props.item, parentElements = props.parentElements, _b = props.isNew, isNew = _b === void 0 ? false : _b, refreshFunc = props.refreshFunc, elements = props.elements, _c = props.setShow, setShow = _c === void 0 ? function () { } : _c, _d = (0, react_hook_form_1.useForm)({ defaultValues: __assign({}, item) }), register = _d.register, handleSubmit = _d.handleSubmit, setValue = _d.setValue, getValues = _d.getValues, parentData = (0, common_1.mapObjectToSelect)(parentElements, "text", "menuElementId").filter(function (i) { return i.value != (item === null || item === void 0 ? void 0 : item.menuElementId); }), onSubmit = function (data) {
     }, makeItem = function (data) {
         return {
             isVisible: (data === null || data === void 0 ? void 0 : data.isVisible) || false,
             link: (data === null || data === void 0 ? void 0 : data.link) || "",
             menuElementId: (item === null || item === void 0 ? void 0 : item.menuElementId) || -1,
-            parentMenuElementId: (data === null || data === void 0 ? void 0 : data.parentMenuElementId) || null,
+            parentMenuElementId: (data === null || data === void 0 ? void 0 : data.parentMenuElementId) / 1 || null,
             text: (data === null || data === void 0 ? void 0 : data.text) || ""
         };
     }, addItem = function (data) { return __awaiter(void 0, void 0, void 0, function () {
@@ -267,7 +264,7 @@ var MenuElementRow = function (props) {
         React.createElement(common_1.PInput, { register: __assign({}, register("isVisible")), inputProps: { type: 'checkbox' } }),
         React.createElement("div", null, parentData && (parentData === null || parentData === void 0 ? void 0 : parentData.length) > 0 &&
             React.createElement(common_1.Select, { register: register, defaultValue: item === null || item === void 0 ? void 0 : item.parentMenuElementId, data: parentData, name: "parentMenuElementId" })),
-        React.createElement("div", null, elements && ((_a = elements.filter(function (e) { return (item === null || item === void 0 ? void 0 : item.menuElementId) == (e === null || e === void 0 ? void 0 : e.id); })[0]) === null || _a === void 0 ? void 0 : _a.text)),
+        React.createElement("div", null, elements && ((_a = elements.filter(function (e) { return (item === null || item === void 0 ? void 0 : item.parentMenuElementId) != null && e.menuElementId == item.parentMenuElementId; })[0]) === null || _a === void 0 ? void 0 : _a.text)),
         React.createElement("div", { className: "buttons-container" }, isNew ?
             React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: function (e) { return addItem(getValues()); } }, "Add")
             : React.createElement(React.Fragment, null,
@@ -282,13 +279,11 @@ var LogoSection = function (props) {
                 case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetAllPictureList")];
                 case 1:
                     res = _a.sent();
-                    console.log(res);
                     setPictures(res.data);
                     return [2 /*return*/];
             }
         });
     }); }, _c = (0, react_hook_form_1.useForm)(), register = _c.register, handleSubmit = _c.handleSubmit, setValue = _c.setValue, onSubmit = function (data) {
-        console.log(data);
         if (!logoPicture)
             addItem(props.logo_key, data.logoValue);
         else
@@ -365,7 +360,6 @@ var ContactSection = function () {
     var _a = (0, react_1.useState)(), phone = _a[0], setPhone = _a[1], _b = (0, react_1.useState)(), address = _b[0], setAddress = _b[1], _c = (0, react_hook_form_1.useForm)({
         defaultValues: { phoneValue: (phone === null || phone === void 0 ? void 0 : phone.value) || "", addressValue: (address === null || address === void 0 ? void 0 : address.value) || "" }
     }), register = _c.register, handleSubmit = _c.handleSubmit, setValue = _c.setValue, onSubmit = function (data) {
-        console.log(data);
         if (!phone) {
             addItem("phone", data.phoneValue);
         }
@@ -450,7 +444,6 @@ var SocialMediaSection = function () {
                 case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetAllSocialMediaList")];
                 case 1:
                     res = _a.sent();
-                    console.log(res);
                     setSocialMedia(res.data);
                     return [2 /*return*/];
             }

@@ -90,7 +90,6 @@ var BannersPage = function () {
 exports.BannersPage = BannersPage;
 var BannerSection = function () {
     var _a = (0, react_1.useState)(), banner = _a[0], setBanner = _a[1], _b = (0, react_1.useState)(), bannersData = _b[0], setBannersData = _b[1], _c = (0, react_1.useState)(), pictures = _c[0], setPictures = _c[1], _d = (0, react_1.useState)(false), showNew = _d[0], setNew = _d[1], _e = (0, react_hook_form_1.useForm)(), register = _e.register, handleSubmit = _e.handleSubmit, setValue = _e.setValue, sKey = "home_page_slider", onSubmit = function (data) {
-        console.log(data);
     }, getBanners = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res;
         return __generator(this, function (_a) {

@@ -129,7 +129,6 @@ exports.axiosBaseConfig = {
     headers: { Authorization: "Bearer ".concat(getCookie("token")) }
 };
 var testFunc = function () {
-    console.log("działasswss");
 };
 exports.testFunc = testFunc;
 var callApi = function (method, url, data) {

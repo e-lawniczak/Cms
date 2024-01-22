@@ -170,4 +170,14 @@
     display: grid;
     grid-template-columns: 1fr;
     gap:10px;
+    &.picture-list{
+        display: flex;
+        gap: 5px;
+    }
+}
+.generic-list .row{
+    display: grid;
+}
+.testimonial-row.row{
+grid-template-columns: 50px 200px 200px auto 70px 150px 150px 300px ;
 }

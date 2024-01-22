@@ -88,7 +88,6 @@ var SocialMediaPage = function () {
                 case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetAllSocialMediaList", common_1.axiosBaseConfig)];
                 case 1:
                     res = _a.sent();
-                    console.log("Xd");
                     setSocialMedia(res.data);
                     return [2 /*return*/];
             }

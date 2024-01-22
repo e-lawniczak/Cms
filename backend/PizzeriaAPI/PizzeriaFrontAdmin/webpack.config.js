@@ -22,6 +22,7 @@ module.exports = {
     aboutUs: { import: "./Src/aboutUs.tsx", dependOn: "common" },
     pages: { import: "./Src/pages.tsx", dependOn: "common" },
     homePage: { import: "./Src/homePage.tsx", dependOn: "common" },
+    role: { import: "./Src/role.tsx", dependOn: "common" },
     common: "./Src/common.tsx"
   },
   output: {

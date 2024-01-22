@@ -133,7 +133,19 @@ export const Image = (props: ImageProps) => {
     <img src={src} />
   </div>
 }
+export interface TestimonialDto {
+  id: number,
+  isVisible: boolean,
+  firstName: string,
+  lastName: string,
+  text: string,
+  roleId: number,
+  pictureIdList: any[]
 
+}
+export interface RoleDto{
+  
+}
 export interface InputProps {
   register: any,
   inputProps: {

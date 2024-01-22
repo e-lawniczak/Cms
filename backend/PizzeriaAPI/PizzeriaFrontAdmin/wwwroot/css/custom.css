@@ -235,6 +235,18 @@
   grid-template-columns: 1fr;
   gap: 10px;
 }
+.form-top-container + div.picture-list {
+  display: flex;
+  gap: 5px;
+}
+
+.generic-list .row {
+  display: grid;
+}
+
+.testimonial-row.row {
+  grid-template-columns: 50px 200px 200px auto 70px 150px 150px 300px;
+}
 
 .social-row.row {
   display: grid;

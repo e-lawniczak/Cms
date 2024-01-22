@@ -73,7 +73,7 @@ const
            id: item?.id || -1,
            isVisible: data?.isVisible || item?.isVisible || false,
            lastName: data?.lastName || "",
-           pictureIdList: (data?.selectedPicture||false) ? [data?.selectedPicture]: [],
+           pictureIdList: [data?.pictureIdList/1] || [],
            roleId: data?.roleId || 0,
            socialMediaIdList: data?.socialMediaIdList || [],
         } as TeamMemberDto
@@ -106,14 +106,14 @@ return <form className='section-form' >
             <PInput register={{ ...register("lastName") }} inputProps={{ type: 'text' }} />
             <div>
                 {socialData.length > 0 &&
-                    <Select register={register} data={socialData} defaultValue={item?.socialMediaIdList[0] || []} name={"teamMemberId"} selectProps={{multiple:true}} />
+                    <Select register={register} data={socialData} defaultValue={item?.socialMediaIdList[0] || []} name={"socialMediaIdList"} selectProps={{multiple:true}} />
                 }
             </div>
             <div className="role">ROLA</div>
             <PInput register={{ ...register("isVisible") }} inputProps={{ type: 'checkbox' }} />
             <div>
                 {picData.length > 0 &&
-                    <Select register={register} data={picData} defaultValue={item?.pictureIdList[0] || []} name={"selectedPicture"} />
+                    <Select register={register} data={picData} defaultValue={item?.pictureIdList[0] || []} name={"pictureIdList"} />
                 }
             </div>
             <div className="buttons-container">

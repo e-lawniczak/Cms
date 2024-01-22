@@ -20,7 +20,74 @@ export const HomePage = () => {
         <LogoSection logo_key={'footer_logo'} title={'Footer logo'} />
         <MenuSection />
         <SliderSection />
+        <BannerSection banner_key={'banner_1'} title={"First banner"} />
+        <BannerSection banner_key={'banner_2'} title={"Second banner banner"} />
     </PageWrapper>
+}
+const BannerSection = (props:{banner_key:string, title:string}) => {
+    const
+        [banner, setSlider] = useState<KeyValueDto>(),
+        [bannerData, setSliderData] = useState<SliderDto[]>(),
+        { register, handleSubmit, setValue } = useForm(),
+        sKey = props.banner_key,
+        onSubmit = (data: any) => {
+            if (!banner)
+                addItem(sKey, data.bannerValue)
+            else
+                editItem(banner.id, banner.key, data.bannerValue)
+            getKeyValues()
+        },
+        getSliders = async () => {
+            let res = await axios.get(baseApiUrl + `/GetAllBannerList`)
+            setSliderData(res.data)
+        },
+        getKeyValues = async () => {
+            let res = await axios.get(baseApiUrl + `/GetKeyValueByKey/${sKey}`)
+            setSlider(res.data)
+        },
+        editItem = async (id: any, key: string, value: any) => {
+            const url = baseApiUrl + "/UpdateKeyValueById"
+            await axios.patch(url, { id: id, key: key, value: value }, axiosBaseConfig)
+            getKeyValues()
+
+        },
+        addItem = async (key: string, value: any) => {
+            const url = baseApiUrl + "/AddKeyValue";
+            await axios.post(url, { id: -1, key: key, value: value }, axiosBaseConfig)
+            getKeyValues()
+        }
+
+    React.useEffect(() => {
+        getKeyValues()
+        getSliders()
+    }, [])
+    return <PageSettingsSection title={props.title} subtext={"Choose a banner to be displayed in the section"} >
+        <div className="banner-preview">
+        </div>
+        <div>
+            <form action="" className="section-form" onSubmit={handleSubmit(onSubmit)}>
+                <div className="form-content ">
+                    <div className="row">
+                        <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>id</div>
+                        <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>key</div>
+                        <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>value</div>
+                    </div>
+                    <div className="row">
+                        <div className="id">{banner?.id || -1}</div>
+                        <div className="key">{banner?.key || sKey}</div>
+                        <div>
+                            {bannerData && bannerData.length > 0 &&
+                                <Select register={register} defaultValue={banner?.value} data={mapObjectToSelect(bannerData, "title", "title")} name={"bannerValue"} />
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div className="buttons-container">
+                    <button type='submit' className="btn btn-white btn-sm w-100 mb-0 btn-save" >Save</button>
+                </div>
+            </form>
+        </div>
+    </PageSettingsSection>
 }
 const SliderSection = () => {
     const
@@ -75,7 +142,7 @@ const SliderSection = () => {
                         <div className="key">{slider?.key || sKey}</div>
                         <div>
                             {slidersData && slidersData.length > 0 &&
-                                <Select register={register} defaultValue={slider?.value} data={mapObjectToSelect(slidersData, "name", "sliderId")} name={"sliderValue"} />
+                                <Select register={register} defaultValue={slider?.value} data={mapObjectToSelect(slidersData, "name", "name")} name={"sliderValue"} />
                             }
                         </div>
                     </div>

@@ -77,7 +77,6 @@ var KeyValuePage = function () {
                 case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetAllKeyValueList")];
                 case 1:
                     res = _a.sent();
-                    console.log(res);
                     setList(res.data);
                     return [2 /*return*/];
             }
