@@ -92,6 +92,17 @@ var TestimonialPage = function () {
                     return [2 /*return*/];
             }
         });
+    }); }, getRoles = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetAllRoleList", common_1.axiosBaseConfig)];
+                case 1:
+                    res = _a.sent();
+                    setRoles(res.data.sort(function (a, b) { return (0, common_1.sortFunc)(a, b); }));
+                    return [2 /*return*/];
+            }
+        });
     }); }, getpictures = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res;
         return __generator(this, function (_a) {
@@ -105,6 +116,7 @@ var TestimonialPage = function () {
         });
     }); }, addNew = React.createElement(TestimonialRow, { item: null, isNew: true, roles: roles, pictures: pictures, refreshFunc: getTestimonials, showFunc: setNew });
     React.useEffect(function () {
+        getRoles();
         getTestimonials();
         getpictures();
     }, []);
@@ -125,7 +137,7 @@ var TestimonialPage = function () {
 };
 exports.TestimonialPage = TestimonialPage;
 var TestimonialRow = function (props) {
-    var item = props.item, isNew = props.isNew, _a = props.roles, roles = _a === void 0 ? [] : _a, refreshFunc = props.refreshFunc, showFunc = props.showFunc, pictures = props.pictures, rolesData = (0, common_1.mapObjectToSelect)(roles, "name", "id"), picturesData = (0, common_1.mapObjectToSelect)(pictures, "name", "pictureId"), _b = (0, react_hook_form_1.useForm)({
+    var item = props.item, isNew = props.isNew, _a = props.roles, roles = _a === void 0 ? [] : _a, refreshFunc = props.refreshFunc, showFunc = props.showFunc, pictures = props.pictures, rolesData = (0, common_1.mapObjectToSelect)(roles, "name", "roleId"), picturesData = (0, common_1.mapObjectToSelect)(pictures, "name", "pictureId"), _b = (0, react_hook_form_1.useForm)({
         defaultValues: __assign({}, item)
     }), register = _b.register, handleSubmit = _b.handleSubmit, formState = _b.formState, getValues = _b.getValues, makeItem = function (data) {
         return {

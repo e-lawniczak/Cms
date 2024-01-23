@@ -211,7 +211,11 @@ export interface GalleryDto {
   pictureIdList: any[]
 }
 export interface RoleDto {
-
+  roleId: number,
+  name: string,
+  isVisible: boolean,
+  teamMemberIdList: number[],
+  testimonialIdList: number[]
 }
 export interface InputProps {
   register: any,

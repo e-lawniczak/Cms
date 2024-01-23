@@ -16,6 +16,10 @@ export const TestimonialPage = () => {
             let res = await axios.get(baseApiUrl + `/GetAllTestimonialList`, axiosBaseConfig)
             setTestimonials(res.data.sort((a: any, b: any) => sortFunc(a, b)))
         },
+        getRoles = async () => {
+            let res = await axios.get(baseApiUrl + `/GetAllRoleList`, axiosBaseConfig)
+            setRoles(res.data.sort((a: any, b: any) => sortFunc(a, b)))
+        },
         getpictures = async () => {
             let res = await axios.get(baseApiUrl + `/GetAllPictureList`, axiosBaseConfig)
             setPictures(res.data)
@@ -28,6 +32,7 @@ export const TestimonialPage = () => {
 
 
     React.useEffect(() => {
+        getRoles()
         getTestimonials()
         getpictures()
     }, [])
@@ -52,7 +57,7 @@ export const TestimonialPage = () => {
 const TestimonialRow = (props: { item: TestimonialDto, isNew: boolean, pictures: any, roles: any[], refreshFunc: any, showFunc?: any }) => {
     const
         { item, isNew, roles = [], refreshFunc, showFunc, pictures } = props,
-        rolesData = mapObjectToSelect(roles, "name", "id"),
+        rolesData = mapObjectToSelect(roles, "name", "roleId"),
         picturesData = mapObjectToSelect(pictures, "name", "pictureId"),
         { register, handleSubmit, formState, getValues } = useForm({
             defaultValues: { ...item }

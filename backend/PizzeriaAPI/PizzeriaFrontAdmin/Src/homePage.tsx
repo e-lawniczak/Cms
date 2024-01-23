@@ -223,7 +223,7 @@ const SliderSection = () => {
 
 const MenuSection = () => {
     const
-        [elements, setElements] = useState<MenuElementDto[]>(),
+        [elements, setElements] = useState<MenuElementDto[]>(), 
         [parentElements, setParentElements] = useState<MenuElementDto[]>(),
         [showNew, setNew] = useState(false),
         getMenuElements = async () => {

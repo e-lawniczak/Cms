@@ -199,7 +199,7 @@ var TabSliderRow = function (props) {
                 React.createElement("div", null, picturesData.length > 0 &&
                     React.createElement(common_1.Select, { register: register, data: picturesData, defaultValue: (item === null || item === void 0 ? void 0 : item.pictureIdList[0]) || null, name: "pictureIdList" })),
                 React.createElement("div", null, tabs.length > 0 &&
-                    (tabs === null || tabs === void 0 ? void 0 : tabs.filter(function (i, idx) { return item === null || item === void 0 ? void 0 : item.informationTabIdList.indexOf(i.informationTabId); }).map(function (i, idx) { return React.createElement("div", { className: 'tabname' },
+                    (tabs === null || tabs === void 0 ? void 0 : tabs.filter(function (i, idx) { return (item === null || item === void 0 ? void 0 : item.informationTabIdList.indexOf(i.informationTabId)) > -1; }).map(function (i, idx) { return React.createElement("div", { className: 'tabname' },
                         i.title,
                         React.createElement("br", null)); }))),
                 React.createElement("div", { className: "buttons-container" }, isNew ?

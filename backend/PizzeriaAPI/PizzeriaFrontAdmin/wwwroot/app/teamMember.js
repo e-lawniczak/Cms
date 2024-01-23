@@ -81,7 +81,7 @@ var common_1 = require("./common");
 var axios_1 = __importDefault(require("axios"));
 var react_hook_form_1 = require("react-hook-form");
 var TeamMemberPage = function () {
-    var _a = (0, react_1.useState)(), socialMedia = _a[0], setSocialMedia = _a[1], _b = (0, react_1.useState)(), pictures = _b[0], setPictures = _b[1], _c = (0, react_1.useState)(), teamMembers = _c[0], setTeamMembers = _c[1], _d = (0, react_1.useState)(false), showNew = _d[0], setNew = _d[1], _e = (0, react_1.useState)([]), data = _e[0], setData = _e[1], getSocials = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var _a = (0, react_1.useState)(), socialMedia = _a[0], setSocialMedia = _a[1], _b = (0, react_1.useState)(), pictures = _b[0], setPictures = _b[1], _c = (0, react_1.useState)(), teamMembers = _c[0], setTeamMembers = _c[1], _d = (0, react_1.useState)(), roles = _d[0], setRoles = _d[1], _e = (0, react_1.useState)(false), showNew = _e[0], setNew = _e[1], _f = (0, react_1.useState)([]), data = _f[0], setData = _f[1], getSocials = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -103,6 +103,17 @@ var TeamMemberPage = function () {
                     return [2 /*return*/];
             }
         });
+    }); }, getRoles = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetAllRoleList", common_1.axiosBaseConfig)];
+                case 1:
+                    res = _a.sent();
+                    setRoles(res.data);
+                    return [2 /*return*/];
+            }
+        });
     }); }, getteammembers = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res;
         return __generator(this, function (_a) {
@@ -115,10 +126,11 @@ var TeamMemberPage = function () {
             }
         });
     }); }, getData = function () {
+        getRoles();
         getSocials();
         getpictures();
         getteammembers();
-    }, addNew = React.createElement(TeamMemberRowRow, { item: null, isNew: true, pictures: pictures, socialMedia: socialMedia, refreshFunc: getData });
+    }, addNew = React.createElement(TeamMemberRowRow, { roles: roles, item: null, isNew: true, pictures: pictures, socialMedia: socialMedia, refreshFunc: getData });
     React.useEffect(function () {
         getData();
     }, []);
@@ -136,11 +148,11 @@ var TeamMemberPage = function () {
                     React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "picture"),
                     React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "options")),
                 showNew && addNew,
-                teamMembers && teamMembers.map(function (item, idx) { return React.createElement(TeamMemberRowRow, { key: idx, item: item, isNew: false, pictures: pictures, socialMedia: socialMedia, refreshFunc: getData }); }))));
+                teamMembers && teamMembers.map(function (item, idx) { return React.createElement(TeamMemberRowRow, { roles: roles, key: idx, item: item, isNew: false, pictures: pictures, socialMedia: socialMedia, refreshFunc: getData }); }))));
 };
 exports.TeamMemberPage = TeamMemberPage;
 var TeamMemberRowRow = function (props) {
-    var item = props.item, isNew = props.isNew, pictures = props.pictures, socialMedia = props.socialMedia, refreshFunc = props.refreshFunc, picData = (0, common_1.mapObjectToSelect)(pictures, "name", "pictureId"), socialData = (0, common_1.mapObjectToSelect)(socialMedia, "name", "id"), _a = (0, react_hook_form_1.useForm)({
+    var item = props.item, isNew = props.isNew, pictures = props.pictures, socialMedia = props.socialMedia, roles = props.roles, refreshFunc = props.refreshFunc, picData = (0, common_1.mapObjectToSelect)(pictures, "name", "pictureId"), rolesData = (0, common_1.mapObjectToSelect)(roles, "name", "roleId"), socialData = (0, common_1.mapObjectToSelect)(socialMedia, "name", "id"), _a = (0, react_hook_form_1.useForm)({
         defaultValues: __assign({}, item)
     }), register = _a.register, handleSubmit = _a.handleSubmit, formState = _a.formState, getValues = _a.getValues, makeItem = function (data) {
         return {
@@ -203,7 +215,8 @@ var TeamMemberRowRow = function (props) {
                 React.createElement(common_1.PInput, { register: __assign({}, register("lastName")), inputProps: { type: 'text' } }),
                 React.createElement("div", null, socialData.length > 0 &&
                     React.createElement(common_1.Select, { register: register, data: socialData, defaultValue: (item === null || item === void 0 ? void 0 : item.socialMediaIdList[0]) || [], name: "socialMediaIdList", selectProps: { multiple: true } })),
-                React.createElement("div", { className: "role" }, "ROLA"),
+                React.createElement("div", { className: "role" }, rolesData.length > 0 &&
+                    React.createElement(common_1.Select, { register: register, data: rolesData, defaultValue: (item === null || item === void 0 ? void 0 : item.roleId) || null, name: "roleId" })),
                 React.createElement(common_1.PInput, { register: __assign({}, register("isVisible")), inputProps: { type: 'checkbox' } }),
                 React.createElement("div", null, picData.length > 0 &&
                     React.createElement(common_1.Select, { register: register, data: picData, defaultValue: (item === null || item === void 0 ? void 0 : item.pictureIdList[0]) || [], name: "pictureIdList" })),

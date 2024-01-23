@@ -85,16 +85,18 @@ var AboutUsPage = function () {
     React.useEffect(function () {
     }, []);
     return React.createElement(common_1.PageWrapper, null,
-        React.createElement(KeyValueSection, { entry_key: 'about_us_banner', title: 'Main banner on About Us page', dataUrl: '/GetAllPictureList' }),
-        React.createElement(KeyValueSection, { entry_key: 'tabSlider1', title: 'Information block on main page', dataUrl: '/GetVisibleTabSliderList' }));
+        React.createElement(LogoSection, { logo_key: 'about_us_banner', title: 'Main banner on About Us page' }),
+        React.createElement(KeyValueSection, { objKey: 'title', objVal: "title", entry_key: 'tabSlider1', title: 'Information block on main page', dataUrl: '/GetVisibleTabSliderList' }),
+        React.createElement(KeyValueSection, { objKey: 'title', objVal: "title", entry_key: 'tabSlider2', title: 'OUR HISTORY information block', dataUrl: '/GetVisibleTabSliderList' }),
+        React.createElement(KeyValueSection, { objKey: 'title', objVal: "title", entry_key: 'tabSlider3', title: 'Testimonial information block', dataUrl: '/GetVisibleTabSliderList' }));
 };
 exports.AboutUsPage = AboutUsPage;
 var KeyValueSection = function (props) {
-    var _a = (0, react_1.useState)(), entry = _a[0], setEntry = _a[1], _b = (0, react_1.useState)([]), data = _b[0], setData = _b[1], _c = (0, react_hook_form_1.useForm)(), register = _c.register, handleSubmit = _c.handleSubmit, setValue = _c.setValue, dataUrl = props.dataUrl ? common_1.baseApiUrl + props.dataUrl : "", sKey = props.entry_key, onSubmit = function (data) {
+    var _a = (0, react_1.useState)(), entry = _a[0], setEntry = _a[1], _b = (0, react_1.useState)([]), data = _b[0], setData = _b[1], _c = (0, react_hook_form_1.useForm)(), register = _c.register, handleSubmit = _c.handleSubmit, setValue = _c.setValue, dataUrl = props.dataUrl ? common_1.baseApiUrl + props.dataUrl : "", sKey = props.entry_key, fieldName = sKey + "dataValue", selectData = (0, common_1.mapObjectToSelect)(data, (props === null || props === void 0 ? void 0 : props.objKey) || "name", (props === null || props === void 0 ? void 0 : props.objVal) || "id"), onSubmit = function (data) {
         if (!entry)
-            addItem(sKey, data.dataValue);
+            addItem(sKey, data[fieldName]);
         else
-            editItem(entry.id, entry.key, data.dataValue);
+            editItem(entry.id, entry.key, data[fieldName]);
         getKeyValues();
     }, getData = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res;
@@ -162,12 +164,99 @@ var KeyValueSection = function (props) {
                         React.createElement("div", { className: "id" }, (entry === null || entry === void 0 ? void 0 : entry.id) || -1),
                         React.createElement("div", { className: "key" }, (entry === null || entry === void 0 ? void 0 : entry.key) || sKey),
                         data.length > 0 ?
-                            React.createElement("div", null, data && data.length > 0 &&
-                                React.createElement(common_1.Select, { register: register, defaultValue: entry === null || entry === void 0 ? void 0 : entry.value, data: (0, common_1.mapObjectToSelect)(data, "name", "name"), name: "dataValue" }))
+                            React.createElement("div", { style: { display: 'flex', gap: "10px" } },
+                                props.isPicture && (entry === null || entry === void 0 ? void 0 : entry.key),
+                                data && data.length > 0 &&
+                                    React.createElement(common_1.Select, { register: register, defaultValue: entry === null || entry === void 0 ? void 0 : entry.value, data: selectData, name: fieldName }))
                             :
-                                React.createElement(common_1.PInput, { register: __assign({}, register("dataValue")), inputProps: { type: 'text' } }))),
+                                React.createElement(common_1.PInput, { register: __assign({}, register(fieldName)), inputProps: { type: 'text' } }))),
                 React.createElement("div", { className: "buttons-container" },
                     React.createElement("button", { type: 'submit', className: "btn btn-white btn-sm w-100 mb-0 btn-save" }, "Save")))));
+};
+var LogoSection = function (props) {
+    var _a = (0, react_1.useState)(), pictures = _a[0], setPictures = _a[1], _b = (0, react_1.useState)(), logoPicture = _b[0], setLogo = _b[1], getPictures = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetAllPictureList")];
+                case 1:
+                    res = _a.sent();
+                    setPictures(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, _c = (0, react_hook_form_1.useForm)(), register = _c.register, handleSubmit = _c.handleSubmit, setValue = _c.setValue, onSubmit = function (data) {
+        if (!logoPicture)
+            addItem(props.logo_key, data.logoValue);
+        else
+            editItem(logoPicture.id, logoPicture.key, data.logoValue);
+        getKeyValues();
+    }, getKeyValues = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValueByKey/".concat(props.logo_key))];
+                case 1:
+                    res = _a.sent();
+                    setLogo(res.data);
+                    setValue("logoValue", res.data.value);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, editItem = function (id, key, value) { return __awaiter(void 0, void 0, void 0, function () {
+        var url;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    url = common_1.baseApiUrl + "/UpdateKeyValueById";
+                    return [4 /*yield*/, axios_1.default.patch(url, { id: id, key: key, value: value }, common_1.axiosBaseConfig)];
+                case 1:
+                    _a.sent();
+                    getKeyValues();
+                    return [2 /*return*/];
+            }
+        });
+    }); }, addItem = function (key, value) { return __awaiter(void 0, void 0, void 0, function () {
+        var url;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    url = common_1.baseApiUrl + "/AddKeyValue";
+                    return [4 /*yield*/, axios_1.default.post(url, { id: -1, key: key, value: value }, common_1.axiosBaseConfig)];
+                case 1:
+                    _a.sent();
+                    getKeyValues();
+                    return [2 /*return*/];
+            }
+        });
+    }); }, onPictureClick = function (pic) {
+        setValue("logoValue", "/GetPicture/Mini/".concat(pic.pictureId));
+    };
+    React.useEffect(function () {
+        getPictures();
+        getKeyValues();
+    }, []);
+    return React.createElement(common_1.PageSettingsSection, { title: props.title, className: 'two-col', subtext: 'Click on the picture from the list. Then click the save button' },
+        React.createElement("div", { className: "logo-preview" },
+            React.createElement(common_1.Image, { src: common_1.baseApiUrl + (logoPicture === null || logoPicture === void 0 ? void 0 : logoPicture.value) || "" })),
+        React.createElement("div", null,
+            React.createElement("form", { action: "", className: "section-form", onSubmit: handleSubmit(onSubmit) },
+                React.createElement("div", { className: "form-content " },
+                    React.createElement("div", { className: "row" },
+                        React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "id"),
+                        React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "key"),
+                        React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "value")),
+                    React.createElement("div", { className: "row" },
+                        React.createElement("div", { className: "id" }, (logoPicture === null || logoPicture === void 0 ? void 0 : logoPicture.id) || -1),
+                        React.createElement("div", { className: "key" }, (logoPicture === null || logoPicture === void 0 ? void 0 : logoPicture.key) || props.logo_key),
+                        React.createElement(common_1.PInput, { register: __assign({}, register("logoValue")), inputProps: { type: 'text' } }))),
+                React.createElement("div", { className: "buttons-container" },
+                    React.createElement("button", { type: 'submit', className: "btn btn-white btn-sm w-100 mb-0 btn-save" }, "Save"))),
+            React.createElement("div", { className: "picture-list" }, pictures === null || pictures === void 0 ? void 0 : pictures.map(function (d, idx) { return React.createElement("div", { className: 'picture-container' },
+                React.createElement(common_1.PictureListElement, { key: idx, item: d, onClick: function () { return onPictureClick(d); } }),
+                " ",
+                React.createElement("div", null, d.name),
+                "  "); }))));
 };
 var root = document.getElementById("react_root");
 ReactDOM.render(React.createElement(exports.AboutUsPage, null), root);
