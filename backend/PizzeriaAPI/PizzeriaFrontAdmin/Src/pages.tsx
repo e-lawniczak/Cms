@@ -111,7 +111,7 @@ const ContactRow = (props: { item: PageDto, isNew: boolean, pictures: any, pages
             </div>
             {showEditor &&
                 <div className="editor">
-                    <PEditor formEls={{ handleSubmit, formState, getValues, setValue }} register={{ ...register("content") }} ref={editorRef} editorProps={{}} />
+                    <PEditor formEls={{ getValues, setValue }} controlname='content' register={{ ...register("content") }} editorProps={{}} />
                 </div>}
         </div>
     </form >

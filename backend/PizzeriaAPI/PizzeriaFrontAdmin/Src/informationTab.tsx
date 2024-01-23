@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import * as ReactDOM from 'react-dom';
-import { CategoryDto, InformationTabDto, PInput, PageWrapper, PictureDto, Select, TabSliderDto, axiosBaseConfig, baseApiUrl, mapObjectToSelect, sortFunc } from './common';
+import { CategoryDto, InformationTabDto, PEditor, PInput, PageWrapper, PictureDto, Select, TabSliderDto, axiosBaseConfig, baseApiUrl, mapObjectToSelect, sortFunc } from './common';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 
@@ -37,9 +37,10 @@ export const InformationTabPage = () => {
             <div className="information-tab-row row">
                 <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>id</div>
                 <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>title</div>
-                <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>text</div>
+                {/* <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>text</div> */}
                 <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>button text</div>
                 <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>visible</div>
+                <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>tab silder</div>
                 <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>options</div>
             </div>
             {showNew && addNew}
@@ -52,7 +53,8 @@ const InformationTabRow = (props: { item: InformationTabDto, isNew: boolean, tab
         { item, isNew, tabs = [], refreshFunc, tabSliders, showFunc } = props,
         tabSlidersData = mapObjectToSelect(tabSliders, "title", "id"),
         [pickedBanners, setPickedBanners] = useState([]),
-        { register, handleSubmit, formState, getValues } = useForm({
+        [showEditor, setShow] = useState(false),
+        { register, handleSubmit, formState, getValues, setValue } = useForm({
             defaultValues: { ...item }
         }),
         makeItem = (data: any) => {
@@ -91,7 +93,7 @@ const InformationTabRow = (props: { item: InformationTabDto, isNew: boolean, tab
             <div className="information-tab-row row">
                 <div className="id">{item?.informationTabId >= 0 ? item?.informationTabId : -1}</div>
                 <PInput register={{ ...register("title") }} inputProps={{ type: 'text' }} />
-                <PInput register={{ ...register("text") }} inputProps={{ type: 'text' }} />
+                {/* <PInput register={{ ...register("text") }} inputProps={{ type: 'text' }} /> */}
                 <PInput register={{ ...register("buttonText") }} inputProps={{ type: 'text' }} />
                 <PInput register={{ ...register("isVisible") }} inputProps={{ type: 'checkbox' }} />
                 <div>
@@ -105,9 +107,14 @@ const InformationTabRow = (props: { item: InformationTabDto, isNew: boolean, tab
                         : <>
                             <div className="btn btn-white btn-sm w-100 mb-0 btn-save" onClick={(e) => editItem(getValues())}>Edit</div>
                             <div className="btn btn-white btn-sm w-100 mb-0 btn-delete" onClick={(e) => deleteItem(getValues())}>Delete</div></>}
+                    <div className="btn btn-white btn-sm w-100 mb-0 btn-save" onClick={(e) => setShow(!showEditor)}>{!showEditor ? "Show editor" : "Hide editor"}</div>
                 </div>
 
             </div>
+            {showEditor &&
+                <div className="editor">
+                    <PEditor formEls={{ getValues, setValue }} controlname={"text"} register={{ ...register("text") }} editorProps={{}} />
+                </div>}
         </div>
     </form>
 }
