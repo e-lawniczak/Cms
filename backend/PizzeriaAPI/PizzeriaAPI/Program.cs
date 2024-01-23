@@ -2,6 +2,7 @@
 using API.HealthChecks;
 using Microsoft.OpenApi.Models;
 using PizzeriaAPI.Security;
+using PizzeriaAPI.Settings;
 using Serilog;
 
 namespace PizzeriaAPI
@@ -13,6 +14,9 @@ namespace PizzeriaAPI
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration));
+
+            builder.Services.Configure<UrlSettings>(
+               builder.Configuration.GetSection("UrlSettings"));
 
             builder.Services.AddControllers();
             builder.Services.AddServices();

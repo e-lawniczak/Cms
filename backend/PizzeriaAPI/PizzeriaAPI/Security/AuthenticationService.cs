@@ -14,17 +14,17 @@ namespace PizzeriaAPI.Security
         private readonly IUserManager<User> userManager;
         private readonly IEmailSender emailSender;
         private readonly SecuritySettings securitySettings;
-        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly UrlSettings urlSettings;
 
         public AuthenticationService(IUserManager<User> userManager,
             IEmailSender emailSender,
              IOptions<SecuritySettings> securitySettings,
-             IHttpContextAccessor httpContextAccessor)
+             IOptions<UrlSettings> urlSettings)
         {
             this.userManager = userManager;
             this.securitySettings = securitySettings.Value;
             this.emailSender = emailSender;
-            this.httpContextAccessor = httpContextAccessor;
+            this.urlSettings = urlSettings.Value;
         }
 
         public async Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordRequest resetPasswordRequest)
@@ -57,7 +57,7 @@ namespace PizzeriaAPI.Security
                 throw new Exception("Not found user with given email");
 
             var token = await GenerateForgotPasswordToken(user);
-            var resetLink = $"{httpContextAccessor.HttpContext.Request.Scheme}//{httpContextAccessor.HttpContext.Request.Host}/ResetPassword?token={token}";
+            var resetLink = $"{urlSettings.FrontAdminBaseUrl}/ResetPassword?token={token}";
             var emailBody = $"Click the following link to reset your password: {resetLink}";
             await emailSender.SendEmailAsync(resetPasswordRequest.Email, "Reset password", emailBody);
 
