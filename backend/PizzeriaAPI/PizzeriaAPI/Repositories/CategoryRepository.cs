@@ -1,4 +1,6 @@
-﻿using PizzeriaAPI.Database.Entities;
+﻿using NHibernate.Criterion;
+using NHibernate.SqlCommand;
+using PizzeriaAPI.Database.Entities;
 using ISession = NHibernate.ISession;
 
 namespace PizzeriaAPI.Repositories
@@ -7,6 +9,7 @@ namespace PizzeriaAPI.Repositories
     {
         Task DeleteAsync(int id, ISession session);
         Task<Category> GetCategoryByNameAsync(string categoryName, ISession session);
+        Task<IList<Category>> GetVisibleCategories(ISession session);
 
     }
     public class CategoryRepository : GenericRepository<Category>, ICategoryRepository
@@ -16,30 +19,58 @@ namespace PizzeriaAPI.Repositories
         {
             this.productRepository = productRepository;
         }
+        public async Task<IList<Category>> GetVisibleCategories(ISession session)
+        {
+            Category categoryAlias = null;
+            var result = await session.QueryOver(() => categoryAlias)
+                 .Where(() => categoryAlias.IsDeleted == false)
+                 .And(() => categoryAlias.IsVisible == true)
+                 .OrderBy(() => categoryAlias.Id).Asc
+                 .ListAsync<Category>();
+            return result.Select(category =>
+            {
+                category.ProductList = category.ProductList?.Where(product => !product.IsDeleted && product.IsVisible).ToList();
+                return category;
+            }).ToList();
+        }
+
         public new async Task<IList<Category>> GetAllAsync(ISession session)
         {
-            var categoryList = await base.GetAllAsync(session);
-            return categoryList.OrderBy(x => x.Id).ToList();
+            Category categoryAlias = null;
+            var result = await session.QueryOver(() => categoryAlias)
+                 .Where(() => categoryAlias.IsDeleted == false)
+                 .OrderBy(() => categoryAlias.Id).Asc
+                 .ListAsync<Category>();
+            return result.Select(category =>
+            {
+                category.ProductList = category.ProductList?.Where(product => !product.IsDeleted).ToList();
+                return category;
+            }).ToList(); ;
         }
 
         public async Task<Category> GetCategoryByNameAsync(string categoryName, ISession session)
         {
-            return await session.QueryOver<Category>()
-                .Where(x => x.Name == categoryName)
-                .SingleOrDefaultAsync();
+            Category categoryAlias = null;
+            Product productAlias = null;
+
+            var result = await session.QueryOver(() => categoryAlias)
+                .JoinAlias(() => categoryAlias.ProductList, () => productAlias)
+                .Where(() => categoryAlias.IsDeleted == false)
+                .And(() => categoryAlias.IsVisible == true)
+                .And(() => productAlias.IsDeleted == false)
+                .And(() => productAlias.IsVisible == true)
+                .And(() => categoryAlias.Name == categoryName)
+                .OrderBy(() => categoryAlias.Id).Asc
+                .SingleOrDefaultAsync<Category>();
+            return result;
         }
         public async Task DeleteAsync(int id, ISession session)
         {
             var entity = await GetByIdAsync(id, session);
-            entity.IsDeleted = true;
-            
-            foreach (var product in entity.ProductList)
-            {
-                await productRepository.DeleteAsync(product.Id, session);
-            }
-            entity.ProductList.Clear();
-            entity.PictureList?.Clear();
+            if (entity == null)
+                return;
 
+            entity.IsDeleted = true;
             await UpdateAsync(entity, session);
         }
 

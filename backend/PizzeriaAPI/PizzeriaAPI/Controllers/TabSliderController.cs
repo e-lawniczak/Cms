@@ -17,16 +17,19 @@ namespace PizzeriaAPI.Controllers
         private readonly ITransactionCoordinator transactionCoordinator;
         private readonly ITabSliderRepository tabSliderRepository;
         private readonly IInformationTabRepository informationTabRepository;
+        private readonly IPictureRepository pictureRepository;
 
         public TabSliderController(ILogger<TabSliderController> logger,
             ITransactionCoordinator transactionCoordinator,
             ITabSliderRepository tabSliderRepository,
-            IInformationTabRepository informationTabRepository)
+            IInformationTabRepository informationTabRepository,
+            IPictureRepository pictureRepository)
         {
             this.logger = logger;
             this.transactionCoordinator = transactionCoordinator;
             this.tabSliderRepository = tabSliderRepository;
             this.informationTabRepository = informationTabRepository;
+            this.pictureRepository = pictureRepository;
         }
 
         [HttpPost]
@@ -83,9 +86,9 @@ namespace PizzeriaAPI.Controllers
             IList<TabSliderDto> tabSliderDtoList = new List<TabSliderDto>();
             await transactionCoordinator.InRollbackScopeAsync(async session =>
             {
-                var tabSliderList = await tabSliderRepository.GetAllAsync(session);
+                var tabSliderList = await tabSliderRepository.GetVisibleAsync(session);
                 if (tabSliderList != null)
-                    tabSliderDtoList = tabSliderList.Where(x => x.IsVisible).Select(GetTabSliderDto).ToList();
+                    tabSliderDtoList = tabSliderList.Select(GetTabSliderDto).ToList();
             });
 
             return Ok(tabSliderDtoList);
@@ -121,6 +124,7 @@ namespace PizzeriaAPI.Controllers
                 tabSlider.Title = tabSliderDto.Title;
                 tabSlider.IsVisible = tabSliderDto.IsVisible;
                 tabSlider.InformationTabList = await informationTabRepository.GetInformationTabListByIdListAsync(tabSliderDto.InformationTabIdList ?? new List<int>(), session);
+                tabSlider.PictureList = await pictureRepository.GetPictureListByIdListAsync(tabSliderDto.PictureIdList ?? new List<int>(), session);
             });
         }
 
@@ -144,7 +148,7 @@ namespace PizzeriaAPI.Controllers
                 Id = tabSlider.Id,
                 Title = tabSlider.Title,
                 IsVisible = tabSlider.IsVisible,
-                PictureIdList = tabSlider.PictureList?.Select(x => x.PictureId ?? 0)?.ToList(),
+                PictureIdList = tabSlider.PictureList?.Select(x => x.PictureId)?.ToList(),
                 InformationTabIdList = tabSlider.InformationTabList?.Select(x => x.InformationTabId)?.ToList()
             };
         }
@@ -157,7 +161,8 @@ namespace PizzeriaAPI.Controllers
                     Title = tabSliderDto.Title,
                     IsVisible = tabSliderDto.IsVisible,
                     IsDeleted = false,
-                    InformationTabList = await informationTabRepository.GetInformationTabListByIdListAsync(tabSliderDto.InformationTabIdList ?? new List<int>(), session)
+                    InformationTabList = await informationTabRepository.GetInformationTabListByIdListAsync(tabSliderDto.InformationTabIdList ?? new List<int>(), session),
+                    PictureList = await pictureRepository.GetPictureListByIdListAsync(tabSliderDto.PictureIdList ?? new List<int>(), session)
                 };
             });
         }

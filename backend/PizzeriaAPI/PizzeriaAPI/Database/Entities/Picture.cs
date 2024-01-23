@@ -2,7 +2,7 @@
 {
     public class Picture
     {
-        public virtual int? PictureId { get; set; }
+        public virtual int PictureId { get; set; }
         public virtual string Name { get; set; }
         public virtual string? Link { get; set; }
 

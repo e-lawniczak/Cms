@@ -88,9 +88,9 @@ namespace PizzeriaAPI.Controllers
             IList<BannerDto> bannerDtoList = new List<BannerDto>();
             await transactionCoordinator.InRollbackScopeAsync(async session =>
             {
-                var bannerList = await bannerRepository.GetAllAsync(session);
+                var bannerList = await bannerRepository.GetVisibleAsync(session);
                 if (bannerList != null)
-                    bannerDtoList = bannerList.Where(x => x.IsVisible).Select(GetBannerDto).ToList();
+                    bannerDtoList = bannerList.Select(GetBannerDto).ToList();
             });
 
             return Ok(bannerDtoList);
@@ -137,14 +137,14 @@ namespace PizzeriaAPI.Controllers
         {
             return new BannerDto()
             {
-                Id = banner?.Id ?? 0,
-                Title = banner?.Title ?? "",
-                Text = banner?.Text ?? "",
-                SubText = banner?.SubText,
-                Link = banner?.Link,
-                IsVisible = banner?.IsVisible ?? true,
-                PictureIdList = banner?.PictureList?.Select(x => x.PictureId ?? 0)?.ToList(),
-                SliderId = banner?.Slider?.SliderId
+                Id = banner.Id,
+                Title = banner.Title,
+                Text = banner.Text,
+                SubText = banner.SubText,
+                Link = banner.Link,
+                IsVisible = banner.IsVisible,
+                PictureIdList = banner.PictureList?.Select(x => x.PictureId)?.ToList(),
+                SliderId = banner.Slider?.SliderId
             };
         }
 

@@ -71,9 +71,9 @@ namespace PizzeriaAPI.Controllers
             IList<ContactInfoDto> contactInfoDtoList = new List<ContactInfoDto>();
             await transactionCoordinator.InRollbackScopeAsync(async session =>
             {
-                var contactInfoList = await contactInfoRepository.GetAllAsync(session);
+                var contactInfoList = await contactInfoRepository.GetVisibleAsync(session);
                 if (contactInfoList != null)
-                    contactInfoDtoList = contactInfoList.Where(x => x.IsVisible).Select(GetContactInfoDto).ToList();
+                    contactInfoDtoList = contactInfoList.Select(GetContactInfoDto).ToList();
             });
 
             return Ok(contactInfoDtoList);
@@ -131,7 +131,7 @@ namespace PizzeriaAPI.Controllers
                 Id = contactInfo.Id,
                 IsVisible = contactInfo.IsVisible,
                 Text = contactInfo.Text,
-                PictureIdList = contactInfo.PictureList?.Select(x => x.PictureId ?? 0).ToList()
+                PictureIdList = contactInfo.PictureList?.Select(x => x.PictureId).ToList()
             };
         }
 

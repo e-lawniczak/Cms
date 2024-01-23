@@ -82,9 +82,9 @@ namespace PizzeriaAPI.Controllers
             IList<SliderDto> sliderDtoList = new List<SliderDto>();
             await transactionCoordinator.InRollbackScopeAsync(async session =>
             {
-                var sliderList = await sliderRepository.GetAllAsync(session);
+                var sliderList = await sliderRepository.GetVisibleAsync(session);
                 if (sliderList != null)
-                    sliderDtoList = sliderList.Where(x => x.IsVisible).Select(GetSliderDto).ToList();
+                    sliderDtoList = sliderList.Select(GetSliderDto).ToList();
             });
 
             return Ok(sliderDtoList);

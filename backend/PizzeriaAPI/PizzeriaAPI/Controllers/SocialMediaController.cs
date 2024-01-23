@@ -54,7 +54,9 @@ namespace PizzeriaAPI.Controllers
             IList<SocialMediaDto> socialMediaDtoList = new List<SocialMediaDto>(); ;
             await transactionCoordinator.InRollbackScopeAsync(async session =>
             {
-                var socialMediaList = await socialMediaRepository.GetMainSocialMedia(session);
+                var socialMediaList = await socialMediaRepository.GetAllMainSocialMedia(session);
+                if(socialMediaList != null)
+                    socialMediaDtoList = socialMediaList.Select(GetSocialMediaDto).ToList();
             });
 
             return Ok(socialMediaDtoList);
@@ -84,9 +86,9 @@ namespace PizzeriaAPI.Controllers
             IList<SocialMediaDto> socialMediaDtoList = new List<SocialMediaDto>(); ;
             await transactionCoordinator.InRollbackScopeAsync(async session =>
             {
-                var socialMediaList = await socialMediaRepository.GetAllAsync(session);
+                var socialMediaList = await socialMediaRepository.GetVisibleAsync(session);
                 if (socialMediaList != null)
-                    socialMediaDtoList = socialMediaList.Where(x => x.IsVisible).Select(GetSocialMediaDto).ToList();
+                    socialMediaDtoList = socialMediaList.Select(GetSocialMediaDto).ToList();
             });
 
             return Ok(socialMediaDtoList);
@@ -151,7 +153,7 @@ namespace PizzeriaAPI.Controllers
                 Link = socialMedia.Link,
                 IsMain = socialMedia.IsMain,
                 IsVisible = socialMedia.IsVisible,
-                PictureIdList = socialMedia.PictureList?.Select(x => x.PictureId ?? 0)?.ToList(),
+                PictureIdList = socialMedia.PictureList?.Select(x => x.PictureId)?.ToList(),
                 TeamMemberId = socialMedia.TeamMember?.Id
             };
         }

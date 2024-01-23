@@ -74,9 +74,9 @@ namespace PizzeriaAPI.Controllers
             IList<TeamMemberDto> teamMemberDtoList = new List<TeamMemberDto>();
             await transactionCoordinator.InRollbackScopeAsync(async session =>
             {
-                var teamMemberList = await teamMemberRepository.GetAllAsync(session);
+                var teamMemberList = await teamMemberRepository.GetVisibleAsync(session);
                 if (teamMemberList != null)
-                    teamMemberDtoList = teamMemberList.Where(x => x.IsVisible).Select(GetTeamMemberDto).ToList();
+                    teamMemberDtoList = teamMemberList.Select(GetTeamMemberDto).ToList();
             });
 
             return Ok(teamMemberDtoList);
@@ -137,11 +137,11 @@ namespace PizzeriaAPI.Controllers
             {
                 Id = teamMember.Id,
                 IsVisible = teamMember.IsVisible,
-                PictureIdList = teamMember.PictureList?.Select(x => x.PictureId ?? 0).ToList(),
+                PictureIdList = teamMember.PictureList?.Select(x => x.PictureId).ToList(),
                 FirstName = teamMember.FirstName,
                 LastName = teamMember.LastName,
-                RoleId = teamMember.Role.RoleId,
-                SocialMediaIdList = teamMember.SocialMediaList.Select(x => x.Id).ToList(),
+                RoleId = teamMember.Role?.RoleId,
+                SocialMediaIdList = teamMember.SocialMediaList?.Select(x => x.Id).ToList(),
             };
         }
 

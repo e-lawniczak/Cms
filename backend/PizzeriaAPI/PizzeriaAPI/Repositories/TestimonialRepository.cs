@@ -1,4 +1,5 @@
-﻿using PizzeriaAPI.Database.Entities;
+﻿using NHibernate.SqlCommand;
+using PizzeriaAPI.Database.Entities;
 using ISession = NHibernate.ISession;
 
 namespace PizzeriaAPI.Repositories
@@ -12,14 +13,36 @@ namespace PizzeriaAPI.Repositories
     {
         public new async Task<IList<Testimonial>> GetAllAsync(ISession session)
         {
-            var result = await base.GetAllAsync(session);
-            return result.OrderBy(x => x.Id).ToList();
+            Testimonial testimonialAlias = null;
+            var result = await session.QueryOver(() => testimonialAlias)
+                 .Where(() => testimonialAlias.IsDeleted == false)
+                 .OrderBy(() => testimonialAlias.Id).Asc
+                 .ListAsync<Testimonial>();
+            return result.Select(testimonial =>
+            {
+                testimonial.Role = ((!testimonial.Role?.IsDeleted ?? false)) ? testimonial.Role : null;
+                return testimonial;
+            }).ToList();
+        }
+
+        public new async Task<IList<Testimonial>> GetVisibleAsync(ISession session)
+        {
+            Testimonial testimonialAlias = null;
+            var result = await session.QueryOver(() => testimonialAlias)
+                 .Where(() => testimonialAlias.IsDeleted == false)
+                 .And(() => testimonialAlias.IsVisible == true)
+                 .OrderBy(() => testimonialAlias.Id).Asc
+                 .ListAsync<Testimonial>();
+            return result.Select(testimonial =>
+            {
+                testimonial.Role = ((!testimonial.Role?.IsDeleted ?? false) && (testimonial.Role?.IsVisible ?? true)) ? testimonial.Role : null;
+                return testimonial;
+            }).ToList();
         }
         public async Task DeleteAsync(int id, ISession session)
         {
             var entity = await GetByIdAsync(id, session);
             entity.IsDeleted = true;
-            entity.PictureList?.Clear();
             await UpdateAsync(entity, session);
         }
         public override async Task InsertAsync(Testimonial entity, ISession session)

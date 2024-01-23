@@ -10,6 +10,7 @@ namespace PizzeriaAPI.Repositories
         Task UpdateAsync(T entity, ISession session);
         Task<T> GetByIdAsync(int id, ISession session);
         Task<IList<T>> GetAllAsync(ISession session);
+        Task<IList<T>> GetVisibleAsync(ISession session);
     }
 
     public abstract class GenericRepository<T> : IGenericRepository<T> where T : class
@@ -61,6 +62,11 @@ namespace PizzeriaAPI.Repositories
             PropertyInfo? property = entityType?.GetProperty(propertyName ?? "", BindingFlags.Public | BindingFlags.Instance);
 
             return property != null;
+        }
+
+        public Task<IList<T>> GetVisibleAsync(ISession session)
+        {
+            throw new NotImplementedException();
         }
     }
 }

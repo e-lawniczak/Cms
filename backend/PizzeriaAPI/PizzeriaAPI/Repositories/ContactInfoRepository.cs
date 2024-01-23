@@ -1,4 +1,5 @@
-﻿using PizzeriaAPI.Database.Entities;
+﻿using NHibernate.Linq;
+using PizzeriaAPI.Database.Entities;
 using ISession = NHibernate.ISession;
 
 namespace PizzeriaAPI.Repositories
@@ -11,14 +12,33 @@ namespace PizzeriaAPI.Repositories
     {
         public new async Task<IList<ContactInfo>> GetAllAsync(ISession session)
         {
-            var result = await base.GetAllAsync(session);
-            return result.OrderBy(x => x.Id).ToList();
+            ContactInfo contactInfoAlias = null;
+
+            var result = await session.QueryOver(() => contactInfoAlias)
+                .Where(() => contactInfoAlias.IsDeleted == false)
+                .OrderBy(() => contactInfoAlias.Id).Asc
+                .ListAsync<ContactInfo>();
+
+            return result;
+        }
+        public new async Task<IList<ContactInfo>> GetVisibleAsync(ISession session)
+        {
+            ContactInfo contactInfoAlias = null;
+
+            var result = await session.QueryOver(() => contactInfoAlias)
+                .Where(() => contactInfoAlias.IsDeleted == false)
+                .And(() => contactInfoAlias.IsVisible == true)
+                .OrderBy(() => contactInfoAlias.Id).Asc
+                .ListAsync<ContactInfo>();
+
+            return result;
         }
         public async Task DeleteAsync(int id, ISession session)
         {
             var entity = await GetByIdAsync(id, session);
+            if(entity == null)
+                return;
             entity.IsDeleted = true;
-            entity.PictureList?.Clear();
             await UpdateAsync(entity, session);
         }
 

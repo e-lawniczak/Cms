@@ -1,4 +1,6 @@
-﻿using PizzeriaAPI.Database.Entities;
+﻿using NHibernate.Criterion;
+using NHibernate.SqlCommand;
+using PizzeriaAPI.Database.Entities;
 using ISession = NHibernate.ISession;
 
 
@@ -8,34 +10,73 @@ namespace PizzeriaAPI.Repositories
     {
         Task<IList<SocialMedia>> GetSocialMediaListByIdListAsync(IList<int> socialMediaIdList, ISession session);
         Task DeleteAsync(int id, ISession session);
-        Task<IList<SocialMedia>> GetMainSocialMedia(ISession session);
+        Task<IList<SocialMedia>> GetAllMainSocialMedia(ISession session);
     }
     public class SocialMediaRepository : GenericRepository<SocialMedia>, ISocialMediaRepository
     {
         public new async Task<IList<SocialMedia>> GetAllAsync(ISession session)
         {
-            var result = await base.GetAllAsync(session);
-            return result.OrderBy(x => x.Id).ToList();
+            SocialMedia socialMediaAlias = null;
+            var result = await session.QueryOver(() => socialMediaAlias)
+                 .Where(() => socialMediaAlias.IsDeleted == false)
+                 .OrderBy(() => socialMediaAlias.Id).Asc
+                 .ListAsync<SocialMedia>();
+            return result.Select(socialMedia =>
+            {
+                socialMedia.TeamMember = !socialMedia.TeamMember?.IsDeleted ?? false ? socialMedia.TeamMember : null;
+                return socialMedia;
+            }).ToList();
         }
-        public async Task<IList<SocialMedia>> GetMainSocialMedia(ISession session)
+
+        public new async Task<IList<SocialMedia>> GetVisibleAsync(ISession session)
         {
-            return await session.QueryOver<SocialMedia>()
-                                    .Where(x => x.IsMain == true).OrderBy(x => x.Id).Asc
-                                    .ListAsync<SocialMedia>();
+            SocialMedia socialMediaAlias = null;
+            var result = await session.QueryOver(() => socialMediaAlias)
+                 .Where(() => socialMediaAlias.IsDeleted == false)
+                 .And(() => socialMediaAlias.IsVisible == true)
+                 .OrderBy(() => socialMediaAlias.Id).Asc
+                 .ListAsync<SocialMedia>();
+            return result.Select(socialMedia =>
+            {
+                socialMedia.TeamMember = (!socialMedia.TeamMember?.IsDeleted ?? false) && 
+                (socialMedia.TeamMember?.IsVisible ?? true) ? socialMedia.TeamMember : null;
+                return socialMedia;
+            }).ToList();
+        }
+        public async Task<IList<SocialMedia>> GetAllMainSocialMedia(ISession session)
+        {
+            SocialMedia socialMediaAlias = null;
+            var result = await session.QueryOver(() => socialMediaAlias)
+                 .Where(() => socialMediaAlias.IsDeleted == false)
+                 .And(() => socialMediaAlias.IsMain == true)
+                 .OrderBy(() => socialMediaAlias.Id).Asc
+                 .ListAsync<SocialMedia>();
+
+            return result.Select(socialMedia =>
+            {
+                socialMedia.TeamMember = !socialMedia.TeamMember?.IsDeleted ?? false ? socialMedia.TeamMember : null;
+                return socialMedia;
+            }).ToList();
         }
         public async Task<IList<SocialMedia>> GetSocialMediaListByIdListAsync(IList<int> socialMediaIdList, ISession session)
         {
-            return await session.QueryOver<SocialMedia>()
-                                    .WhereRestrictionOn(x => x.Id).IsIn(socialMediaIdList.ToArray()).OrderBy(x => x.Id).Asc
-                                    .ListAsync<SocialMedia>();
+            SocialMedia socialMediaAlias = null;
+            var result = await session.QueryOver(() => socialMediaAlias)
+                 .Where(() => socialMediaAlias.IsDeleted == false)
+                 .And(() => socialMediaAlias.Id.IsIn(socialMediaIdList.ToArray()))
+                 .OrderBy(() => socialMediaAlias.Id).Asc
+                 .ListAsync<SocialMedia>();
+
+            return result.Select(socialMedia =>
+            {
+                socialMedia.TeamMember = !socialMedia.TeamMember?.IsDeleted ?? false ? socialMedia.TeamMember : null;
+                return socialMedia;
+            }).ToList();
         }
         public async Task DeleteAsync(int id, ISession session)
         {
             var entity = await GetByIdAsync(id, session);
-            entity.IsDeleted = true;
-            entity.PictureList?.Clear();
-            entity?.TeamMember?.SocialMediaList.Remove(entity);
-            
+            entity.IsDeleted = true;            
             await UpdateAsync(entity, session);
         }
         public override async Task InsertAsync(SocialMedia entity, ISession session)

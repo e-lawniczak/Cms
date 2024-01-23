@@ -1,4 +1,5 @@
-﻿using PizzeriaAPI.Database.Entities;
+﻿using NHibernate.SqlCommand;
+using PizzeriaAPI.Database.Entities;
 using ISession = NHibernate.ISession;
 
 namespace PizzeriaAPI.Repositories
@@ -12,15 +13,37 @@ namespace PizzeriaAPI.Repositories
     {
         public new async Task<IList<TeamMember>> GetAllAsync(ISession session)
         {
-            var result = await base.GetAllAsync(session);
-            return result.OrderBy(x => x.Id).ToList();
+            TeamMember teamMemberAlias = null;
+            var result = await session.QueryOver(() => teamMemberAlias)
+                 .Where(() => teamMemberAlias.IsDeleted == false)
+                 .OrderBy(() => teamMemberAlias.Id).Asc
+                 .ListAsync<TeamMember>();
+            return result.Select(teammember =>
+            {
+                teammember.SocialMediaList = teammember.SocialMediaList?.Where(socialMedia => !socialMedia.IsDeleted).ToList();
+                teammember.Role = (!teammember.Role?.IsDeleted ?? false) ? teammember.Role : null;
+                return teammember;
+            }).ToList();
+        }
+        public new async Task<IList<TeamMember>> GetVisibleAsync(ISession session)
+        {
+            TeamMember teamMemberAlias = null;
+            var result = await session.QueryOver(() => teamMemberAlias)
+                 .Where(() => teamMemberAlias.IsDeleted == false)
+                 .And(() => teamMemberAlias.IsVisible == true)
+                 .OrderBy(() => teamMemberAlias.Id).Asc
+                 .ListAsync<TeamMember>();
+            return result.Select(teammember =>
+            {
+                teammember.SocialMediaList = teammember.SocialMediaList?.Where(socialMedia => !socialMedia.IsDeleted && socialMedia.IsVisible).ToList();
+                teammember.Role = ((!teammember.Role?.IsDeleted ?? false) && (teammember.Role?.IsVisible ?? true)) ? teammember.Role : null;
+                return teammember;
+            }).ToList();
         }
         public async Task DeleteAsync(int id, ISession session)
         {
             var entity = await GetByIdAsync(id, session);
             entity.IsDeleted = true;
-            entity.PictureList?.Clear();
-            entity.SocialMediaList?.Clear();
             await UpdateAsync(entity, session);
         }
         public override async Task InsertAsync(TeamMember entity, ISession session)

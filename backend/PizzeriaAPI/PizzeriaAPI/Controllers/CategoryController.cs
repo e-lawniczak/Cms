@@ -87,9 +87,9 @@ namespace PizzeriaAPI.Controllers
             IList<CategoryDto> categoryDtoList = new List<CategoryDto>();
             await transactionCoordinator.InRollbackScopeAsync(async session =>
             {
-                var categoryList = await categoryRepository.GetAllAsync(session);
+                var categoryList = await categoryRepository.GetVisibleCategories(session);
                 if (categoryList != null)
-                    categoryDtoList = categoryList.Where(x => x.IsVisible).Select(GetCategoryDto).ToList();
+                    categoryDtoList = categoryList.Select(GetCategoryDto).ToList();
             });
 
             return Ok(categoryDtoList);
@@ -138,7 +138,7 @@ namespace PizzeriaAPI.Controllers
                 category.Link = categoryDto.Link;
                 category.IsVisible = categoryDto.IsVisible;
                 category.PictureList = await pictureRepository.GetPictureListByIdListAsync(categoryDto.PictureIdList ?? new List<int>(), session);
-                category.ProductList = await productRepository.GetProductListByIdListAsync(categoryDto.ProductIdList ?? new List<int>(), session);
+                category.ProductList = await productRepository.GetAllProductListByIdListAsync(categoryDto.ProductIdList ?? new List<int>(), session);
             });
         }
         private CategoryDto GetCategoryDto(Category category)
@@ -149,8 +149,8 @@ namespace PizzeriaAPI.Controllers
                 Name = category.Name,
                 Link = category.Link,
                 IsVisible = category.IsVisible,
-                PictureIdList = category.PictureList?.Select(x => x.PictureId ?? 0).ToList(),
-                ProductIdList = category.ProductList.Select(x => x.Id).ToList()
+                PictureIdList = category.PictureList?.Select(x => x.PictureId).ToList(),
+                ProductIdList = category.ProductList?.Select(x => x.Id).ToList()
             };
         }
 
@@ -165,7 +165,7 @@ namespace PizzeriaAPI.Controllers
                     IsVisible = categoryDto.IsVisible,
                     IsDeleted = false,
                     PictureList = await pictureRepository.GetPictureListByIdListAsync(categoryDto.PictureIdList ?? new List<int>(), session),
-                    ProductList = await productRepository.GetProductListByIdListAsync(categoryDto.ProductIdList ?? new List<int>(), session)
+                    ProductList = await productRepository.GetAllProductListByIdListAsync(categoryDto.ProductIdList ?? new List<int>(), session)
 
                 };
             });

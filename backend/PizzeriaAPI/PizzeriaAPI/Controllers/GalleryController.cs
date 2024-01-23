@@ -83,9 +83,9 @@ namespace PizzeriaAPI.Controllers
             IList<GalleryDto> galleryDtoList = new List<GalleryDto>();
             await transactionCoordinator.InRollbackScopeAsync(async session =>
             {
-                var galleryList = await galleryRepository.GetAllAsync(session);
+                var galleryList = await galleryRepository.GetVisibleAsync(session);
                 if (galleryList != null)
-                    galleryDtoList = galleryList.Where(x => x.IsVisible).Select(GetGalleryDto).ToList();
+                    galleryDtoList = galleryList.Select(GetGalleryDto).ToList();
             });
 
             return Ok(galleryDtoList);
@@ -148,7 +148,7 @@ namespace PizzeriaAPI.Controllers
                 MainText = gallery.MainText,
                 SubText = gallery.SubText,
                 IsVisible = gallery.IsVisible,
-                PictureIdList = gallery.PictureList?.Select(x => x.PictureId ?? 0).ToList(),
+                PictureIdList = gallery.PictureList?.Select(x => x.PictureId).ToList(),
             };
         }
 

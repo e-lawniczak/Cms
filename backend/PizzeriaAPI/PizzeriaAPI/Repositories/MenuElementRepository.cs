@@ -11,8 +11,31 @@ namespace PizzeriaAPI.Repositories
     {
         public new async Task<IList<MenuElement>> GetAllAsync(ISession session)
         {
-            var result = await base.GetAllAsync(session);
-            return result.OrderBy(x => x.MenuElementId).ToList();
+            MenuElement menuElementAlias = null;
+            var result = await session.QueryOver(() => menuElementAlias)
+                 .Where(() => menuElementAlias.IsDeleted == false)
+                 .OrderBy(() => menuElementAlias.MenuElementId).Asc
+                 .ListAsync<MenuElement>();
+            return result.Select(menuElement =>
+            {
+                menuElement.ParentMenuElement = (!menuElement.ParentMenuElement?.IsDeleted ?? false) ? menuElement.ParentMenuElement : null;
+                return menuElement;
+            }).ToList();
+        }
+        public new async Task<IList<MenuElement>> GetVisibleAsync(ISession session)
+        {
+            MenuElement menuElementAlias = null;
+            var result = await session.QueryOver(() => menuElementAlias)
+                 .Where(() => menuElementAlias.IsDeleted == false)
+                 .And(() => menuElementAlias.IsVisible == true)
+                 .OrderBy(() => menuElementAlias.MenuElementId).Asc
+                 .ListAsync<MenuElement>();
+            return result.Select(menuElement =>
+            {
+                menuElement.ParentMenuElement = (!menuElement.ParentMenuElement?.IsDeleted ?? false) &&
+                (menuElement.ParentMenuElement?.IsVisible ?? true) ? menuElement.ParentMenuElement : null;
+                return menuElement;
+            }).ToList();
         }
         public async Task DeleteAsync(int id, ISession session)
         {

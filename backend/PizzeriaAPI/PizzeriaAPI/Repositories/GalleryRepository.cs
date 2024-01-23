@@ -1,4 +1,5 @@
-﻿using PizzeriaAPI.Database.Entities;
+﻿using NHibernate.Linq;
+using PizzeriaAPI.Database.Entities;
 using ISession = NHibernate.ISession;
 
 namespace PizzeriaAPI.Repositories
@@ -12,20 +13,43 @@ namespace PizzeriaAPI.Repositories
     {
         public new async Task<IList<Gallery>> GetAllAsync(ISession session)
         {
-            var result = await base.GetAllAsync(session);
-            return result.OrderBy(x => x.Id).ToList();
+            Gallery galleryAlias = null;
+
+            var result = await session.QueryOver(() => galleryAlias)
+                .Where(() => galleryAlias.IsDeleted == false)
+                .OrderBy(() => galleryAlias.Id).Asc
+                .ListAsync<Gallery>();
+
+            return result;
         }
         public async Task<Gallery> GetGalleryByNameAsync(string galleryname, ISession session)
         {
-            return await session.QueryOver<Gallery>()
-                .Where(x => x.Name == galleryname)
-                .SingleOrDefaultAsync();
+            Gallery galleryAlias = null;
+
+            var result = await session.QueryOver(() => galleryAlias)
+                .Where(() => galleryAlias.IsDeleted == false)
+                .And(() => galleryAlias.Name.Like(galleryname))
+                .OrderBy(() => galleryAlias.Id).Asc
+                .SingleOrDefaultAsync<Gallery>();
+
+            return result;
+        }
+        public new async Task<IList<Gallery>> GetVisibleAsync(ISession session)
+        {
+            Gallery galleryAlias = null;
+
+            var result = await session.QueryOver(() => galleryAlias)
+                .Where(() => galleryAlias.IsDeleted == false)
+                .And(() => galleryAlias.IsVisible == true)
+                .OrderBy(() => galleryAlias.Id).Asc
+                .ListAsync<Gallery>();
+
+            return result;
         }
         public async Task DeleteAsync(int id, ISession session)
         {
             var entity = await GetByIdAsync(id, session);
             entity.IsDeleted = true;
-            entity.PictureList?.Clear();
             await UpdateAsync(entity, session);
         }
 

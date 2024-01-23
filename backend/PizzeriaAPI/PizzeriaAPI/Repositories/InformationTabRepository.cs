@@ -1,4 +1,6 @@
-﻿using PizzeriaAPI.Database.Entities;
+﻿using NHibernate.Criterion;
+using NHibernate.SqlCommand;
+using PizzeriaAPI.Database.Entities;
 using ISession = NHibernate.ISession;
 
 namespace PizzeriaAPI.Repositories
@@ -13,21 +15,52 @@ namespace PizzeriaAPI.Repositories
 
         public new async Task<IList<InformationTab>> GetAllAsync(ISession session)
         {
-            var result = await base.GetAllAsync(session);
-            return result.OrderBy(x => x.InformationTabId).ToList();
+            InformationTab informationTabAlias = null;
+            var result = await session.QueryOver(() => informationTabAlias)
+                 .Where(() => informationTabAlias.IsDeleted == false)
+                 .OrderBy(() => informationTabAlias.InformationTabId).Asc
+                   .ListAsync<InformationTab>();
+            return result.Select(informationTab =>
+            {
+                informationTab.TabSlider = (!informationTab.TabSlider?.IsDeleted ?? false) ? informationTab.TabSlider : null;
+                return informationTab;
+            }).ToList(); ;
+        }
+        public new async Task<IList<InformationTab>> GetVisibleAsync(ISession session)
+        {
+            InformationTab informationTabAlias = null;
+            var result = await session.QueryOver(() => informationTabAlias)
+                 .Where(() => informationTabAlias.IsDeleted == false)
+                 .And(() => informationTabAlias.IsVisible == true)
+                 .OrderBy(() => informationTabAlias.InformationTabId).Asc
+                   .ListAsync<InformationTab>();
+            return result.Select(informationTab =>
+            {
+                informationTab.TabSlider = (!informationTab.TabSlider?.IsDeleted ?? false) &&
+                (informationTab.TabSlider?.IsVisible ?? true)? informationTab.TabSlider : null;
+                return informationTab;
+            }).ToList(); ;
         }
         public async Task<IList<InformationTab>> GetInformationTabListByIdListAsync(IList<int> InformationTabIdList, ISession session)
         {
-            return await session.QueryOver<InformationTab>()
-                                    .WhereRestrictionOn(x => x.InformationTabId).IsIn(InformationTabIdList.ToArray())
-                                    .OrderBy(x => x.InformationTabId).Asc
-                                    .ListAsync<InformationTab>();
+            InformationTab informationTabAlias = null;
+
+            var result = await session.QueryOver(() => informationTabAlias)
+                .Where(() => informationTabAlias.IsDeleted == false)
+                .And(() => informationTabAlias.InformationTabId.IsIn(InformationTabIdList.ToArray()))
+                .OrderBy(() => informationTabAlias.InformationTabId).Asc
+                .ListAsync<InformationTab>();
+
+            return result.Select(informationTab =>
+            {
+                informationTab.TabSlider = (informationTab.TabSlider?.IsDeleted ?? false) ? informationTab.TabSlider : null;
+                return informationTab;
+            }).ToList(); ;
         }
         public async Task DeleteAsync(int id, ISession session)
         {
             var entity = await GetByIdAsync(id, session);
             entity.IsDeleted = true;
-            entity.TabSlider = null;
             await UpdateAsync(entity, session);
         }
 

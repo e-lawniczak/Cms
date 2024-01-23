@@ -74,9 +74,9 @@ namespace PizzeriaAPI.Controllers
             IList<TestimonialDto> testimonialDtoList = new List<TestimonialDto>();
             await transactionCoordinator.InRollbackScopeAsync(async session =>
             {
-                var testimonialList = await testimonialRepository.GetAllAsync(session);
+                var testimonialList = await testimonialRepository.GetVisibleAsync(session);
                 if (testimonialList != null)
-                    testimonialDtoList = testimonialList.Where(x => x.IsVisible).Select(GetTestimonialDto).ToList();
+                    testimonialDtoList = testimonialList.Select(GetTestimonialDto).ToList();
             });
 
             return Ok(testimonialDtoList);
@@ -139,7 +139,7 @@ namespace PizzeriaAPI.Controllers
                 LastName = testimonial.LastName,
                 Text = testimonial.Text,
                 IsVisible = testimonial.IsVisible,
-                PictureIdList = testimonial.PictureList?.Select(x => x.PictureId ?? 0).ToList(),
+                PictureIdList = testimonial.PictureList?.Select(x => x.PictureId).ToList(),
                 RoleId = testimonial.Role?.RoleId ?? 0
             };
         }

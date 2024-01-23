@@ -71,9 +71,9 @@ namespace PizzeriaAPI.Controllers
             IList<ProductDto> productDtoList = new List<ProductDto>();
             await transactionCoordinator.InRollbackScopeAsync(async session =>
             {
-                var productList = await productRepository.GetAllAsync(session);
+                var productList = await productRepository.GetVisibleProducts(session);
                 if (productList != null)
-                    productDtoList = productList.Where(x => x.IsVisible).Select(GetProductDto).ToList();
+                    productDtoList = productList.Select(GetProductDto).ToList();
             });
 
             return Ok(productDtoList);
@@ -143,7 +143,7 @@ namespace PizzeriaAPI.Controllers
                 Score = product.Score,
                 IsRecommended = product.IsRecommended,
                 IsVisible = product.IsVisible,
-                PictureIdList = product.PictureList?.Select(x => x.PictureId ?? 0).ToList(),
+                PictureIdList = product.PictureList?.Select(x => x.PictureId ).ToList(),
                 CategoryId = product.Category?.Id ?? 0
             };
         }

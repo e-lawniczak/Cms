@@ -1,4 +1,7 @@
-﻿using PizzeriaAPI.Database.Entities;
+﻿using MySqlX.XDevAPI;
+using NHibernate.Criterion;
+using NHibernate.SqlCommand;
+using PizzeriaAPI.Database.Entities;
 using ISession = NHibernate.ISession;
 
 namespace PizzeriaAPI.Repositories
@@ -7,36 +10,72 @@ namespace PizzeriaAPI.Repositories
     {
         public Task<IList<Picture>> GetPictureListByIdListAsync(IList<int> pictureIdList, ISession session);
         Task DeleteAsync(int id, ISession session);
-        Task<IList<EntityWithPicture>> GetEntityWithPictureByIdsAsync(IList<int> entityWithPictureIdList, ISession session);
+        Task<IList<EntityWithPicture>> GetAllEntityWithPictureByIdsAsync(IList<int> entityWithPictureIdList, ISession session);
     }
     public class PictureRepository : GenericRepository<Picture>, IPictureRepository
     {
         public new async Task<IList<Picture>> GetAllAsync(ISession session)
         {
-            var result = await base.GetAllAsync(session);
-            return result.OrderBy(x => x.PictureId).ToList();
+            Picture pictureAlias= null;
+
+            var result = await session.QueryOver(() => pictureAlias)
+                .OrderBy(() => pictureAlias.PictureId).Asc
+                .ListAsync<Picture>();
+
+            return result.Select(picture =>
+            {
+                picture.EntityWithPictureList = picture.EntityWithPictureList?
+                .Where(entityWithPicture => !entityWithPicture.IsDeleted).ToList();
+                return picture;
+            }).ToList(); ;
         }
-        public async Task<IList<EntityWithPicture>> GetEntityWithPictureByIdsAsync(IList<int> entityWithPictureIdList, ISession session)
+        public new async Task<IList<Picture>> GetVisibleAsync(ISession session)
         {
-            return await session.QueryOver<EntityWithPicture>()
-                .WhereRestrictionOn(x => x.Id).IsIn(entityWithPictureIdList.ToArray())
-                .OrderBy(x => x.Id).Asc
-                .ListAsync();
+            Picture pictureAlias = null;
+
+            var result = await session.QueryOver(() => pictureAlias)
+                .OrderBy(() => pictureAlias.PictureId).Asc
+                .ListAsync<Picture>();
+
+            return result.Select(picture =>
+            {
+                picture.EntityWithPictureList = picture.EntityWithPictureList?
+                .Where(entityWithPicture => !entityWithPicture.IsDeleted && entityWithPicture.IsVisible).ToList();
+                return picture;
+            }).ToList(); ;
+        }
+        public async Task<IList<EntityWithPicture>> GetAllEntityWithPictureByIdsAsync(IList<int> entityWithPictureIdList, ISession session)
+        {
+            EntityWithPicture entityWithPictureAlias = null;
+
+            var result = await session.QueryOver(() => entityWithPictureAlias)
+                .Where(() => entityWithPictureAlias.IsDeleted == false)
+                .OrderBy(() => entityWithPictureAlias.Id).Asc
+                .ListAsync<EntityWithPicture>();
+            return result;
         }
         public async Task DeleteAsync(int id, ISession session)
         {
             var obj = await session.GetAsync<Picture>(id);
             if (obj == null)
                 return;
-            obj.EntityWithPictureList?.Clear();
             await session.DeleteAsync(obj);
         }
         public async Task<IList<Picture>> GetPictureListByIdListAsync(IList<int> pictureIdList, ISession session)
         {
-            return await session.QueryOver<Picture>()
-                                    .WhereRestrictionOn(x => x.PictureId).IsIn(pictureIdList.ToArray())
-                                    .OrderBy(x => x.PictureId).Asc
-                                    .ListAsync<Picture>();
+            Picture pictureAlias = null;
+
+            var result = await session.QueryOver(() => pictureAlias)
+                .Where(() => pictureAlias.PictureId.IsIn(pictureIdList.ToArray()))
+                .OrderBy(() => pictureAlias.PictureId).Asc
+                .ListAsync<Picture>();
+
+            return result.Select(picture =>
+            {
+                picture.EntityWithPictureList = picture.EntityWithPictureList?
+                .Where(entityWithPicture => !entityWithPicture.IsDeleted).ToList();
+                return picture;
+            }).ToList(); ;
         }
 
         public override async Task InsertAsync(Picture entity, ISession session)

@@ -65,9 +65,9 @@ namespace PizzeriaAPI.Controllers
             IList<MenuElementDto> menuElementDtoList = new List<MenuElementDto>();
             await transactionCoordinator.InRollbackScopeAsync(async session =>
             {
-                var menuElementList = await menuElementRepository.GetAllAsync(session);
+                var menuElementList = await menuElementRepository.GetVisibleAsync(session);
                 if (menuElementList != null)
-                    menuElementDtoList = menuElementList.Where(x => x.IsVisible).Select(GetMenuElementDto).ToList();
+                    menuElementDtoList = menuElementList.Select(GetMenuElementDto).ToList();
             });
 
             return Ok(menuElementDtoList);

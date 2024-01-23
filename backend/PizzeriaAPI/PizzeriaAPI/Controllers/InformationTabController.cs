@@ -62,9 +62,9 @@ namespace PizzeriaAPI.Controllers
             IList<InformationTabDto> InformationTabDtoList = new List<InformationTabDto>();
             await transactionCoordinator.InRollbackScopeAsync(async session =>
             {
-                var informationTabList = await informationTabRepository.GetAllAsync(session);
+                var informationTabList = await informationTabRepository.GetVisibleAsync(session);
                 if (informationTabList != null)
-                    InformationTabDtoList = informationTabList.Where(x => x.IsVisible).Select(GetInformationTabDto).ToList();
+                    InformationTabDtoList = informationTabList.Select(GetInformationTabDto).ToList();
             });
 
             return Ok(InformationTabDtoList);
@@ -143,7 +143,7 @@ namespace PizzeriaAPI.Controllers
                 Text = informationTab.Text,
                 ButtonText = informationTab.ButtonText,
                 IsVisible = informationTab.IsVisible,
-                TabSliderId = informationTab.TabSlider.Id
+                TabSliderId = informationTab.TabSlider?.Id
             };
         }
     }

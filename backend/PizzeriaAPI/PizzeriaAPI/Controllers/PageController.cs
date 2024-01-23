@@ -71,9 +71,9 @@ namespace PizzeriaAPI.Controllers
             IList<PageDto> pageDtoList = new List<PageDto>();
             await transactionCoordinator.InRollbackScopeAsync(async session =>
             {
-                var pageList = await pageRepository.GetAllAsync(session);
+                var pageList = await pageRepository.GetVisibleAsync(session);
                 if (pageList != null)
-                    pageDtoList = pageList.Where(x => x.IsVisible).Select(GetPageDto).ToList();
+                    pageDtoList = pageList.Select(GetPageDto).ToList();
             });
 
             return Ok(pageDtoList);
@@ -134,7 +134,7 @@ namespace PizzeriaAPI.Controllers
                 Title = page.Title,
                 Content = page.Content,
                 IsVisible = page.IsVisible,
-                PictureIdList = page.PictureList?.Select(x => x.PictureId ?? 0)?.ToList(),
+                PictureIdList = page.PictureList?.Select(x => x.PictureId)?.ToList(),
             };
         }
 

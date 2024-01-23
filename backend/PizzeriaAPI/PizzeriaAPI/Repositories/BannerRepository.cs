@@ -1,4 +1,7 @@
-﻿using PizzeriaAPI.Database.Entities;
+﻿using NHibernate.Criterion;
+using NHibernate.Linq;
+using NHibernate.SqlCommand;
+using PizzeriaAPI.Database.Entities;
 using ISession = NHibernate.ISession;
 
 namespace PizzeriaAPI.Repositories
@@ -15,21 +18,61 @@ namespace PizzeriaAPI.Repositories
     {
         public new async Task<IList<Banner>> GetAllAsync(ISession session)
         {
-            var bannerList = await base.GetAllAsync(session);
-            return bannerList.OrderBy(x => x.Id).ToList();
+            Banner bannerAlias = null;
+            var result = await session.QueryOver(() => bannerAlias)
+                 .Where(() => bannerAlias.IsDeleted == false)
+                 .OrderBy(() => bannerAlias.Id).Asc
+                   .ListAsync<Banner>();
+            return result.Select(banner =>
+            {
+                banner.Slider = banner.Slider?.IsDeleted ?? false ? banner.Slider : null;
+                return banner;
+            }).ToList();
+        }
+        public new async Task<IList<Banner>> GetVisibleAsync(ISession session)
+        {
+            Banner bannerAlias = null;
+            Slider sliderAlias = null;
+            var result = await session.QueryOver(() => bannerAlias)
+                 .Where(() => bannerAlias.IsDeleted == false)
+                 .And(() => bannerAlias.IsVisible == true)
+                 .OrderBy(() => bannerAlias.Id).Asc
+                   .ListAsync<Banner>();
+            return result.Select(banner =>
+            {
+                banner.Slider = (!banner.Slider?.IsDeleted ?? false) && (banner.Slider?.IsVisible ?? true) ? banner.Slider : null;
+                return banner;
+            }).ToList();
         }
         public async Task<Banner> GetBannerByTitleAsync(string bannerTitle, ISession session)
         {
-            return await session.QueryOver<Banner>()
-                .Where(x => x.Title == bannerTitle)
-                .SingleOrDefaultAsync();
+            Banner bannerAlias = null;
+            Slider sliderAlias = null;
+
+            var result = await session.QueryOver(() => bannerAlias)
+                .JoinAlias(() => bannerAlias.Slider, () => sliderAlias)
+                .Where(() => bannerAlias.IsDeleted == false)
+                .And(() => sliderAlias.IsDeleted == false)
+                .And(() => bannerAlias.Title.Like(bannerTitle))
+                .OrderBy(() => bannerAlias.Id).Asc
+                .SingleOrDefaultAsync<Banner>();
+
+            return result;
         }
         public async Task<IList<Banner>> GetBannerListByIdListAsync(IList<int> bannerIdList, ISession session)
         {
-            return await session.QueryOver<Banner>()
-                                    .WhereRestrictionOn(x => x.Id).IsIn(bannerIdList.ToArray())
-                                    .OrderBy(x => x.Id).Asc
-                                    .ListAsync<Banner>();
+            Banner bannerAlias = null;
+            Slider sliderAlias = null;
+
+            var result = await session.QueryOver(() => bannerAlias)
+                .JoinAlias(() => bannerAlias.Slider, () => sliderAlias)
+                .Where(() => bannerAlias.IsDeleted == false)
+                .And(() => sliderAlias.IsDeleted == false)
+                .And(() => bannerAlias.Id.IsIn(bannerIdList.ToArray()))
+                .OrderBy(() => bannerAlias.Id).Asc
+                .ListAsync<Banner>();
+
+            return result;
         }
         public async Task DeleteAsync(int id, ISession session)
         {
