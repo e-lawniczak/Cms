@@ -114,7 +114,7 @@ namespace PizzeriaAPI.Controllers
                 product.IsRecommended = productDto.IsRecommended;
                 product.IsVisible = productDto.IsVisible;
                 product.PictureList = await pictureRepository.GetPictureListByIdListAsync(productDto.PictureIdList ?? new List<int>(), session);
-                product.Category = await categoryRepository.GetByIdAsync(productDto.CategoryId, session);
+                product.Category = await categoryRepository.GetByIdAsync(productDto.CategoryId ??0, session);
             });
         }
 
@@ -164,7 +164,7 @@ namespace PizzeriaAPI.Controllers
                     IsVisible = productDto.IsVisible,
                     IsDeleted = false,
                     PictureList = await pictureRepository.GetPictureListByIdListAsync(productDto.PictureIdList ?? new List<int>(), session),
-                    Category = await categoryRepository.GetByIdAsync(productDto.CategoryId, session)
+                    Category = await categoryRepository.GetByIdAsync(productDto.CategoryId ?? 0, session)
 
                 };
             });

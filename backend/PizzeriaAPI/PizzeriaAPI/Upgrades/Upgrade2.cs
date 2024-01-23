@@ -128,7 +128,7 @@ namespace PizzeriaAPI.Upgrades
                         "DISCOUNTPRICE FLOAT, " +
                         "SCORE FLOAT, " +
                         "ISRECOMMENDED BOOLEAN NOT NULL, " +
-                        "CATEGORYID INT NOT NULL" +
+                        "CATEGORYID INT" +
                     ");";
             session.CreateSQLQuery(sql).ExecuteUpdate();
 
@@ -185,7 +185,7 @@ namespace PizzeriaAPI.Upgrades
                         "TITLE TEXT NOT NULL UNIQUE, " +
                         "TEXT TEXT NOT NULL, " +
                         "BUTTONTEXT TEXT NOT NULL, " +
-                        "TABSLIDERID INT NOT NULL, " +
+                        "TABSLIDERID INT, " +
                         "CREATIONDATE TIMESTAMP NOT NULL, " +
                         "MODIFICATIONDATE TIMESTAMP NOT NULL, " +
                         "isvisible BOOLEAN NOT NULL, " +
@@ -266,8 +266,8 @@ namespace PizzeriaAPI.Upgrades
                             "CONTROLLERID INT NOT NULL, " +
                             "ACTIONTYPEID INT NOT NULL, " +
                             "ENTITYID INT NOT NULL, " +
-                            "USERID	INT NOT NULL, " +
-                            "MESSAGE TEXT NOT NULL, " +
+                            "USERID	INT, " +
+                            "MESSAGE TEXT, " +
                             "CREATIONDATE TIMESTAMP NOT NULL, " +
                             "MODIFICATIONDATE TIMESTAMP NOT NULL," +
                             "PRIMARY KEY (CONTROLLERID, ACTIONTYPEID, ENTITYID)" +

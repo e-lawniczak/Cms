@@ -8,8 +8,8 @@
         public virtual DateTime ModificationDate { get; set; }
         public virtual bool IsVisible { get; set; }
         public virtual bool IsDeleted { get; set; }
-        public virtual IList<TeamMember> TeamMemberList { get; set; }
-        public virtual IList<Testimonial> TestimonialList { get; set; }
+        public virtual IList<TeamMember>? TeamMemberList { get; set; }
+        public virtual IList<Testimonial>? TestimonialList { get; set; }
 
     }
 }

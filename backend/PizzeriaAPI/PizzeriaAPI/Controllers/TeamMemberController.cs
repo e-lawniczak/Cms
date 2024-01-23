@@ -112,7 +112,7 @@ namespace PizzeriaAPI.Controllers
                 teamMember.IsVisible = teamMemberDto.IsVisible;
                 teamMember.FirstName = teamMemberDto.FirstName;
                 teamMember.LastName = teamMemberDto.LastName;
-                teamMember.Role = await roleRepository.GetByIdAsync(teamMemberDto.RoleId, session);
+                teamMember.Role = await roleRepository.GetByIdAsync(teamMemberDto.RoleId ?? 0, session);
                 teamMember.SocialMediaList = await socialMediaRepository.GetSocialMediaListByIdListAsync(teamMemberDto.SocialMediaIdList ?? new List<int>(), session);
                 teamMember.PictureList = await pictureRepository.GetPictureListByIdListAsync(teamMemberDto.PictureIdList ?? new List<int>(), session);
             });
@@ -155,7 +155,7 @@ namespace PizzeriaAPI.Controllers
                     FirstName = teamMemberDto.FirstName,
                     LastName = teamMemberDto.LastName,
                     IsDeleted = false,
-                    Role = await roleRepository.GetByIdAsync(teamMemberDto.RoleId, session),
+                    Role = await roleRepository.GetByIdAsync(teamMemberDto.RoleId ?? 0, session),
                     SocialMediaList = await socialMediaRepository.GetSocialMediaListByIdListAsync(teamMemberDto.SocialMediaIdList ?? new List<int>(), session),
                     PictureList = await pictureRepository.GetPictureListByIdListAsync(teamMemberDto.PictureIdList ?? new List<int>(), session),
                 };

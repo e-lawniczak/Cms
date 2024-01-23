@@ -114,7 +114,7 @@ namespace PizzeriaAPI.Controllers
                 testimonial.Text = testimonialDto.Text;
                 testimonial.IsVisible = testimonialDto.IsVisible;
                 testimonial.PictureList = await pictureRepository.GetPictureListByIdListAsync(testimonialDto.PictureIdList ?? new List<int>(), session);
-                testimonial.Role = await roleRepository.GetByIdAsync(testimonialDto.RoleId, session);
+                testimonial.Role = await roleRepository.GetByIdAsync(testimonialDto.RoleId ?? 0, session);
             });
         }
         [HttpDelete]
@@ -156,7 +156,7 @@ namespace PizzeriaAPI.Controllers
                     IsVisible = testimonialDto.IsVisible,
                     IsDeleted = false,
                     PictureList = await pictureRepository.GetPictureListByIdListAsync(testimonialDto.PictureIdList ?? new List<int>(), session),
-                    Role = await roleRepository.GetByIdAsync(testimonialDto.RoleId, session)
+                    Role = await roleRepository.GetByIdAsync(testimonialDto.RoleId ?? 0, session)
 
                 };
             });

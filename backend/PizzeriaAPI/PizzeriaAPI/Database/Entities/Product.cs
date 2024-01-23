@@ -8,6 +8,6 @@
         public virtual decimal? DiscountPrice { get; set; }
         public virtual decimal? Score { get; set; }
         public virtual bool IsRecommended { get; set; }
-        public virtual Category Category { get; set; }
+        public virtual Category? Category { get; set; }
     }
 }
