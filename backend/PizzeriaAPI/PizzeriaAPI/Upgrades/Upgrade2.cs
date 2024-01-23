@@ -122,7 +122,7 @@ namespace PizzeriaAPI.Upgrades
                     "CREATE TABLE IF NOT EXISTS PRODUCT" +
                     "(" +
                         "ID INT PRIMARY KEY NOT NULL, " +
-                        "NAME TEXT NOT NULL UNIQUE, " +
+                        "NAME TEXT NOT NULL, " +
                         "PRICE FLOAT NOT NULL, " +
                         "DESCRIPTION TEXT, " +
                         "DISCOUNTPRICE FLOAT, " +
@@ -140,7 +140,7 @@ namespace PizzeriaAPI.Upgrades
                     "CREATE TABLE IF NOT EXISTS CATEGORY" +
                     "(" +
                         "ID INT PRIMARY KEY NOT NULL, " +
-                        "NAME TEXT NOT NULL UNIQUE, " +
+                        "NAME TEXT NOT NULL, " +
                         "LINK TEXT" +
                     ");";
             session.CreateSQLQuery(sql).ExecuteUpdate();
@@ -152,7 +152,7 @@ namespace PizzeriaAPI.Upgrades
                     "CREATE TABLE IF NOT EXISTS SLIDER" +
                     "(" +
                         "SLIDERID INT PRIMARY KEY NOT NULL, " +
-                        "NAME TEXT NOT NULL UNIQUE, " +
+                        "NAME TEXT NOT NULL, " +
                         "CREATIONDATE TIMESTAMP NOT NULL, " +
                         "MODIFICATIONDATE TIMESTAMP NOT NULL, " +
                         "isvisible BOOLEAN NOT NULL, " +
@@ -167,7 +167,7 @@ namespace PizzeriaAPI.Upgrades
                     "CREATE TABLE IF NOT EXISTS BANNER" +
                     "(" +
                         "ID INT PRIMARY KEY NOT NULL, " +
-                        "TITLE TEXT NOT NULL UNIQUE, " +
+                        "TITLE TEXT NOT NULL, " +
                         "TEXT TEXT NOT NULL, " +
                         "SUBTEXT TEXT, " +
                         "LINK TEXT, " +
@@ -182,7 +182,7 @@ namespace PizzeriaAPI.Upgrades
                     "CREATE TABLE IF NOT EXISTS INFORMATIONTAB" +
                     "(" +
                         "INFORMATIONTABID INT PRIMARY KEY NOT NULL, " +
-                        "TITLE TEXT NOT NULL UNIQUE, " +
+                        "TITLE TEXT NOT NULL, " +
                         "TEXT TEXT NOT NULL, " +
                         "BUTTONTEXT TEXT NOT NULL, " +
                         "TABSLIDERID INT, " +
@@ -200,7 +200,7 @@ namespace PizzeriaAPI.Upgrades
                         "CREATE TABLE IF NOT EXISTS TABSLIDER" +
                         "(" +
                             "ID INT PRIMARY KEY NOT NULL, " +
-                            "TITLE TEXT NOT NULL UNIQUE" +
+                            "TITLE TEXT NOT NULL" +
                         ");";
             session.CreateSQLQuery(sql).ExecuteUpdate();
         }
@@ -211,7 +211,7 @@ namespace PizzeriaAPI.Upgrades
                         "CREATE TABLE IF NOT EXISTS PAGE" +
                         "(" +
                             "ID INT PRIMARY KEY NOT NULL, " +
-                            "TITLE TEXT UNIQUE, " +
+                            "TITLE TEXT, " +
                             "CONTENT TEXT" +
                         ");";
             session.CreateSQLQuery(sql).ExecuteUpdate();
@@ -223,7 +223,7 @@ namespace PizzeriaAPI.Upgrades
                                 "CREATE TABLE IF NOT EXISTS GALLERY" +
                                 "(" +
                                     "ID INT PRIMARY KEY NOT NULL, " +
-                                    "NAME TEXT NOT NULL UNIQUE, " +
+                                    "NAME TEXT NOT NULL, " +
                                     "MAINTEXT TEXT, " +
                                     "SUBTEXT TEXT" +
                                 ");";
@@ -248,7 +248,7 @@ namespace PizzeriaAPI.Upgrades
                     "CREATE TABLE IF NOT EXISTS PICTURE" +
                     "(" +
                         "PICTUREID INT PRIMARY KEY NOT NULL, " +
-                        "NAME TEXT NOT NULL UNIQUE, " +
+                        "NAME TEXT NOT NULL, " +
                         "Link TEXT, " +
                         "FILEPATH TEXT NOT NULL, " +
                         "RESIZEDFILEPATH TEXT NOT NULL, " +
