@@ -40,18 +40,23 @@ namespace PizzeriaAPI.Security
         }
 
 
-        public async Task<ChangePasswordResponse> ChangePasswordAsync(ChangePasswordRequest changePasswordRequest)
+        public async Task<ChangePasswordResponse> ChangePasswordAsync(string userToken, ChangePasswordRequest changePasswordRequest)
         {
-            var user = await userManager.FindByEmailAsync(changePasswordRequest.Email);
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(userToken) as JwtSecurityToken;
+            string? email = jsonToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email)?.Value;
+
+            if(email == null)
+                throw new Exception("Not found email in token");
+
+            var user = await userManager.FindByEmailAsync(email);
             if (user == null)
                 throw new Exception("Not found user with given email");
+
             if (changePasswordRequest.Password != changePasswordRequest.ConfirmPassword)
                 throw new Exception("Passwords are not the same");
 
-            var hashPassword = BCrypt.Net.BCrypt.HashPassword(changePasswordRequest.Password);
-
-            if (hashPassword != user.Password)
-                throw new Exception("Password is invalid");
+            var hashPassword = BCrypt.Net.BCrypt.HashPassword(changePasswordRequest.Password, hashSettings.Salt);
 
             user.Password = hashPassword;
             var result = await userManager.UpdateAsync(user);

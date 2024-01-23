@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Domain;
 using PizzeriaAPI.Security;
 
@@ -27,10 +28,12 @@ namespace PizzeriaAPI.Controllers
         }
         [HttpPost]
         [Route("/ChangePassword")]
-        [Obsolete]
+        [Authorize]
         public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordRequest changePasswordRequest)
         {
-            return Ok(await authenticationService.ChangePasswordAsync(changePasswordRequest));
+            var userToken = Request.Headers["Authorization"].ToString().Split(" ")[1];
+            await authenticationService.ChangePasswordAsync(userToken, changePasswordRequest);
+            return Ok("Successfully changed Password");
         }
 
         [HttpPost]

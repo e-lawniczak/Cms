@@ -6,7 +6,7 @@ namespace PizzeriaAPI.Security
     {
         Task<AuthenticationResponse> LoginAsync(AuthenticationRequest request);
         Task<RegistrationResponse> RegisterAsync(RegistrationRequest request);
-        Task<ChangePasswordResponse> ChangePasswordAsync(ChangePasswordRequest changePasswordRequest);
+        Task<ChangePasswordResponse> ChangePasswordAsync(string userToken, ChangePasswordRequest changePasswordRequest);
         Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordRequest resetPasswordRequest);
     }
 }

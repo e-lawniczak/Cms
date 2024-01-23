@@ -6,9 +6,6 @@ namespace PizzeriaAPI.Domain
     public class ChangePasswordRequest
     {
         [Required]
-        [EmailAddress]
-        public string Email { get; set; }
-        [Required]
         [PasswordPropertyText]
         public string Password { get; set; }
         [Required]
