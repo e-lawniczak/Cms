@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import * as ReactDOM from 'react-dom';
 import axios from 'axios';
-import { KeyValueDto, PInput, PageSettingsSection, PageWrapper, Select, SliderDto, axiosBaseConfig, baseApiUrl, mapObjectToSelect } from './common';
+import { KeyValueDto, PInput, PageSettingsSection, PageWrapper, PictureDto, PictureListElement, Select, SliderDto, axiosBaseConfig, baseApiUrl, Image, mapObjectToSelect } from './common';
 import { useForm } from 'react-hook-form';
 
 
@@ -16,7 +16,7 @@ export const AboutUsPage = () => {
     }, [])
 
     return <PageWrapper>
-        <KeyValueSection isPicture={true} objKey='name' objVal="pictureId" entry_key={'about_us_banner'} title={'Main banner on About Us page'} dataUrl='/GetAllPictureList' />
+        <LogoSection logo_key={'about_us_banner'} title={'Main banner on About Us page'} />
         <KeyValueSection objKey='title' objVal="title" entry_key={'tabSlider1'} title={'Information block on main page'} dataUrl='/GetVisibleTabSliderList' />
         <KeyValueSection objKey='title' objVal="title" entry_key={'tabSlider2'} title={'OUR HISTORY information block'} dataUrl='/GetVisibleTabSliderList' />
         <KeyValueSection objKey='title' objVal="title" entry_key={'tabSlider3'} title={'Testimonial information block'} dataUrl='/GetVisibleTabSliderList' />
@@ -95,6 +95,74 @@ const KeyValueSection = (props: { isPicture?: boolean, objKey?: string, objVal?:
     </PageSettingsSection>
 }
 
+const LogoSection = (props: { logo_key: string, title: string }) => {
+    const
+        [pictures, setPictures] = useState<PictureDto[]>(),
+        [logoPicture, setLogo] = useState<KeyValueDto>(),
+        getPictures = async () => {
+            let res = await axios.get(baseApiUrl + `/GetAllPictureList`)
+            setPictures(res.data)
+        },
+        { register, handleSubmit, setValue } = useForm(),
+        onSubmit = (data: any) => {
+            if (!logoPicture)
+                addItem(props.logo_key, data.logoValue)
+            else
+                editItem(logoPicture.id, logoPicture.key, data.logoValue)
+            getKeyValues()
 
+        },
+        getKeyValues = async () => {
+            let res = await axios.get(baseApiUrl + `/GetKeyValueByKey/${props.logo_key}`)
+            setLogo(res.data)
+            setValue("logoValue", res.data.value)
+        },
+        editItem = async (id: any, key: string, value: any) => {
+            const url = baseApiUrl + "/UpdateKeyValueById"
+            await axios.patch(url, { id: id, key: key, value: value }, axiosBaseConfig)
+            getKeyValues()
+
+        },
+        addItem = async (key: string, value: any) => {
+            const url = baseApiUrl + "/AddKeyValue";
+            await axios.post(url, { id: -1, key: key, value: value }, axiosBaseConfig)
+            getKeyValues()
+        },
+        onPictureClick = (pic: PictureDto) => {
+            setValue("logoValue", `/GetPicture/Mini/${pic.pictureId}`)
+        }
+
+    React.useEffect(() => {
+        getPictures()
+        getKeyValues()
+    }, [])
+    return <PageSettingsSection title={props.title} className={'two-col'} subtext={'Click on the picture from the list. Then click the save button'} >
+        <div className="logo-preview">
+            <Image src={baseApiUrl + logoPicture?.value || ""} />
+        </div>
+        <div>
+            <form action="" className="section-form" onSubmit={handleSubmit(onSubmit)}>
+                <div className="form-content ">
+                    <div className="row">
+                        <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>id</div>
+                        <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>key</div>
+                        <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>value</div>
+                    </div>
+                    <div className="row">
+                        <div className="id">{logoPicture?.id || -1}</div>
+                        <div className="key">{logoPicture?.key || props.logo_key}</div>
+                        <PInput register={{ ...register("logoValue") }} inputProps={{ type: 'text' }} />
+                    </div>
+                </div>
+                <div className="buttons-container">
+                    <button type='submit' className="btn btn-white btn-sm w-100 mb-0 btn-save" >Save</button>
+                </div>
+            </form>
+            <div className="picture-list">
+                {pictures?.map((d: PictureDto, idx) => <div className='picture-container'><PictureListElement key={idx} item={d} onClick={() => onPictureClick(d)} /> <div>{d.name}</div>  </div>)}
+            </div>
+        </div>
+    </PageSettingsSection>
+}
 const root = document.getElementById("react_root");
 ReactDOM.render(<AboutUsPage />, root);

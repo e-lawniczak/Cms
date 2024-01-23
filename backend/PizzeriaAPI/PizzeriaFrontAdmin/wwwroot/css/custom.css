@@ -272,6 +272,12 @@
   grid-template-columns: 50px 150px 70px 150px 300px;
 }
 
+#react_root .card {
+  min-width: 100%;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
 .social-row.row {
   display: grid;
   gap: 10px;
