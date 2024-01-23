@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using ISession = NHibernate.ISession;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using PizzeriaAPI.Database.Entities;
@@ -129,12 +130,14 @@ namespace PizzeriaAPI
             services.AddSingleton<IKeyValueRepository, KeyValueRepository>();
             services.AddSingleton<IMenuElementRepository, MenuElementRepository>();
             services.AddSingleton<IUserTokenRepository, UserTokenRepository>();
+            services.AddSingleton<IEventRepository, EventRepository>();
             services.AddSingleton<IUpgradesService, UpgradesService>();
 
             services.AddSingleton<IUpgrade, Upgrade1>();
             services.AddSingleton<IUpgrade, Upgrade2>();
             services.AddSingleton<IUpgrade, Upgrade3>();
             services.AddSingleton<IUpgrade, Upgrade4>();
+            services.AddSingleton<IUpgrade, Upgrade5>();
         }
         public static void AddJobs(this IServiceCollection services)
         {
