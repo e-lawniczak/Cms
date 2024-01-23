@@ -103,7 +103,7 @@ const TabSliderRow = (props: { item: TabSliderDto, isNew: boolean, pictures: any
                 </div>
                 <div>
                     {tabs.length > 0 &&
-                        tabs.filter((i: InformationTabDto, idx) => item.informationTabIdList.indexOf(i.informationTabId)).map((i: InformationTabDto, idx) => <div className='tabname'>{i.title}<br /></div>)
+                        tabs?.filter((i: InformationTabDto, idx) => item?.informationTabIdList.indexOf(i.informationTabId)).map((i: InformationTabDto, idx) => <div className='tabname'>{i.title}<br /></div>)
                     }
                 </div>
                 <div className="buttons-container">

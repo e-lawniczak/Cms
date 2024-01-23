@@ -114,18 +114,18 @@ var InformationTabPage = function () {
             React.createElement("div", { className: "information-tab-row row" },
                 React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "id"),
                 React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "title"),
-                React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "text"),
                 React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "button text"),
                 React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "visible"),
+                React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "tab silder"),
                 React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "options")),
             showNew && addNew,
             tabs && tabs.map(function (item, idx) { return React.createElement(InformationTabRow, { key: idx, tabSliders: tabSliders, item: item, isNew: false, tabs: tabs, refreshFunc: getTabs }); })));
 };
 exports.InformationTabPage = InformationTabPage;
 var InformationTabRow = function (props) {
-    var item = props.item, isNew = props.isNew, _a = props.tabs, tabs = _a === void 0 ? [] : _a, refreshFunc = props.refreshFunc, tabSliders = props.tabSliders, showFunc = props.showFunc, tabSlidersData = (0, common_1.mapObjectToSelect)(tabSliders, "title", "id"), _b = (0, react_1.useState)([]), pickedBanners = _b[0], setPickedBanners = _b[1], _c = (0, react_hook_form_1.useForm)({
+    var item = props.item, isNew = props.isNew, _a = props.tabs, tabs = _a === void 0 ? [] : _a, refreshFunc = props.refreshFunc, tabSliders = props.tabSliders, showFunc = props.showFunc, tabSlidersData = (0, common_1.mapObjectToSelect)(tabSliders, "title", "id"), _b = (0, react_1.useState)([]), pickedBanners = _b[0], setPickedBanners = _b[1], _c = (0, react_1.useState)(false), showEditor = _c[0], setShow = _c[1], _d = (0, react_hook_form_1.useForm)({
         defaultValues: __assign({}, item)
-    }), register = _c.register, handleSubmit = _c.handleSubmit, formState = _c.formState, getValues = _c.getValues, makeItem = function (data) {
+    }), register = _d.register, handleSubmit = _d.handleSubmit, formState = _d.formState, getValues = _d.getValues, setValue = _d.setValue, makeItem = function (data) {
         return {
             informationTabId: (item === null || item === void 0 ? void 0 : item.informationTabId) >= 0 ? item === null || item === void 0 ? void 0 : item.informationTabId : -1,
             buttonText: (data === null || data === void 0 ? void 0 : data.buttonText) || "",
@@ -184,16 +184,20 @@ var InformationTabRow = function (props) {
             React.createElement("div", { className: "information-tab-row row" },
                 React.createElement("div", { className: "id" }, (item === null || item === void 0 ? void 0 : item.informationTabId) >= 0 ? item === null || item === void 0 ? void 0 : item.informationTabId : -1),
                 React.createElement(common_1.PInput, { register: __assign({}, register("title")), inputProps: { type: 'text' } }),
-                React.createElement(common_1.PInput, { register: __assign({}, register("text")), inputProps: { type: 'text' } }),
                 React.createElement(common_1.PInput, { register: __assign({}, register("buttonText")), inputProps: { type: 'text' } }),
                 React.createElement(common_1.PInput, { register: __assign({}, register("isVisible")), inputProps: { type: 'checkbox' } }),
                 React.createElement("div", null, tabSlidersData.length > 0 &&
                     React.createElement(common_1.Select, { register: register, data: tabSlidersData, defaultValue: (item === null || item === void 0 ? void 0 : item.tabSliderId) || null, name: "tabSliderId" })),
-                React.createElement("div", { className: "buttons-container" }, isNew ?
-                    React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: function (e) { return addItem(getValues()); } }, "Add")
-                    : React.createElement(React.Fragment, null,
-                        React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: function (e) { return editItem(getValues()); } }, "Edit"),
-                        React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-delete", onClick: function (e) { return deleteItem(getValues()); } }, "Delete"))))));
+                React.createElement("div", { className: "buttons-container" },
+                    isNew ?
+                        React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: function (e) { return addItem(getValues()); } }, "Add")
+                        : React.createElement(React.Fragment, null,
+                            React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: function (e) { return editItem(getValues()); } }, "Edit"),
+                            React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-delete", onClick: function (e) { return deleteItem(getValues()); } }, "Delete")),
+                    React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: function (e) { return setShow(!showEditor); } }, !showEditor ? "Show editor" : "Hide editor"))),
+            showEditor &&
+                React.createElement("div", { className: "editor" },
+                    React.createElement(common_1.PEditor, { formEls: { getValues: getValues, setValue: setValue }, controlname: "text", register: __assign({}, register("text")), editorProps: {} }))));
 };
 var root = document.getElementById("react_root");
 ReactDOM.render(React.createElement(exports.InformationTabPage, null), root);

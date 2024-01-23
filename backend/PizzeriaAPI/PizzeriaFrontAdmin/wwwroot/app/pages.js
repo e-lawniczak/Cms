@@ -114,7 +114,6 @@ var PagesPage = function () {
             React.createElement("div", { className: "page-row row" },
                 React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "id"),
                 React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "title"),
-                React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "content"),
                 React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "visible"),
                 React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "picture"),
                 React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "options")),
@@ -123,12 +122,13 @@ var PagesPage = function () {
 };
 exports.PagesPage = PagesPage;
 var ContactRow = function (props) {
-    var item = props.item, isNew = props.isNew, _a = props.pages, pages = _a === void 0 ? [] : _a, refreshFunc = props.refreshFunc, showFunc = props.showFunc, pictures = props.pictures, contactsData = (0, common_1.mapObjectToSelect)(pages, "title", "id"), picturesData = (0, common_1.mapObjectToSelect)(pictures, "name", "pictureId"), _b = (0, react_1.useState)([]), pickedBanners = _b[0], setPickedBanners = _b[1], _c = (0, react_hook_form_1.useForm)({
+    var item = props.item, isNew = props.isNew, _a = props.pages, pages = _a === void 0 ? [] : _a, refreshFunc = props.refreshFunc, showFunc = props.showFunc, pictures = props.pictures, contactsData = (0, common_1.mapObjectToSelect)(pages, "title", "id"), picturesData = (0, common_1.mapObjectToSelect)(pictures, "name", "pictureId"), _b = (0, react_1.useState)([]), pickedBanners = _b[0], setPickedBanners = _b[1], _c = (0, react_1.useState)(false), showEditor = _c[0], setShow = _c[1], _d = (0, react_hook_form_1.useForm)({
         defaultValues: __assign({}, item)
-    }), register = _c.register, handleSubmit = _c.handleSubmit, formState = _c.formState, getValues = _c.getValues, makeItem = function (data) {
+    }), register = _d.register, handleSubmit = _d.handleSubmit, formState = _d.formState, getValues = _d.getValues, setValue = _d.setValue, editorRef = React.useRef(null), makeItem = function (data) {
         return {
             id: (item === null || item === void 0 ? void 0 : item.id) || -1,
             isVisible: (data === null || data === void 0 ? void 0 : data.isVisible) || false,
+            content: (data === null || data === void 0 ? void 0 : data.content) || "",
             pictureIdList: [(data === null || data === void 0 ? void 0 : data.pictureIdList) / 1] || [],
             title: (data === null || data === void 0 ? void 0 : data.title) || "",
         };
@@ -182,15 +182,19 @@ var ContactRow = function (props) {
             React.createElement("div", { className: "page-row row" },
                 React.createElement("div", { className: "id" }, (item === null || item === void 0 ? void 0 : item.id) || -1),
                 React.createElement(common_1.PInput, { register: __assign({}, register("title")), inputProps: { type: 'text' } }),
-                React.createElement(common_1.PInput, { register: __assign({}, register("title")), inputProps: { type: 'text' } }),
                 React.createElement(common_1.PInput, { register: __assign({}, register("isVisible")), inputProps: { type: 'checkbox' } }),
                 React.createElement("div", null, picturesData.length > 0 &&
                     React.createElement(common_1.Select, { register: register, data: picturesData, defaultValue: (item === null || item === void 0 ? void 0 : item.pictureIdList[0]) || null, name: "pictureIdList" })),
-                React.createElement("div", { className: "buttons-container" }, isNew ?
-                    React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: function (e) { return addItem(getValues()); } }, "Add")
-                    : React.createElement(React.Fragment, null,
-                        React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: function (e) { return editItem(getValues()); } }, "Edit"),
-                        React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-delete", onClick: function (e) { return deleteItem(getValues()); } }, "Delete"))))));
+                React.createElement("div", { className: "buttons-container" },
+                    isNew ?
+                        React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: function (e) { return addItem(getValues()); } }, "Add")
+                        : React.createElement(React.Fragment, null,
+                            React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: function (e) { return editItem(getValues()); } }, "Edit"),
+                            React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-delete", onClick: function (e) { return deleteItem(getValues()); } }, "Delete")),
+                    React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: function (e) { return setShow(!showEditor); } }, !showEditor ? "Show editor" : "Hide editor"))),
+            showEditor &&
+                React.createElement("div", { className: "editor" },
+                    React.createElement(common_1.PEditor, { formEls: { getValues: getValues, setValue: setValue }, controlname: 'content', register: __assign({}, register("content")), editorProps: {} }))));
 };
 var root = document.getElementById("react_root");
 ReactDOM.render(React.createElement(exports.PagesPage, null), root);

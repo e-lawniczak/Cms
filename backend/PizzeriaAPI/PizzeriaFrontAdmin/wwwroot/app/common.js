@@ -34,8 +34,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCookie = exports.callApi = exports.testFunc = exports.axiosBaseConfig = exports.baseApiUrl = exports.mapObjectToSelect = exports.PInput = exports.Image = exports.PageWrapper = exports.PageSettingsSection = exports.Select = exports.sortFunc = exports.PictureListElement = void 0;
+exports.getCookie = exports.callApi = exports.testFunc = exports.axiosBaseConfig = exports.baseApiUrl = exports.mapObjectToSelect = exports.PInput = exports.Image = exports.PageWrapper = exports.PEditor = exports.PageSettingsSection = exports.Select = exports.sortFunc = exports.PictureListElement = void 0;
 var React = __importStar(require("react"));
+var tinymce_react_1 = require("@tinymce/tinymce-react");
 var PictureListElement = function (props) {
     var item = props.item, onClick = props.onClick, src = props.src;
     return React.createElement("div", { className: 'picture-list-element', onClick: onClick },
@@ -77,6 +78,29 @@ var PageSettingsSection = function (props) {
         React.createElement("div", { className: "section-content" }, props.children));
 };
 exports.PageSettingsSection = PageSettingsSection;
+var PEditor = function (props) {
+    var controlname = props.controlname, editorProps = props.editorProps, register = props.register, _a = props.formEls, getValues = _a.getValues, setValue = _a.setValue;
+    var editorRef = React.useRef(null);
+    var log = function () {
+        if (editorRef.current) {
+            setValue(controlname, editorRef.current.getContent());
+        }
+    };
+    return React.createElement(tinymce_react_1.Editor, __assign({}, register, { apiKey: 'no-api-key', onInit: function (evt, editor) { return editorRef.current = editor; }, initialValue: getValues(controlname), onEditorChange: log, init: {
+            height: 500,
+            menubar: false,
+            plugins: [
+                'a11ychecker', 'advlist', 'advcode', 'advtable', 'autolink', 'checklist', 'export',
+                'lists', 'link', 'image', 'charmap', 'preview', 'anchor', 'searchreplace', 'visualblocks',
+                'powerpaste', 'fullscreen', 'formatpainter', 'insertdatetime', 'media', 'table', 'help', 'wordcount', 'code'
+            ],
+            toolbar: 'undo redo | casechange blocks | bold italic backcolor | ' +
+                'alignleft aligncenter alignright alignjustify | ' +
+                'bullist numlist checklist outdent indent | removeformat | a11ycheck code table help',
+            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+        } }, editorProps));
+};
+exports.PEditor = PEditor;
 var PageWrapper = function (props) {
     return React.createElement("div", { className: ["react-page", props.className || ""].join(" ") }, props.children);
 };
