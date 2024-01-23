@@ -13,8 +13,7 @@ namespace PizzeriaAPI.Dto.Product
         public decimal? Score { get; set; }
         [Required]
         public bool IsRecommended { get; set; }
-        [Required]
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
         [Required]
         public bool IsVisible { get; set; }
         public IList<int>? PictureIdList { get; set; }

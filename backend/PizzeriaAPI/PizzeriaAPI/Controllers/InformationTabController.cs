@@ -102,7 +102,7 @@ namespace PizzeriaAPI.Controllers
                 informationTab.Text = informationTabDto.Text;
                 informationTab.ButtonText = informationTabDto.ButtonText;
                 informationTab.IsVisible = informationTabDto.IsVisible;
-                informationTab.TabSlider = await tabSliderRepository.GetByIdAsync(informationTabDto.TabSliderId, session);
+                informationTab.TabSlider = await tabSliderRepository.GetByIdAsync(informationTabDto.TabSliderId ?? 0, session);
             });
         }
 
@@ -130,7 +130,7 @@ namespace PizzeriaAPI.Controllers
                     ButtonText = informationTabDto.ButtonText,
                     IsVisible = informationTabDto.IsVisible,
                     IsDeleted = false,
-                    TabSlider = await tabSliderRepository.GetByIdAsync(informationTabDto.TabSliderId, session)
+                    TabSlider = await tabSliderRepository.GetByIdAsync(informationTabDto.TabSliderId ?? 0, session)
                 };
             });
         }
@@ -138,6 +138,7 @@ namespace PizzeriaAPI.Controllers
         {
             return new InformationTabDto
             {
+                InformationTabId = informationTab.InformationTabId,
                 Title = informationTab.Title,
                 Text = informationTab.Text,
                 ButtonText = informationTab.ButtonText,

@@ -12,8 +12,7 @@ namespace PizzeriaAPI.Dto.TeamMember
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
-        [Required]
-        public int RoleId { get; set; }
+        public int? RoleId { get; set; }
         public IList<int>? SocialMediaIdList { get; set; }
         public IList<int>? PictureIdList { get; set; }
     }

@@ -12,7 +12,6 @@ namespace PizzeriaAPI.Dto.InformationTab
         public string ButtonText { get; set; }
         [Required]
         public bool IsVisible { get; set; }
-        [Required]
-        public int TabSliderId { get; set; }
+        public int? TabSliderId { get; set; }
     }
 }
