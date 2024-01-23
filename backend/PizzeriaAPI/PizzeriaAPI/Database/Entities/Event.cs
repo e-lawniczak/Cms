@@ -6,7 +6,7 @@
         public virtual ActionType ActionType { get; set; }
         public virtual int EntityId { get; set; }
         public virtual User User { get; set; }
-        public virtual string Message { get; set; }
+        public virtual string? Message { get; set; }
         public virtual DateTime CreationDate { get; set; }
         public virtual DateTime ModificationTime { get; set; }
 
