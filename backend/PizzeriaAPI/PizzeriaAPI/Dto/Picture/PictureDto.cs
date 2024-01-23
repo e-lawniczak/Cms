@@ -10,8 +10,8 @@ namespace PizzeriaAPI.Dto.Picture
         [FileExtensions(Extensions = "jpg,jpeg,png")]
         public string Name { get; set; }
         public string? Link { get; set; }
-        [Required]
-        public IFormFile Picture { get; set; }
+        //[Required]
+        //public IFormFile Picture { get; set; }
         public IList<int>? EntityWithPictureIdList { get; set; }
     }
 }
