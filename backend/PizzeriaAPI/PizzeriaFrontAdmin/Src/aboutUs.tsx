@@ -16,22 +16,26 @@ export const AboutUsPage = () => {
     }, [])
 
     return <PageWrapper>
-        <KeyValueSection entry_key={'about_us_banner'} title={'Main banner on About Us page'} dataUrl='/GetAllPictureList' />
-        <KeyValueSection entry_key={'tabSlider1'} title={'Information block on main page'} dataUrl='/GetVisibleTabSliderList' />
+        <KeyValueSection isPicture={true} objKey='name' objVal="pictureId" entry_key={'about_us_banner'} title={'Main banner on About Us page'} dataUrl='/GetAllPictureList' />
+        <KeyValueSection objKey='title' objVal="title" entry_key={'tabSlider1'} title={'Information block on main page'} dataUrl='/GetVisibleTabSliderList' />
+        <KeyValueSection objKey='title' objVal="title" entry_key={'tabSlider2'} title={'OUR HISTORY information block'} dataUrl='/GetVisibleTabSliderList' />
+        <KeyValueSection objKey='title' objVal="title" entry_key={'tabSlider3'} title={'Testimonial information block'} dataUrl='/GetVisibleTabSliderList' />
     </PageWrapper>
 }
-const KeyValueSection = (props: { entry_key: string, title: string, dataUrl?: string, subtext?: string }) => {
+const KeyValueSection = (props: { isPicture?: boolean, objKey?: string, objVal?: string, entry_key: string, title: string, dataUrl?: string, subtext?: string }) => {
     const
         [entry, setEntry] = useState<KeyValueDto>(),
         [data, setData] = useState([]),
         { register, handleSubmit, setValue } = useForm(),
         dataUrl = props.dataUrl ? baseApiUrl + props.dataUrl : ``,
         sKey = props.entry_key,
+        fieldName = sKey + "dataValue",
+        selectData = mapObjectToSelect(data, props?.objKey || "name", props?.objVal || "id"),
         onSubmit = (data: any) => {
             if (!entry)
-                addItem(sKey, data.dataValue)
+                addItem(sKey, data[fieldName])
             else
-                editItem(entry.id, entry.key, data.dataValue)
+                editItem(entry.id, entry.key, data[fieldName])
             getKeyValues()
         },
         getData = async () => {
@@ -72,13 +76,14 @@ const KeyValueSection = (props: { entry_key: string, title: string, dataUrl?: st
                         <div className="id">{entry?.id || -1}</div>
                         <div className="key">{entry?.key || sKey}</div>
                         {data.length > 0 ?
-                            <div>
+                            <div style={{ display: 'flex', gap: "10px" }}>
+                                {props.isPicture && entry?.key}
                                 {data && data.length > 0 &&
-                                    <Select register={register} defaultValue={entry?.value} data={mapObjectToSelect(data, "name", "name")} name={"dataValue"} />
+                                    <Select register={register} defaultValue={entry?.value} data={selectData} name={fieldName} />
                                 }
                             </div>
                             :
-                            <PInput register={{ ...register("dataValue") }} inputProps={{ type: 'text' }} />
+                            <PInput register={{ ...register(fieldName) }} inputProps={{ type: 'text' }} />
                         }
                     </div>
                 </div>

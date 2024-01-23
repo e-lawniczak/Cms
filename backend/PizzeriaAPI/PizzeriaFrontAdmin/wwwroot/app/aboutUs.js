@@ -85,11 +85,12 @@ var AboutUsPage = function () {
     React.useEffect(function () {
     }, []);
     return React.createElement(common_1.PageWrapper, null,
-        React.createElement(KeyValueSection, { key: 'about_us_banner', title: 'Main banner on About Us page', dataUrl: '/GetVisiblePictureList' }));
+        React.createElement(KeyValueSection, { entry_key: 'about_us_banner', title: 'Main banner on About Us page', dataUrl: '/GetAllPictureList' }),
+        React.createElement(KeyValueSection, { entry_key: 'tabSlider1', title: 'Information block on main page', dataUrl: '/GetVisibleTabSliderList' }));
 };
 exports.AboutUsPage = AboutUsPage;
 var KeyValueSection = function (props) {
-    var _a = (0, react_1.useState)(), entry = _a[0], setSlider = _a[1], _b = (0, react_1.useState)([]), data = _b[0], setData = _b[1], _c = (0, react_hook_form_1.useForm)(), register = _c.register, handleSubmit = _c.handleSubmit, setValue = _c.setValue, dataUrl = props.dataUrl ? common_1.baseApiUrl + props.dataUrl : "", sKey = props.key, onSubmit = function (data) {
+    var _a = (0, react_1.useState)(), entry = _a[0], setEntry = _a[1], _b = (0, react_1.useState)([]), data = _b[0], setData = _b[1], _c = (0, react_hook_form_1.useForm)(), register = _c.register, handleSubmit = _c.handleSubmit, setValue = _c.setValue, dataUrl = props.dataUrl ? common_1.baseApiUrl + props.dataUrl : "", sKey = props.entry_key, onSubmit = function (data) {
         if (!entry)
             addItem(sKey, data.dataValue);
         else
@@ -113,7 +114,7 @@ var KeyValueSection = function (props) {
                 case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValueByKey/".concat(sKey))];
                 case 1:
                     res = _a.sent();
-                    setSlider(res.data);
+                    setEntry(res.data);
                     return [2 /*return*/];
             }
         });
@@ -164,10 +165,7 @@ var KeyValueSection = function (props) {
                             React.createElement("div", null, data && data.length > 0 &&
                                 React.createElement(common_1.Select, { register: register, defaultValue: entry === null || entry === void 0 ? void 0 : entry.value, data: (0, common_1.mapObjectToSelect)(data, "name", "name"), name: "dataValue" }))
                             :
-                                React.createElement("div", { className: "row" },
-                                    React.createElement("div", { className: "id" }, (entry === null || entry === void 0 ? void 0 : entry.id) || -1),
-                                    React.createElement("div", { className: "key" }, (entry === null || entry === void 0 ? void 0 : entry.key) || "phone"),
-                                    React.createElement(common_1.PInput, { register: __assign({}, register("dataValue")), inputProps: { type: 'text' } })))),
+                                React.createElement(common_1.PInput, { register: __assign({}, register("dataValue")), inputProps: { type: 'text' } }))),
                 React.createElement("div", { className: "buttons-container" },
                     React.createElement("button", { type: 'submit', className: "btn btn-white btn-sm w-100 mb-0 btn-save" }, "Save")))));
 };
