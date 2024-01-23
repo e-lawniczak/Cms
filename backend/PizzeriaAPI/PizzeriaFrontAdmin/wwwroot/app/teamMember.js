@@ -214,7 +214,7 @@ var TeamMemberRowRow = function (props) {
                 React.createElement(common_1.PInput, { register: __assign({}, register("firstName")), inputProps: { type: 'text' } }),
                 React.createElement(common_1.PInput, { register: __assign({}, register("lastName")), inputProps: { type: 'text' } }),
                 React.createElement("div", null, socialData.length > 0 &&
-                    React.createElement(common_1.Select, { register: register, data: socialData, defaultValue: (item === null || item === void 0 ? void 0 : item.socialMediaIdList[0]) || [], name: "socialMediaIdList", selectProps: { multiple: true } })),
+                    React.createElement(common_1.Select, { register: register, data: socialData, defaultValue: ((item === null || item === void 0 ? void 0 : item.socialMediaIdList) && (item === null || item === void 0 ? void 0 : item.socialMediaIdList[0])) || [], name: "socialMediaIdList", selectProps: { multiple: true } })),
                 React.createElement("div", { className: "role" }, rolesData.length > 0 &&
                     React.createElement(common_1.Select, { register: register, data: rolesData, defaultValue: (item === null || item === void 0 ? void 0 : item.roleId) || null, name: "roleId" })),
                 React.createElement(common_1.PInput, { register: __assign({}, register("isVisible")), inputProps: { type: 'checkbox' } }),

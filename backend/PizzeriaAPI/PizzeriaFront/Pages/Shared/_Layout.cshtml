@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,10 +8,16 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/fonts.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/bootstrap.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/PizzeriaFront.styles.css" asp-append-version="true" />
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="/app/common-bundle.js"></script>
+    <script src="/app/commonElements-bundle.js"></script>
 </head>
+
 <body>
     <div class="preloader">
         <div class="wrapper-triangle">
@@ -46,11 +53,11 @@
         </div>
     </div>
     <div class="page">
-        <partial name="_Header" />
+        @* <partial name="_Header" /> *@
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
-        <partial name="_Footer" />
+        @* <partial name="_Footer" /> *@
     </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -63,4 +70,5 @@
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>

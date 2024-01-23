@@ -24,6 +24,7 @@ module.exports = {
     homePage: { import: "./Src/homePage.tsx", dependOn: "common" },
     role: { import: "./Src/role.tsx", dependOn: "common" },
     tabSlider: { import: "./Src/tabSlider.tsx", dependOn: "common" },
+    resetPass: { import: "./Src/resetPass.tsx", dependOn: "common" },
     common: "./Src/common.tsx"
   },
   output: {
