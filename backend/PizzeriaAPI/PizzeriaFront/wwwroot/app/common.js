@@ -34,8 +34,24 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCookie = exports.axiosBaseConfig = exports.baseApiUrl = exports.mapObjectToSelect = exports.PInput = exports.Image = void 0;
+exports.getCookie = exports.axiosBaseConfig = exports.baseApiUrl = exports.mapObjectToSelect = exports.PInput = exports.Image = exports.prepareSocialIcon = void 0;
 var React = __importStar(require("react"));
+var prepareSocialIcon = function (name) {
+    var key = name[name.length - 1];
+    switch (key) {
+        case "fb":
+            return "mdi-facebook";
+        case "x":
+            return "mdi-twitter";
+        case "insta":
+            return "mdi-instagram";
+        case "google":
+            return "mdi-google-plus";
+        default:
+            return "mdi-cloud";
+    }
+};
+exports.prepareSocialIcon = prepareSocialIcon;
 var Image = function (props) {
     var imageClass = props.imageClass, src = props.src, _a = props.onImageClick, onImageClick = _a === void 0 ? function () { } : _a, item = props.item;
     return React.createElement("div", { className: ['img-container', imageClass || ""].join(" "), onClick: function (e) { return onImageClick(item, e); } },

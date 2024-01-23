@@ -360,7 +360,7 @@ var MenuSection = function () {
 };
 var MenuElementRow = function (props) {
     var _a;
-    var item = props.item, parentElements = props.parentElements, _b = props.isNew, isNew = _b === void 0 ? false : _b, refreshFunc = props.refreshFunc, elements = props.elements, _c = props.setShow, setShow = _c === void 0 ? function () { } : _c, _d = (0, react_hook_form_1.useForm)({ defaultValues: __assign({}, item) }), register = _d.register, handleSubmit = _d.handleSubmit, setValue = _d.setValue, getValues = _d.getValues, parentData = (0, common_1.mapObjectToSelect)(parentElements, "text", "menuElementId").filter(function (i) { return i.value != (item === null || item === void 0 ? void 0 : item.menuElementId); }), onSubmit = function (data) {
+    var item = props.item, parentElements = props.parentElements, _b = props.isNew, isNew = _b === void 0 ? false : _b, refreshFunc = props.refreshFunc, elements = props.elements, _c = props.setShow, setShow = _c === void 0 ? function () { } : _c, _d = (0, react_hook_form_1.useForm)({ defaultValues: __assign({}, item) }), register = _d.register, handleSubmit = _d.handleSubmit, setValue = _d.setValue, getValues = _d.getValues, onSubmit = function (data) {
     }, makeItem = function (data) {
         return {
             isVisible: (data === null || data === void 0 ? void 0 : data.isVisible) || false,
@@ -413,6 +413,8 @@ var MenuElementRow = function (props) {
             }
         });
     }); };
+    var parentData = (0, common_1.mapObjectToSelect)(parentElements, "text", "menuElementId").filter(function (i) { return i.value != (item === null || item === void 0 ? void 0 : item.menuElementId); });
+    parentData.push({ label: "no parent", value: null });
     return React.createElement("div", { className: "menu-element-row row" },
         React.createElement("div", { className: "id" }, (item === null || item === void 0 ? void 0 : item.menuElementId) || -1),
         React.createElement(common_1.PInput, { register: __assign({}, register("text")), inputProps: { type: 'text' } }),

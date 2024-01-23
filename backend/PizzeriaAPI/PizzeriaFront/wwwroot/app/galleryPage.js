@@ -32,7 +32,7 @@ var MainPage = function () {
     var _a = (0, react_1.useState)([]), data = _a[0], setData = _a[1];
     React.useEffect(function () {
     }, []);
-    return React.createElement(commonElements_1.PageWrapper, null, "MainPage");
+    return React.createElement(commonElements_1.PageWrapper, null, "GalleryPage");
 };
 exports.MainPage = MainPage;
 var root = document.getElementById("react_root");
