@@ -79,6 +79,11 @@ const Header = (props: { className?: string }) => {
                 </ul>
             </li>
         }).filter((i: any) => i),
+        mappedSocial = socials?.map((social: SocialMediaDto, idx: number) => {
+            let iconClass = prepareSocialIcon(social.name.split("_"))
+            return <li key={idx}><a className={["icon mdi", iconClass].join(" ")} href={social.link}></a></li>
+
+        }),
         x = ""
 
     React.useEffect(() => {
@@ -120,11 +125,7 @@ const Header = (props: { className?: string }) => {
                                         </li>
                                     </ul>
                                     <ul className="list-share-2">
-                                        {socials?.map((social: SocialMediaDto, idx: number) => {
-                                            let iconClass = prepareSocialIcon(social.name.split("_"))
-                                            return <li key={idx}><a className={["icon mdi", iconClass].join(" ")} href={social.link}></a></li>
-
-                                        })}
+                                        {mappedSocial}
                                     </ul>
                                 </div>
                                 <div className="rd-navbar-main">
