@@ -61,6 +61,7 @@ namespace PizzeriaAPI.Repositories
         {
             var entity = await GetByIdAsync(id, session);
             entity.IsDeleted = true;
+            entity.TabSlider = null;
             await UpdateAsync(entity, session);
         }
 

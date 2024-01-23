@@ -76,7 +76,9 @@ namespace PizzeriaAPI.Repositories
         public async Task DeleteAsync(int id, ISession session)
         {
             var entity = await GetByIdAsync(id, session);
-            entity.IsDeleted = true;            
+            entity.IsDeleted = true;
+            entity.PictureList?.Clear();
+            entity.TeamMember = null;
             await UpdateAsync(entity, session);
         }
         public override async Task InsertAsync(SocialMedia entity, ISession session)

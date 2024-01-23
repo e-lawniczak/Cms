@@ -14,6 +14,13 @@ namespace PizzeriaAPI.Database.Mapping
             Map(x => x.IsVisible).Not.Nullable();
             Map(x => x.IsDeleted).Not.Nullable();
 
+            HasMany(x => x.TeamMemberList)
+             .Table("TeamMember")
+             .Cascade.SaveUpdate();
+            HasMany(x => x.TestimonialList)
+            .Table("Testimonial")
+            .Cascade.SaveUpdate();
+
             Table("Role");
         }
     }

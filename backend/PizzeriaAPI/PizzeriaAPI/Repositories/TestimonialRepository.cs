@@ -1,4 +1,5 @@
-﻿using NHibernate.SqlCommand;
+﻿using NHibernate.Criterion;
+using NHibernate.SqlCommand;
 using PizzeriaAPI.Database.Entities;
 using ISession = NHibernate.ISession;
 
@@ -7,10 +8,25 @@ namespace PizzeriaAPI.Repositories
     public interface ITestimonialRepository : IGenericRepository<Testimonial>
     {
         Task DeleteAsync(int id, ISession session);
+        Task<IList<Testimonial>> GetTestimonialListByIdListAsync(IList<int> testimonialIdList, ISession session);
 
     }
     public class TestimonialRepository : GenericRepository<Testimonial>, ITestimonialRepository
     {
+        public async Task<IList<Testimonial>> GetTestimonialListByIdListAsync(IList<int> testimonialIdList, ISession session)
+        {
+            Testimonial testimonialAlias = null;
+            var result = await session.QueryOver(() => testimonialAlias)
+                 .Where(() => testimonialAlias.IsDeleted == false)
+                 .And(() => testimonialAlias.Id.IsIn(testimonialIdList.ToArray()))
+                 .OrderBy(() => testimonialAlias.Id).Asc
+                 .ListAsync<Testimonial>();
+            return result.Select(testimonial =>
+            {
+                testimonial.Role = ((!testimonial.Role?.IsDeleted ?? false)) ? testimonial.Role : null;
+                return testimonial;
+            }).ToList();
+        }
         public new async Task<IList<Testimonial>> GetAllAsync(ISession session)
         {
             Testimonial testimonialAlias = null;
@@ -43,6 +59,8 @@ namespace PizzeriaAPI.Repositories
         {
             var entity = await GetByIdAsync(id, session);
             entity.IsDeleted = true;
+            entity.PictureList?.Clear();
+            entity.Role = null;
             await UpdateAsync(entity, session);
         }
         public override async Task InsertAsync(Testimonial entity, ISession session)

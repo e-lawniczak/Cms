@@ -69,7 +69,7 @@ namespace PizzeriaAPI.Upgrades
                         "FIRSTNAME TEXT NOT NULL, " +
                         "LASTNAME TEXT NOT NULL, " +
                         "TEXT TEXT NOT NULL, " +
-                        "ROLEID INT NOT NULL" +
+                        "ROLEID INT" +
                     ");";
             session.CreateSQLQuery(sql).ExecuteUpdate();
         }
@@ -97,7 +97,7 @@ namespace PizzeriaAPI.Upgrades
                         "ID INT PRIMARY KEY NOT NULL, " +
                         "FIRSTNAME TEXT NOT NULL, " +
                         "LASTNAME TEXT NOT NULL, " +
-                        "ROLEID INT NOT NULL" +
+                        "ROLEID INT" +
                     ");";
             session.CreateSQLQuery(sql).ExecuteUpdate();
         }
@@ -464,7 +464,7 @@ namespace PizzeriaAPI.Upgrades
             session.CreateSQLQuery(socialMediaToEntityWithPicture).ExecuteUpdate();
 
             var socialMediaToTeamMember = "ALTER TABLE SOCIALMEDIA " +
-                "ADD CONSTRAINT FK_PRODUCT_TO_TEAMMEMBER " +
+                "ADD CONSTRAINT FK_SOCIALMEDIA_TO_TEAMMEMBER " +
                 "FOREIGN KEY (TEAMMEMBERID) " +
                 "REFERENCES TEAMMEMBER(ID);";
             session.CreateSQLQuery(socialMediaToTeamMember).ExecuteUpdate();

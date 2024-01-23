@@ -10,11 +10,29 @@ namespace PizzeriaAPI.Repositories
     }
     public class RoleRepository : GenericRepository<Role>, IRoleRepository
     {
+        private readonly ITeamMemberRepository teamMemberRepository;
+        private readonly ITestimonialRepository testimonialRepository;
+        public RoleRepository(
+            ITeamMemberRepository teamMemberRepository,
+            ITestimonialRepository testimonialRepository)
+        {
+            this.teamMemberRepository = teamMemberRepository;
+            this.testimonialRepository = testimonialRepository;
+        }
         public async Task DeleteAsync(int id, ISession session)
         {
             var entity = await GetByIdAsync(id, session);
             entity.IsDeleted = true;
-
+            foreach(var testimonial in entity.TestimonialList)
+            {
+                testimonial.Role = null;
+                await testimonialRepository.UpdateAsync(testimonial, session);
+            }
+            foreach(var teamMember in entity.TeamMemberList)
+            {
+                teamMember.Role = null;
+                await teamMemberRepository.UpdateAsync(teamMember, session);
+            }
             await UpdateAsync(entity, session);
         }
         public new async Task<IList<Role>> GetAllAsync(ISession session)

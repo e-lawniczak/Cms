@@ -62,6 +62,7 @@ namespace PizzeriaAPI.Repositories
 
             entity.IsDeleted = true;
             entity.IsRecommended = false;
+            entity.PictureList?.Clear();
             await UpdateAsync(entity, session);
         }
 
