@@ -6,7 +6,21 @@ import * as ReactDOM from 'react-dom';
 import { Editor } from '@tinymce/tinymce-react';
 
 
-
+export const prepareSocialIcon = (name: string[]) => {
+    let key = name[name.length - 1]
+    switch (key) {
+        case "fb":
+            return "mdi-facebook";
+        case "x":
+            return "mdi-twitter";
+        case "insta":
+            return "mdi-instagram";
+        case "google":
+            return "mdi-google-plus";
+        default:
+            return "mdi-cloud";
+    }
+}
 
 
 

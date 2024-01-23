@@ -15,7 +15,7 @@ export const MainPage = () => {
 
     }, [])
     return <PageWrapper>
-        MainPage
+        GalleryPage
     </PageWrapper>
 }
 

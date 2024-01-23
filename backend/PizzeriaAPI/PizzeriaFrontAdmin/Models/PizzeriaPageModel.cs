@@ -25,6 +25,7 @@ namespace PizzeriaFrontAdmin.Models
             if (token != null && user != null && id != null)
             {
                 User = new UserModel(user, token, Int32.Parse(id));
+                OnUserLogged();
             }
             else
             {
@@ -43,6 +44,7 @@ namespace PizzeriaFrontAdmin.Models
             if (token != null && user != null && id != null)
             {
                 User = new UserModel(user, token, Int32.Parse(id));
+                OnUserLogged();
             }
             else
             {
@@ -76,6 +78,16 @@ namespace PizzeriaFrontAdmin.Models
             var query = HttpContext.Request.Query;
             if (User == null && url != "/Login" && url != "/Top/Secret/Register" && url != "/ResetPassword")
                 Response.Redirect("/Login");
+
+       
+
+        }
+        public void OnUserLogged()
+        {
+            var url = HttpContext.Request.Path.Value;
+          
+            if (User != null && (url == "/Login" || url == "/Top/Secret/Register" || url == "/ResetPassword"))
+                Response.Redirect("/");
         }
         public async Task<object?> MakeHttpRequest(HttpMethod method, string url, object data = null)
         {

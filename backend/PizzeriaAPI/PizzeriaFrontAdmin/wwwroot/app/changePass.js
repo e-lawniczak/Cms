@@ -73,7 +73,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ResetPassPage = void 0;
+exports.ChangePass = void 0;
 var React = __importStar(require("react"));
 var react_1 = require("react");
 var ReactDOM = __importStar(require("react-dom"));
@@ -81,28 +81,8 @@ var common_1 = require("./common");
 var react_hook_form_1 = require("react-hook-form");
 var axios_1 = __importDefault(require("axios"));
 var bcryptjs_react_1 = __importDefault(require("bcryptjs-react"));
-var ResetPassPage = function () {
-    var _a = (0, react_1.useState)([]), data = _a[0], setData = _a[1], _b = (0, react_hook_form_1.useForm)(), register = _b.register, handleSubmit = _b.handleSubmit, params = new URLSearchParams(window.location.search), token = params.get("token"), onSubmit = function (data) { return __awaiter(void 0, void 0, void 0, function () {
-        var res;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    if (!(data.Email != "" && data.Email.indexOf("@") > -1)) return [3 /*break*/, 2];
-                    return [4 /*yield*/, axios_1.default.post(common_1.baseApiUrl + "/ForgotPassword", { email: data.Email })];
-                case 1:
-                    res = _a.sent();
-                    console.log(res);
-                    if (res.status === 200) {
-                        alert("Email has been sent to " + data.Email);
-                    }
-                    else {
-                        alert("Something went wrong" + res.statusText);
-                    }
-                    _a.label = 2;
-                case 2: return [2 /*return*/];
-            }
-        });
-    }); }, onSubmitReset = function (data) { return __awaiter(void 0, void 0, void 0, function () {
+var ChangePass = function () {
+    var _a = (0, react_1.useState)([]), data = _a[0], setData = _a[1], _b = (0, react_hook_form_1.useForm)(), register = _b.register, handleSubmit = _b.handleSubmit, onSubmit = function (data) { return __awaiter(void 0, void 0, void 0, function () {
         var res, _a, _b, _c;
         var _d;
         return __generator(this, function (_e) {
@@ -110,21 +90,19 @@ var ResetPassPage = function () {
                 case 0:
                     if (!(data.password.length > 0 && data.confirmPassword.length > 0 && data.password == data.confirmPassword)) return [3 /*break*/, 4];
                     _b = (_a = axios_1.default).post;
-                    _c = [common_1.baseApiUrl + "/Resetpassword"];
-                    _d = {
-                        resetToken: token
-                    };
+                    _c = [common_1.baseApiUrl + "/ChangePassword"];
+                    _d = {};
                     return [4 /*yield*/, bcryptjs_react_1.default.hash(data.confirmPassword, "$2a$12$LdSGL/4rQGQYLbXbJH3ks.")];
                 case 1:
                     _d.confirmPassword = _e.sent();
                     return [4 /*yield*/, bcryptjs_react_1.default.hash(data.password, "$2a$12$LdSGL/4rQGQYLbXbJH3ks.")];
                 case 2: return [4 /*yield*/, _b.apply(_a, _c.concat([(_d.password = _e.sent(),
-                            _d)]))];
+                            _d), common_1.axiosBaseConfig]))];
                 case 3:
                     res = _e.sent();
                     if (res.status == 200) {
                         alert("Password changed");
-                        window.location.href = "/Login";
+                        window.location.href = "/Logout";
                     }
                     else {
                         alert("Something went wrong. Contact administrator\n" + res.statusText);
@@ -137,29 +115,15 @@ var ResetPassPage = function () {
     React.useEffect(function () {
     }, []);
     return React.createElement(React.Fragment, null,
-        React.createElement("div", { className: "account-form-logo row" },
-            React.createElement("div", { className: "img-container" },
-                React.createElement("img", { src: "/img/logo-198x66.png" }))),
-        React.createElement("div", { className: "row" }, !!token && token.length > 0 ?
-            React.createElement("form", { method: "post", onSubmit: handleSubmit(onSubmitReset), className: 'account-form login-form' },
+        React.createElement("div", { className: "row" },
+            React.createElement("form", { method: "post", onSubmit: handleSubmit(onSubmit), className: 'account-form login-form' },
                 React.createElement("div", { className: "form-group" },
-                    React.createElement("input", __assign({}, register("password"), { placeholder: 'password', type: "password" }))),
+                    React.createElement("input", __assign({}, register("password"), { placeholder: 'new password', type: "password" }))),
                 React.createElement("div", { className: "form-group" },
                     React.createElement("input", __assign({}, register("confirmPassword"), { placeholder: 'confirm password', type: "password" }))),
-                React.createElement("button", { type: "submit" }, "Change password"),
-                React.createElement("p", null,
-                    " ",
-                    React.createElement("a", { href: "/Login" }, "Back.")))
-            :
-                React.createElement("form", { method: "post", onSubmit: handleSubmit(onSubmit), className: 'account-form login-form' },
-                    React.createElement("div", { className: "form-group" },
-                        React.createElement("input", __assign({}, register("Email"), { type: "email" }))),
-                    React.createElement("button", { type: "submit" }, "Zresetuj has\u0142o"),
-                    React.createElement("p", null,
-                        " ",
-                        React.createElement("a", { href: "/Login" }, "Powr\u00F3t.")))));
+                React.createElement("button", { type: "submit" }, "Change password"))));
 };
-exports.ResetPassPage = ResetPassPage;
+exports.ChangePass = ChangePass;
 var root = document.getElementById("react_root");
-ReactDOM.render(React.createElement(exports.ResetPassPage, null), root);
-//# sourceMappingURL=resetPass.js.map
+ReactDOM.render(React.createElement(exports.ChangePass, null), root);
+//# sourceMappingURL=changePass.js.map

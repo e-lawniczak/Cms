@@ -1,9 +1,10 @@
-import * as Axios from 'axios';
+import axios, * as Axios from 'axios';
 import * as React from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as ReactDOM from 'react-dom';
 import { Editor } from '@tinymce/tinymce-react';
+import { KeyValueDto, MenuElementDto, SocialMediaDto, baseApiUrl, prepareSocialIcon } from './common';
 
 export const PageWrapper = (props: { children?: any, className?: string }) => {
     const
@@ -20,6 +21,74 @@ export const PageWrapper = (props: { children?: any, className?: string }) => {
 }
 
 const Header = (props: { className?: string }) => {
+    const
+        [menuElements, setMenuElements] = useState<{ parent: MenuElementDto, children: MenuElementDto[] }[]>(),
+        [phone, setPhone] = useState<KeyValueDto>(),
+        [address, setAddress] = useState<KeyValueDto>(),
+        [socials, setSocials] = useState<SocialMediaDto[]>(),
+        [logo, setLogo] = useState<KeyValueDto>(),
+        getMenuElements = async () => {
+            let res = await axios.get(baseApiUrl + `/GetVisibleMenuElementList`)
+            let obj = [] as any[]
+            if (res.status == 200) {
+                res.data.forEach((el: MenuElementDto) => {
+                    if (el.parentMenuElementId < 0 || el.parentMenuElementId == null) {
+                        obj.push({ parent: el, children: [] })
+                    }
+
+                })
+                res.data.forEach((el: MenuElementDto) => {
+                    if (el.parentMenuElementId > 0 || el.parentMenuElementId != null) {
+                        let index = obj.findIndex((i: any) => i.parent.menuElementId == el.parentMenuElementId)
+                        obj[index].children.push(el)
+                    }
+                })
+
+                setMenuElements(obj)
+            }
+        },
+        getPhone = async () => {
+            let res = await axios.get(baseApiUrl + `/GetKeyValueByKey/phone`)
+            setPhone(res.data)
+        },
+        getAddress = async () => {
+            let res = await axios.get(baseApiUrl + `/GetKeyValueByKey/address`)
+            setAddress(res.data)
+        },
+        getSocials = async () => {
+            let res = await axios.get(baseApiUrl + `/GetAllMainSocialMedia`)
+            setSocials(res.data)
+        },
+        getLogo = async () => {
+            let res = await axios.get(baseApiUrl + `/GetKeyValueByKey/main_logo`)
+            let t = res.data as KeyValueDto;
+            let s = t.value.split("/")
+            s[2] = "Full"
+            t.value = s.join("/")
+            setLogo(t)
+        },
+        mappedMenuElements = menuElements && menuElements.map((el: { parent: MenuElementDto, children: MenuElementDto[] }) => {
+            return <li className="rd-nav-item">
+                <a className="rd-nav-link" href={el.parent.link}>{el.parent.text}</a>
+                <ul className='child-menu'>
+                    {el.children.map((child: MenuElementDto, idx: number) => {
+                        return <li className="child rd-nav-item">
+                            <a className="rd-nav-link" href={child.link}>{child.text}</a>
+                        </li>
+                    })}
+                </ul>
+            </li>
+        }).filter((i: any) => i),
+        x = ""
+
+    React.useEffect(() => {
+        getMenuElements()
+        getPhone()
+        getAddress()
+        getSocials()
+        getLogo()
+    }, [])
+
     return <>
         <header className={["section page-header", props.className + "-header"].join(" ")}>
 
@@ -32,7 +101,7 @@ const Header = (props: { className?: string }) => {
 
                                 <button className="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
 
-                                <div className="rd-navbar-brand"><a className="brand" href="index.html"><img className="brand-logo-dark" src="images/logo-198x66.png" alt="" width="198" height="66" /></a></div>
+                                <div className="rd-navbar-brand"><a className="brand" href="/"><img className="brand-logo-dark" src={baseApiUrl + logo?.value} alt="" width="198" height="66" /></a></div>
                             </div>
                             <div className="rd-navbar-right rd-navbar-nav-wrap">
                                 <div className="rd-navbar-aside">
@@ -40,38 +109,35 @@ const Header = (props: { className?: string }) => {
                                         <li>
                                             <div className="unit unit-spacing-xs">
                                                 <div className="unit-left"><span className="icon mdi mdi-phone"></span></div>
-                                                <div className="unit-body"><a className="phone" href="tel:#">+1 718-999-3939</a></div>
+                                                <div className="unit-body"><a className="phone" href={`tel:${phone?.value}`}>{phone?.value}</a></div>
                                             </div>
                                         </li>
                                         <li>
                                             <div className="unit unit-spacing-xs">
                                                 <div className="unit-left"><span className="icon mdi mdi-map-marker"></span></div>
-                                                <div className="unit-body"><a className="address" href="#">514 S. Magnolia St. Orlando, FL 32806</a></div>
+                                                <div className="unit-body"><a className="address" href="#">{address?.value}</a></div>
                                             </div>
                                         </li>
                                     </ul>
                                     <ul className="list-share-2">
-                                        <li><a className="icon mdi mdi-facebook" href="#"></a></li>
-                                        <li><a className="icon mdi mdi-twitter" href="#"></a></li>
-                                        <li><a className="icon mdi mdi-instagram" href="#"></a></li>
-                                        <li><a className="icon mdi mdi-google-plus" href="#"></a></li>
+                                        {socials?.map((social: SocialMediaDto, idx: number) => {
+                                            let iconClass = prepareSocialIcon(social.name.split("_"))
+                                            return <li key={idx}><a className={["icon mdi", iconClass].join(" ")} href={social.link}></a></li>
+
+                                        })}
                                     </ul>
                                 </div>
                                 <div className="rd-navbar-main">
 
                                     <ul className="rd-navbar-nav">
                                         <li className="rd-nav-item active">
-                                            <a className="rd-nav-link" href="index.html">Home</a>
+                                            <a className="rd-nav-link" href="/">Home</a>
                                         </li>
                                         <li className="rd-nav-item">
-                                            <a className="rd-nav-link" href="about-us.html">About us</a>
+                                            <a className="rd-nav-link" href="/About">About us</a>
                                         </li>
-                                        <li className="rd-nav-item">
-                                            <a className="rd-nav-link" href="typography.html">Typography</a>
-                                        </li>
-                                        <li className="rd-nav-item">
-                                            <a className="rd-nav-link" href="contacts.html">Contacts</a>
-                                        </li>
+                                        {mappedMenuElements}
+
                                     </ul>
                                 </div>
                             </div>

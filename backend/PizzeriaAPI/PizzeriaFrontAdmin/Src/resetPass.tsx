@@ -5,7 +5,7 @@ import * as ReactDOM from 'react-dom';
 import { PInput, PageWrapper, baseApiUrl } from './common';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-
+import bcrypt from 'bcryptjs-react'
 
 export const ResetPassPage = () => {
     const
@@ -25,11 +25,11 @@ export const ResetPassPage = () => {
             }
         },
         onSubmitReset = async (data: any) => {
-            if (data.password.length > 0 && data.confirmPassword.length > 0) {
+            if (data.password.length > 0 && data.confirmPassword.length > 0 && data.password == data.confirmPassword) {
                 let res = await axios.post(baseApiUrl + "/Resetpassword", {
                     resetToken: token,
-                    confirmPassword: data.confirmPassword,
-                    password: data.password
+                    confirmPassword: await bcrypt.hash(data.confirmPassword, "$2a$12$LdSGL/4rQGQYLbXbJH3ks."),
+                    password: await bcrypt.hash(data.password, "$2a$12$LdSGL/4rQGQYLbXbJH3ks.")
                 })
                 if (res.status == 200) {
                     alert("Password changed")
@@ -61,10 +61,10 @@ export const ResetPassPage = () => {
                         <input {...register("password")} placeholder='password' type="password" />
                     </div>
                     <div className="form-group">
-                        <input {...register("confirmPassword")} placeholder='confirmPassword' type="password" />
+                        <input {...register("confirmPassword")} placeholder='confirm password' type="password" />
                     </div>
-                    <button type="submit">Zresetuj hasło</button>
-                    <p> <a href="/Login">Powrót.</a></p>
+                    <button type="submit">Change password</button>
+                    <p> <a href="/Login">Back.</a></p>
                 </form>
                 :
 
