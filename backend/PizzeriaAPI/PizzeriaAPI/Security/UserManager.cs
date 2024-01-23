@@ -68,13 +68,13 @@ namespace PizzeriaAPI.Security
             });
             return await Task.FromResult(UserManagerResult.Success);
         }
-        public async Task<string> SaveTokenAsync(User user, string token)
+        public async Task SaveTokenAsync(User user, string token)
         {
             var userToken = new UserToken()
             {
                 User = user,
                 Token = token,
-                ExpireDate = DateTime.Now.AddMinutes(60)
+                ExpireDate = DateTime.Now.AddMinutes(30)
             };
 
             await transactionCoordinator.InCommitScopeAsync(async session =>
@@ -83,7 +83,22 @@ namespace PizzeriaAPI.Security
                 await userTokenRepository.InsertAsync(userToken, session);
             }
                 );
-            return token;
+            return;
+        }
+        public async Task<User> GetUserByTokenAsync(string token)
+        {
+            UserToken? userToken = null;
+            await transactionCoordinator.InRollbackScopeAsync(async session => {
+                userToken = await userTokenRepository.GetUserTokenByTokenAsync(token, session);
+                });
+
+            if (userToken == null)
+                return null;
+
+            if (userToken.ExpireDate < DateTime.Now)
+                return null;
+
+            return userToken.User;
         }
     }
 }

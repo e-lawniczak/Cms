@@ -11,7 +11,8 @@ namespace PizzeriaAPI.Security
         Task<TUser> FindByEmailAsync(string email);
         Task<UserManagerResult> CreateAsync(TUser user, string password);
         Task<UserManagerResult> UpdateAsync(User user);
-        Task<string> SaveTokenAsync(User user, string token);
+        Task SaveTokenAsync(User user, string token);
+        Task<User> GetUserByTokenAsync(string resetToken);
 
     }
 }

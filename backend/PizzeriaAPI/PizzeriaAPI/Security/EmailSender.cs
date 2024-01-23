@@ -15,7 +15,7 @@ namespace PizzeriaAPI.Security
             var settings = emailSenderSettings.Value;
             smtpClient = new SmtpClient(settings.Host, settings.Port);
             smtpClient.UseDefaultCredentials = false;
-            smtpClient.Credentials = new NetworkCredential(settings.SenderEmail, settings.SenderPassword);
+            smtpClient.Credentials = new NetworkCredential(settings.SenderUsername, settings.SenderPassword);
             smtpClient.EnableSsl = true;
             senderEmail = settings.SenderEmail;
         }

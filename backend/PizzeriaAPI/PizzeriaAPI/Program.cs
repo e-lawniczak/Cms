@@ -15,7 +15,7 @@ namespace PizzeriaAPI
             builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration));
 
             builder.Services.AddControllers();
-            builder.Services.AddServices(builder.Configuration);
+            builder.Services.AddServices();
             builder.Services.AddSecurityServices(builder.Configuration);
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddOptions();

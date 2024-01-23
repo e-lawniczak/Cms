@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Domain;
+using PizzeriaAPI.Repositories;
 using PizzeriaAPI.Security;
 
 namespace PizzeriaAPI.Controllers
@@ -37,11 +38,17 @@ namespace PizzeriaAPI.Controllers
         }
 
         [HttpPost]
-        [Route("/ResetPassword")]
-        [Obsolete]
-        public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordRequest resetPasswordRequest)
+        [Route("/ForgotPassword")]
+        public async Task<ActionResult> ForgotPassword([FromBody] ForgotPasswordRequest resetPasswordRequest)
         {
-            return Ok(await authenticationService.ResetPasswordAsync(resetPasswordRequest));
+            return Ok(await authenticationService.ForgotPasswordAsync(resetPasswordRequest));
+        }
+        [HttpPost]
+        [Route("/ResetPassword")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest resetPasswordRequest)
+        {
+            await authenticationService.ResetPasswordAsync(resetPasswordRequest);
+            return Ok("Successfully reseted password");
         }
     }
 }

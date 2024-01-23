@@ -9,11 +9,11 @@ namespace PizzeriaAPI.Upgrades
     {
         public int Number => 4;
         private readonly IAuthenticationService authenticationService;
-        private readonly HashSettings hashSettings;
-        public Upgrade4(IAuthenticationService authenticationService, IOptions<HashSettings> hashSettings)
+        private readonly SecuritySettings securitySettings;
+        public Upgrade4(IAuthenticationService authenticationService, IOptions<SecuritySettings> securitySettings)
         {
             this.authenticationService = authenticationService;
-            this.hashSettings = hashSettings.Value;
+            this.securitySettings = securitySettings.Value;
         }
         public void Execute(NHibernate.ISession session)
         {
@@ -21,7 +21,7 @@ namespace PizzeriaAPI.Upgrades
         }
         private void AddDefaultUser(NHibernate.ISession session)
         {
-            var hashPassword = BCrypt.Net.BCrypt.HashPassword("haslo123", hashSettings.Salt);
+            var hashPassword = BCrypt.Net.BCrypt.HashPassword("haslo123", securitySettings.Salt);
             var request = new RegistrationRequest
             {
                 Email = "example@gmail.com",

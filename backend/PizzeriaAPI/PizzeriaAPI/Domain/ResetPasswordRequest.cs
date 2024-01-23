@@ -1,11 +1,19 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace PizzeriaAPI.Domain
 {
     public class ResetPasswordRequest
     {
         [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        public string ResetToken { get; set; }
+        [Required]
+        [PasswordPropertyText]
+        [Compare("Password")]
+        public string ConfirmPassword { get; set; }
+        [Required]
+        [PasswordPropertyText]
+
+        public string Password { get; set; }
     }
 }

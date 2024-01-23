@@ -10,6 +10,7 @@ namespace PizzeriaAPI.Domain
         public string Password { get; set; }
         [Required]
         [Compare("Password")]
+        [PasswordPropertyText]
         public string ConfirmPassword { get; set; }
     }
 }

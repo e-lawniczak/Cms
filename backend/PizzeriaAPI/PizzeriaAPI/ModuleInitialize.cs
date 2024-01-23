@@ -24,10 +24,12 @@ namespace PizzeriaAPI
     {
         public static void AddSecurityServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<JSONWebTokensSettings>
-                (configuration.GetSection("JSONWebTokensSettings"));
+            services.Configure<SecuritySettings>
+                (configuration.GetSection("SecuritySettings"));
+            services.Configure<EmailSenderSettings>(
+                configuration.GetSection("EmailSenderSettings"));
 
-
+            services.AddHttpContextAccessor();
             services.AddSingleton<IUserManager<User>, UserManager>();
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IAuthenticationService, AuthenticationService>();
@@ -48,9 +50,9 @@ namespace PizzeriaAPI
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ClockSkew = TimeSpan.Zero,
-                        ValidIssuer = configuration["JSONWebTokensSettings:Issuer"],
-                        ValidAudience = configuration["JSONWebTokensSettings:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JSONWebTokensSettings:Key"] ?? ""))
+                        ValidIssuer = configuration["SecuritySettings:Issuer"],
+                        ValidAudience = configuration["SecuritySettings:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["SecuritySettings:Key"] ?? ""))
                     };
 
                     o.Events = new JwtBearerEvents()
@@ -102,7 +104,7 @@ namespace PizzeriaAPI
                 });
             });
         }
-        public static void AddServices(this IServiceCollection services, IConfiguration configuration)
+        public static void AddServices(this IServiceCollection services)
         {
             services.AddSingleton<INHibernateHelper, NHibernateHelper>();
             services.AddSingleton<ITransactionCoordinator, TransactionCoordinator>();
@@ -133,10 +135,6 @@ namespace PizzeriaAPI
             services.AddSingleton<IUpgrade, Upgrade2>();
             services.AddSingleton<IUpgrade, Upgrade3>();
             services.AddSingleton<IUpgrade, Upgrade4>();
-
-            services.Configure<EmailSenderSettings>(configuration.GetSection("EmailSenderSettings"));
-            services.Configure<HashSettings>(configuration.GetSection("HashSettings"));
-
         }
         public static void AddJobs(this IServiceCollection services)
         {

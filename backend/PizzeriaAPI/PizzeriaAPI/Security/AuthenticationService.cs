@@ -11,32 +11,57 @@ namespace PizzeriaAPI.Security
 {
     public class AuthenticationService : IAuthenticationService
     {
-        private IUserManager<User> userManager;
-        private IEmailSender emailSender;
-        private readonly JSONWebTokensSettings jwtSettings;
-        private readonly HashSettings hashSettings;
+        private readonly IUserManager<User> userManager;
+        private readonly IEmailSender emailSender;
+        private readonly SecuritySettings securitySettings;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
         public AuthenticationService(IUserManager<User> userManager,
             IEmailSender emailSender,
-             IOptions<JSONWebTokensSettings> jwtSettings,
-             IOptions<HashSettings> hashSettings)
+             IOptions<SecuritySettings> securitySettings,
+             IHttpContextAccessor httpContextAccessor)
         {
             this.userManager = userManager;
-            this.jwtSettings = jwtSettings.Value;
+            this.securitySettings = securitySettings.Value;
             this.emailSender = emailSender;
-            this.hashSettings = hashSettings.Value;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordRequest resetPasswordRequest)
+        {
+            var user = await userManager.GetUserByTokenAsync(resetPasswordRequest.ResetToken);
+            if (user == null)
+                throw new Exception("Not found user with given token");
+
+            if (resetPasswordRequest.Password != resetPasswordRequest.ConfirmPassword)
+                throw new Exception("Passwords are not the same");
+
+            var hashPassword = BCrypt.Net.BCrypt.HashPassword(resetPasswordRequest.Password, securitySettings.Salt);
+
+            user.Password = hashPassword;
+            var result = await userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return new ResetPasswordResponse() { UserId = user.UserId };
+            }
+            else
+            {
+                throw new Exception($"{result.Errors}");
+            }
+        }
+        public async Task<ForgotPasswordResponse> ForgotPasswordAsync(ForgotPasswordRequest resetPasswordRequest)
         {
             var user = await userManager.FindByEmailAsync(resetPasswordRequest.Email);
             if (user == null)
                 throw new Exception("Not found user with given email");
 
-            var message = await CreateMessage(user);
-            await emailSender.SendEmailAsync(resetPasswordRequest.Email, "Reset password", message);
+            var token = await GenerateForgotPasswordToken(user);
+            var resetLink = $"{httpContextAccessor.HttpContext.Request.Scheme}//{httpContextAccessor.HttpContext.Request.Host}/ResetPassword?token={token}";
+            var emailBody = $"Click the following link to reset your password: {resetLink}";
+            await emailSender.SendEmailAsync(resetPasswordRequest.Email, "Reset password", emailBody);
 
-            return new ResetPasswordResponse() { Message = "Sended mail successfully" };
+            return new ForgotPasswordResponse() { Message = "Sended mail successfully" };
         }
 
 
@@ -56,7 +81,7 @@ namespace PizzeriaAPI.Security
             if (changePasswordRequest.Password != changePasswordRequest.ConfirmPassword)
                 throw new Exception("Passwords are not the same");
 
-            var hashPassword = BCrypt.Net.BCrypt.HashPassword(changePasswordRequest.Password, hashSettings.Salt);
+            var hashPassword = BCrypt.Net.BCrypt.HashPassword(changePasswordRequest.Password, securitySettings.Salt);
 
             user.Password = hashPassword;
             var result = await userManager.UpdateAsync(user);
@@ -76,7 +101,7 @@ namespace PizzeriaAPI.Security
 
             if (eduUser == null)
                 throw new Exception("Not found user with given email");
-            var hash = BCrypt.Net.BCrypt.HashPassword(request?.Password, hashSettings.Salt);
+            var hash = BCrypt.Net.BCrypt.HashPassword(request?.Password, securitySettings.Salt);
             if (hash != eduUser.Password)
                 throw new UnauthorizedAccessException("Wrong email or password");
             JwtSecurityToken jwtSecurityToken = await GenerateToken(eduUser);
@@ -100,7 +125,7 @@ namespace PizzeriaAPI.Security
 
             if (existingEmail == null)
             {
-                var hashPassword = BCrypt.Net.BCrypt.HashPassword(request?.Password, hashSettings.Salt);
+                var hashPassword = BCrypt.Net.BCrypt.HashPassword(request?.Password, securitySettings.Salt);
                 var user = new User
                 {
                     Email = request?.Email,
@@ -124,18 +149,12 @@ namespace PizzeriaAPI.Security
             }
         }
 
-        private async Task<string> CreateMessage(User user)
+        private async Task<string> GenerateForgotPasswordToken(User user)
         {
-            var generatedRandomNumber = GenerateRandomNumber();
-            var userToken = await userManager.SaveTokenAsync(user, generatedRandomNumber.ToString());
-            return $"Your reset password code is: {userToken}";
+            var token = Guid.NewGuid().ToString();
+            await userManager.SaveTokenAsync(user, token);
+            return token;
 
-        }
-
-        private int GenerateRandomNumber()
-        {
-            var random = new Random();
-            return random.Next(100000, 999999);
         }
 
         private async Task<JwtSecurityToken> GenerateToken(User user)
@@ -160,14 +179,14 @@ namespace PizzeriaAPI.Security
             .Union(userClaims)
             .Union(roleClaims);
 
-            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings?.Key ?? ""));
+            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securitySettings?.Key ?? ""));
             var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
 
             var jwtSecurityToken = new JwtSecurityToken(
-                issuer: jwtSettings?.Issuer,
-                audience: jwtSettings?.Audience,
+                issuer: securitySettings?.Issuer,
+                audience: securitySettings?.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(jwtSettings.DurationInMinutes),
+                expires: DateTime.UtcNow.AddMinutes(securitySettings.DurationInMinutes),
                 signingCredentials: signingCredentials);
             return jwtSecurityToken;
         }
