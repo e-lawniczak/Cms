@@ -74,7 +74,7 @@ namespace PizzeriaFrontAdmin.Models
 
             var url = HttpContext.Request.Path.Value;
             var query = HttpContext.Request.Query;
-            if (User == null && url != "/Login" && url != "/Register" && url != "/ResetPassword")
+            if (User == null && url != "/Login" && url != "/Top/Secret/Register" && url != "/ResetPassword")
                 Response.Redirect("/Login");
         }
         public async Task<object?> MakeHttpRequest(HttpMethod method, string url, object data = null)

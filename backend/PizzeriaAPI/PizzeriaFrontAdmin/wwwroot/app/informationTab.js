@@ -127,7 +127,7 @@ var InformationTabRow = function (props) {
         defaultValues: __assign({}, item)
     }), register = _c.register, handleSubmit = _c.handleSubmit, formState = _c.formState, getValues = _c.getValues, makeItem = function (data) {
         return {
-            informationTabId: (item === null || item === void 0 ? void 0 : item.informationTabId) || -1,
+            informationTabId: (item === null || item === void 0 ? void 0 : item.informationTabId) >= 0 ? item === null || item === void 0 ? void 0 : item.informationTabId : -1,
             buttonText: (data === null || data === void 0 ? void 0 : data.buttonText) || "",
             isVisible: (data === null || data === void 0 ? void 0 : data.isVisible) || false,
             tabSliderId: (data === null || data === void 0 ? void 0 : data.tabSliderId) || (item === null || item === void 0 ? void 0 : item.tabSliderId) || 0,
@@ -182,13 +182,13 @@ var InformationTabRow = function (props) {
     return React.createElement("form", { className: '' },
         React.createElement("div", { className: "form-content " },
             React.createElement("div", { className: "information-tab-row row" },
-                React.createElement("div", { className: "id" }, (item === null || item === void 0 ? void 0 : item.informationTabId) || -1),
+                React.createElement("div", { className: "id" }, (item === null || item === void 0 ? void 0 : item.informationTabId) >= 0 ? item === null || item === void 0 ? void 0 : item.informationTabId : -1),
                 React.createElement(common_1.PInput, { register: __assign({}, register("title")), inputProps: { type: 'text' } }),
                 React.createElement(common_1.PInput, { register: __assign({}, register("text")), inputProps: { type: 'text' } }),
                 React.createElement(common_1.PInput, { register: __assign({}, register("buttonText")), inputProps: { type: 'text' } }),
                 React.createElement(common_1.PInput, { register: __assign({}, register("isVisible")), inputProps: { type: 'checkbox' } }),
                 React.createElement("div", null, tabSlidersData.length > 0 &&
-                    React.createElement(common_1.Select, { register: register, data: tabSlidersData, defaultValue: item.tabSliderId || null, name: "tabSliderId" })),
+                    React.createElement(common_1.Select, { register: register, data: tabSlidersData, defaultValue: (item === null || item === void 0 ? void 0 : item.tabSliderId) || null, name: "tabSliderId" })),
                 React.createElement("div", { className: "buttons-container" }, isNew ?
                     React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: function (e) { return addItem(getValues()); } }, "Add")
                     : React.createElement(React.Fragment, null,

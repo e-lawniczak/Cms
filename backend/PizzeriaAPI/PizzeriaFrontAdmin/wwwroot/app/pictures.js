@@ -82,7 +82,7 @@ var common_1 = require("./common");
 var common_2 = require("./common");
 var axios_1 = __importDefault(require("axios"));
 var PicturesPage = function () {
-    var _a = (0, react_hook_form_1.useForm)(), register = _a.register, handleSubmit = _a.handleSubmit, _b = (0, react_1.useState)([]), data = _b[0], setData = _b[1], _c = (0, react_1.useState)(false), showUpload = _c[0], setUpload = _c[1], getData = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var _a = (0, react_hook_form_1.useForm)(), register = _a.register, handleSubmit = _a.handleSubmit, setValue = _a.setValue, _b = (0, react_1.useState)([]), data = _b[0], setData = _b[1], _c = (0, react_1.useState)(false), showUpload = _c[0], setUpload = _c[1], getData = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -117,6 +117,8 @@ var PicturesPage = function () {
                     return [3 /*break*/, 1];
                 case 4:
                     getData();
+                    setUpload(false);
+                    setValue("fileUpload", null);
                     _a.label = 5;
                 case 5: return [2 /*return*/];
             }

@@ -3,6 +3,8 @@ import * as React from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as ReactDOM from 'react-dom';
+import { Editor } from '@tinymce/tinymce-react';
+
 
 export const PictureListElement = (props: { item: PictureDto, onClick?: any, [x: string]: any }) => {
   const { item, onClick, src } = props;
@@ -52,11 +54,47 @@ export const PageSettingsSection = (props: { className?: any, title?: any, subte
     </div>
   </section>
 }
-
+export const PEditor = (props: { formEls: any, register: any, ref: any, editorProps: any }) => {
+  const { editorProps, register, formEls: { getValues, setValue } } = props
+  const editorRef = React.useRef(null);
+  const log = () => {
+    if (editorRef.current) {
+      setValue("content", editorRef.current.getContent())
+    }
+  }
+  return <Editor
+    {...register}
+    apiKey='no-api-key'
+    onInit={(evt, editor) => editorRef.current = editor}
+    initialValue={getValues("content")}
+    onEditorChange={log}
+    init={{
+      height: 500,
+      menubar: false,
+      plugins: [
+        'a11ychecker', 'advlist', 'advcode', 'advtable', 'autolink', 'checklist', 'export',
+        'lists', 'link', 'image', 'charmap', 'preview', 'anchor', 'searchreplace', 'visualblocks',
+        'powerpaste', 'fullscreen', 'formatpainter', 'insertdatetime', 'media', 'table', 'help', 'wordcount', 'code'
+      ],
+      toolbar: 'undo redo | casechange blocks | bold italic backcolor | ' +
+        'alignleft aligncenter alignright alignjustify | ' +
+        'bullist numlist checklist outdent indent | removeformat | a11ycheck code table help',
+      content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+    }}
+    {...editorProps}
+  />
+}
 export const PageWrapper = (props: { children?: any, className?: string }) => {
   return <div className={["react-page", props.className || ""].join(" ")}>
     {props.children}
   </div>
+}
+export interface PageDto {
+  id: number,
+  title: string,
+  content: string,
+  isVisible: boolean,
+  pictureIdList: number[]
 }
 export interface BannerDto {
   id: number,

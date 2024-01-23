@@ -10,7 +10,7 @@ import axios from 'axios';
 
 export const PicturesPage = () => {
     const
-        { register, handleSubmit } = useForm(),
+        { register, handleSubmit, setValue } = useForm(),
         [data, setData] = useState([]),
         [showUpload, setUpload] = useState(false),
         getData = async () => {
@@ -28,6 +28,8 @@ export const PicturesPage = () => {
                     let req = await axios.post(baseApiUrl + "/AddPicture", form, axiosBaseConfig)
                 }
                 getData();
+                setUpload(false)
+                setValue("fileUpload", null)
             }
         },
         deletePicture = (item: PictureDto) => {
