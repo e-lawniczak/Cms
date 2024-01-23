@@ -122,6 +122,7 @@ namespace PizzeriaAPI
             services.AddSingleton<IInformationTabRepository, InformationTabRepository>();
             services.AddSingleton<IGalleryRepository, GalleryRepository>();
             services.AddSingleton<IProductRepository, ProductRepository>();
+            services.AddSingleton<IPageRepository, PageRepository>();
             services.AddSingleton<ICategoryRepository, CategoryRepository>();
             services.AddSingleton<IKeyValueRepository, KeyValueRepository>();
             services.AddSingleton<IMenuElementRepository, MenuElementRepository>();
