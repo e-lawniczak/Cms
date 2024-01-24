@@ -219,10 +219,11 @@
 
 .selected-banners {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: flex-start;
   align-items: flex-start;
-  gap: 10px;
+  gap: 2px;
+  overflow-x: scroll;
 }
 
 .product-row.row {

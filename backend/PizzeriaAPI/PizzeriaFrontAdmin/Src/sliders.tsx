@@ -123,7 +123,7 @@ const SliderRow = (props: { item: SliderDto, isNew: boolean, banners: any[], ref
                             <div className="btn btn-white btn-sm w-100 mb-0 btn-save" onClick={(e) => editItem(getValues())}>Edit</div>
                             <div className="btn btn-white btn-sm w-100 mb-0 btn-delete" onClick={(e) => deleteItem(getValues())}>Delete</div></>}
                 </div>
-                <div className="selected-banners">
+                <div className="selected-banners custom-scroll">
 
                     {banners.filter((b: BannerDto, idx: any) => {
                         for (let i = 0; i < item?.bannerIdList.length; i++) {

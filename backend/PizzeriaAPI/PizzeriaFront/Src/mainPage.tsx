@@ -3,13 +3,27 @@ import { useState } from 'react';
 import * as ReactDOM from 'react-dom';
 
 import { PageWrapper } from './commonElements';
+import axios from 'axios';
+import { KeyValueDto, SliderDto, baseApiUrl } from './common';
 
 export const MainPage = () => {
     const
-        [data, setData] = useState([])
+        [data, setData] = useState([]),
+        [mainSlider, setMainSlider] = useState<KeyValueDto>(),
+        [slider, setSlider] = useState<SliderDto>(),
+        getMainSLider = async () => {
+            let res = await axios.get(baseApiUrl + `/GetKeyValueByKey/home_page_slider`)
+            setMainSlider(res.data)
+            getSlider()
+        },
+        getSlider = async () => {
+            let res = await axios.get(baseApiUrl + `/GetSlider/${mainSlider?.value}`)
+            setSlider(res.data)
+        },
+        x=""
 
     React.useEffect(() => {
-
+        getMainSLider()
     }, [])
     return <PageWrapper>
         <MainContent />
