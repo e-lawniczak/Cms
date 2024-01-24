@@ -1,4 +1,5 @@
-﻿using NHibernate.Linq;
+﻿using NHibernate.Criterion;
+using NHibernate.Linq;
 using NHibernate.SqlCommand;
 using PizzeriaAPI.Database.Entities;
 using ISession = NHibernate.ISession;
@@ -46,7 +47,7 @@ namespace PizzeriaAPI.Repositories
             TabSlider tabSliderAlias = null;
             var result = await session.QueryOver(() => tabSliderAlias)
                  .Where(() => tabSliderAlias.IsDeleted == false)
-                 .And(() => tabSliderAlias.Title.Like(sliderTitle))
+                 .And(() => tabSliderAlias.Title.IsLike(sliderTitle))
                  .OrderBy(() => tabSliderAlias.Id).Asc
                  .SingleOrDefaultAsync<TabSlider>();
 

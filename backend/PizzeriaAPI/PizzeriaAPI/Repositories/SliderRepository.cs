@@ -46,7 +46,7 @@ namespace PizzeriaAPI.Repositories
             Slider sliderAlias = null;
             var result = await session.QueryOver(() => sliderAlias)
                  .Where(() => sliderAlias.IsDeleted == false)
-                 .And(() => sliderAlias.Name.Like(name))
+                 .And(() => sliderAlias.Name.IsLike(name))
                  .OrderBy(() => sliderAlias.SliderId).Asc
                    .SingleOrDefaultAsync<Slider>();
             result.BannerList = result.BannerList?.Where( banner=> !banner.IsDeleted).ToList();

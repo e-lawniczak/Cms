@@ -48,7 +48,7 @@ namespace PizzeriaAPI.Repositories
             Banner bannerAlias = null;
             var result = await session.QueryOver(() => bannerAlias)
                  .Where(() => bannerAlias.IsDeleted == false)
-                 .And(() => bannerAlias.Title.Like(bannerTitle))
+                 .And(() => bannerAlias.Title.IsLike(bannerTitle))
                  .OrderBy(() => bannerAlias.Id).Asc
                  .SingleOrDefaultAsync<Banner>();
 

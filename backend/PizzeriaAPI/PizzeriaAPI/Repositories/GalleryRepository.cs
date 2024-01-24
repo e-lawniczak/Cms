@@ -1,4 +1,5 @@
-﻿using NHibernate.Linq;
+﻿using NHibernate.Criterion;
+using NHibernate.Linq;
 using PizzeriaAPI.Database.Entities;
 using ISession = NHibernate.ISession;
 
@@ -28,7 +29,7 @@ namespace PizzeriaAPI.Repositories
 
             var result = await session.QueryOver(() => galleryAlias)
                 .Where(() => galleryAlias.IsDeleted == false)
-                .And(() => galleryAlias.Name.Like(galleryname))
+                .And(() => galleryAlias.Name.IsLike(galleryname))
                 .OrderBy(() => galleryAlias.Id).Asc
                 .SingleOrDefaultAsync<Gallery>();
 
