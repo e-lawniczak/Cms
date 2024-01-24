@@ -65,6 +65,22 @@ namespace PizzeriaAPI.Controllers
         }
 
         [HttpGet]
+        [Route("/GetBannersByIdList")]
+        [SwaggerResponse(HttpStatusCode.OK, "Banner got successfully", typeof(BannerDto))]
+        public async Task<ActionResult<BannerDto>> GetBannersByIdList([FromQuery] string bannerIdList)
+        {
+            var ids = bannerIdList.Split(',').Select(int.Parse).ToList();
+            IList<BannerDto>? bannerListDto = null;
+            await transactionCoordinator.InRollbackScopeAsync(async session =>
+            {
+                var bannerList = await bannerRepository.GetBannerListByIdListAsync(ids, session);
+                if (bannerList != null)
+                    bannerListDto = bannerList.Select(GetBannerDto).ToList();
+            });
+
+            return Ok(bannerListDto);
+        }
+        [HttpGet]
         [Route("/GetAllBannerList")]
         [SwaggerResponse(HttpStatusCode.OK, "Banner List")]
         public async Task<ActionResult<IList<BannerDto>>> GetAllBannerList()
