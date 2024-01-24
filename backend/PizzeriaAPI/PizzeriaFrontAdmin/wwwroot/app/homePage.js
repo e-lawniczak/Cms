@@ -612,8 +612,8 @@ var SocialMediaSection = function () {
     }, []);
     return React.createElement(common_1.PageSettingsSection, { title: "Social media", subtext: "Socials with \"Main\" checked will be displayed at the main page" },
         React.createElement("form", { className: 'section-form' },
-            React.createElement("div", { className: "form-content ps ps--active-y" },
-                React.createElement("div", { className: "social-home-row row" },
+            React.createElement("div", { className: "form-content social-media-content custom-scroll" },
+                React.createElement("div", { className: "social-home-row  row" },
                     React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "id"),
                     React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "name"),
                     React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "main"),

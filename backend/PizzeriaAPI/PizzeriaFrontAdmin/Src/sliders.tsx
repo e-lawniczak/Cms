@@ -78,7 +78,7 @@ const SliderRow = (props: { item: SliderDto, isNew: boolean, banners: any[], ref
         }),
         makeItem = (data: any) => {
             return {
-                bannerIdList: data?.bannerIdList || [],
+                bannerIdList: data?.bannerIdList.map((i:number) => i/1) || [],
                 isVisible: data?.isVisible || "",
                 name: data?.name || "",
                 sliderId: item?.sliderId || -1
@@ -126,7 +126,7 @@ const SliderRow = (props: { item: SliderDto, isNew: boolean, banners: any[], ref
                 <div className="selected-banners">
 
                     {banners.filter((b: BannerDto, idx: any) => {
-                        for (let i = 0; i < item.bannerIdList.length; i++) {
+                        for (let i = 0; i < item?.bannerIdList.length; i++) {
                             if (item.bannerIdList[i] == b.id) return true;
                         }
                     }).map((b: BannerDto, idx: any) => <div key={idx}>{b.title};</div>)}

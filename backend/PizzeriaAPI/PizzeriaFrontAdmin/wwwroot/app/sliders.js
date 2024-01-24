@@ -150,7 +150,7 @@ var SliderRow = function (props) {
         defaultValues: __assign({}, item)
     }), register = _c.register, handleSubmit = _c.handleSubmit, formState = _c.formState, getValues = _c.getValues, makeItem = function (data) {
         return {
-            bannerIdList: (data === null || data === void 0 ? void 0 : data.bannerIdList) || [],
+            bannerIdList: (data === null || data === void 0 ? void 0 : data.bannerIdList.map(function (i) { return i / 1; })) || [],
             isVisible: (data === null || data === void 0 ? void 0 : data.isVisible) || "",
             name: (data === null || data === void 0 ? void 0 : data.name) || "",
             sliderId: (item === null || item === void 0 ? void 0 : item.sliderId) || -1
@@ -213,7 +213,7 @@ var SliderRow = function (props) {
                         React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: function (e) { return editItem(getValues()); } }, "Edit"),
                         React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-delete", onClick: function (e) { return deleteItem(getValues()); } }, "Delete"))),
                 React.createElement("div", { className: "selected-banners" }, banners.filter(function (b, idx) {
-                    for (var i = 0; i < item.bannerIdList.length; i++) {
+                    for (var i = 0; i < (item === null || item === void 0 ? void 0 : item.bannerIdList.length); i++) {
                         if (item.bannerIdList[i] == b.id)
                             return true;
                     }
