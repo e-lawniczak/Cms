@@ -21,8 +21,9 @@ namespace PizzeriaAPI.Database.Mapping
             HasManyToMany(x => x.EntityWithPictureList)
                .Cascade.SaveUpdate()
                .Table("entitypicture")
-               .ParentKeyColumn("pictureid")
-               .ChildKeyColumn("entitywithpictureid");
+               .ParentKeyColumn("entitywithpictureid")
+               .ChildKeyColumn("pictureid")
+               .Inverse();
         }
     }
 }

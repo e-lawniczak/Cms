@@ -51,17 +51,13 @@ namespace PizzeriaAPI.Repositories
         public async Task<Category> GetCategoryByNameAsync(string categoryName, ISession session)
         {
             Category categoryAlias = null;
-            Product productAlias = null;
-
             var result = await session.QueryOver(() => categoryAlias)
-                .JoinAlias(() => categoryAlias.ProductList, () => productAlias)
-                .Where(() => categoryAlias.IsDeleted == false)
-                .And(() => categoryAlias.IsVisible == true)
-                .And(() => productAlias.IsDeleted == false)
-                .And(() => productAlias.IsVisible == true)
-                .And(() => categoryAlias.Name == categoryName)
-                .OrderBy(() => categoryAlias.Id).Asc
-                .SingleOrDefaultAsync<Category>();
+                 .Where(() => categoryAlias.IsDeleted == false)
+                 .And(() => categoryAlias.Name.IsLike(categoryName))
+                 .OrderBy(() => categoryAlias.Id).Asc
+                 .SingleOrDefaultAsync<Category>();
+            
+                result.ProductList = result.ProductList?.Where(product => !product.IsDeleted).ToList();
             return result;
         }
         public async Task DeleteAsync(int id, ISession session)

@@ -12,6 +12,6 @@ namespace PizzeriaAPI.Dto.Picture
         public string? Link { get; set; }
         //[Required]
         //public IFormFile Picture { get; set; }
-        public IList<int>? EntityWithPictureIdList { get; set; }
+        //public IList<int>? EntityWithPictureIdList { get; set; }
     }
 }

@@ -230,7 +230,7 @@ namespace PizzeriaAPI.Controllers
                 picture.FilePath = originalImageDirectory + updatePictureDto.Name;
                 picture.Name = updatePictureDto.Name;
                 picture.Link = updatePictureDto.Link;
-                picture.EntityWithPictureList = await pictureRepository.GetAllEntityWithPictureByIdsAsync(updatePictureDto.EntityWithPictureIdList ?? new List<int>(), session);
+                //picture.EntityWithPictureList = await pictureRepository.GetAllEntityWithPictureByIdsAsync(updatePictureDto.EntityWithPictureIdList ?? new List<int>(), session);
             });
         }
 
@@ -260,7 +260,7 @@ namespace PizzeriaAPI.Controllers
                 PictureId = picture.PictureId,
                 Name = picture.Name,
                 Link = picture.Link ?? "",
-                EntityWithPictureIdList = picture?.EntityWithPictureList?.Select(x => x.Id).ToList(),
+                //EntityWithPictureIdList = picture?.EntityWithPictureList?.Select(x => x.Id).ToList(),
             };
         }
         private Picture GetPicture(AddPictureDto addPictureDto)
