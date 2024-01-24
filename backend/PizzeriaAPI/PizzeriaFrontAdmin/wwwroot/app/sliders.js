@@ -212,7 +212,7 @@ var SliderRow = function (props) {
                     : React.createElement(React.Fragment, null,
                         React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: function (e) { return editItem(getValues()); } }, "Edit"),
                         React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-delete", onClick: function (e) { return deleteItem(getValues()); } }, "Delete"))),
-                React.createElement("div", { className: "selected-banners" }, banners.filter(function (b, idx) {
+                React.createElement("div", { className: "selected-banners custom-scroll" }, banners.filter(function (b, idx) {
                     for (var i = 0; i < (item === null || item === void 0 ? void 0 : item.bannerIdList.length); i++) {
                         if (item.bannerIdList[i] == b.id)
                             return true;

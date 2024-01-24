@@ -20,16 +20,18 @@ const MainContent = () => {
         [slider, setSlider] = useState<SliderDto>(),
         [sliderBanners, setSliderBanners] = useState<BannerDto[]>(),
         getMainSLider = async () => {
+            console.log("three")
             let res = await axios.get(baseApiUrl + `/GetKeyValueByKey/home_page_slider`)
             setMainSlider(res.data)
-            getSlider()
         },
         getSlider = async () => {
+            console.log("second")
+            if (!mainSlider) return
             let res = await axios.get(baseApiUrl + `/GetSlider/${mainSlider?.value}`)
             setSlider(res.data)
-            getBannerSliders()
         },
         getBannerSliders = async () => {
+            if (!slider) return
             let queryString = slider?.bannerIdList.map((i: number) => `${i},`).slice(0, -1)
             let res = await axios.get(baseApiUrl + `/GetBannersByIdList?bannerIdList=${queryString}`)
             setSliderBanners(res.data)
@@ -53,6 +55,12 @@ const MainContent = () => {
     React.useEffect(() => {
         getMainSLider()
     }, [])
+    React.useEffect(() => {
+        getSlider()
+    }, [mainSlider])
+    React.useEffect(() => {
+        getBannerSliders()
+    }, [slider])
 
     return <>
         <section className="section swiper-container swiper-slider swiper-slider-2 swiper-slider-3" data-loop="true" data-autoplay="5000" data-simulate-touch="false" data-slide-effect="fade">
