@@ -24,4 +24,8 @@
 }
 .rd-nav-item:hover .child-menu {
   display: grid;
+}
+
+.section.swiper-container {
+  height: 753px;
 }/*# sourceMappingURL=custom.css.map */

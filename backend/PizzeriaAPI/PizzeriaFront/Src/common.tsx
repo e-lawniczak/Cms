@@ -21,6 +21,25 @@ export const prepareSocialIcon = (name: string[]) => {
             return "mdi-cloud";
     }
 }
+export const prepareCategoryIcon = (name: string[]) => {
+    let key = name[name.length - 1].toLocaleLowerCase()
+    switch (key) {
+        case "salads":
+            return "linearicons-leaf";
+        case "pizza":
+            return "linearicons-pizza";
+        case "burgers":
+            return "linearicons-hamburger";
+        case "desserts":
+            return "linearicons-ice-cream";
+        case "drinks":
+            return "linearicons-coffe-cup";
+        case "seafood":
+            return "linearicons-steak";
+        default:
+            return "linearicons-dagger";
+    }
+}
 
 
 

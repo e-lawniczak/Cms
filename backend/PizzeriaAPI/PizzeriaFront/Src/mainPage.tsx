@@ -4,40 +4,39 @@ import * as ReactDOM from 'react-dom';
 
 import { PageWrapper } from './commonElements';
 import axios from 'axios';
-import { BannerDto, KeyValueDto, SliderDto, baseApiUrl } from './common';
+import { BannerDto, CategoryDto, KeyValueDto, SliderDto, baseApiUrl } from './common';
 
 export const MainPage = () => {
-
-    return <PageWrapper>
-        <MainContent />
-    </PageWrapper>
-}
-
-const MainContent = () => {
     const
         [data, setData] = useState([]),
         [mainSlider, setMainSlider] = useState<KeyValueDto>(),
+        [categories, setCategories] = useState<CategoryDto[]>(),
         [slider, setSlider] = useState<SliderDto>(),
+        [currentSlide, setCurrentSlide] = useState(0),
         [sliderBanners, setSliderBanners] = useState<BannerDto[]>(),
         getMainSLider = async () => {
-            console.log("three")
             let res = await axios.get(baseApiUrl + `/GetKeyValueByKey/home_page_slider`)
             setMainSlider(res.data)
         },
+        getCategories = async () => {
+            let res = await axios.get(baseApiUrl + `/GetVisibleCategoryList`)
+            setCategories(res.data)
+        },
         getSlider = async () => {
-            console.log("second")
             if (!mainSlider) return
             let res = await axios.get(baseApiUrl + `/GetSlider/${mainSlider?.value}`)
             setSlider(res.data)
+
         },
         getBannerSliders = async () => {
+            console.log("second")
             if (!slider) return
-            let queryString = slider?.bannerIdList.map((i: number) => `${i},`).slice(0, -1)
+            let queryString = slider?.bannerIdList.map((i: number) => `${i}`)
             let res = await axios.get(baseApiUrl + `/GetBannersByIdList?bannerIdList=${queryString}`)
             setSliderBanners(res.data)
         },
         mappedSliderBanners = sliderBanners?.map((b: BannerDto, idx: number) => {
-            return <div key={idx} className="swiper-slide context-dark" data-slide-bg="images/slide-1-1920x753.jpg">
+            return <div key={idx} className="swiper-slide context-dark" style={{ backgroundImage: `url(${baseApiUrl + "/GetPicture/Full/" + b.pictureIdList[0]})` }} data-slide-bg={baseApiUrl + "/GetPicture/Full/" + b.pictureIdList[0]}>
                 <div className="swiper-slide-caption section-md">
                     <div className="container">
                         <div className="row">
@@ -50,9 +49,34 @@ const MainContent = () => {
                 </div>
             </div>
         }),
+        mappedCategories = categories?.map((cat: CategoryDto, idx: number) => {
+            return <div className="col-sm-6 col-lg-4">
+                <div className="oh-desktop">
+
+                    <article className="services-terri wow slideInUp">
+                        <div className="services-terri-figure">
+                            <img src={baseApiUrl + "/GetPicture/Full/" + cat.pictureIdList[0]} alt="" width="370" height="278" />
+                        </div>
+                        <div className="services-terri-caption">
+                            <span className="services-terri-icon linearicons-leaf"></span>
+                            <h5 className="services-terri-title"><a href={cat.link}>{cat.name}</a></h5>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        }),
+        slideUp = () => {
+            setTimeout(() => {
+                console.log("sss")
+                if (mappedSliderBanners?.length > 0)
+                    setCurrentSlide((currentSlide + 1) % mappedSliderBanners.length)
+            }, 1500);
+        },
         x = ""
 
     React.useEffect(() => {
+        // slideUp()
+        getCategories()
         getMainSLider()
     }, [])
     React.useEffect(() => {
@@ -62,21 +86,21 @@ const MainContent = () => {
         getBannerSliders()
     }, [slider])
 
-    return <>
+    return <PageWrapper>
         <section className="section swiper-container swiper-slider swiper-slider-2 swiper-slider-3" data-loop="true" data-autoplay="5000" data-simulate-touch="false" data-slide-effect="fade">
             <div className="swiper-wrapper text-sm-left">
-                {mappedSliderBanners}
+                {mappedSliderBanners?.length > 0 && mappedSliderBanners[currentSlide]}
             </div>
 
             <div className="swiper-pagination" data-bullet-custom="true"></div>
 
-            <div className="swiper-button-prev">
+            <div className="swiper-button-prev" onClick={() => setCurrentSlide((currentSlide - 1) % mappedSliderBanners.length)}>
                 <div className="preview">
                     <div className="preview__img"></div>
                 </div>
                 <div className="swiper-button-arrow"></div>
             </div>
-            <div className="swiper-button-next">
+            <div className="swiper-button-next" onClick={() => setCurrentSlide((currentSlide + 1) % mappedSliderBanners.length)}>
                 <div className="swiper-button-arrow"></div>
                 <div className="preview">
                     <div className="preview__img"></div>
@@ -88,7 +112,8 @@ const MainContent = () => {
             <div className="container">
                 <h3 className="oh-desktop"><span className="d-inline-block wow slideInDown">Our Menu</span></h3>
                 <div className="row row-md row-30">
-                    <div className="col-sm-6 col-lg-4">
+                    {mappedCategories}
+                    {/* <div className="col-sm-6 col-lg-4">
                         <div className="oh-desktop">
 
                             <article className="services-terri wow slideInUp">
@@ -171,7 +196,7 @@ const MainContent = () => {
                                 </div>
                             </article>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </section>
@@ -533,7 +558,7 @@ const MainContent = () => {
                 </div>
             </div>
         </section>
-    </>
+    </PageWrapper>
 }
 
 const root = document.getElementById("react_root");

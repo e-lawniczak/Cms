@@ -70,12 +70,7 @@ var commonElements_1 = require("./commonElements");
 var axios_1 = __importDefault(require("axios"));
 var common_1 = require("./common");
 var MainPage = function () {
-    return React.createElement(commonElements_1.PageWrapper, null,
-        React.createElement(MainContent, null));
-};
-exports.MainPage = MainPage;
-var MainContent = function () {
-    var _a = (0, react_1.useState)([]), data = _a[0], setData = _a[1], _b = (0, react_1.useState)(), mainSlider = _b[0], setMainSlider = _b[1], _c = (0, react_1.useState)(), slider = _c[0], setSlider = _c[1], _d = (0, react_1.useState)(), sliderBanners = _d[0], setSliderBanners = _d[1], getMainSLider = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var _a = (0, react_1.useState)([]), data = _a[0], setData = _a[1], _b = (0, react_1.useState)(), mainSlider = _b[0], setMainSlider = _b[1], _c = (0, react_1.useState)(), slider = _c[0], setSlider = _c[1], _d = (0, react_1.useState)(0), currentSlide = _d[0], setCurrentSlide = _d[1], _e = (0, react_1.useState)(), sliderBanners = _e[0], setSliderBanners = _e[1], getMainSLider = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -83,22 +78,23 @@ var MainContent = function () {
                 case 1:
                     res = _a.sent();
                     setMainSlider(res.data);
-                    getSlider();
                     return [2 /*return*/];
             }
         });
     }); }, getSlider = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var res;
+        var resSlider, ss;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     if (!mainSlider)
                         return [2 /*return*/];
-                    return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetSlider/".concat(mainSlider === null || mainSlider === void 0 ? void 0 : mainSlider.value))];
+                    return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetVisibleSliderList")];
                 case 1:
-                    res = _a.sent();
-                    setSlider(res.data);
-                    getBannerSliders();
+                    resSlider = _a.sent();
+                    if (resSlider.status == 200) {
+                        ss = resSlider.data.filter(function (s) { return s.name == mainSlider.value; })[0];
+                        setSlider(ss);
+                    }
                     return [2 /*return*/];
             }
         });
@@ -109,7 +105,7 @@ var MainContent = function () {
                 case 0:
                     if (!slider)
                         return [2 /*return*/];
-                    queryString = slider === null || slider === void 0 ? void 0 : slider.bannerIdList.map(function (i) { return "".concat(i, ","); }).slice(0, -1);
+                    queryString = slider === null || slider === void 0 ? void 0 : slider.bannerIdList.map(function (i) { return "".concat(i); });
                     return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetBannersByIdList?bannerIdList=".concat(queryString))];
                 case 1:
                     res = _a.sent();
@@ -118,26 +114,39 @@ var MainContent = function () {
             }
         });
     }); }, mappedSliderBanners = sliderBanners === null || sliderBanners === void 0 ? void 0 : sliderBanners.map(function (b, idx) {
-        return React.createElement("div", { key: idx, className: "swiper-slide context-dark", "data-slide-bg": "images/slide-1-1920x753.jpg" },
+        return React.createElement("div", { key: idx, className: "swiper-slide context-dark", style: { backgroundImage: "url(".concat(common_1.baseApiUrl + "/GetPicture/Full/" + b.pictureIdList[0], ")") }, "data-slide-bg": common_1.baseApiUrl + "/GetPicture/Full/" + b.pictureIdList[0] },
             React.createElement("div", { className: "swiper-slide-caption section-md" },
                 React.createElement("div", { className: "container" },
                     React.createElement("div", { className: "row" },
                         React.createElement("div", { className: "col-sm-9 col-md-8 col-lg-7 col-xl-7 offset-lg-1 offset-xxl-0" },
                             React.createElement("div", { dangerouslySetInnerHTML: { __html: b.text } }),
                             React.createElement("a", { className: "button button-lg button-primary button-winona button-shadow-2", href: b.link, "data-caption-animate": "fadeInUp", "data-caption-delay": "300" }, b.subText))))));
-    }), x = "";
+    }), slideUp = function () {
+        setTimeout(function () {
+            console.log("sss");
+            if ((mappedSliderBanners === null || mappedSliderBanners === void 0 ? void 0 : mappedSliderBanners.length) > 0)
+                setCurrentSlide((currentSlide + 1) % mappedSliderBanners.length);
+        }, 1500);
+    }, x = "";
     React.useEffect(function () {
+        slideUp();
         getMainSLider();
     }, []);
-    return React.createElement(React.Fragment, null,
+    React.useEffect(function () {
+        getSlider();
+    }, [mainSlider]);
+    React.useEffect(function () {
+        getBannerSliders();
+    }, [slider]);
+    return React.createElement(commonElements_1.PageWrapper, null,
         React.createElement("section", { className: "section swiper-container swiper-slider swiper-slider-2 swiper-slider-3", "data-loop": "true", "data-autoplay": "5000", "data-simulate-touch": "false", "data-slide-effect": "fade" },
-            React.createElement("div", { className: "swiper-wrapper text-sm-left" }, mappedSliderBanners),
+            React.createElement("div", { className: "swiper-wrapper text-sm-left" }, (mappedSliderBanners === null || mappedSliderBanners === void 0 ? void 0 : mappedSliderBanners.length) > 0 && mappedSliderBanners[currentSlide]),
             React.createElement("div", { className: "swiper-pagination", "data-bullet-custom": "true" }),
-            React.createElement("div", { className: "swiper-button-prev" },
+            React.createElement("div", { className: "swiper-button-prev", onClick: function () { return setCurrentSlide((currentSlide - 1) % mappedSliderBanners.length); } },
                 React.createElement("div", { className: "preview" },
                     React.createElement("div", { className: "preview__img" })),
                 React.createElement("div", { className: "swiper-button-arrow" })),
-            React.createElement("div", { className: "swiper-button-next" },
+            React.createElement("div", { className: "swiper-button-next", onClick: function () { return setCurrentSlide((currentSlide + 1) % mappedSliderBanners.length); } },
                 React.createElement("div", { className: "swiper-button-arrow" }),
                 React.createElement("div", { className: "preview" },
                     React.createElement("div", { className: "preview__img" })))),
@@ -435,6 +444,7 @@ var MainContent = function () {
                             React.createElement("a", { href: "#" }, "Best Service")),
                         React.createElement("p", { className: "box-icon-megan-text" }, "The client is our #1 priority as we deliver top-notch customer service."))))));
 };
+exports.MainPage = MainPage;
 var root = document.getElementById("react_root");
 ReactDOM.render(React.createElement(exports.MainPage, null), root);
 //# sourceMappingURL=mainPage.js.map

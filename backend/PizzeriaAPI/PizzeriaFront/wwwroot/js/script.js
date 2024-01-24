@@ -68,13 +68,16 @@
 		if (plugins.isotope.length) {
 			for (var i = 0; i < plugins.isotope.length; i++) {
 				var isotopeItem = plugins.isotope[i];
-				isotopeItem.isotope.layout();
+				if (isotopeItem.isotope) {
+					isotopeItem.isotope.layout();
 
-				window.addEventListener('resize', function () {
-					setTimeout(function () {
-						isotopeItem.isotope.layout();
-					}, 2000);
-				});
+					window.addEventListener('resize', function () {
+						setTimeout(function () {
+							isotopeItem.isotope.layout();
+						}, 2000);
+					});
+				}
+
 			}
 		}
 	});
@@ -866,12 +869,12 @@
 									1].getAttribute("data-slide-subtitle");
 							}
 							//Replace btn img
-							if ($(swiper.container).find('.preview__img')[0] !== undefined) {
-								$(swiper.container).find('.swiper-button-prev .preview__img').css("background-image", "url(" +
-									swiper.slides[activeSlideIndex - 1].getAttribute("data-slide-bg") + ")");
-								$(swiper.container).find('.swiper-button-next .preview__img').css("background-image", "url(" +
-									swiper.slides[activeSlideIndex + 1].getAttribute("data-slide-bg") + ")");
-							}
+							// if ($(swiper.container).find('.preview__img')[0] !== undefined) {
+							// 	$(swiper.container).find('.swiper-button-prev .preview__img').css("background-image", "url(" +
+							// 		swiper.slides[activeSlideIndex - 1].getAttribute("data-slide-bg") + ")");
+							// 	$(swiper.container).find('.swiper-button-next .preview__img').css("background-image", "url(" +
+							// 		swiper.slides[activeSlideIndex + 1].getAttribute("data-slide-bg") + ")");
+							// }
 						}
 					}(s))
 				});
