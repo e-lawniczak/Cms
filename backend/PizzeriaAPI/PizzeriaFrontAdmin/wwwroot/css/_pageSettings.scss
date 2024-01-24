@@ -141,7 +141,7 @@
 }
 
 .banners-row.row {
-    grid-template-columns: 50px 150px 200px auto 200px 150px 200px 300px;
+    grid-template-columns: 50px 150px auto 150px 70px 200px 300px;
 
 }
 
@@ -227,4 +227,10 @@
         min-width: 100%;
         width: fit-content;
     }
+}
+
+.social-media-content {
+    max-height: 200px;
+    overflow-y: scroll;
+    justify-content: flex-start !important;
 }

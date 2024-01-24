@@ -156,7 +156,11 @@ var Header = function (props) {
                 return React.createElement("li", { className: "child rd-nav-item" },
                     React.createElement("a", { className: "rd-nav-link", href: child.link }, child.text));
             })));
-    }).filter(function (i) { return i; }), x = "";
+    }).filter(function (i) { return i; }), mappedSocial = socials === null || socials === void 0 ? void 0 : socials.map(function (social, idx) {
+        var iconClass = (0, common_1.prepareSocialIcon)(social.name.split("_"));
+        return React.createElement("li", { key: idx },
+            React.createElement("a", { className: ["icon mdi", iconClass].join(" "), href: social.link }));
+    }), x = "";
     React.useEffect(function () {
         getMenuElements();
         getPhone();
@@ -191,11 +195,7 @@ var Header = function (props) {
                                                     React.createElement("span", { className: "icon mdi mdi-map-marker" })),
                                                 React.createElement("div", { className: "unit-body" },
                                                     React.createElement("a", { className: "address", href: "#" }, address === null || address === void 0 ? void 0 : address.value))))),
-                                    React.createElement("ul", { className: "list-share-2" }, socials === null || socials === void 0 ? void 0 : socials.map(function (social, idx) {
-                                        var iconClass = (0, common_1.prepareSocialIcon)(social.name.split("_"));
-                                        return React.createElement("li", { key: idx },
-                                            React.createElement("a", { className: ["icon mdi", iconClass].join(" "), href: social.link }));
-                                    }))),
+                                    React.createElement("ul", { className: "list-share-2" }, mappedSocial)),
                                 React.createElement("div", { className: "rd-navbar-main" },
                                     React.createElement("ul", { className: "rd-navbar-nav" },
                                         React.createElement("li", { className: "rd-nav-item active" },

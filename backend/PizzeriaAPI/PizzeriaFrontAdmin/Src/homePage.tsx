@@ -468,8 +468,8 @@ const SocialMediaSection = () => {
     }, [])
     return <PageSettingsSection title={"Social media"} subtext={`Socials with "Main" checked will be displayed at the main page`}>
         <form className='section-form' >
-            <div className="form-content ps ps--active-y">
-                <div className="social-home-row row">
+            <div className="form-content social-media-content custom-scroll">
+                <div className="social-home-row  row">
                     <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>id</div>
                     <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>name</div>
                     <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>main</div>
