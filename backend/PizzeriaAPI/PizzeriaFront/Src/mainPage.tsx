@@ -4,13 +4,21 @@ import * as ReactDOM from 'react-dom';
 
 import { PageWrapper } from './commonElements';
 import axios from 'axios';
-import { KeyValueDto, SliderDto, baseApiUrl } from './common';
+import { BannerDto, KeyValueDto, SliderDto, baseApiUrl } from './common';
 
 export const MainPage = () => {
+
+    return <PageWrapper>
+        <MainContent />
+    </PageWrapper>
+}
+
+const MainContent = () => {
     const
         [data, setData] = useState([]),
         [mainSlider, setMainSlider] = useState<KeyValueDto>(),
         [slider, setSlider] = useState<SliderDto>(),
+        [sliderBanners, setSliderBanners] = useState<BannerDto[]>(),
         getMainSLider = async () => {
             let res = await axios.get(baseApiUrl + `/GetKeyValueByKey/home_page_slider`)
             setMainSlider(res.data)
@@ -19,46 +27,37 @@ export const MainPage = () => {
         getSlider = async () => {
             let res = await axios.get(baseApiUrl + `/GetSlider/${mainSlider?.value}`)
             setSlider(res.data)
+            getBannerSliders()
         },
-        x=""
+        getBannerSliders = async () => {
+            let queryString = slider?.bannerIdList.map((i: number) => `${i},`).slice(0, -1)
+            let res = await axios.get(baseApiUrl + `/GetBannersByIdList?bannerIdList=${queryString}`)
+            setSliderBanners(res.data)
+        },
+        mappedSliderBanners = sliderBanners?.map((b: BannerDto, idx: number) => {
+            return <div key={idx} className="swiper-slide context-dark" data-slide-bg="images/slide-1-1920x753.jpg">
+                <div className="swiper-slide-caption section-md">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-sm-9 col-md-8 col-lg-7 col-xl-7 offset-lg-1 offset-xxl-0">
+                                <div dangerouslySetInnerHTML={{ __html: b.text }}></div>
+                                <a className="button button-lg button-primary button-winona button-shadow-2" href={b.link} data-caption-animate="fadeInUp" data-caption-delay="300">{b.subText}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }),
+        x = ""
 
     React.useEffect(() => {
         getMainSLider()
     }, [])
-    return <PageWrapper>
-        <MainContent />
-    </PageWrapper>
-}
 
-const MainContent = () => {
     return <>
         <section className="section swiper-container swiper-slider swiper-slider-2 swiper-slider-3" data-loop="true" data-autoplay="5000" data-simulate-touch="false" data-slide-effect="fade">
             <div className="swiper-wrapper text-sm-left">
-                <div className="swiper-slide context-dark" data-slide-bg="images/slide-1-1920x753.jpg">
-                    <div className="swiper-slide-caption section-md">
-                        <div className="container">
-                            <div className="row">
-                                <div className="col-sm-9 col-md-8 col-lg-7 col-xl-7 offset-lg-1 offset-xxl-0">
-                                    <h1 className="oh swiper-title"><span className="d-inline-block" data-caption-animate="slideInUp" data-caption-delay="0">Perfect pizza</span></h1>
-                                    <p className="big swiper-text" data-caption-animate="fadeInLeft" data-caption-delay="300">Experience the taste of a perfect pizza at PizzaHouse, one of the best restaurants!</p><a className="button button-lg button-primary button-winona button-shadow-2" href="#" data-caption-animate="fadeInUp" data-caption-delay="300">View our menu</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="swiper-slide context-dark" data-slide-bg="images/slide-2-1920x753.jpg">
-                    <div className="swiper-slide-caption section-md">
-                        <div className="container">
-                            <div className="row">
-                                <div className="col-sm-8 col-lg-7 offset-lg-1 offset-xxl-0">
-                                    <h1 className="oh swiper-title"><span className="d-inline-block" data-caption-animate="slideInDown" data-caption-delay="0">Quality ingredients</span></h1>
-                                    <p className="big swiper-text" data-caption-animate="fadeInRight" data-caption-delay="300">We use only the best ingredients to make one-of-a-kind pizzas for our customers.</p>
-                                    <div className="button-wrap oh"><a className="button button-lg button-primary button-winona button-shadow-2" href="#" data-caption-animate="slideInUp" data-caption-delay="0">View our menu</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {mappedSliderBanners}
             </div>
 
             <div className="swiper-pagination" data-bullet-custom="true"></div>
