@@ -26,7 +26,7 @@ namespace PizzeriaAPI.Repositories
                  .ListAsync<TeamMember>();
             return result.Select(teammember =>
             {
-                teammember.SocialMediaList = teammember.SocialMediaList?.Where(socialMedia => !socialMedia.IsDeleted).ToList();
+                teammember.SocialMediaList = teammember.SocialMediaList?.Where(socialMedia => !socialMedia?.IsDeleted ?? false).ToList();
                 teammember.Role = (!teammember.Role?.IsDeleted ?? false) ? teammember.Role : null;
                 return teammember;
             }).ToList();
@@ -40,7 +40,7 @@ namespace PizzeriaAPI.Repositories
                  .ListAsync<TeamMember>();
             return result.Select(teammember =>
             {
-                teammember.SocialMediaList = teammember.SocialMediaList?.Where(socialMedia => !socialMedia.IsDeleted).ToList();
+                teammember.SocialMediaList = teammember.SocialMediaList?.Where(socialMedia => !socialMedia?.IsDeleted ?? false).ToList();
                 teammember.Role = (!teammember.Role?.IsDeleted ?? false) ? teammember.Role : null;
                 return teammember;
             }).ToList();
@@ -55,7 +55,7 @@ namespace PizzeriaAPI.Repositories
                  .ListAsync<TeamMember>();
             return result.Select(teammember =>
             {
-                teammember.SocialMediaList = teammember.SocialMediaList?.Where(socialMedia => !socialMedia.IsDeleted && socialMedia.IsVisible).ToList();
+                teammember.SocialMediaList = teammember.SocialMediaList?.Where(socialMedia => (!socialMedia?.IsDeleted ??false) && (socialMedia?.IsVisible??true)).ToList();
                 teammember.Role = ((!teammember.Role?.IsDeleted ?? false) && (teammember.Role?.IsVisible ?? true)) ? teammember.Role : null;
                 return teammember;
             }).ToList();

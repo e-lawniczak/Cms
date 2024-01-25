@@ -45,8 +45,8 @@ namespace PizzeriaAPI.Repositories
                  .ListAsync<Role>();
             return result.Select(role =>
             {
-                role.TestimonialList = role.TestimonialList?.Where(testimonial => !testimonial.IsDeleted).ToList();
-                role.TeamMemberList = role.TeamMemberList?.Where(teamMember => !teamMember.IsDeleted).ToList();
+                role.TestimonialList = role.TestimonialList?.Where(testimonial => !testimonial?.IsDeleted ?? false).ToList();
+                role.TeamMemberList = role.TeamMemberList?.Where(teamMember => !teamMember?.IsDeleted ?? false).ToList();
                 return role;
             }).ToList();
         }
@@ -61,8 +61,8 @@ namespace PizzeriaAPI.Repositories
                  .ListAsync<Role>();
             return result.Select(role =>
             {
-                role.TestimonialList = role.TestimonialList?.Where(testimonial => !testimonial.IsDeleted && testimonial.IsVisible).ToList();
-                role.TeamMemberList = role.TeamMemberList?.Where(teamMember => !teamMember.IsDeleted && teamMember.IsVisible).ToList();
+                role.TestimonialList = role.TestimonialList?.Where(testimonial => (!testimonial?.IsDeleted?? false) && (testimonial?.IsVisible?? true)).ToList();
+                role.TeamMemberList = role.TeamMemberList?.Where(teamMember => (!teamMember?.IsDeleted??false) && (teamMember?.IsVisible??true)).ToList();
                 return role;
             }).ToList();
         }

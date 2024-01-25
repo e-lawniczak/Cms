@@ -26,7 +26,7 @@ namespace PizzeriaAPI.Repositories
                    .ListAsync<Slider>();
             return result.Select(slider =>
             {
-                slider.BannerList = slider.BannerList?.Where(banner => !banner.IsDeleted).ToList();
+                slider.BannerList = slider.BannerList?.Where(banner => !banner?.IsDeleted ?? false).ToList();
                 return slider;
             }).ToList();
         }
@@ -40,7 +40,7 @@ namespace PizzeriaAPI.Repositories
                    .ListAsync<Slider>();
             return result.Select(slider =>
             {
-                slider.BannerList = slider.BannerList?.Where(banner => !banner.IsDeleted && banner.IsVisible).ToList();
+                slider.BannerList = slider.BannerList?.Where(banner => (!banner?.IsDeleted ?? false) && (banner?.IsVisible??true)).ToList();
                 return slider;
             }).ToList();
         }
@@ -52,7 +52,7 @@ namespace PizzeriaAPI.Repositories
                  .And(() => sliderAlias.Name.IsLike(name))
                  .OrderBy(() => sliderAlias.SliderId).Asc
                    .SingleOrDefaultAsync<Slider>();
-            result.BannerList = result.BannerList?.Where( banner=> !banner.IsDeleted).ToList();
+            result.BannerList = result.BannerList?.Where( banner=> (!banner?.IsDeleted??false)).ToList();
             return result;
         }
         public async Task DeleteAsync(int id, ISession session)

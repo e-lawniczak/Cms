@@ -26,7 +26,7 @@ namespace PizzeriaAPI.Repositories
 
             return result.Select(tabSlider =>
             {
-                tabSlider.InformationTabList = tabSlider.InformationTabList?.Where(informationTab => !informationTab.IsDeleted).ToList();
+                tabSlider.InformationTabList = tabSlider.InformationTabList?.Where(informationTab => !informationTab?.IsDeleted??false).ToList();
                 return tabSlider;
             }).ToList();
         }
@@ -41,7 +41,7 @@ namespace PizzeriaAPI.Repositories
 
             return result.Select(tabSlider =>
             {
-                tabSlider.InformationTabList = tabSlider.InformationTabList?.Where(informationTab => !informationTab.IsDeleted && informationTab.IsVisible).ToList();
+                tabSlider.InformationTabList = tabSlider.InformationTabList?.Where(informationTab => (!informationTab?.IsDeleted ??false) && (informationTab?.IsVisible ?? true)).ToList();
                 return tabSlider;
             }).ToList();
         }
@@ -54,7 +54,7 @@ namespace PizzeriaAPI.Repositories
                  .OrderBy(() => tabSliderAlias.Id).Asc
                  .SingleOrDefaultAsync<TabSlider>();
 
-            result.InformationTabList = result.InformationTabList?.Where(informationTab => !informationTab.IsDeleted).ToList();
+            result.InformationTabList = result.InformationTabList?.Where(informationTab => !informationTab?.IsDeleted ?? false).ToList();
             return result;
         }
         public async Task DeleteAsync(int id, ISession session)

@@ -27,7 +27,7 @@ namespace PizzeriaAPI.Repositories
                  .ListAsync<Category>();
             return result.Select(category =>
             {
-                category.ProductList = category.ProductList?.Where(product => !product.IsDeleted && product.IsVisible).ToList();
+                category.ProductList = category.ProductList?.Where(product => (!product?.IsDeleted ?? false) && (product?.IsVisible ?? true)).ToList();
                 return category;
             }).ToList();
         }

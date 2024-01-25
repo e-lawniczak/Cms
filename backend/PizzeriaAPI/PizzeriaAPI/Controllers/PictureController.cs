@@ -31,6 +31,8 @@ namespace PizzeriaAPI.Controllers
             this.transactionCoordinator = transactionCoordinator;
             this.pictureRepository = pictureRepository;
             currentDirectory = AppContext.BaseDirectory;
+            originalImageDirectory = currentDirectory + "Images\\Original\\";
+            resizedImageDirectory = currentDirectory + "Images\\Resized\\";
         }
 
         [HttpPost]

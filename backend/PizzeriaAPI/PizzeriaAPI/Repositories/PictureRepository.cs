@@ -28,7 +28,7 @@ namespace PizzeriaAPI.Repositories
             return result.Select(picture =>
             {
                 picture.EntityWithPictureList = picture.EntityWithPictureList?
-                .Where(entityWithPicture => !entityWithPicture.IsDeleted).ToList();
+                .Where(entityWithPicture => !entityWithPicture?.IsDeleted ?? false).ToList();
                 return picture;
             }).ToList(); ;
         }
