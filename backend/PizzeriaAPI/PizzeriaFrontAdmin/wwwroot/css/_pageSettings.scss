@@ -135,6 +135,10 @@
     }
 
 }
+.teammember-row.row{
+    grid-template-columns: 50px 150px 150px 150px 150px 70px 100px 200px auto;
+
+}
 
 .generic-list {
     padding: 15px;

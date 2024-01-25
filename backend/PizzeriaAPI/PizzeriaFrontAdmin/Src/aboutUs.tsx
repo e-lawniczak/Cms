@@ -16,6 +16,7 @@ export const AboutUsPage = () => {
     }, [])
 
     return <PageWrapper>
+        <KeyValueSec _key='au_title' title='Title of the page' />
         <LogoSection logo_key={'about_us_banner'} title={'Main banner on About Us page'} />
         <SliderSection objKey='tabSlider_1' objVal="title" entry_key={'tabSlider1'} title={'Information block on main page'} dataUrl='/GetVisibleTabSliderList' />
         <SliderSection objKey='tabSlider_2' objVal="title" entry_key={'tabSlider2'} title={'OUR HISTORY information block'} dataUrl='/GetVisibleTabSliderList' />

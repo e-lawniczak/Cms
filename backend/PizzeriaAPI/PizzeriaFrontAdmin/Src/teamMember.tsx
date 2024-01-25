@@ -48,7 +48,7 @@ export const TeamMemberPage = () => {
         <div className="card mb-4">
             <div className="form-top-container">{!showNew && <div className="btn btn-white btn-sm mb-0 btn-save" onClick={() => setNew(true)} >Add new</div>}</div>
             <div className="socials-list">
-                <div className="generic-row row">
+                <div className="generic-row teammember-row row">
                     <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>id</div>
                     <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>first name</div>
                     <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>last name</div>
@@ -56,6 +56,7 @@ export const TeamMemberPage = () => {
                     <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>role</div>
                     <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>Visible</div>
                     <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>picture</div>
+                    <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>selected socials</div>
                     <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>options</div>
                 </div>
                 {showNew && addNew}
@@ -70,7 +71,7 @@ const TeamMemberRowRow = (props: { roles: RoleDto[], item: TeamMemberDto, isNew:
         { item, isNew, pictures, socialMedia, roles, refreshFunc } = props,
         picData = mapObjectToSelect(pictures, "name", "pictureId"),
         rolesData = mapObjectToSelect(roles, "name", "roleId"),
-        socialData = mapObjectToSelect(socialMedia, "name", "id"),
+        socialData = mapObjectToSelect(socialMedia?.filter((s: SocialMediaDto) => !s.teamMemberId), "name", "id"),
         { register, handleSubmit, formState, getValues } = useForm({
             defaultValues: { ...item }
         }),
@@ -90,6 +91,7 @@ const TeamMemberRowRow = (props: { roles: RoleDto[], item: TeamMemberDto, isNew:
             const url = baseApiUrl + "/AddTeamMember";
             await axios.post(url, item, axiosBaseConfig)
             refreshFunc()
+            location.reload()
 
         },
         deleteItem = async (data: any) => {
@@ -107,13 +109,13 @@ const TeamMemberRowRow = (props: { roles: RoleDto[], item: TeamMemberDto, isNew:
 
     return <form className='section-form' >
         <div className="form-content ">
-            <div className="generic-row row">
+            <div className="generic-row teammember-row row">
                 <div className="id">{item?.id || -1}</div>
                 <PInput register={{ ...register("firstName") }} inputProps={{ type: 'text' }} />
                 <PInput register={{ ...register("lastName") }} inputProps={{ type: 'text' }} />
                 <div>
                     {socialData.length > 0 &&
-                        <Select register={register} data={socialData} defaultValue={(item?.socialMediaIdList && item?.socialMediaIdList[0]) || []} name={"socialMediaIdList"} selectProps={{ multiple: true }} />
+                        <Select register={register} data={socialData} defaultValue={(item?.socialMediaIdList) || []} name={"socialMediaIdList"} selectProps={{ multiple: true }} />
                     }
                 </div>
                 <div className="role">
@@ -123,9 +125,13 @@ const TeamMemberRowRow = (props: { roles: RoleDto[], item: TeamMemberDto, isNew:
                 </div>
                 <PInput register={{ ...register("isVisible") }} inputProps={{ type: 'checkbox' }} />
                 <div>
-                    {picData.length > 0 &&
-                        <Select register={register} data={picData} defaultValue={item?.pictureIdList[0] || []} name={"pictureIdList"} />
+                    {picData.length > 0 ?
+                        <Select register={register} data={picData} defaultValue={item?.pictureIdList[0] || []} name={"pictureIdList"} />:
+                        "No unassigned socials"
                     }
+                </div>
+                <div className='selected-socials'>
+                    {socialMedia?.filter((s:SocialMediaDto) => item?.socialMediaIdList.indexOf(s.id) > -1).map((s:SocialMediaDto) => <>{s.name}; </>)}
                 </div>
                 <div className="buttons-container">
                     {isNew ?
