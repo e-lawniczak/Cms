@@ -25,7 +25,7 @@ namespace PizzeriaAPI.Repositories
                    .ListAsync<Banner>();
             return result.Select(banner =>
             {
-                banner.Slider = banner.Slider?.IsDeleted ?? false ? banner.Slider : null;
+                banner.Slider = !banner.Slider?.IsDeleted ?? false ? banner.Slider : null;
                 return banner;
             }).ToList();
         }

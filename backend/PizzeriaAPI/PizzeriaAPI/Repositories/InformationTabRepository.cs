@@ -53,7 +53,7 @@ namespace PizzeriaAPI.Repositories
 
             return result.Select(informationTab =>
             {
-                informationTab.TabSlider = (informationTab.TabSlider?.IsDeleted ?? false) ? informationTab.TabSlider : null;
+                informationTab.TabSlider = (!informationTab.TabSlider?.IsDeleted ?? false) ? informationTab.TabSlider : null;
                 return informationTab;
             }).ToList(); ;
         }
