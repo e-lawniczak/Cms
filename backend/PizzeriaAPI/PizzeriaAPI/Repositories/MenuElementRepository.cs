@@ -9,6 +9,9 @@ namespace PizzeriaAPI.Repositories
     }
     public class MenuElementRepository : GenericRepository<MenuElement>, IMenuElementRepository
     {
+        public MenuElementRepository(IEventRepository eventRepository) : base(eventRepository)
+        {
+        }
         public new async Task<IList<MenuElement>> GetAllAsync(ISession session)
         {
             MenuElement menuElementAlias = null;

@@ -14,6 +14,9 @@ namespace PizzeriaAPI.Repositories
     }
     public class SliderRepository : GenericRepository<Slider>, ISliderRepository
     {
+        public SliderRepository(IEventRepository eventRepository) : base(eventRepository)
+        {
+        }
         public new async Task<IList<Slider>> GetAllAsync(ISession session)
         {
             Slider sliderAlias = null;

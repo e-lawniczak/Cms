@@ -14,6 +14,9 @@ namespace PizzeriaAPI.Repositories
     }
     public class PictureRepository : GenericRepository<Picture>, IPictureRepository
     {
+        public PictureRepository(IEventRepository eventRepository) : base(eventRepository)
+        {
+        }
         public new async Task<IList<Picture>> GetAllAsync(ISession session)
         {
             Picture pictureAlias= null;

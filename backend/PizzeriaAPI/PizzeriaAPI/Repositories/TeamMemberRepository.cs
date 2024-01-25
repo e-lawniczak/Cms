@@ -13,6 +13,9 @@ namespace PizzeriaAPI.Repositories
     }
     public class TeamMemberRepository : GenericRepository<TeamMember>, ITeamMemberRepository
     {
+        public TeamMemberRepository(IEventRepository eventRepository) : base(eventRepository)
+        {
+        }
         public async Task<IList<TeamMember>> GetTeamMemberListByIdListAsync(IList<int> teamMemberIdList, ISession session)
         {
             TeamMember teamMemberAlias = null;

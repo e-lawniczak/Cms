@@ -31,8 +31,6 @@ namespace PizzeriaAPI.Controllers
             this.transactionCoordinator = transactionCoordinator;
             this.pictureRepository = pictureRepository;
             currentDirectory = AppContext.BaseDirectory;
-            originalImageDirectory = currentDirectory + "Images\\Original\\";
-            resizedImageDirectory = currentDirectory + "Images\\Resized\\";
         }
 
         [HttpPost]
@@ -49,7 +47,7 @@ namespace PizzeriaAPI.Controllers
             }
             catch (Exception e)
             {
-                logger.LogError($"Failed to save picture to filesystem: {e.Message}", e);
+                logger.LogError(e, $"Failed to save picture to filesystem");
                 return Problem($"Failed to save picture to filesystem: {e.Message}");
             }
             var picture = GetPicture(pictureDto);
@@ -63,7 +61,7 @@ namespace PizzeriaAPI.Controllers
             catch (Exception e)
             {
                 DeletePictureFromFilesystem(picture);
-                logger.LogError($"Failed to save picture to database: {e.Message}", e);
+                logger.LogError(e, $"Failed to save picture to database");
                 return Problem($"Failed to save picture to database: {e.Message}");
             }
 
@@ -74,7 +72,7 @@ namespace PizzeriaAPI.Controllers
         {
             try
             {
-                System.IO.File.Delete(picture.FilePath);
+                System.IO.File.Delete(currentDirectory + picture.FilePath);
             }
             catch (Exception e)
             {
@@ -82,7 +80,7 @@ namespace PizzeriaAPI.Controllers
             }
             try
             {
-                System.IO.File.Delete(picture.ResizedFilePath);
+                System.IO.File.Delete(currentDirectory + picture.ResizedFilePath);
             }
             catch (Exception e)
             {
@@ -113,7 +111,7 @@ namespace PizzeriaAPI.Controllers
             }
             catch (Exception e)
             {
-                logger.LogError($"Failed to get picture from filesystem: {e.Message}", e);
+                logger.LogError(e, $"Failed to get picture from filesystem");
                 return Problem($"Failed to get picture from filesystem: {e.Message}");
             }
         }
@@ -139,7 +137,7 @@ namespace PizzeriaAPI.Controllers
             }
             catch (Exception e)
             {
-                logger.LogError($"Failed to get picture from filesystem: {e.Message}", e);
+                logger.LogError(e, $"Failed to get picture from filesystem");
                 return Problem($"Failed to get picture from filesystem: {e.Message}");
             }
         }
@@ -196,7 +194,7 @@ namespace PizzeriaAPI.Controllers
             {
                 System.IO.File.Move(tmpPictureFilePath, pictureFilePath);
                 System.IO.File.Move(tmpPictureResizedFilePath, pictureResizedFilePath);
-                logger.LogError($"Failed to save picture to filesystem: {e.Message}", e);
+                logger.LogError(e, $"Failed to save picture to filesystem");
                 return Problem($"Failed to save picture to filesystem: {e.Message}");
             }
             try
@@ -215,7 +213,7 @@ namespace PizzeriaAPI.Controllers
                 System.IO.File.Move(tmpPictureFilePath, pictureFilePath);
                 System.IO.File.Move(tmpPictureResizedFilePath, pictureResizedFilePath);
 
-                logger.LogError($"Failed to update picture: {e.Message}", e);
+                logger.LogError(e, $"Failed to update picture");
                 return Problem($"Failed to update picture: {e.Message}");
             }
 
@@ -259,7 +257,7 @@ namespace PizzeriaAPI.Controllers
             {
                 PictureId = picture.PictureId,
                 Name = picture.Name,
-                Link = picture.Link ?? "",
+                Link = picture.Link,
                 //EntityWithPictureIdList = picture?.EntityWithPictureList?.Select(x => x.Id).ToList(),
             };
         }

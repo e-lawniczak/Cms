@@ -13,6 +13,9 @@ namespace PizzeriaAPI.Repositories
     }
     public class ProductRepository : GenericRepository<Product>, IProductRepository
     {
+        public ProductRepository(IEventRepository eventRepository) : base(eventRepository)
+        {
+        }
         public async Task<IList<Product>> GetVisibleProducts(ISession session)
         {
             Product productAlias = null;

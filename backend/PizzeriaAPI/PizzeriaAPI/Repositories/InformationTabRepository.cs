@@ -12,6 +12,9 @@ namespace PizzeriaAPI.Repositories
     }
     public class InformationTabRepository : GenericRepository<InformationTab>, IInformationTabRepository
     {
+        public InformationTabRepository(IEventRepository eventRepository) : base(eventRepository)
+        {
+        }
 
         public new async Task<IList<InformationTab>> GetAllAsync(ISession session)
         {

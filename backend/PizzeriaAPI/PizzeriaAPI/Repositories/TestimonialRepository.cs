@@ -13,6 +13,9 @@ namespace PizzeriaAPI.Repositories
     }
     public class TestimonialRepository : GenericRepository<Testimonial>, ITestimonialRepository
     {
+        public TestimonialRepository(IEventRepository eventRepository) : base(eventRepository)
+        {
+        }
         public async Task<IList<Testimonial>> GetTestimonialListByIdListAsync(IList<int> testimonialIdList, ISession session)
         {
             Testimonial testimonialAlias = null;

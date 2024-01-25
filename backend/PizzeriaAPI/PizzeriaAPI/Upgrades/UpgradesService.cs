@@ -39,7 +39,7 @@ namespace PizzeriaAPI.Upgrades
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError($"Error while executing Upgrade{upgrade.Number}. Message: {ex.Message}. StackTrace: {ex.StackTrace}");
+                    logger.LogError(ex, $"Error while executing Upgrade{upgrade.Number}");
                     throw;
                 }
             }

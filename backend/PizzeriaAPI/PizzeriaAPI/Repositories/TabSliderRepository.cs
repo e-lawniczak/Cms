@@ -13,6 +13,9 @@ namespace PizzeriaAPI.Repositories
     }
     public class TabSliderRepository : GenericRepository<TabSlider>, ITabSliderRepository
     {
+        public TabSliderRepository(IEventRepository eventRepository) : base(eventRepository)
+        {
+        }
         public new async Task<IList<TabSlider>> GetAllAsync(ISession session)
         {
             TabSlider tabSliderAlias = null;

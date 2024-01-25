@@ -14,7 +14,8 @@ namespace PizzeriaAPI.Repositories
         private readonly ITestimonialRepository testimonialRepository;
         public RoleRepository(
             ITeamMemberRepository teamMemberRepository,
-            ITestimonialRepository testimonialRepository)
+            ITestimonialRepository testimonialRepository,
+            IEventRepository eventRepository) : base(eventRepository)
         {
             this.teamMemberRepository = teamMemberRepository;
             this.testimonialRepository = testimonialRepository;

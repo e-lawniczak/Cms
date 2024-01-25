@@ -10,6 +10,9 @@ namespace PizzeriaAPI.Repositories
     }
     public class ContactInfoRepository : GenericRepository<ContactInfo>, IContactInfoRepository
     {
+        public ContactInfoRepository(IEventRepository eventRepository) : base(eventRepository)
+        {
+        }
         public new async Task<IList<ContactInfo>> GetAllAsync(ISession session)
         {
             ContactInfo contactInfoAlias = null;

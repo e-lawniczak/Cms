@@ -10,6 +10,9 @@ namespace PizzeriaAPI.Repositories
     }
     public class PageRepository : GenericRepository<Page>, IPageRepository
     {
+        public PageRepository(IEventRepository eventRepository) : base(eventRepository)
+        {
+        }
         public new async Task<IList<Page>> GetAllAsync(ISession session)
         {
             Page pageAlias = null;

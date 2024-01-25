@@ -12,6 +12,9 @@ namespace PizzeriaAPI.Repositories
 
     public class KeyValueRepository : GenericRepository<KeyValue>, IKeyValueRepository
     {
+        public KeyValueRepository(IEventRepository eventRepository) : base(eventRepository)
+        {
+        }
         public new async Task<IList<KeyValue>> GetAllAsync(ISession session)
         {
             var result = await base.GetAllAsync(session);

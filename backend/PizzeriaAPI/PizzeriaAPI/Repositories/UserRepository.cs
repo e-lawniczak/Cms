@@ -10,6 +10,9 @@ namespace PizzeriaAPI.Repositories
     }
     public class UserRepository : GenericRepository<User>, IUserRepository
     {
+        public UserRepository(IEventRepository eventRepository) : base(eventRepository)
+        {
+        }
         public new async Task<IList<User>> GetAllAsync(ISession session)
         {
             var result = await base.GetAllAsync(session);

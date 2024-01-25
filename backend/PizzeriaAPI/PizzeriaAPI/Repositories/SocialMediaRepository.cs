@@ -14,6 +14,9 @@ namespace PizzeriaAPI.Repositories
     }
     public class SocialMediaRepository : GenericRepository<SocialMedia>, ISocialMediaRepository
     {
+        public SocialMediaRepository(IEventRepository eventRepository) : base(eventRepository)
+        {
+        }
         public new async Task<IList<SocialMedia>> GetAllAsync(ISession session)
         {
             SocialMedia socialMediaAlias = null;

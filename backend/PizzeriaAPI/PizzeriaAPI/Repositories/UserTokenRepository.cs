@@ -10,6 +10,9 @@ namespace PizzeriaAPI.Repositories
     }
     public class UserTokenRepository : GenericRepository<UserToken>, IUserTokenRepository
     {
+        public UserTokenRepository(IEventRepository eventRepository) : base(eventRepository)
+        {
+        }
         public async Task<UserToken> GetUserTokenByTokenAsync(string token, ISession session)
         {
             return await session.QueryOver<UserToken>()

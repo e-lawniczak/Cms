@@ -7,7 +7,7 @@ namespace PizzeriaAPI.Database.Mapping
     {
         public ActionTypeMap()
         {
-            Id(x => x.ActionTypeId).Not.Nullable().GeneratedBy.Increment();
+            Id(x => x.ActionTypeId, "ActionTypeId").Not.Nullable().GeneratedBy.Increment();
             Map(x => x.Type).Not.Nullable();
 
             Table("ActionType");

@@ -15,6 +15,11 @@ namespace PizzeriaAPI.Repositories
 
     public abstract class GenericRepository<T> : IGenericRepository<T> where T : class
     {
+        protected readonly IEventRepository eventRepository;
+        public GenericRepository(IEventRepository eventRepository)
+        {
+            this.eventRepository = eventRepository;
+        }
         public async Task<IList<T>> GetAllAsync(ISession session)
         {
             if (HasProperty<T>("IsDeleted"))
