@@ -16,9 +16,9 @@ namespace PizzeriaAPI.Controllers
     {
         private readonly int MAX_IMAGE_HEIGHT = 250;
         private readonly int MAX_IMAGE_WIDTH = 250;
-        private readonly string currentDirectory;
-        private readonly string originalImageDirectory;
-        private readonly string resizedImageDirectory;
+        private readonly string workingDirectory;
+        private readonly string originalImageDirectory = "Images\\Original\\";
+        private readonly string resizedImageDirectory = "Images\\Resized\\";
         private readonly ILogger<PictureController> logger;
         private readonly ITransactionCoordinator transactionCoordinator;
         private readonly IPictureRepository pictureRepository;
@@ -30,9 +30,7 @@ namespace PizzeriaAPI.Controllers
             this.logger = logger;
             this.transactionCoordinator = transactionCoordinator;
             this.pictureRepository = pictureRepository;
-            currentDirectory = AppContext.BaseDirectory;
-            originalImageDirectory = currentDirectory + "Images\\Original\\";
-            resizedImageDirectory = currentDirectory + "Images\\Resized\\";
+            workingDirectory = AppContext.BaseDirectory;
         }
 
         [HttpPost]
@@ -74,7 +72,7 @@ namespace PizzeriaAPI.Controllers
         {
             try
             {
-                System.IO.File.Delete(currentDirectory + picture.FilePath);
+                System.IO.File.Delete(workingDirectory + picture.FilePath);
             }
             catch (Exception e)
             {
@@ -82,7 +80,7 @@ namespace PizzeriaAPI.Controllers
             }
             try
             {
-                System.IO.File.Delete(currentDirectory + picture.ResizedFilePath);
+                System.IO.File.Delete(workingDirectory + picture.ResizedFilePath);
             }
             catch (Exception e)
             {
@@ -108,7 +106,7 @@ namespace PizzeriaAPI.Controllers
 
             try
             {
-                byte[] binaryImage = System.IO.File.ReadAllBytes(picture.FilePath);
+                byte[] binaryImage = System.IO.File.ReadAllBytes(workingDirectory + picture.FilePath);
                 return File(binaryImage, GetPictureExtension(picture.Name));
             }
             catch (Exception e)
@@ -134,7 +132,7 @@ namespace PizzeriaAPI.Controllers
 
             try
             {
-                byte[] binaryImage = System.IO.File.ReadAllBytes(picture.ResizedFilePath);
+                byte[] binaryImage = System.IO.File.ReadAllBytes(workingDirectory + picture.ResizedFilePath);
                 return File(binaryImage, GetPictureExtension(picture.Name));
             }
             catch (Exception e)
@@ -180,8 +178,8 @@ namespace PizzeriaAPI.Controllers
             if (picture == null)
                 return BadRequest("Picture not found");
 
-            var pictureFilePath = picture.FilePath.Clone().ToString();
-            var pictureResizedFilePath = picture.ResizedFilePath.Clone().ToString();
+            var pictureFilePath = workingDirectory + picture.FilePath.Clone().ToString();
+            var pictureResizedFilePath = workingDirectory + picture.ResizedFilePath.Clone().ToString();
             var tmpPictureFilePath = pictureFilePath + "tmp";
             var tmpPictureResizedFilePath = pictureResizedFilePath + "tmp";
             System.IO.File.Move(pictureFilePath, tmpPictureFilePath);
@@ -275,25 +273,25 @@ namespace PizzeriaAPI.Controllers
         }
         private async Task SavePictureToLocalFileSystem(string pictureName, IFormFile picture, byte[]? resizedImage)
         {
-            if (Directory.Exists(originalImageDirectory) == false)
+            if (Directory.Exists(workingDirectory + originalImageDirectory) == false)
             {
-                Directory.CreateDirectory(originalImageDirectory);
+                Directory.CreateDirectory(workingDirectory + originalImageDirectory);
             }
-            if (Directory.Exists(resizedImageDirectory) == false)
+            if (Directory.Exists(workingDirectory + resizedImageDirectory) == false)
             {
-                Directory.CreateDirectory(resizedImageDirectory);
+                Directory.CreateDirectory(workingDirectory + resizedImageDirectory);
             }
 
             if (resizedImage != null)
             {
-                using (var fileStream = new FileStream(resizedImageDirectory + pictureName, FileMode.Create, FileAccess.Write))
+                using (var fileStream = new FileStream(workingDirectory + resizedImageDirectory + pictureName, FileMode.Create, FileAccess.Write))
                 {
                     fileStream.Write(resizedImage, 0, resizedImage.Length);
                 }
             }
             if (picture != null)
             {
-                using (var fileStream = new FileStream(originalImageDirectory + pictureName, FileMode.Create, FileAccess.Write))
+                using (var fileStream = new FileStream(workingDirectory + originalImageDirectory + pictureName, FileMode.Create, FileAccess.Write))
                 {
                     await picture.CopyToAsync(fileStream);
                 }

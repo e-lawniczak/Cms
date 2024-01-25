@@ -1,33 +1,32 @@
-﻿using Microsoft.Extensions.Options;
-using PizzeriaAPI.Domain;
-using PizzeriaAPI.Security;
-using PizzeriaAPI.Settings;
+﻿using PizzeriaAPI.Domain;
 
 namespace PizzeriaAPI.Upgrades
 {
     public class Upgrade4 : IUpgrade
     {
         public int Number => 4;
-        private readonly IAuthenticationService authenticationService;
-        private readonly SecuritySettings securitySettings;
-        public Upgrade4(IAuthenticationService authenticationService, IOptions<SecuritySettings> securitySettings)
-        {
-            this.authenticationService = authenticationService;
-            this.securitySettings = securitySettings.Value;
-        }
+
         public void Execute(NHibernate.ISession session)
         {
-            AddDefaultUser(session);
+            FillControllerTable(session);
+            FillActionTypeTable(session);
         }
-        private void AddDefaultUser(NHibernate.ISession session)
+        private void FillActionTypeTable(NHibernate.ISession session)
         {
-            var hashPassword = BCrypt.Net.BCrypt.HashPassword("haslo123", securitySettings.Salt);
-            var request = new RegistrationRequest
+            foreach (var actionType in Enum.GetValues<ActionTypeEnum>())
             {
-                Email = "example@gmail.com",
-                Password = hashPassword
-            };
-           var x = authenticationService.RegisterAsync(request).Result;
+                var sql = $"INSERT INTO ActionType (ActionTypeId, Type) VALUES ({(int)actionType}, '{actionType}');";
+                session.CreateSQLQuery(sql).ExecuteUpdate();
+            }
+        }
+
+        private void FillControllerTable(NHibernate.ISession session)
+        {
+            foreach (var controller in Enum.GetValues<ControllerEnum>())
+            {
+                var sql = $"INSERT INTO Controller (ControllerId, Name) VALUES ({(int)controller}, '{controller}');";
+                session.CreateSQLQuery(sql).ExecuteUpdate();
+            }
         }
     }
 }
