@@ -3,6 +3,7 @@ using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.TabSlider;
 using PizzeriaAPI.ORM;
 using PizzeriaAPI.Repositories;
+using PizzeriaAPI.Repositories.EntityWithPictureRepositories;
 using Swashbuckle.Swagger.Annotations;
 using System.Net;
 

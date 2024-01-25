@@ -3,6 +3,7 @@ using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.Category;
 using PizzeriaAPI.ORM;
 using PizzeriaAPI.Repositories;
+using PizzeriaAPI.Repositories.EntityWithPictureRepositories;
 using Swashbuckle.Swagger.Annotations;
 using System.Net;
 
@@ -87,7 +88,7 @@ namespace PizzeriaAPI.Controllers
             IList<CategoryDto> categoryDtoList = new List<CategoryDto>();
             await transactionCoordinator.InRollbackScopeAsync(async session =>
             {
-                var categoryList = await categoryRepository.GetVisibleCategories(session);
+                var categoryList = await categoryRepository.GetVisibleAsync(session);
                 if (categoryList != null)
                     categoryDtoList = categoryList.Select(GetCategoryDto).ToList();
             });
@@ -138,7 +139,7 @@ namespace PizzeriaAPI.Controllers
                 category.Link = categoryDto.Link;
                 category.IsVisible = categoryDto.IsVisible;
                 category.PictureList = await pictureRepository.GetPictureListByIdListAsync(categoryDto.PictureIdList ?? new List<int>(), session);
-                category.ProductList = await productRepository.GetAllProductListByIdListAsync(categoryDto.ProductIdList ?? new List<int>(), session);
+                category.ProductList = await productRepository.GetByIdListAsync(categoryDto.ProductIdList ?? new List<int>(), session);
             });
         }
         private CategoryDto GetCategoryDto(Category category)
@@ -165,7 +166,7 @@ namespace PizzeriaAPI.Controllers
                     IsVisible = categoryDto.IsVisible,
                     IsDeleted = false,
                     PictureList = await pictureRepository.GetPictureListByIdListAsync(categoryDto.PictureIdList ?? new List<int>(), session),
-                    ProductList = await productRepository.GetAllProductListByIdListAsync(categoryDto.ProductIdList ?? new List<int>(), session)
+                    ProductList = await productRepository.GetByIdListAsync(categoryDto.ProductIdList ?? new List<int>(), session)
 
                 };
             });

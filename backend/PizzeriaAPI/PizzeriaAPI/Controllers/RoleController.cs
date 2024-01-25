@@ -4,6 +4,7 @@ using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.Role;
 using PizzeriaAPI.ORM;
 using PizzeriaAPI.Repositories;
+using PizzeriaAPI.Repositories.EntityWithPictureRepositories;
 using Swashbuckle.Swagger.Annotations;
 using System.Data;
 using System.Net;
@@ -104,8 +105,8 @@ namespace PizzeriaAPI.Controllers
             {
                 role.Name = roleDto.Name;
                 role.IsVisible = roleDto.IsVisible;
-                role.TeamMemberList = await teamMemberRepository.GetTeamMemberListByIdListAsync(roleDto.TeamMemberIdList ?? new List<int>(), session);
-                role.TestimonialList = await testimonialRepository.GetTestimonialListByIdListAsync(roleDto.TestimonialIdList ?? new List<int>(), session);
+                role.TeamMemberList = await teamMemberRepository.GetByIdListAsync(roleDto.TeamMemberIdList ?? new List<int>(), session);
+                role.TestimonialList = await testimonialRepository.GetByIdListAsync(roleDto.TestimonialIdList ?? new List<int>(), session);
             });
         }
 
@@ -145,8 +146,8 @@ namespace PizzeriaAPI.Controllers
                     Name = roleDto.Name,
                     IsVisible = roleDto.IsVisible,
                     IsDeleted = false,
-                    TeamMemberList = await teamMemberRepository.GetTeamMemberListByIdListAsync(roleDto.TeamMemberIdList ?? new List<int>(), session),
-                    TestimonialList = await testimonialRepository.GetTestimonialListByIdListAsync(roleDto.TestimonialIdList ?? new List<int>(), session)
+                    TeamMemberList = await teamMemberRepository.GetByIdListAsync(roleDto.TeamMemberIdList ?? new List<int>(), session),
+                    TestimonialList = await testimonialRepository.GetByIdListAsync(roleDto.TestimonialIdList ?? new List<int>(), session)
 
                 };
             });

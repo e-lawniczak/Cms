@@ -17,7 +17,7 @@ using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
 using System.Text;
-
+using PizzeriaAPI.Repositories.EntityWithPictureRepositories;
 
 namespace PizzeriaAPI
 {

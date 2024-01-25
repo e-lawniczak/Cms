@@ -1,5 +1,6 @@
 ﻿using NHibernate.SqlCommand;
 using PizzeriaAPI.Database.Entities;
+using PizzeriaAPI.Repositories.EntityWithPictureRepositories;
 using ISession = NHibernate.ISession;
 
 namespace PizzeriaAPI.Repositories

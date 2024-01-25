@@ -3,6 +3,7 @@ using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.TeamMember;
 using PizzeriaAPI.ORM;
 using PizzeriaAPI.Repositories;
+using PizzeriaAPI.Repositories.EntityWithPictureRepositories;
 using Swashbuckle.Swagger.Annotations;
 using System.Net;
 
@@ -113,7 +114,7 @@ namespace PizzeriaAPI.Controllers
                 teamMember.FirstName = teamMemberDto.FirstName;
                 teamMember.LastName = teamMemberDto.LastName;
                 teamMember.Role = await roleRepository.GetByIdAsync(teamMemberDto.RoleId ?? 0, session);
-                teamMember.SocialMediaList = await socialMediaRepository.GetSocialMediaListByIdListAsync(teamMemberDto.SocialMediaIdList ?? new List<int>(), session);
+                teamMember.SocialMediaList = await socialMediaRepository.GetByIdListAsync(teamMemberDto.SocialMediaIdList ?? new List<int>(), session);
                 teamMember.PictureList = await pictureRepository.GetPictureListByIdListAsync(teamMemberDto.PictureIdList ?? new List<int>(), session);
             });
         }
@@ -156,7 +157,7 @@ namespace PizzeriaAPI.Controllers
                     LastName = teamMemberDto.LastName,
                     IsDeleted = false,
                     Role = await roleRepository.GetByIdAsync(teamMemberDto.RoleId ?? 0, session),
-                    SocialMediaList = await socialMediaRepository.GetSocialMediaListByIdListAsync(teamMemberDto.SocialMediaIdList ?? new List<int>(), session),
+                    SocialMediaList = await socialMediaRepository.GetByIdListAsync(teamMemberDto.SocialMediaIdList ?? new List<int>(), session),
                     PictureList = await pictureRepository.GetPictureListByIdListAsync(teamMemberDto.PictureIdList ?? new List<int>(), session),
                 };
             });
