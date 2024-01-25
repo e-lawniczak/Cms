@@ -1,8 +1,12 @@
 ﻿using FluentNHibernate.Data;
+using NHibernate.Criterion;
 using NHibernate.Linq;
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Domain;
 using PizzeriaAPI.ORM;
+using PizzeriaAPI.Repositories.BaseEntityRepositories;
+using PizzeriaAPI.Security;
+using System.IdentityModel.Tokens.Jwt;
 using ISession = NHibernate.ISession;
 
 namespace PizzeriaAPI.Repositories.EntityRepository
@@ -16,13 +20,16 @@ namespace PizzeriaAPI.Repositories.EntityRepository
         private Dictionary<ControllerEnum, Controller> controllerDict;
         private Dictionary<ActionTypeEnum, ActionType> actionTypeDict;
         private readonly ILogger<EventRepository> logger;
-        public EventRepository(ILogger<EventRepository> logger)
+        private readonly IHttpContextAccessor httpContextAccessor;
+        public EventRepository(ILogger<EventRepository> logger, IHttpContextAccessor httpContextAccessor)
         {
             this.logger = logger;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task InsertOrUpdate(ControllerEnum controllerEnum, ActionTypeEnum actionTypeEnum, int entityId, int UserId, ISession session)
         {
+            
             if (controllerDict == null)
                 controllerDict = GetControllers(session);
             if (actionTypeDict == null)
@@ -32,13 +39,16 @@ namespace PizzeriaAPI.Repositories.EntityRepository
                 .And(x => x.Controller.ControllerId == (int)controllerEnum)
                 .And(x => x.ActionType.ActionTypeId == (int)actionTypeEnum)
                 .SingleOrDefault();
-
+            User? user = await GetUser(session);
+           
+            
             if (entity == null)
             {
                 entity = new Event
                 {
                     Controller = controllerDict.GetValueOrDefault(key: controllerEnum),
                     ActionType = actionTypeDict.GetValueOrDefault(key: actionTypeEnum),
+                    User = user,
                     EntityId = entityId,
                     CreationDate = DateTime.Now,
                 };
@@ -46,6 +56,7 @@ namespace PizzeriaAPI.Repositories.EntityRepository
             try
             {
                 entity.ModificationDate = DateTime.Now;
+                if(entity.User != user) entity.User = user;
                 await session.SaveOrUpdateAsync(entity);
             }
             catch (Exception ex)
@@ -54,7 +65,26 @@ namespace PizzeriaAPI.Repositories.EntityRepository
             }
 
         }
-
+        private async Task<User?> GetUser(ISession session)
+        {
+            try
+            {
+                var token = httpContextAccessor.HttpContext?.Request.Headers["Authorization"].ToString().Split(" ").LastOrDefault();
+                if (token == null) return null;
+                var handler = new JwtSecurityTokenHandler();
+                var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
+                string? email = jsonToken?.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email)?.Value;
+                if(email == null) return null;
+                return await session.QueryOver<User>()
+                    .Where(x => x.Email == email.ToLower())
+                    .SingleOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+                return null;
+            }
+        }
         private Dictionary<ControllerEnum, Controller> GetControllers(ISession session)
         {
             var controllers = session.QueryOver<Controller>().List();
