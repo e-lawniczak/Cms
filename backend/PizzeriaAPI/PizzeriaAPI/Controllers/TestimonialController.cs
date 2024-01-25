@@ -2,8 +2,9 @@
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.Testimonial;
 using PizzeriaAPI.ORM;
-using PizzeriaAPI.Repositories;
+using PizzeriaAPI.Repositories.BaseEntityRepositories;
 using PizzeriaAPI.Repositories.EntityWithPictureRepositories;
+using PizzeriaAPI.Repositories.ExtendedBaseEntityRepositories;
 using Swashbuckle.Swagger.Annotations;
 using System.Net;
 
@@ -140,8 +141,8 @@ namespace PizzeriaAPI.Controllers
                 LastName = testimonial.LastName,
                 Text = testimonial.Text,
                 IsVisible = testimonial.IsVisible,
-                PictureIdList = testimonial.PictureList?.Select(x => x.PictureId).ToList(),
-                RoleId = testimonial.Role?.RoleId ?? 0
+                PictureIdList = testimonial.PictureList?.Select(x => x.Id).ToList(),
+                RoleId = testimonial.Role?.Id ?? 0
             };
         }
 

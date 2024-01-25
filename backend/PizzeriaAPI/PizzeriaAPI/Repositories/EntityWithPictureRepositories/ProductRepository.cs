@@ -1,5 +1,6 @@
 ﻿using NHibernate.Criterion;
 using PizzeriaAPI.Database.Entities;
+using PizzeriaAPI.Repositories.EntityRepository;
 using ISession = NHibernate.ISession;
 
 namespace PizzeriaAPI.Repositories.EntityWithPictureRepositories

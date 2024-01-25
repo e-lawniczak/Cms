@@ -1,6 +1,7 @@
 ﻿using NHibernate.Criterion;
 using NHibernate.SqlCommand;
 using PizzeriaAPI.Database.Entities;
+using PizzeriaAPI.Repositories.EntityRepository;
 using ISession = NHibernate.ISession;
 
 

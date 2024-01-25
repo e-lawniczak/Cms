@@ -7,7 +7,7 @@ namespace PizzeriaAPI.Database.Mapping
     {
         public UserMap()
         {
-            Id(x => x.UserId).Not.Nullable().GeneratedBy.Increment();
+            Id(x => x.Id, "UserId").Not.Nullable().GeneratedBy.Increment();
             Map(x => x.Email).Not.Nullable().Unique();
             Map(x => x.Password).Not.Nullable();
             Map(x => x.CreationDate).Not.Nullable();

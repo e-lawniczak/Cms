@@ -2,8 +2,8 @@
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.InformationTab;
 using PizzeriaAPI.ORM;
-using PizzeriaAPI.Repositories;
 using PizzeriaAPI.Repositories.EntityWithPictureRepositories;
+using PizzeriaAPI.Repositories.ExtendedBaseEntityRepositories;
 using Swashbuckle.Swagger.Annotations;
 using System.Net;
 
@@ -139,7 +139,7 @@ namespace PizzeriaAPI.Controllers
         {
             return new InformationTabDto
             {
-                InformationTabId = informationTab.InformationTabId,
+                InformationTabId = informationTab.Id,
                 Title = informationTab.Title,
                 Text = informationTab.Text,
                 ButtonText = informationTab.ButtonText,

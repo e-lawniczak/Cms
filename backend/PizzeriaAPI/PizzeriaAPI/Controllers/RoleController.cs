@@ -3,8 +3,8 @@ using MySqlX.XDevAPI;
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.Role;
 using PizzeriaAPI.ORM;
-using PizzeriaAPI.Repositories;
 using PizzeriaAPI.Repositories.EntityWithPictureRepositories;
+using PizzeriaAPI.Repositories.ExtendedBaseEntityRepositories;
 using Swashbuckle.Swagger.Annotations;
 using System.Data;
 using System.Net;
@@ -127,7 +127,7 @@ namespace PizzeriaAPI.Controllers
         {
             return new RoleDto()
             {
-                RoleId = role.RoleId,
+                RoleId = role.Id,
                 Name = role.Name,
                 IsVisible = role.IsVisible,
                 TeamMemberIdList = role.TeamMemberList?.Select(x => x.Id).ToList(),

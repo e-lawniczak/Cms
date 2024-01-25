@@ -2,7 +2,7 @@
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.Picture;
 using PizzeriaAPI.ORM;
-using PizzeriaAPI.Repositories;
+using PizzeriaAPI.Repositories.BaseEntityRepositories;
 using Swashbuckle.Swagger.Annotations;
 using System.Drawing;
 using System.Net;
@@ -257,7 +257,7 @@ namespace PizzeriaAPI.Controllers
         {
             return new PictureDto()
             {
-                PictureId = picture.PictureId,
+                PictureId = picture.Id,
                 Name = picture.Name,
                 Link = picture.Link,
                 //EntityWithPictureIdList = picture?.EntityWithPictureList?.Select(x => x.Id).ToList(),

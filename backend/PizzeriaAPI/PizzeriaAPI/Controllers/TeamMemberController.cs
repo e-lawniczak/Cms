@@ -2,8 +2,9 @@
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.TeamMember;
 using PizzeriaAPI.ORM;
-using PizzeriaAPI.Repositories;
+using PizzeriaAPI.Repositories.BaseEntityRepositories;
 using PizzeriaAPI.Repositories.EntityWithPictureRepositories;
+using PizzeriaAPI.Repositories.ExtendedBaseEntityRepositories;
 using Swashbuckle.Swagger.Annotations;
 using System.Net;
 
@@ -138,10 +139,10 @@ namespace PizzeriaAPI.Controllers
             {
                 Id = teamMember.Id,
                 IsVisible = teamMember.IsVisible,
-                PictureIdList = teamMember.PictureList?.Select(x => x.PictureId).ToList(),
+                PictureIdList = teamMember.PictureList?.Select(x => x.Id).ToList(),
                 FirstName = teamMember.FirstName,
                 LastName = teamMember.LastName,
-                RoleId = teamMember.Role?.RoleId,
+                RoleId = teamMember.Role?.Id,
                 SocialMediaIdList = teamMember.SocialMediaList?.Select(x => x.Id).ToList(),
             };
         }

@@ -1,14 +1,12 @@
 ﻿namespace PizzeriaAPI.Database.Entities
 {
-    public class Event
+    public class Event : DateEntity
     {
         public virtual Controller Controller { get; set; }
         public virtual ActionType ActionType { get; set; }
         public virtual int EntityId { get; set; }
         public virtual User? User { get; set; }
         public virtual string? Message { get; set; }
-        public virtual DateTime CreationDate { get; set; }
-        public virtual DateTime ModificationDate { get; set; }
 
         public override int GetHashCode()
         {

@@ -5,7 +5,7 @@ using PizzeriaAPI.Domain;
 using PizzeriaAPI.ORM;
 using ISession = NHibernate.ISession;
 
-namespace PizzeriaAPI.Repositories
+namespace PizzeriaAPI.Repositories.EntityRepository
 {
     public interface IEventRepository
     {
@@ -20,23 +20,19 @@ namespace PizzeriaAPI.Repositories
         {
             this.logger = logger;
         }
-       
+
         public async Task InsertOrUpdate(ControllerEnum controllerEnum, ActionTypeEnum actionTypeEnum, int entityId, int UserId, ISession session)
         {
-            if(controllerDict == null)
+            if (controllerDict == null)
                 controllerDict = GetControllers(session);
-            if(actionTypeDict == null)
+            if (actionTypeDict == null)
                 actionTypeDict = GetActionTypes(session);
-            Event eventAlias = null;
-            Controller controllerAlias = null;
-            ActionType actionTypeAlias = null;
-            var entity = session.QueryOver<Event>(() => eventAlias)
-                .JoinAlias(()=> eventAlias.Controller, () => controllerAlias)
-                .JoinAlias(() => eventAlias.ActionType, () => actionTypeAlias)
-                .Where(() => eventAlias.EntityId == entityId)
-                .And(() => controllerAlias.ControllerId == (int)controllerEnum)
-                .And(() => actionTypeAlias.ActionTypeId == (int)actionTypeEnum)
+            var entity = session.QueryOver<Event>()
+                .Where(x => x.EntityId == entityId)
+                .And(x => x.Controller.ControllerId == (int)controllerEnum)
+                .And(x => x.ActionType.ActionTypeId == (int)actionTypeEnum)
                 .SingleOrDefault();
+
             if (entity == null)
             {
                 entity = new Event
@@ -45,24 +41,14 @@ namespace PizzeriaAPI.Repositories
                     ActionType = actionTypeDict.GetValueOrDefault(key: actionTypeEnum),
                     EntityId = entityId,
                     CreationDate = DateTime.Now,
-                    ModificationDate = DateTime.Now,
                 };
-            }
-            else
-            {
-                entity.ActionType = actionTypeDict.GetValueOrDefault(key: actionTypeEnum);
-                entity.ModificationDate = DateTime.Now;
             }
             try
             {
-                //await session.SaveOrUpdateAsync(controllerDict.GetValueOrDefault(key: controllerEnum));
-                //await session.SaveOrUpdateAsync(actionTypeDict.GetValueOrDefault(key: actionTypeEnum));
-                //await session.SaveOrUpdateAsync(user);
-
-                // Zapisz obiekt główny
+                entity.ModificationDate = DateTime.Now;
                 await session.SaveOrUpdateAsync(entity);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.LogError(ex, ex.Message);
             }
@@ -73,7 +59,7 @@ namespace PizzeriaAPI.Repositories
         {
             var controllers = session.QueryOver<Controller>().List();
             var dict = new Dictionary<ControllerEnum, Controller>();
-            foreach(var controller in controllers)
+            foreach (var controller in controllers)
             {
                 dict.TryAdd(Enum.Parse<ControllerEnum>(controller.Name), controller);
             }

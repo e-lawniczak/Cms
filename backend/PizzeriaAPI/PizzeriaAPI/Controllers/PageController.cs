@@ -2,7 +2,7 @@
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.Page;
 using PizzeriaAPI.ORM;
-using PizzeriaAPI.Repositories;
+using PizzeriaAPI.Repositories.BaseEntityRepositories;
 using PizzeriaAPI.Repositories.EntityWithPictureRepositories;
 using Swashbuckle.Swagger.Annotations;
 using System.Net;
@@ -135,7 +135,7 @@ namespace PizzeriaAPI.Controllers
                 Title = page.Title,
                 Content = page.Content,
                 IsVisible = page.IsVisible,
-                PictureIdList = page.PictureList?.Select(x => x.PictureId)?.ToList(),
+                PictureIdList = page.PictureList?.Select(x => x.Id)?.ToList(),
             };
         }
 

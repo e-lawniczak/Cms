@@ -2,8 +2,8 @@
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.Slider;
 using PizzeriaAPI.ORM;
-using PizzeriaAPI.Repositories;
 using PizzeriaAPI.Repositories.EntityWithPictureRepositories;
+using PizzeriaAPI.Repositories.ExtendedBaseEntityRepositories;
 using Swashbuckle.Swagger.Annotations;
 using System.Net;
 
@@ -141,7 +141,7 @@ namespace PizzeriaAPI.Controllers
         {
             return new SliderDto()
             {
-                SliderId = slider.SliderId,
+                SliderId = slider.Id,
                 Name = slider.Name,
                 IsVisible = slider.IsVisible,
                 BannerIdList = slider.BannerList?.Select(x => x.Id)?.ToList(),

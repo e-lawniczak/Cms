@@ -1,15 +1,11 @@
 ﻿namespace PizzeriaAPI.Database.Entities
 {
-    public class Picture
+    public class Picture : DateEntity
     {
-        public virtual int PictureId { get; set; }
         public virtual string Name { get; set; }
         public virtual string? Link { get; set; }
-
         public virtual string FilePath { get; set; }
         public virtual string ResizedFilePath { get; set; }
-        public virtual DateTime CreationDate { get; set; }
-        public virtual DateTime ModificationDate { get; set; }
         public virtual IList<EntityWithPicture>? EntityWithPictureList { get; set; }
     }
 }
