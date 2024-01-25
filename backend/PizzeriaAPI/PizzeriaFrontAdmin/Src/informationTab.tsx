@@ -13,7 +13,7 @@ export const InformationTabPage = () => {
         [tabSliders, setTabSliders] = useState<TabSliderDto[]>(),
         getTabs = async () => {
             let res = await axios.get(baseApiUrl + `/GetAllInformationTabList`, axiosBaseConfig)
-            setTabs(res.data.sort((a: InformationTabDto, b: any) => sortFunc(a.informationTabId, b.informationTabId)))
+            setTabs(res.data.sort((a: InformationTabDto, b: any) => sortFunc(a, b, "informationTabId")))
         },
         getTabSliders = async () => {
             let res = await axios.get(baseApiUrl + `/GetVisibleTabSliderList`, axiosBaseConfig)

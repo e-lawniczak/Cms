@@ -115,3 +115,30 @@
 .gallery-section .grid-child-7 {
   grid-area: seven;
 }
+
+.list-category {
+  display: grid !important;
+  grid-template-columns: 1fr;
+}
+.list-category li {
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 16px;
+  padding-left: 0px;
+  width: 100%;
+  border-bottom: 1px solid lightgrey;
+  position: relative;
+}
+.list-category li::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0px;
+  height: 2px;
+  background-color: #6046b6;
+  transition: all 0.3s;
+}
+.list-category li:hover::before {
+  width: 100%;
+}

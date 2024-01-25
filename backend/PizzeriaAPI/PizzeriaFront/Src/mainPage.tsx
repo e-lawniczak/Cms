@@ -108,7 +108,7 @@ const SwiperSection = () => {
                         <div className="row">
                             <div className="col-sm-9 col-md-8 col-lg-7 col-xl-7 offset-lg-1 offset-xxl-0">
                                 <div dangerouslySetInnerHTML={{ __html: b.text }}></div>
-                                <a className="button button-lg button-primary button-winona button-shadow-2" href={b.link} data-caption-animate="fadeInUp" data-caption-delay="300">{b.subText}</a>
+                                <a className="button button-lg button-primary button-winona button-shadow-2" href={b?.link} data-caption-animate="fadeInUp" data-caption-delay="300">{b.subText}</a>
                             </div>
                         </div>
                     </div>
@@ -167,7 +167,7 @@ const CategoriesSection = () => {
                         </div>
                         <div className="services-terri-caption">
                             <span className={["services-terri-icon", prepareCategoryIcon(cat.name.split("_"))].join(" ")}></span>
-                            <h5 className="services-terri-title"><a href={cat.link}>{cat.name}</a></h5>
+                            <h5 className="services-terri-title"><a href={cat?.link}>{cat.name}</a></h5>
                         </div>
                     </article>
                 </div>
@@ -280,7 +280,7 @@ const ProductsSection = () => {
                             }
                         </div>
                         <div className="product-button">
-                            <div className="button-wrap"><a className="button button-xs button-secondary button-winona" href={categories.find((c: CategoryDto) => c.id == p.categoryId).link + `#${p.name + p.id}`}>View Product</a></div>
+                            <div className="button-wrap"><a className="button button-xs button-secondary button-winona" href={categories.find((c: CategoryDto) => c.id == p.categoryId)?.link + `#${p.name + p.id}`}>View Product</a></div>
                         </div>
                         {(p.discountPrice < p.price && p.discountPrice > 0) ? <span className="product-badge product-badge-sale">Sale</span> : ""}
                     </article>

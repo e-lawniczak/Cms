@@ -19,14 +19,15 @@ export const AboutUsPage = () => {
         <KeyValueSec _key='au_title' title='Title of the page' />
         <LogoSection logo_key={'about_us_banner'} title={'Main banner on About Us page'} />
         <SliderSection objKey='tabSlider_1' objVal="title" entry_key={'tabSlider1'} title={'Information block on main page'} dataUrl='/GetVisibleTabSliderList' />
-        <SliderSection objKey='tabSlider_2' objVal="title" entry_key={'tabSlider2'} title={'OUR HISTORY information block'} dataUrl='/GetVisibleTabSliderList' />
-        <SliderSection objKey='tabSlider_3' objVal="title" entry_key={'tabSlider3'} title={'Testimonial information block'} dataUrl='/GetVisibleTabSliderList' />
         <KeyValueSec _key='au_box1' title='Box 1 title content' />
         <KeyValueSec _key='au_box1_text' title='Box 1 text content' />
         <KeyValueSec _key='au_box2' title='Box 2 title content' />
         <KeyValueSec _key='au_box2_text' title='Box 2 text content' />
         <KeyValueSec _key='au_box3' title='Box 3 title content' />
         <KeyValueSec _key='au_box3_text' title='Box 3 text content' />
+        <KeyValueSec _key='au_ourTeam_title' title='Team section title' />
+        <SliderSection objKey='tabSlider_2' objVal="title" entry_key={'tabSlider2'} title={'OUR HISTORY information block'} dataUrl='/GetVisibleTabSliderList' />
+        <SliderSection objKey='tabSlider_3' objVal="title" entry_key={'tabSlider3'} title={'Testimonial information block'} dataUrl='/GetVisibleTabSliderList' />
     </PageWrapper>
 }
 const SliderSection = (props: { objKey: string, objVal: string, entry_key: string, title: string, dataUrl: string, subText?: any }) => {

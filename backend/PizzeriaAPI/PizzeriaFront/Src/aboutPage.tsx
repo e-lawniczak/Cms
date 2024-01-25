@@ -3,6 +3,8 @@ import { useState } from 'react';
 import * as ReactDOM from 'react-dom';
 
 import { PageWrapper } from './commonElements';
+import { InformationTabDto, KeyValueDto, TabSliderDto, baseApiUrl, getPictureUrlFromList } from './common';
+import axios from 'axios';
 
 export const AboutPage = () => {
     const
@@ -15,69 +17,13 @@ export const AboutPage = () => {
 
     }, [])
     return <PageWrapper>
-        <AboutPageContent />
+        <BannerSection />
+        <InformationSliderSection />
     </PageWrapper>
 }
 
 const AboutPageContent = () => {
     return <>
-        <section className="bg-gray-7">
-            <div className="breadcrumbs-custom box-transform-wrap context-dark">
-                <div className="container">
-                    <h3 className="breadcrumbs-custom-title">About us</h3>
-                    <div className="breadcrumbs-custom-decor"></div>
-                </div>
-                <div className="box-transform" style={{ backgroundImage: 'url(images/bg-1.jpg)' }}></div>
-            </div>
-            <div className="container">
-                <ul className="breadcrumbs-custom-path">
-                    <li><a href="index.html">Home</a></li>
-                    <li className="active">About us</li>
-                </ul>
-            </div>
-        </section>
-        <section className="section section-lg bg-default">
-            <div className="container">
-                <div className="tabs-custom row row-50 justify-content-center flex-lg-row-reverse text-center text-md-left" id="tabs-4">
-                    <div className="col-lg-4 col-xl-3">
-                        <h5 className="text-spacing-200 text-capitalize">10+ years of experience</h5>
-                        <ul className="nav list-category list-category-down-md-inline-block">
-                            <li className="list-category-item wow fadeInRight" role="presentation" data-wow-delay="0s"><a className="active" href="#tabs-4-1" data-toggle="tab">About us</a></li>
-                            <li className="list-category-item wow fadeInRight" role="presentation" data-wow-delay=".1s"><a href="#tabs-4-2" data-toggle="tab">Our Mission</a></li>
-                            <li className="list-category-item wow fadeInRight" role="presentation" data-wow-delay=".2s"><a href="#tabs-4-3" data-toggle="tab">Our Goals</a></li>
-                            <li className="list-category-item wow fadeInRight" role="presentation" data-wow-delay=".3s"><a href="#tabs-4-4" data-toggle="tab">Our Values</a></li>
-                        </ul><a className="button button-xl button-primary button-winona" href="contacts.html">Contact us</a>
-                    </div>
-                    <div className="col-lg-8 col-xl-9">
-
-                        <div className="tab-content tab-content-1">
-                            <div className="tab-pane fade show active" id="tabs-4-1">
-                                <h4>a few words about us</h4>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur.</p><img src="images/about-1-835x418.jpg" alt="" width="835" height="418" />
-                            </div>
-                            <div className="tab-pane fade" id="tabs-4-2">
-                                <h4>Offering the Best Pizza in Los Angeles</h4>
-                                <p>Lotus advenas ducunt ad gemna. Ubi est domesticus domina? Heu, barbatus mens! Cum elogium favere, omnes lubaes tractare talis, barbatus adiuratores. Mirabilis hydras ducunt ad danista. Dominas sunt accentors de germanus cacula. Amicitias prarere in alta muta! Ecce, bubo! Nunquam promissio verpa. Talis, primus fugas recte consumere de audax, festus indictio. Nunquam quaestio scutum. Valebats</p>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><img src="images/about-1-835x418.jpg" alt="" width="835" height="418" />
-                            </div>
-                            <div className="tab-pane fade" id="tabs-4-3">
-                                <h4>Providing Top-notch Customer Service</h4>
-                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur.</p>
-                                <p>Lotus advenas ducunt ad gemna. Ubi est domesticus domina? Heu, barbatus mens! Cum elogium favere, omnes lubaes tractare talis, barbatus adiuratores. Mirabilis hydras ducunt ad danista. Dominas sunt accentors de germanus cacula. Amicitias prarere in alta muta! Ecce, bubo! Nunquam promissio verpa. Talis, primus fugas recte consumere de audax, festus indictio. Nunquam quaestio scutum. Valebats</p><img src="images/about-1-835x418.jpg" alt="" width="835" height="418" />
-                            </div>
-                            <div className="tab-pane fade" id="tabs-4-4">
-                                <h4>Integrity & Dedication</h4>
-                                <p>Albus, dexter particulas grauiter consumere de ferox, bi-color abactus. Impositios studere, tanquam mirabilis hippotoxota. Cur torus manducare? Pol, vox! Cum barcas nocere, omnes specieses contactus</p>
-                                <p>Lotus advenas ducunt ad gemna. Ubi est domesticus domina? Heu, barbatus mens! Cum elogium favere, omnes lubaes tractare talis, barbatus adiuratores. Mirabilis hydras ducunt ad danista. Dominas sunt accentors de germanus cacula. Amicitias prarere in alta muta! Ecce, bubo! Nunquam promissio verpa. Talis, primus fugas recte consumere de audax, festus indictio. Nunquam quaestio scutum. Valebats</p><img src="images/about-1-835x418.jpg" alt="" width="835" height="418" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
         <section className="section section-lg bg-gray-100">
             <div className="container">
                 <div className="row row-md row-50">
@@ -330,6 +276,111 @@ const AboutPageContent = () => {
 
     </>
 }
+const BannerSection = () => {
+    const
+        [title, setTitle] = useState<KeyValueDto>(),
+        [logoPic, setLogoPic] = useState<KeyValueDto>(),
+        getTitle = async () => {
+            let res = await axios.get(baseApiUrl + `/GetKeyValueByKey/au_title`)
+            setTitle(res.data)
+        },
+        getBannerPic = async () => {
+            let res = await axios.get(baseApiUrl + `/GetKeyValueByKey/about_us_banner`)
+            let t = res.data as KeyValueDto;
+            let s = t.value.split("/")
+            s[2] = "Full"
+            t.value = s.join("/")
+            setLogoPic(t)
+        }
 
+    React.useEffect(() => {
+        getTitle()
+        getBannerPic()
+    }, [])
+    return <section className="bg-gray-7">
+        <div className="breadcrumbs-custom box-transform-wrap context-dark">
+            <div className="container">
+                <h3 className="breadcrumbs-custom-title">{title?.value || "About Us"}</h3>
+                <div className="breadcrumbs-custom-decor"></div>
+            </div>
+            <div className="box-transform" style={{ backgroundImage: `url(${baseApiUrl + logoPic?.value})` }}></div>
+        </div>
+        <div className="container">
+            <ul className="breadcrumbs-custom-path">
+                <li><a href="/">Home</a></li>
+                <li className="active">{title?.value || "About Us"}</li>
+            </ul>
+        </div>
+    </section>
+}
+const InformationSliderSection = () => {
+    const
+        [slider, setSlider] = useState<TabSliderDto>(),
+        [mail, setMail] = useState<KeyValueDto>(),
+        [tabs, setTabs] = useState<InformationTabDto[]>(),
+        [currentTab, setCurrentTab] = useState(0),
+        getMail = async () => {
+            let res = await axios.get(baseApiUrl + `/GetKeyValueByKey/footer_email`)
+            setMail(res.data)
+        },
+        getSlider = async () => {
+            let res = await axios.get(baseApiUrl + `/GetKeyValueByKey/tabSlider_1`)
+            if (res.status == 200) {
+                res = await axios.get(baseApiUrl + `/GetTabSlider/${res.data.value}`)
+                setSlider(res.data)
+                if (res.status == 200) {
+
+
+
+                }
+            }
+        },
+        getTabs = async () => {
+            let res = await axios.get(baseApiUrl + `/GetVisibleInformationTabList`)
+            if (slider.informationTabIdList.length > 0) {
+                let t = res.data.filter((s: InformationTabDto) => slider.informationTabIdList.indexOf(s.informationTabId) > -1)
+                setTabs(t)
+            }
+        }
+
+    React.useEffect(() => {
+        getSlider()
+    }, [])
+    React.useEffect(() => {
+        getTabs()
+    }, [slider])
+
+    return <section className="section section-lg bg-default">
+        <div className="container">
+            <div className="tabs-custom row row-50 justify-content-center flex-lg-row-reverse text-center text-md-left" id="tabs-4">
+                <div className="col-lg-4 col-xl-3">
+                    <h5 className="text-spacing-200 text-capitalize">10+ years of experience</h5>
+                    <ul className="nav list-category list-category-down-md-inline-block">
+                        {tabs?.length > 0 &&
+                            tabs.map((t: InformationTabDto, idx: number) => {
+                                return <li onClick={() => setCurrentTab(idx)} className="list-category-item wow fadeInRight" role="presentation" data-wow-delay="0s"><span className={["tasb-opt", idx == currentTab ? "active" : ""].join(" ")} >{t.buttonText}</span></li>
+                            })
+                        }
+
+
+                    </ul><a className="button button-xl button-primary button-winona" href={`mailto:${mail?.value}`}>Contact us</a>
+                </div>
+                <div className="col-lg-8 col-xl-9">
+
+                    <div className="tab-content tab-content-1">
+                        {tabs?.length > 0 &&
+                            tabs.map((t: InformationTabDto, idx: number) => {
+                                return <div className={`tab-pane fade show ${idx == currentTab ? "active" : ""}`} id={`tabs-4-${idx + 1}`}>
+                                    <h4>{t.title}</h4>
+                                    <div dangerouslySetInnerHTML={{ __html: t.text }}></div>
+                                    <img src={`${getPictureUrlFromList(slider?.pictureIdList)[0]}`} alt="" width="835" height="418" />
+                                </div>
+                            })}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
 const root = document.getElementById("react_root");
 ReactDOM.render(<AboutPage />, root);

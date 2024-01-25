@@ -146,3 +146,35 @@
     }
 
 }
+
+.list-category {
+    display: grid !important;
+    grid-template-columns: 1fr;
+
+    li {
+        text-transform: uppercase;
+        cursor: pointer;
+        padding: 16px;
+        padding-left: 0px;
+        width: 100%;
+        border-bottom: 1px solid lightgrey;
+        position: relative;
+
+        &::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0px;
+            height: 2px;
+            background-color: #6046b6;
+            transition: all .3s;
+        }
+
+        &:hover {
+            &::before {
+                width: 100%;
+            }
+        }
+    }
+}
