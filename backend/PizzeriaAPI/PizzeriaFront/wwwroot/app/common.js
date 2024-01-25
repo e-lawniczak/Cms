@@ -34,7 +34,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCookie = exports.axiosBaseConfig = exports.baseApiUrl = exports.mapObjectToSelect = exports.PInput = exports.Image = exports.prepareCategoryIcon = exports.prepareSocialIcon = void 0;
+exports.getCookie = exports.axiosBaseConfig = exports.baseApiUrl = exports.mapObjectToSelect = exports.PInput = exports.Image = exports.getPictureUrlFromList = exports.prepareCategoryIcon = exports.prepareSocialIcon = void 0;
 var React = __importStar(require("react"));
 var prepareSocialIcon = function (name) {
     var key = name[name.length - 1];
@@ -64,14 +64,26 @@ var prepareCategoryIcon = function (name) {
         case "desserts":
             return "linearicons-ice-cream";
         case "drinks":
-            return "linearicons-coffe-cup";
+            return "linearicons-coffee-cup";
         case "seafood":
             return "linearicons-steak";
         default:
-            return "linearicons-dagger";
+            return "linearicons-star";
     }
 };
 exports.prepareCategoryIcon = prepareCategoryIcon;
+var getPictureUrlFromList = function (list, type) {
+    if (type === void 0) { type = "Full"; }
+    var ret = [];
+    if (!list)
+        return [];
+    for (var i = 0; i < list.length; i++) {
+        var element = exports.baseApiUrl + "/GetPicture/".concat(type, "/") + list[i];
+        ret.push(element);
+    }
+    return ret;
+};
+exports.getPictureUrlFromList = getPictureUrlFromList;
 var Image = function (props) {
     var imageClass = props.imageClass, src = props.src, _a = props.onImageClick, onImageClick = _a === void 0 ? function () { } : _a, item = props.item;
     return React.createElement("div", { className: ['img-container', imageClass || ""].join(" "), onClick: function (e) { return onImageClick(item, e); } },

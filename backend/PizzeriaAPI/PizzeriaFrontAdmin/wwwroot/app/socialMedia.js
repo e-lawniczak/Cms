@@ -88,7 +88,7 @@ var SocialMediaPage = function () {
                 case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetAllSocialMediaList", common_1.axiosBaseConfig)];
                 case 1:
                     res = _a.sent();
-                    setSocialMedia(res.data);
+                    setSocialMedia(res.data.sort(function (a, b) { return (0, common_1.sortFunc)(a, b); }));
                     return [2 /*return*/];
             }
         });
@@ -159,8 +159,8 @@ var SocialMediaRow = function (props) {
                     return [4 /*yield*/, axios_1.default.post(url, item, common_1.axiosBaseConfig)];
                 case 1:
                     _a.sent();
-                    refreshFunc();
                     setNew(false);
+                    refreshFunc();
                     return [2 /*return*/];
             }
         });

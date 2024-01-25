@@ -13,7 +13,7 @@ export const RolePage = () => {
         [pictures, setPictures] = useState<PictureDto[]>(),
         getRoles = async () => {
             let res = await axios.get(baseApiUrl + `/GetAllRoleList`, axiosBaseConfig)
-            setRoles(res.data.sort((a: any, b: any) => sortFunc(a, b)))
+            setRoles(res.data.sort((a: any, b: any) => sortFunc(a, b, "roleId")))
         },
         getpictures = async () => {
             let res = await axios.get(baseApiUrl + `/GetAllPictureList`, axiosBaseConfig)

@@ -6,6 +6,7 @@ import * as ReactDOM from 'react-dom';
 import { Editor } from '@tinymce/tinymce-react';
 
 
+
 export const prepareSocialIcon = (name: string[]) => {
     let key = name[name.length - 1]
     switch (key) {
@@ -33,11 +34,11 @@ export const prepareCategoryIcon = (name: string[]) => {
         case "desserts":
             return "linearicons-ice-cream";
         case "drinks":
-            return "linearicons-coffe-cup";
+            return "linearicons-coffee-cup";
         case "seafood":
             return "linearicons-steak";
         default:
-            return "linearicons-dagger";
+            return "linearicons-star";
     }
 }
 export const getPictureUrlFromList = (list: number[], type: string = "Full") => {
@@ -67,7 +68,7 @@ export interface BannerDto {
     link: string,
     isVisible: boolean,
     pictureIdList: any[],
-    sliderId: number
+    sliderId: any
 }
 export interface SliderDto {
     sliderId: number,

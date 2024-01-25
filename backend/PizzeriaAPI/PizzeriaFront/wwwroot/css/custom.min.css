@@ -1,1 +1,1 @@
-﻿body{z-index:10;}
+﻿.rd-nav-item{position:relative;}.rd-nav-item .child-menu{width:100%;top:100%;left:0;position:absolute;display:none;grid-template-columns:1fr;z-index:10;background-color:#f5f5f5;}.rd-nav-item .child-menu li.child.rd-nav-item{margin-left:0 !important;width:100%;display:flex;justify-content:flex-start;align-items:flex-start;z-index:11;}.rd-nav-item .child-menu li.child.rd-nav-item a.rd-nav-link{width:100%;}.rd-nav-item:hover .child-menu{display:grid;}.section.swiper-container{height:753px;}

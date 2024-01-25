@@ -91,11 +91,79 @@ var HomePage = function () {
         React.createElement(LogoSection, { logo_key: 'footer_logo', title: 'Footer logo' }),
         React.createElement(MenuSection, null),
         React.createElement(SliderSection, null),
+        React.createElement(KeyValueSection, { _key: 'categoriesTitle', title: 'Title of categories section' }),
         React.createElement(BannerSection, { banner_key: 'banner_1', title: "First banner" }),
+        React.createElement(KeyValueSection, { _key: 'productsTitle', title: 'Title of products section' }),
         React.createElement(BannerSection, { banner_key: 'banner_2', title: "Second banner banner" }),
         Array.from({ length: 6 }, function (_, i) { return i + 1; }).map(function (i, idx) { return React.createElement(GallerySection, { key: idx, gallery_key: "gallery_".concat(i), title: "Home page gallery ".concat(i) }); }));
 };
 exports.HomePage = HomePage;
+var KeyValueSection = function (props) {
+    var _a = (0, react_1.useState)(), item = _a[0], setitem = _a[1], _b = (0, react_hook_form_1.useForm)({
+        defaultValues: { itemValue: (item === null || item === void 0 ? void 0 : item.value) || "" },
+    }), register = _b.register, handleSubmit = _b.handleSubmit, setValue = _b.setValue, sKey = props._key, onSubmit = function (data) {
+        if (!item)
+            addItem(sKey, data.itemValue);
+        else
+            editItem(item.id, item.key, data.itemValue);
+        getKeyValues();
+    }, getKeyValues = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValueByKey/".concat(sKey))];
+                case 1:
+                    res = _a.sent();
+                    setValue("itemValue", res.data.value);
+                    setitem(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, editItem = function (id, key, value) { return __awaiter(void 0, void 0, void 0, function () {
+        var url;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    url = common_1.baseApiUrl + "/UpdateKeyValueById";
+                    return [4 /*yield*/, axios_1.default.patch(url, { id: id, key: key, value: value }, common_1.axiosBaseConfig)];
+                case 1:
+                    _a.sent();
+                    getKeyValues();
+                    return [2 /*return*/];
+            }
+        });
+    }); }, addItem = function (key, value) { return __awaiter(void 0, void 0, void 0, function () {
+        var url;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    url = common_1.baseApiUrl + "/AddKeyValue";
+                    return [4 /*yield*/, axios_1.default.post(url, { id: -1, key: key, value: value }, common_1.axiosBaseConfig)];
+                case 1:
+                    _a.sent();
+                    getKeyValues();
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    React.useEffect(function () {
+        getKeyValues();
+    }, []);
+    return React.createElement(common_1.PageSettingsSection, { title: props.title, subtext: props.subText },
+        React.createElement("div", null,
+            React.createElement("form", { action: "", className: "section-form", onSubmit: handleSubmit(onSubmit) },
+                React.createElement("div", { className: "form-content " },
+                    React.createElement("div", { className: "row" },
+                        React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "id"),
+                        React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "key"),
+                        React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "value")),
+                    React.createElement("div", { className: "row" },
+                        React.createElement("div", { className: "id" }, (item === null || item === void 0 ? void 0 : item.id) || -1),
+                        React.createElement("div", { className: "key" }, (item === null || item === void 0 ? void 0 : item.key) || sKey),
+                        React.createElement(common_1.PInput, { register: __assign({}, register("itemValue")), inputProps: { type: 'text' } }))),
+                React.createElement("div", { className: "buttons-container" },
+                    React.createElement("button", { type: 'submit', className: "btn btn-white btn-sm w-100 mb-0 btn-save" }, "Save")))));
+};
 var GallerySection = function (props) {
     var _a = (0, react_1.useState)(), galllery = _a[0], setSlider = _a[1], _b = (0, react_1.useState)(), galleries = _b[0], setGalleries = _b[1], _c = (0, react_hook_form_1.useForm)(), register = _c.register, handleSubmit = _c.handleSubmit, setValue = _c.setValue, sKey = props.gallery_key, onSubmit = function (data) {
         if (!galllery)
@@ -334,7 +402,7 @@ var MenuSection = function () {
                 case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetAllMenuElementList")];
                 case 1:
                     res = _a.sent();
-                    setElements(res.data);
+                    setElements(res.data.sort(function (a, b) { return (0, common_1.sortFunc)(a, b, "menuElementId"); }));
                     setParentElements(res.data.filter(function (m, idx) { return m.parentMenuElementId == null; }));
                     return [2 /*return*/];
             }
@@ -379,8 +447,8 @@ var MenuElementRow = function (props) {
                     return [4 /*yield*/, axios_1.default.post(url, item, common_1.axiosBaseConfig)];
                 case 1:
                     _a.sent();
-                    refreshFunc();
                     setShow(false);
+                    refreshFunc();
                     return [2 /*return*/];
             }
         });
@@ -526,11 +594,12 @@ var ContactSection = function () {
         }
         if (!address) {
             addItem("address", data.addressValue);
+            getKeyValues();
         }
         else {
             editItem(address.id, address.key, data.addressValue);
+            getKeyValues();
         }
-        getKeyValues();
     }, getKeyValues = function () { return __awaiter(void 0, void 0, void 0, function () {
         var pres, ares;
         return __generator(this, function (_a) {

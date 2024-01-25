@@ -4,7 +4,10 @@ import * as ReactDOM from 'react-dom';
 
 import { PageWrapper } from './commonElements';
 import axios from 'axios';
-import { BannerDto, CategoryDto, KeyValueDto, SliderDto, baseApiUrl,  getPictureUrlFromList } from './common';
+import { BannerDto, CategoryDto, GalleryDto, KeyValueDto, ProductDto, RoleDto, SliderDto, TestimonialDto, axiosBaseConfig, baseApiUrl, getPictureUrlFromList, prepareCategoryIcon } from './common';
+import Slider from "../node_modules/react-slick"
+// import "../node_modules/slick-carousel/slick/slick.css";
+// import "../node_modules/slick-carousel/slick/slick-theme.css";
 
 export const MainPage = () => {
     const
@@ -17,253 +20,10 @@ export const MainPage = () => {
         <SwiperSection />
         <CategoriesSection />
         <MidSectionBanner keyValue={"banner_1"} />
-
-
-
-
-
-
-        <section className="section section-lg bg-default">
-            <div className="container">
-                <h3 className="oh-desktop"><span className="d-inline-block wow slideInUp">Selected Pizzas</span></h3>
-                <div className="row row-lg row-30">
-                    <div className="col-sm-6 col-lg-4 col-xl-3">
-
-                        <article className="product wow fadeInLeft" data-wow-delay=".15s">
-                            <div className="product-figure">
-                                <img src="images/product-1-161x162.png" alt="" width="161" height="162" />
-                            </div>
-                            <div className="product-rating">
-                                <span className="mdi mdi-star"></span><span className="mdi mdi-star"></span><span className="mdi mdi-star"></span><span className="mdi mdi-star"></span><span className="mdi mdi-star text-gray-13"></span>
-                            </div>
-                            <h6 className="product-title">Margherita Pizza</h6>
-                            <div className="product-price-wrap">
-                                <div className="product-price">$24.00</div>
-                            </div>
-                            <div className="product-button">
-                                <div className="button-wrap"><a className="button button-xs button-primary button-winona" href="#">Add to cart</a></div>
-                                <div className="button-wrap"><a className="button button-xs button-secondary button-winona" href="#">View Product</a></div>
-                            </div>
-                        </article>
-                    </div>
-                    <div className="col-sm-6 col-lg-4 col-xl-3">
-
-                        <article className="product wow fadeInLeft" data-wow-delay=".1s">
-                            <div className="product-figure">
-                                <img src="images/product-2-161x162.png" alt="" width="161" height="162" />
-                            </div>
-                            <div className="product-rating">
-                                <span className="mdi mdi-star"></span><span className="mdi mdi-star"></span><span className="mdi mdi-star"></span><span className="mdi mdi-star"></span><span className="mdi mdi-star"></span>
-                            </div>
-                            <h6 className="product-title">Mushroom Pizza</h6>
-                            <div className="product-price-wrap">
-                                <div className="product-price">$24.00</div>
-                            </div>
-                            <div className="product-button">
-                                <div className="button-wrap"><a className="button button-xs button-primary button-winona" href="#">Add to cart</a></div>
-                                <div className="button-wrap"><a className="button button-xs button-secondary button-winona" href="#">View Product</a></div>
-                            </div><span className="product-badge product-badge-new">New</span>
-                        </article>
-                    </div>
-                    <div className="col-sm-6 col-lg-4 col-xl-3">
-
-                        <article className="product wow fadeInLeft" data-wow-delay=".05s">
-                            <div className="product-figure">
-                                <img src="images/product-3-161x162.png" alt="" width="161" height="162" />
-                            </div>
-                            <div className="product-rating">
-                                <span className="mdi mdi-star"></span><span className="mdi mdi-star"></span><span className="mdi mdi-star"></span><span className="mdi mdi-star"></span><span className="mdi mdi-star text-gray-13"></span>
-                            </div>
-                            <h6 className="product-title">Hawaiian Pizza</h6>
-                            <div className="product-price-wrap">
-                                <div className="product-price">$24.00</div>
-                            </div>
-                            <div className="product-button">
-                                <div className="button-wrap"><a className="button button-xs button-primary button-winona" href="#">Add to cart</a></div>
-                                <div className="button-wrap"><a className="button button-xs button-secondary button-winona" href="#">View Product</a></div>
-                            </div>
-                        </article>
-                    </div>
-                    <div className="col-sm-6 col-lg-4 col-xl-3">
-
-                        <article className="product wow fadeInLeft">
-                            <div className="product-figure">
-                                <img src="images/product-4-161x162.png" alt="" width="161" height="162" />
-                            </div>
-                            <div className="product-rating">
-                                <span className="mdi mdi-star"></span><span className="mdi mdi-star"></span><span className="mdi mdi-star"></span><span className="mdi mdi-star"></span><span className="mdi mdi-star"></span>
-                            </div>
-                            <h6 className="product-title">Pesto Pizza</h6>
-                            <div className="product-price-wrap">
-                                <div className="product-price product-price-old">$40.00</div>
-                                <div className="product-price">$24.00</div>
-                            </div>
-                            <div className="product-button">
-                                <div className="button-wrap"><a className="button button-xs button-primary button-winona" href="#">Add to cart</a></div>
-                                <div className="button-wrap"><a className="button button-xs button-secondary button-winona" href="#">View Product</a></div>
-                            </div><span className="product-badge product-badge-sale">Sale</span>
-                        </article>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
+        <ProductsSection />
         <MidSectionBanner keyValue={"banner_2"} />
-
-
-        <section className="section section-xl bg-default">
-            <div className="container">
-                <h3 className="wow fadeInLeft">What People Say</h3>
-            </div>
-            <div className="container container-style-1">
-                <div className="owl-carousel owl-style-12" data-items="1" data-sm-items="2" data-lg-items="3" data-margin="30" data-xl-margin="45" data-autoplay="true" data-nav="true" data-center="true" data-smart-speed="400">
-
-                    <article className="quote-tara">
-                        <div className="quote-tara-caption">
-                            <div className="quote-tara-text">
-                                <p className="q">PizzaHouse is the longest lasting pizza place in the city and is well run and staffed. Prices are great and allow me to keep coming back.</p>
-                            </div>
-                            <div className="quote-tara-figure">
-                                <img src="images/user-6-115x115.jpg" alt="" width="115" height="115" />
-                            </div>
-                        </div>
-                        <h6 className="quote-tara-author">Ashley Fitzgerald</h6>
-                        <div className="quote-tara-status">Client</div>
-                    </article>
-
-                    <article className="quote-tara">
-                        <div className="quote-tara-caption">
-                            <div className="quote-tara-text">
-                                <p className="q">I am a real pizza addict, and even when I’m home I prefer your pizzas to all others. They taste awesome and are very affordable.</p>
-                            </div>
-                            <div className="quote-tara-figure">
-                                <img src="images/user-8-115x115.jpg" alt="" width="115" height="115" />
-                            </div>
-                        </div>
-                        <h6 className="quote-tara-author">Stephanie Williams</h6>
-                        <div className="quote-tara-status">Client</div>
-                    </article>
-
-                    <article className="quote-tara">
-                        <div className="quote-tara-caption">
-                            <div className="quote-tara-text">
-                                <p className="q">PizzaHouse has amazing pizza. Not only do you get served with a great attitude, you also get delicious pizza at a great price!</p>
-                            </div>
-                            <div className="quote-tara-figure">
-                                <img src="images/user-7-115x115.jpg" alt="" width="115" height="115" />
-                            </div>
-                        </div>
-                        <h6 className="quote-tara-author">Bill Johnson</h6>
-                        <div className="quote-tara-status">Client</div>
-                    </article>
-
-                    <article className="quote-tara">
-                        <div className="quote-tara-caption">
-                            <div className="quote-tara-text">
-                                <p className="q">PizzaHouse has great pizza. Not only do you get served with a great attitude and delivered delicious pizza, you get a great price.</p>
-                            </div>
-                            <div className="quote-tara-figure">
-                                <img src="images/user-9-115x115.jpg" alt="" width="115" height="115" />
-                            </div>
-                        </div>
-                        <h6 className="quote-tara-author">Aaron Wilson</h6>
-                        <div className="quote-tara-status">Client</div>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <section className="section section-last bg-default">
-            <div className="container-fluid container-inset-0 isotope-wrap">
-                <div className="row row-10 gutters-10 isotope" data-isotope-layout="masonry" data-isotope-group="gallery" data-lightgallery="group">
-                    <div className="col-xs-6 col-sm-4 col-xl-2 isotope-item oh-desktop">
-
-                        <article className="thumbnail thumbnail-mary thumbnail-mary-2 wow slideInLeft">
-                            <a className="thumbnail-mary-figure" href="images/gallery-1-1200x800-original.jpg" data-lightgallery="item"><img src="images/gallery-1-310x585.jpg" alt="" width="310" height="585" /></a>
-                            <div className="thumbnail-mary-caption">
-                                <div>
-                                    <h6 className="thumbnail-mary-title"><a href="#">Best Ingredients</a></h6>
-                                    <div className="thumbnail-mary-location">Tasty Pizza</div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                    <div className="col-xs-6 col-sm-8 col-xl-4 isotope-item oh-desktop">
-
-                        <article className="thumbnail thumbnail-mary thumbnail-mary-big wow slideInRight">
-                            <a className="thumbnail-mary-figure" href="images/gallery-2-1200x800-original.jpg" data-lightgallery="item"><img src="images/gallery-2-631x587.jpg" alt="" width="631" height="587" /></a>
-                            <div className="thumbnail-mary-caption">
-                                <div>
-                                    <h6 className="thumbnail-mary-title"><a href="#">Comfortable interior</a></h6>
-                                    <div className="thumbnail-mary-location">Modern Design</div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                    <div className="col-xs-6 col-sm-4 col-xl-2 isotope-item oh-desktop">
-
-                        <article className="thumbnail thumbnail-mary thumbnail-mary-2 wow slideInDown">
-                            <a className="thumbnail-mary-figure" href="images/gallery-3-1200x800-original.jpg" data-lightgallery="item"><img src="images/gallery-3-311x289.jpg" alt="" width="311" height="289" /></a>
-                            <div className="thumbnail-mary-caption">
-                                <div>
-                                    <h6 className="thumbnail-mary-title"><a href="#">quality Dishware</a></h6>
-                                    <div className="thumbnail-mary-location">Top-notch utensils</div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                    <div className="col-xs-6 col-sm-8 col-xl-4 isotope-item oh-desktop">
-
-                        <article className="thumbnail thumbnail-mary wow slideInUp">
-                            <a className="thumbnail-mary-figure" href="images/gallery-4-1200x800-original.jpg" data-lightgallery="item"><img src="images/gallery-4-631x289.jpg" alt="" width="631" height="289" /></a>
-                            <div className="thumbnail-mary-caption">
-                                <div>
-                                    <h6 className="thumbnail-mary-title"><a href="#">Refreshing cocktails</a></h6>
-                                    <div className="thumbnail-mary-location">Exclusive selection</div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                    <div className="col-xs-6 col-sm-4 col-xl-2 isotope-item oh-desktop">
-
-                        <article className="thumbnail thumbnail-mary thumbnail-mary-2 wow slideInUp">
-                            <a className="thumbnail-mary-figure" href="images/gallery-5-1200x800-original.jpg" data-lightgallery="item"><img src="images/gallery-5-311x289.jpg" alt="" width="311" height="289" /></a>
-                            <div className="thumbnail-mary-caption">
-                                <div>
-                                    <h6 className="thumbnail-mary-title"><a href="#">Exotic Salads</a></h6>
-                                    <div className="thumbnail-mary-location">Summer Taste</div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                    <div className="col-xs-6 col-sm-4 col-xl-2 isotope-item oh-desktop">
-
-                        <article className="thumbnail thumbnail-mary thumbnail-mary-2 wow slideInRight">
-                            <a className="thumbnail-mary-figure" href="images/gallery-6-1200x800-original.jpg" data-lightgallery="item"><img src="images/gallery-6-311x289.jpg" alt="" width="311" height="289" /></a>
-                            <div className="thumbnail-mary-caption">
-                                <div>
-                                    <h6 className="thumbnail-mary-title"><a href="#">All Types of pizza</a></h6>
-                                    <div className="thumbnail-mary-location">Special Recipes</div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                    <div className="col-xs-6 col-sm-4 col-xl-2 isotope-item oh-desktop">
-
-                        <article className="thumbnail thumbnail-mary thumbnail-mary-2 wow slideInLeft">
-                            <a className="thumbnail-mary-figure" href="images/gallery-7-1200x800-original.jpg" data-lightgallery="item"><img src="images/gallery-7-311x289.jpg" alt="" width="311" height="289" /></a>
-                            <div className="thumbnail-mary-caption">
-                                <div>
-                                    <h6 className="thumbnail-mary-title"><a href="#">Diverse menu</a></h6>
-                                    <div className="thumbnail-mary-location">Pick Your Favorite dish</div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <TestimonialSection />
+        <GalleriesSection />
 
 
         {/* <section className="section section-sm section-first bg-default">
@@ -315,40 +75,7 @@ export const MainPage = () => {
 </section> */}
 
 
-        <section className="section section-sm bg-default">
-            <div className="container">
-                <div className="owl-carousel owl-style-11 dots-style-2" data-items="1" data-sm-items="1" data-lg-items="2" data-xl-items="4" data-margin="30" data-dots="true" data-mouse-drag="true" data-rtl="true">
-                    <article className="box-icon-megan wow fadeInUp">
-                        <div className="box-icon-megan-header">
-                            <div className="box-icon-megan-icon linearicons-bag"></div>
-                        </div>
-                        <h5 className="box-icon-megan-title"><a href="#">Free Delivery</a></h5>
-                        <p className="box-icon-megan-text">If you order more than 3 pizzas, we will gladly deliver them to you for free.</p>
-                    </article>
-                    <article className="box-icon-megan wow fadeInUp" data-wow-delay=".05s">
-                        <div className="box-icon-megan-header">
-                            <div className="box-icon-megan-icon linearicons-map2"></div>
-                        </div>
-                        <h5 className="box-icon-megan-title"><a href="#">Convenient Location</a></h5>
-                        <p className="box-icon-megan-text">Our pizzeria is situated in the downtown and is very easy to reach even on weekends.</p>
-                    </article>
-                    <article className="box-icon-megan wow fadeInUp" data-wow-delay=".1s">
-                        <div className="box-icon-megan-header">
-                            <div className="box-icon-megan-icon linearicons-radar"></div>
-                        </div>
-                        <h5 className="box-icon-megan-title"><a href="#">Free Wi-Fi</a></h5>
-                        <p className="box-icon-megan-text">We have free Wi-Fi available to all clients and visitors of our pizzeria.</p>
-                    </article>
-                    <article className="box-icon-megan wow fadeInUp" data-wow-delay=".15s">
-                        <div className="box-icon-megan-header">
-                            <div className="box-icon-megan-icon linearicons-thumbs-up"></div>
-                        </div>
-                        <h5 className="box-icon-megan-title"><a href="#">Best Service</a></h5>
-                        <p className="box-icon-megan-text">The client is our #1 priority as we deliver top-notch customer service.</p>
-                    </article>
-                </div>
-            </div>
-        </section>
+        <AdditionalInfoSection />
     </PageWrapper>
 }
 
@@ -369,7 +96,6 @@ const SwiperSection = () => {
 
         },
         getBannerSliders = async () => {
-            console.log("second")
             if (!slider) return
             let queryString = slider?.bannerIdList.map((i: number) => `${i}`)
             let res = await axios.get(baseApiUrl + `/GetBannersByIdList?bannerIdList=${queryString}`)
@@ -424,9 +150,11 @@ const SwiperSection = () => {
 const CategoriesSection = () => {
     const
         [categories, setCategories] = useState<CategoryDto[]>(),
-
+        [categoriesTitle, setCategoriesTitle] = useState<KeyValueDto>(),
         getCategories = async () => {
             let res = await axios.get(baseApiUrl + `/GetVisibleCategoryList`)
+            let resTitle = await axios.get(baseApiUrl + `/GetKeyValueByKey/categoriesTitle`)
+            setCategoriesTitle(resTitle.data)
             setCategories(res.data)
         },
         mappedCategories = categories?.map((cat: CategoryDto, idx: number) => {
@@ -438,7 +166,7 @@ const CategoriesSection = () => {
                             <img src={getPictureUrlFromList(cat.pictureIdList)[0]} alt="" width="370" height="278" />
                         </div>
                         <div className="services-terri-caption">
-                            <span className="services-terri-icon linearicons-leaf"></span>
+                            <span className={["services-terri-icon", prepareCategoryIcon(cat.name.split("_"))].join(" ")}></span>
                             <h5 className="services-terri-title"><a href={cat.link}>{cat.name}</a></h5>
                         </div>
                     </article>
@@ -452,7 +180,7 @@ const CategoriesSection = () => {
     }, [])
     return <section className="section section-md bg-default">
         <div className="container">
-            <h3 className="oh-desktop"><span className="d-inline-block wow slideInDown">Our Menu</span></h3>
+            <h3 className="oh-desktop"><span className="d-inline-block wow slideInDown">{categoriesTitle?.value || "OUR MENU"}</span></h3>
             <div className="row row-md row-30">
                 {mappedCategories}
 
@@ -483,13 +211,13 @@ const MidSectionBanner = (props: { keyValue: string }) => {
         getBanner()
 
     }, [bannerValue])
-    return <section className="primary-overlay section parallax-container" data-parallax-img={getPictureUrlFromList(banner?.pictureIdList)[0]}>
+    return <section className="primary-overlay section parallax-container" style={{ backgroundImage: `url(${getPictureUrlFromList(banner?.pictureIdList)[0]})` }} data-parallax-img={getPictureUrlFromList(banner?.pictureIdList)[0]}>
         <div className="parallax-content section-xl context-dark text-md-left">
             <div className="container">
                 <div className="row justify-content-end">
                     <div className="col-sm-8 col-md-7 col-lg-5">
                         <div className="cta-modern">
-                            {banner?.text}
+                            <div dangerouslySetInnerHTML={{ __html: banner?.text }}></div>
                             <a className="button button-md button-secondary-2 button-winona wow fadeInUp" href={banner?.link} data-wow-delay=".2s">{banner?.subText}</a>
                         </div>
                     </div>
@@ -512,6 +240,299 @@ const MidSectionBanner = (props: { keyValue: string }) => {
     //       </div>
     //   </section>
 }
+const ProductsSection = () => {
+    const
+        [products, setProducts] = useState<ProductDto[]>(),
+        [categories, setCategories] = useState<CategoryDto[]>(),
+        [productsTitle, setProductsTitle] = useState<KeyValueDto>(),
+        getProducts = async () => {
+            let res = await axios.get(baseApiUrl + "/GetVisibleProductList", axiosBaseConfig)
+            let resTitle = await axios.get(baseApiUrl + `/GetKeyValueByKey/productsTitle`)
+            setProducts(res.data)
+            setProductsTitle(resTitle.data)
+        },
+        getCategories = async () => {
+            let res = await axios.get(baseApiUrl + `/GetVisibleCategoryList`)
+            setCategories(res.data)
+        },
+        mappedProducts = products?.map((p: ProductDto, idx: number) => {
+            if (p.isRecommended)
+                return <div key={idx} className="col-sm-6 col-lg-4 col-xl-3">
 
+                    <article className="product wow fadeInLeft" data-wow-delay=".15s">
+                        <div className="product-figure">
+                            <img src={getPictureUrlFromList(p.pictureIdList)[0]} alt="" width="161" height="162" />
+                        </div>
+                        <div className="product-rating">
+                            {Array.from({ length: 5 }, (_, i) => i + 1).map((i: any, idx: any) => {
+                                if (idx < p.score) return <span className="mdi mdi-star"></span>
+                                return <span className="mdi mdi-star text-gray-13"></span>
+                            })}
+                        </div>
+                        <h6 className="product-title">{p.name}</h6>
+                        <div className="product-price-wrap">
+
+                            {(p.discountPrice < p.price && p.discountPrice > 0) ?
+                                <>
+                                    <div className="product-price product-price-old">{p.price} zł</div>
+                                    <div className="product-price">{p.discountPrice} zł</div></>
+                                : <div className="product-price">{p.price} zł</div>
+                            }
+                        </div>
+                        <div className="product-button">
+                            <div className="button-wrap"><a className="button button-xs button-secondary button-winona" href={categories.find((c: CategoryDto) => c.id == p.categoryId).link + `#${p.name + p.id}`}>View Product</a></div>
+                        </div>
+                        {(p.discountPrice < p.price && p.discountPrice > 0) ? <span className="product-badge product-badge-sale">Sale</span> : ""}
+                    </article>
+                </div>
+        }).filter((p: any) => p)
+
+    React.useEffect(() => {
+        getProducts()
+    }, [])
+    React.useEffect(() => {
+        getCategories()
+    }, [products])
+    return <section className="section section-lg bg-default">
+        <div className="container">
+            <h3 className="oh-desktop"><span className="d-inline-block wow slideInUp">{productsTitle?.value || "Selected Pizzas"}</span></h3>
+            <div className="row row-lg row-30">
+                {mappedProducts}
+            </div>
+        </div>
+    </section>
+}
+const TestimonialSection = () => {
+    const
+        [testimonials, setTestimonials] = useState<TestimonialDto[]>(),
+        [roles, setRoles] = useState<RoleDto[]>(),
+        [isHover, setIsHover] = useState(false),
+        [testimonialsTitle, setTestimonialsTitle] = useState<KeyValueDto>(),
+        getTestimonials = async () => {
+            let res = await axios.get(baseApiUrl + "/GetVisibleTestimonialList", axiosBaseConfig)
+            let resTitle = await axios.get(baseApiUrl + `/GetKeyValueByKey/testimonialsTitle`)
+            setTestimonials(res.data)
+            setTestimonialsTitle(resTitle.data)
+        },
+        getRoles = async () => {
+            let res = await axios.get(baseApiUrl + `/GetvisibleRoleList`)
+            setRoles(res.data.sort((a: RoleDto, b: RoleDto) => a.roleId - b.roleId))
+        },
+        mappedTestimonials = testimonials?.map((t: TestimonialDto, idx: number) => {
+            return <article className="quote-tara" onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
+                <div className="quote-tara-caption">
+                    <div className="quote-tara-text">
+                        <p className="q" dangerouslySetInnerHTML={{ __html: t.text }}></p>
+                    </div>
+                    <div className="quote-tara-figure">
+                        <img src={getPictureUrlFromList(t.pictureIdList)[0]} alt="" width="115" height="115" />
+                    </div>
+                </div>
+                <h6 className="quote-tara-author">{t.firstName} {t.lastName}</h6>
+                <div className="quote-tara-status">{roles?.find((r: RoleDto, idx: number) => r.roleId == t.roleId).name}</div>
+            </article>
+        }).filter((p: any) => p),
+        slickSettings = {
+            infinite: true,
+            speed: 500,
+            className: "center",
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            centerMode: true,
+            centerPadding: '60px',
+            nextArrow: <SampleNextArrow />,
+            prevArrow: <SamplePrevArrow />
+        }
+
+    React.useEffect(() => {
+        getTestimonials()
+    }, [])
+    React.useEffect(() => {
+        getRoles()
+    }, [testimonials])
+
+    return <section className="section section-xl bg-default">
+        <div className="container">
+            <h3 className="wow fadeInLeft">{testimonialsTitle?.value || "What People Say"}</h3>
+        </div>
+        <div className="container container-style-1">
+            {/* <div className="owl-carousel owl-style-12" data-items="1" data-sm-items="2" data-lg-items="3" data-margin="30" data-xl-margin="45" data-autoplay="true" data-nav="true" data-center="true" data-smart-speed="400">
+            </div> */}
+            <Slider {...slickSettings}>
+                {mappedTestimonials}
+            </Slider>
+        </div>
+    </section>
+}
+function SampleNextArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+        <div
+            className={className}
+            style={{ ...style }}
+            onClick={onClick}
+        />
+    );
+}
+
+function SamplePrevArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+        <div
+            className={className}
+            style={{ ...style }}
+            onClick={onClick}
+        />
+    );
+}
+
+const GalleriesSection = () => {
+    const
+        [galleries, setGalleries] = useState<GalleryDto[]>(),
+        getGalleries = async () => {
+            let galleries = []
+            for (let i = 0; i < 7; i++) {
+                let res = await axios.get(baseApiUrl + `/GetKeyValueByKey/gallery_${i + 1}`)
+                if (res.status == 200) {
+                    let title = res.data.value
+                    res = await axios.get(baseApiUrl + `/GetGallery/${title}`)
+                    galleries.push(res.data)
+                }
+
+            }
+            setGalleries(galleries)
+        }
+
+    React.useEffect(() => {
+        getGalleries()
+    }, [])
+    return <section className="section section-last bg-default">
+        <div className="container-fluid container-inset-0 isotope-wrap">
+            <div className="row row-10 gutters-10 isotope" data-isotope-layout="masonry" data-isotope-group="gallery" data-lightgallery="group">
+
+                <div className="col-xs-6 col-sm-8 col-xl-4 isotope-item oh-desktop">
+
+                    <article className="thumbnail thumbnail-mary thumbnail-mary-big wow slideInRight">
+                        <a className="thumbnail-mary-figure" href={`/Gallery/${galleries[0].name}`} data-lightgallery="item"><img src={getPictureUrlFromList(galleries[0].pictureIdList)[0]} alt="" width="310" height="585" /></a>
+                        <div className="thumbnail-mary-caption">
+                            <div>
+                                <h6 className="thumbnail-mary-title"><a href={`/Gallery/${galleries[0].name}`}>{galleries[0].mainText}</a></h6>
+                                <div className="thumbnail-mary-location">{galleries[0].subText}</div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                <div className="col-xs-6 col-sm-4 col-xl-2 isotope-item oh-desktop">
+
+                    <article className="thumbnail thumbnail-mary thumbnail-mary-2 wow slideInDown">
+                        <a className="thumbnail-mary-figure" href={`/Gallery/${galleries[1].name}`} data-lightgallery="item"><img src={getPictureUrlFromList(galleries[1].pictureIdList)[0]} alt="" width="310" height="585" /></a>
+                        <div className="thumbnail-mary-caption">
+                            <div>
+                                <h6 className="thumbnail-mary-title"><a href="#">{galleries[1].mainText}</a></h6>
+                                <div className="thumbnail-mary-location">{galleries[1].subText}</div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                <div className="col-xs-6 col-sm-8 col-xl-4 isotope-item oh-desktop">
+
+                    <article className="thumbnail thumbnail-mary wow slideInUp">
+                        <a className="thumbnail-mary-figure" href={`/Gallery/${galleries[2].name}`} data-lightgallery="item"><img src={getPictureUrlFromList(galleries[2].pictureIdList)[0]} alt="" width="631" height="587" /></a>
+                        <div className="thumbnail-mary-caption">
+                            <div>
+                                <h6 className="thumbnail-mary-title"><a href="#">{galleries[2].mainText}</a></h6>
+                                <div className="thumbnail-mary-location">{galleries[2].subText}</div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                <div className="col-xs-6 col-sm-4 col-xl-2 isotope-item oh-desktop">
+
+                    <article className="thumbnail thumbnail-mary thumbnail-mary-2 wow slideInUp">
+                        <a className="thumbnail-mary-figure" href={`/Gallery/${galleries[3].name}`} data-lightgallery="item"><img src={getPictureUrlFromList(galleries[3].pictureIdList)[0]} alt="" width="311" height="289" /></a>
+                        <div className="thumbnail-mary-caption">
+                            <div>
+                                <h6 className="thumbnail-mary-title"><a href="#">{galleries[3].mainText}</a></h6>
+                                <div className="thumbnail-mary-location">{galleries[3].subText}</div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                <div className="col-xs-6 col-sm-4 col-xl-2 isotope-item oh-desktop">
+
+                    <article className="thumbnail thumbnail-mary thumbnail-mary-2 wow slideInRight">
+                        <a className="thumbnail-mary-figure" href={`/Gallery/${galleries[4].name}`} data-lightgallery="item"><img src={getPictureUrlFromList(galleries[4].pictureIdList)[0]} alt="" width="311" height="289" /></a>
+                        <div className="thumbnail-mary-caption">
+                            <div>
+                                <h6 className="thumbnail-mary-title"><a href="#">{galleries[4].mainText}</a></h6>
+                                <div className="thumbnail-mary-location">{galleries[4].subText}</div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                <div className="col-xs-6 col-sm-4 col-xl-2 isotope-item oh-desktop">
+
+                    <article className="thumbnail thumbnail-mary thumbnail-mary-2 wow slideInLeft">
+                        <a className="thumbnail-mary-figure" href={`/Gallery/${galleries[5].name}`} data-lightgallery="item"><img src={getPictureUrlFromList(galleries[5].pictureIdList)[0]} alt="" width="311" height="289" /></a>
+                        <div className="thumbnail-mary-caption">
+                            <div>
+                                <h6 className="thumbnail-mary-title"><a href="#">{galleries[5].mainText}</a></h6>
+                                <div className="thumbnail-mary-location">{galleries[5].subText}</div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                <div className="col-xs-6 col-sm-4 col-xl-2 isotope-item oh-desktop">
+
+                    <article className="thumbnail thumbnail-mary thumbnail-mary-2 wow slideInLeft">
+                        <a className="thumbnail-mary-figure" href={`/Gallery/${galleries[6].name}`} data-lightgallery="item"><img src={getPictureUrlFromList(galleries[6].pictureIdList)[0]} alt="" width="311" height="289" /></a>
+                        <div className="thumbnail-mary-caption">
+                            <div>
+                                <h6 className="thumbnail-mary-title"><a href="#">{galleries[6].mainText}</a></h6>
+                                <div className="thumbnail-mary-location">{galleries[6].subText}</div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+const AdditionalInfoSection = () => {
+    return <section className="section section-sm bg-default">
+        <div className="container">
+            <div className="owl-carousel owl-style-11 dots-style-2" data-items="1" data-sm-items="1" data-lg-items="2" data-xl-items="4" data-margin="30" data-dots="true" data-mouse-drag="true" data-rtl="true">
+                <article className="box-icon-megan wow fadeInUp">
+                    <div className="box-icon-megan-header">
+                        <div className="box-icon-megan-icon linearicons-bag"></div>
+                    </div>
+                    <h5 className="box-icon-megan-title"><a href="#">Free Delivery</a></h5>
+                    <p className="box-icon-megan-text">If you order more than 3 pizzas, we will gladly deliver them to you for free.</p>
+                </article>
+                <article className="box-icon-megan wow fadeInUp" data-wow-delay=".05s">
+                    <div className="box-icon-megan-header">
+                        <div className="box-icon-megan-icon linearicons-map2"></div>
+                    </div>
+                    <h5 className="box-icon-megan-title"><a href="#">Convenient Location</a></h5>
+                    <p className="box-icon-megan-text">Our pizzeria is situated in the downtown and is very easy to reach even on weekends.</p>
+                </article>
+                <article className="box-icon-megan wow fadeInUp" data-wow-delay=".1s">
+                    <div className="box-icon-megan-header">
+                        <div className="box-icon-megan-icon linearicons-radar"></div>
+                    </div>
+                    <h5 className="box-icon-megan-title"><a href="#">Free Wi-Fi</a></h5>
+                    <p className="box-icon-megan-text">We have free Wi-Fi available to all clients and visitors of our pizzeria.</p>
+                </article>
+                <article className="box-icon-megan wow fadeInUp" data-wow-delay=".15s">
+                    <div className="box-icon-megan-header">
+                        <div className="box-icon-megan-icon linearicons-thumbs-up"></div>
+                    </div>
+                    <h5 className="box-icon-megan-title"><a href="#">Best Service</a></h5>
+                    <p className="box-icon-megan-text">The client is our #1 priority as we deliver top-notch customer service.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+}
 const root = document.getElementById("react_root");
 ReactDOM.render(<MainPage />, root);

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import * as ReactDOM from 'react-dom';
-import { PInput, PageWrapper, PictureDto, Select, SocialMediaDto, TeamMemberDto, axiosBaseConfig, baseApiUrl, mapObjectToSelect } from './common';
+import { PInput, PageWrapper, PictureDto, Select, SocialMediaDto, TeamMemberDto, axiosBaseConfig, baseApiUrl, mapObjectToSelect, sortFunc } from './common';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 
@@ -14,7 +14,7 @@ export const SocialMediaPage = () => {
         [data, setData] = useState([]),
         getSocials = async () => {
             let res = await axios.get(baseApiUrl + `/GetAllSocialMediaList`, axiosBaseConfig)
-            setSocialMedia(res.data)
+            setSocialMedia(res.data.sort((a: any, b: any) => sortFunc(a, b)))
         },
         getpictures = async () => {
             let res = await axios.get(baseApiUrl + `/GetAllPictureList`, axiosBaseConfig)
@@ -78,8 +78,8 @@ const SocialMediaRow = (props: { item: SocialMediaDto, isNew: boolean, setNew?: 
             let item = makeItem(data)
             const url = baseApiUrl + "/AddSocialMedia";
             await axios.post(url, item, axiosBaseConfig)
-            refreshFunc()
             setNew(false)
+            refreshFunc()
         },
         deleteItem = async (data: any) => {
             let item = makeItem(data)

@@ -133,7 +133,7 @@ var CategoryRow = function (props) {
             isVisible: (data === null || data === void 0 ? void 0 : data.isVisible) || false,
             link: (data === null || data === void 0 ? void 0 : data.link) || "",
             name: (data === null || data === void 0 ? void 0 : data.name) || "",
-            pictureIdList: [(data === null || data === void 0 ? void 0 : data.pictureIdList) / 1] || [],
+            pictureIdList: (data === null || data === void 0 ? void 0 : data.pictureIdList) ? [(data === null || data === void 0 ? void 0 : data.pictureIdList) / 1] : [],
             productIdList: (item === null || item === void 0 ? void 0 : item.productIdList) || []
         };
     }, addItem = function (data) { return __awaiter(void 0, void 0, void 0, function () {

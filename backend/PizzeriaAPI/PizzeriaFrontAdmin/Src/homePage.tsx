@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import * as ReactDOM from 'react-dom';
-import { BannerDto, Image, KeyValueDto, MenuElementDto, PInput, PageSettingsSection, PageWrapper, PictureDto, PictureListElement, Select, SliderDto, SocialMediaDto, axiosBaseConfig, baseApiUrl, mapObjectToSelect } from './common';
+import { BannerDto, Image, KeyValueDto, MenuElementDto, PInput, PageSettingsSection, PageWrapper, PictureDto, PictureListElement, Select, SliderDto, SocialMediaDto, axiosBaseConfig, baseApiUrl, mapObjectToSelect, sortFunc } from './common';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 
@@ -20,11 +20,71 @@ export const HomePage = () => {
         <LogoSection logo_key={'footer_logo'} title={'Footer logo'} />
         <MenuSection />
         <SliderSection />
+        <KeyValueSection _key='categoriesTitle' title='Title of categories section' />
         <BannerSection banner_key={'banner_1'} title={"First banner"} />
+        <KeyValueSection _key='productsTitle' title='Title of products section' />
         <BannerSection banner_key={'banner_2'} title={"Second banner banner"} />
-        {Array.from({ length: 6 }, (_, i) => i + 1).map((i: any, idx: any) => <GallerySection key={idx} gallery_key={`gallery_${i}`} title={`Home page gallery ${i}`} />)}
+        <KeyValueSection _key='testimonialTitle' title='Title of testimonial section' />
+        {Array.from({ length: 7 }, (_, i) => i + 1).map((i: any, idx: any) => <GallerySection key={idx} gallery_key={`gallery_${i}`} title={`Home page gallery ${i}`} />)}
 
     </PageWrapper>
+}
+const KeyValueSection = (props: { _key: string, title: string, subText?: any }) => {
+    const
+        [item, setitem] = useState<KeyValueDto>(),
+        { register, handleSubmit, setValue } = useForm({
+            defaultValues: { itemValue: item?.value || "" },
+        }),
+        sKey = props._key,
+        onSubmit = (data: any) => {
+            if (!item)
+                addItem(sKey, data.itemValue)
+            else
+                editItem(item.id, item.key, data.itemValue)
+            getKeyValues()
+        },
+        getKeyValues = async () => {
+            let res = await axios.get(baseApiUrl + `/GetKeyValueByKey/${sKey}`)
+            setValue("itemValue", res.data.value)
+            setitem(res.data)
+        },
+        editItem = async (id: any, key: string, value: any) => {
+            const url = baseApiUrl + "/UpdateKeyValueById"
+            await axios.patch(url, { id: id, key: key, value: value }, axiosBaseConfig)
+            getKeyValues()
+
+        },
+        addItem = async (key: string, value: any) => {
+            const url = baseApiUrl + "/AddKeyValue";
+            await axios.post(url, { id: -1, key: key, value: value }, axiosBaseConfig)
+            getKeyValues()
+        }
+
+    React.useEffect(() => {
+        getKeyValues()
+    }, [])
+    return <PageSettingsSection title={props.title} subtext={props.subText} >
+
+        <div>
+            <form action="" className="section-form" onSubmit={handleSubmit(onSubmit)}>
+                <div className="form-content ">
+                    <div className="row">
+                        <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>id</div>
+                        <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>key</div>
+                        <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>value</div>
+                    </div>
+                    <div className="row">
+                        <div className="id">{item?.id || -1}</div>
+                        <div className="key">{item?.key || sKey}</div>
+                        <PInput register={{ ...register("itemValue") }} inputProps={{ type: 'text' }} />
+                    </div>
+                </div>
+                <div className="buttons-container">
+                    <button type='submit' className="btn btn-white btn-sm w-100 mb-0 btn-save" >Save</button>
+                </div>
+            </form>
+        </div>
+    </PageSettingsSection>
 }
 const GallerySection = (props: { gallery_key: string, title: string }) => {
     const
@@ -228,7 +288,7 @@ const MenuSection = () => {
         [showNew, setNew] = useState(false),
         getMenuElements = async () => {
             let res = await axios.get(baseApiUrl + `/GetAllMenuElementList`)
-            setElements(res.data)
+            setElements(res.data.sort((a: MenuElementDto, b: MenuElementDto) => sortFunc(a, b, "menuElementId")))
             setParentElements(res.data.filter((m: MenuElementDto, idx: any) => m.parentMenuElementId == null))
         },
         newItem = <MenuElementRow elements={elements} parentElements={parentElements} item={null} refreshFunc={getMenuElements} isNew={true} setShow={setNew} />
@@ -277,8 +337,8 @@ const MenuElementRow = (props: { parentElements: any[], item: MenuElementDto, el
             let item = makeItem(data)
             const url = baseApiUrl + "/AddMenuElement";
             await axios.post(url, item, axiosBaseConfig)
-            refreshFunc()
             setShow(false)
+            refreshFunc()
         },
         deleteItem = async (data: any) => {
             let item = makeItem(data)
@@ -400,11 +460,14 @@ const ContactSection = () => {
             }
             if (!address) {
                 addItem("address", data.addressValue)
+                getKeyValues()
+
             }
             else {
                 editItem(address.id, address.key, data.addressValue)
+                getKeyValues()
+
             }
-            getKeyValues()
 
         },
         getKeyValues = async () => {

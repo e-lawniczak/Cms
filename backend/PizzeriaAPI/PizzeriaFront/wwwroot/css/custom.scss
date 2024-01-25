@@ -35,3 +35,61 @@
 .section.swiper-container {
     height: 753px;
 }
+
+.slick-slider {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+
+    article {
+        padding-top: 140px;
+    }
+
+    .slick-slide {
+        padding: 0 20px;
+        opacity: 0.4;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+
+    .slick-center {
+        opacity: 1;
+
+        article {
+            padding-top: 80px;
+        }
+
+        .quote-tara .quote-tara-caption::before {
+            top: -70px;
+            bottom: 40px;
+            background: #ffffff;
+            box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.07);
+        }
+
+        .quote-tara-text {
+            transform: translate3d(0, -80px, 0);
+        }
+
+        .quote-tara-figure {
+            transform: translate3d(-50%, 0, 0);
+            transition: all .3s ease .1s;
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+
+    .slick-arrow {
+        position: absolute;
+        top: 5px;
+        z-index: 20;
+        &.slick-prev {
+            left: 20%;
+        }
+
+        &.slick-next {
+            right: 20%;
+        }
+    }
+}

@@ -129,7 +129,7 @@ var PicturesPage = function () {
         location.reload();
     }, pictureUpload = React.createElement("div", { className: "picture-upload" },
         React.createElement("form", { className: 'file-upload-form', onSubmit: handleSubmit(onSubmit) },
-            React.createElement(common_1.PInput, { register: __assign({}, register("fileUpload")), inputProps: { type: 'file', multiple: true } }),
+            React.createElement(common_1.PInput, { register: __assign({}, register("fileUpload")), inputProps: { type: 'file', multiple: true, accept: "image/png, image/jpeg" } }),
             React.createElement("button", { className: 'btn btn-white btn-sm mb-0 btn-save', type: 'submit' }, "Add")));
     React.useEffect(function () {
         getData();
