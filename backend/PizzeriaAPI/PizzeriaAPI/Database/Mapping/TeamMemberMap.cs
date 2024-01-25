@@ -13,6 +13,9 @@ namespace PizzeriaAPI.Database.Mapping
 
             References(x => x.Role)
                 .Column("RoleId");
+            HasMany(x=>x.SocialMediaList)
+                .Table("SocialMedia")
+                .Cascade.SaveUpdate();
 
             Table("TeamMember");
         }
