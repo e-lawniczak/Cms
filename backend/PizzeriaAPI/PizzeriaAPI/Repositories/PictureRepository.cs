@@ -1,5 +1,6 @@
 ﻿using MySqlX.XDevAPI;
 using NHibernate.Criterion;
+using NHibernate.Loader;
 using NHibernate.SqlCommand;
 using PizzeriaAPI.Database.Entities;
 using ISession = NHibernate.ISession;
@@ -62,6 +63,12 @@ namespace PizzeriaAPI.Repositories
             var obj = await session.GetAsync<Picture>(id);
             if (obj == null)
                 return;
+            var entities = obj.EntityWithPictureList;
+            foreach (var entityWithPicture in entities)
+            {
+                entityWithPicture?.PictureList?.Remove(obj);
+                await session.UpdateAsync(entityWithPicture);
+            }
             await session.DeleteAsync(obj);
         }
         public async Task<IList<Picture>> GetPictureListByIdListAsync(IList<int> pictureIdList, ISession session)
