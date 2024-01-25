@@ -202,66 +202,173 @@ var Header = function (props) {
                                             React.createElement("a", { className: "rd-nav-link", href: "/" }, "Home")),
                                         React.createElement("li", { className: "rd-nav-item" },
                                             React.createElement("a", { className: "rd-nav-link", href: "/About" }, "About us")),
-                                        mappedMenuElements))),
-                            React.createElement("div", { className: "rd-navbar-project-hamburger rd-navbar-project-hamburger-open rd-navbar-fixed-element-1", "data-multitoggle": ".rd-navbar-inner", "data-multitoggle-blur": ".rd-navbar-wrap", "data-multitoggle-isolate": "data-multitoggle-isolate" },
-                                React.createElement("div", { className: "project-hamburger" },
-                                    React.createElement("span", { className: "project-hamburger-arrow" }),
-                                    React.createElement("span", { className: "project-hamburger-arrow" }),
-                                    React.createElement("span", { className: "project-hamburger-arrow" }))),
-                            React.createElement("div", { className: "rd-navbar-project" },
-                                React.createElement("div", { className: "rd-navbar-project-header" },
-                                    React.createElement("h5", { className: "rd-navbar-project-title" }, "Gallery"),
-                                    React.createElement("div", { className: "rd-navbar-project-hamburger rd-navbar-project-hamburger-close", "data-multitoggle": ".rd-navbar-inner", "data-multitoggle-blur": ".rd-navbar-wrap", "data-multitoggle-isolate": "data-multitoggle-isolate" },
-                                        React.createElement("div", { className: "project-close" },
-                                            React.createElement("span", null),
-                                            React.createElement("span", null)))),
-                                React.createElement("div", { className: "rd-navbar-project-content rd-navbar-content" },
-                                    React.createElement("div", null,
-                                        React.createElement("div", { className: "row gutters-20", "data-lightgallery": "group" },
-                                            React.createElement("div", { className: "col-6" },
-                                                React.createElement("article", { className: "thumbnail thumbnail-creative" },
-                                                    React.createElement("a", { href: "images/project-1-1200x800-original.jpg", "data-lightgallery": "item" },
-                                                        React.createElement("div", { className: "thumbnail-creative-figure" },
-                                                            React.createElement("img", { src: "images/project-1-195x164.jpg", alt: "", width: "195", height: "164" })),
-                                                        React.createElement("div", { className: "thumbnail-creative-caption" },
-                                                            React.createElement("span", { className: "icon thumbnail-creative-icon linearicons-magnifier" }))))),
-                                            React.createElement("div", { className: "col-6" },
-                                                React.createElement("article", { className: "thumbnail thumbnail-creative" },
-                                                    React.createElement("a", { href: "images/project-2-1200x800-original.jpg", "data-lightgallery": "item" },
-                                                        React.createElement("div", { className: "thumbnail-creative-figure" },
-                                                            React.createElement("img", { src: "images/project-2-195x164.jpg", alt: "", width: "195", height: "164" })),
-                                                        React.createElement("div", { className: "thumbnail-creative-caption" },
-                                                            React.createElement("span", { className: "icon thumbnail-creative-icon linearicons-magnifier" }))))),
-                                            React.createElement("div", { className: "col-6" },
-                                                React.createElement("article", { className: "thumbnail thumbnail-creative" },
-                                                    React.createElement("a", { href: "images/project-3-1200x800-original.jpg", "data-lightgallery": "item" },
-                                                        React.createElement("div", { className: "thumbnail-creative-figure" },
-                                                            React.createElement("img", { src: "images/project-3-195x164.jpg", alt: "", width: "195", height: "164" })),
-                                                        React.createElement("div", { className: "thumbnail-creative-caption" },
-                                                            React.createElement("span", { className: "icon thumbnail-creative-icon linearicons-magnifier" }))))),
-                                            React.createElement("div", { className: "col-6" },
-                                                React.createElement("article", { className: "thumbnail thumbnail-creative" },
-                                                    React.createElement("a", { href: "images/project-4-1200x800-original.jpg", "data-lightgallery": "item" },
-                                                        React.createElement("div", { className: "thumbnail-creative-figure" },
-                                                            React.createElement("img", { src: "images/project-4-195x164.jpg", alt: "", width: "195", height: "164" })),
-                                                        React.createElement("div", { className: "thumbnail-creative-caption" },
-                                                            React.createElement("span", { className: "icon thumbnail-creative-icon linearicons-magnifier" }))))),
-                                            React.createElement("div", { className: "col-6" },
-                                                React.createElement("article", { className: "thumbnail thumbnail-creative" },
-                                                    React.createElement("a", { href: "images/project-5-1200x800-original.jpg", "data-lightgallery": "item" },
-                                                        React.createElement("div", { className: "thumbnail-creative-figure" },
-                                                            React.createElement("img", { src: "images/project-5-195x164.jpg", alt: "", width: "195", height: "164" })),
-                                                        React.createElement("div", { className: "thumbnail-creative-caption" },
-                                                            React.createElement("span", { className: "icon thumbnail-creative-icon linearicons-magnifier" }))))),
-                                            React.createElement("div", { className: "col-6" },
-                                                React.createElement("article", { className: "thumbnail thumbnail-creative" },
-                                                    React.createElement("a", { href: "images/project-6-1200x800-original.jpg", "data-lightgallery": "item" },
-                                                        React.createElement("div", { className: "thumbnail-creative-figure" },
-                                                            React.createElement("img", { src: "images/project-6-195x164.jpg", alt: "", width: "195", height: "164" })),
-                                                        React.createElement("div", { className: "thumbnail-creative-caption" },
-                                                            React.createElement("span", { className: "icon thumbnail-creative-icon linearicons-magnifier" })))))))))))))));
+                                        mappedMenuElements)))))))));
 };
 var Footer = function (props) {
+    var _a = (0, react_1.useState)(), menuElements = _a[0], setMenuElements = _a[1], _b = (0, react_1.useState)(), phone = _b[0], setPhone = _b[1], _c = (0, react_1.useState)(), address = _c[0], setAddress = _c[1], _d = (0, react_1.useState)(), footertitle1 = _d[0], setFooterTitle1 = _d[1], _e = (0, react_1.useState)(), footertitle2 = _e[0], setFooterTitle2 = _e[1], _f = (0, react_1.useState)(), socials = _f[0], setSocials = _f[1], _g = (0, react_1.useState)(), categories = _g[0], setCategories = _g[1], _h = (0, react_1.useState)(), pages = _h[0], setPages = _h[1], _j = (0, react_1.useState)(), logo = _j[0], setLogo = _j[1], _k = (0, react_1.useState)(), rights = _k[0], setRights = _k[1], _l = (0, react_1.useState)(), mail = _l[0], setMail = _l[1], getMenuElements = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res, obj;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetVisibleMenuElementList")];
+                case 1:
+                    res = _a.sent();
+                    obj = [];
+                    if (res.status == 200) {
+                        res.data.forEach(function (el) {
+                            if (el.parentMenuElementId < 0 || el.parentMenuElementId == null) {
+                                obj.push({ parent: el, children: [] });
+                            }
+                        });
+                        res.data.forEach(function (el) {
+                            if (el.parentMenuElementId > 0 || el.parentMenuElementId != null) {
+                                var index = obj.findIndex(function (i) { return i.parent.menuElementId == el.parentMenuElementId; });
+                                obj[index].children.push(el);
+                            }
+                        });
+                        setMenuElements(obj);
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    }); }, getRights = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValueByKey/footer_rights")];
+                case 1:
+                    res = _a.sent();
+                    setRights(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, getPhone = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValueByKey/phone")];
+                case 1:
+                    res = _a.sent();
+                    setPhone(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, getMail = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValueByKey/footer_email")];
+                case 1:
+                    res = _a.sent();
+                    setMail(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, getAddress = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValueByKey/address")];
+                case 1:
+                    res = _a.sent();
+                    setAddress(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, getFooterTitle1 = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValueByKey/footer_title1")];
+                case 1:
+                    res = _a.sent();
+                    setFooterTitle1(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, getFooterTitle2 = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValueByKey/footer_title2")];
+                case 1:
+                    res = _a.sent();
+                    setFooterTitle2(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, getPages = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetVisiblePageList")];
+                case 1:
+                    res = _a.sent();
+                    setPages(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, getSocials = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetAllMainSocialMedia")];
+                case 1:
+                    res = _a.sent();
+                    setSocials(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, getCategories = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetVisibleCategoryList")];
+                case 1:
+                    res = _a.sent();
+                    setCategories(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, getLogo = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res, t, s;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValueByKey/footer_logo")];
+                case 1:
+                    res = _a.sent();
+                    t = res.data;
+                    s = t.value.split("/");
+                    s[2] = "Full";
+                    t.value = s.join("/");
+                    setLogo(t);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, mappedMenuElements = menuElements && menuElements.map(function (el) {
+        return React.createElement("li", { className: "rd-nav-item" },
+            React.createElement("a", { className: "rd-nav-link", href: el.parent.link }, el.parent.text),
+            React.createElement("ul", { className: 'child-menu' }, el.children.map(function (child, idx) {
+                return React.createElement("li", { className: "child rd-nav-item" },
+                    React.createElement("a", { className: "rd-nav-link", href: child.link }, child.text));
+            })));
+    }).filter(function (i) { return i; }), mappedSocial = socials === null || socials === void 0 ? void 0 : socials.map(function (social, idx) {
+        var iconClass = (0, common_1.prepareSocialIcon)(social.name.split("_"));
+        return React.createElement("li", { key: idx },
+            React.createElement("a", { className: ["icon mdi", iconClass].join(" "), href: social.link }));
+    }), x = "";
+    React.useEffect(function () {
+        getMenuElements();
+        getPhone();
+        getAddress();
+        getSocials();
+        getCategories();
+        getLogo();
+        getRights();
+        getPages();
+        getFooterTitle1();
+        getMail();
+        getFooterTitle2();
+    }, []);
     return React.createElement(React.Fragment, null,
         React.createElement("footer", { className: ["section footer-modern context-dark footer-modern-2", props.className].join(" ") },
             React.createElement("div", { className: "footer-modern-line" },
@@ -269,49 +376,29 @@ var Footer = function (props) {
                     React.createElement("div", { className: "row row-50" },
                         React.createElement("div", { className: "col-md-6 col-lg-4" },
                             React.createElement("h5", { className: "footer-modern-title oh-desktop" },
-                                React.createElement("span", { className: "d-inline-block wow slideInLeft" }, "What We Offer")),
-                            React.createElement("ul", { className: "footer-modern-list d-inline-block d-sm-block wow fadeInUp" },
-                                React.createElement("li", null,
-                                    React.createElement("a", { href: "#" }, "Pizzas")),
-                                React.createElement("li", null,
-                                    React.createElement("a", { href: "#" }, "Burgers")),
-                                React.createElement("li", null,
-                                    React.createElement("a", { href: "#" }, "Salads")),
-                                React.createElement("li", null,
-                                    React.createElement("a", { href: "#" }, "Drinks")),
-                                React.createElement("li", null,
-                                    React.createElement("a", { href: "#" }, "Seafood")),
-                                React.createElement("li", null,
-                                    React.createElement("a", { href: "#" }, "Drinks")))),
+                                React.createElement("span", { className: "d-inline-block wow slideInLeft" }, (footertitle1 === null || footertitle1 === void 0 ? void 0 : footertitle1.value) || "What We Offer")),
+                            React.createElement("ul", { className: "footer-modern-list d-inline-block d-sm-block wow fadeInUp" }, categories === null || categories === void 0 ? void 0 : categories.map(function (p) {
+                                return React.createElement("li", null,
+                                    React.createElement("a", { href: "/Categories/".concat(p.name) }, p.name));
+                            }))),
                         React.createElement("div", { className: "col-md-6 col-lg-4 col-xl-3" },
                             React.createElement("h5", { className: "footer-modern-title oh-desktop" },
-                                React.createElement("span", { className: "d-inline-block wow slideInLeft" }, "Information")),
+                                React.createElement("span", { className: "d-inline-block wow slideInLeft" }, (footertitle2 === null || footertitle2 === void 0 ? void 0 : footertitle2.value) || "Information")),
                             React.createElement("ul", { className: "footer-modern-list d-inline-block d-sm-block wow fadeInUp" },
                                 React.createElement("li", null,
-                                    React.createElement("a", { href: "about-us.html" }, "About us")),
-                                React.createElement("li", null,
-                                    React.createElement("a", { href: "#" }, "Latest News")),
-                                React.createElement("li", null,
-                                    React.createElement("a", { href: "#" }, "Our Menu")),
-                                React.createElement("li", null,
-                                    React.createElement("a", { href: "#" }, "FAQ")),
-                                React.createElement("li", null,
-                                    React.createElement("a", { href: "#" }, "Shop")),
-                                React.createElement("li", null,
-                                    React.createElement("a", { href: "contacts.html" }, "Contact Us"))))))),
+                                    React.createElement("a", { href: "/About" }, "About us")), pages === null || pages === void 0 ? void 0 :
+                                pages.map(function (p) {
+                                    return React.createElement("li", null,
+                                        React.createElement("a", { href: "/Page/".concat(p.title) }, p.title));
+                                })))))),
             React.createElement("div", { className: "footer-modern-line-2" },
                 React.createElement("div", { className: "container" },
                     React.createElement("div", { className: "row row-30 align-items-center" },
                         React.createElement("div", { className: "col-sm-6 col-md-7 col-lg-4 col-xl-4" },
                             React.createElement("div", { className: "row row-30 align-items-center text-lg-center" },
                                 React.createElement("div", { className: "col-md-7 col-xl-6" },
-                                    React.createElement("a", { className: "brand", href: "index.html" },
-                                        React.createElement("img", { src: "images/logo-inverse-198x66.png", alt: "", width: "198", height: "66" }))),
-                                React.createElement("div", { className: "col-md-5 col-xl-6" },
-                                    React.createElement("div", { className: "iso-1" },
-                                        React.createElement("span", null,
-                                            React.createElement("img", { src: "images/like-icon-58x25.png", alt: "", width: "58", height: "25" })),
-                                        React.createElement("span", { className: "iso-1-big" }, "9.4k"))))),
+                                    React.createElement("a", { className: "brand", href: "/" },
+                                        React.createElement("img", { src: common_1.baseApiUrl + (logo === null || logo === void 0 ? void 0 : logo.value), alt: "", width: "198", height: "66" }))))),
                         React.createElement("div", { className: "col-sm-6 col-md-12 col-lg-8 col-xl-8 oh-desktop" },
                             React.createElement("div", { className: "group-xmd group-sm-justify" },
                                 React.createElement("div", { className: "footer-modern-contacts wow slideInUp" },
@@ -319,30 +406,26 @@ var Footer = function (props) {
                                         React.createElement("div", { className: "unit-left" },
                                             React.createElement("span", { className: "icon icon-24 mdi mdi-phone" })),
                                         React.createElement("div", { className: "unit-body" },
-                                            React.createElement("a", { className: "phone", href: "tel:#" }, "+1 718-999-3939")))),
+                                            React.createElement("a", { className: "phone", href: "tel:".concat(phone === null || phone === void 0 ? void 0 : phone.value) }, phone === null || phone === void 0 ? void 0 : phone.value)))),
                                 React.createElement("div", { className: "footer-modern-contacts wow slideInDown" },
                                     React.createElement("div", { className: "unit unit-spacing-sm align-items-center" },
                                         React.createElement("div", { className: "unit-left" },
                                             React.createElement("span", { className: "icon mdi mdi-email" })),
                                         React.createElement("div", { className: "unit-body" },
-                                            React.createElement("a", { className: "mail", href: "mailto:#" }, "info@demolink.org")))),
+                                            React.createElement("a", { className: "mail", href: "mailto:".concat(mail === null || mail === void 0 ? void 0 : mail.value) }, mail === null || mail === void 0 ? void 0 : mail.value)))),
                                 React.createElement("div", { className: "wow slideInRight" },
-                                    React.createElement("ul", { className: "list-inline footer-social-list footer-social-list-2 footer-social-list-3" },
-                                        React.createElement("li", null,
-                                            React.createElement("a", { className: "icon mdi mdi-facebook", href: "#" })),
-                                        React.createElement("li", null,
-                                            React.createElement("a", { className: "icon mdi mdi-twitter", href: "#" })),
-                                        React.createElement("li", null,
-                                            React.createElement("a", { className: "icon mdi mdi-instagram", href: "#" })),
-                                        React.createElement("li", null,
-                                            React.createElement("a", { className: "icon mdi mdi-google-plus", href: "#" }))))))))),
+                                    React.createElement("ul", { className: "list-inline footer-social-list footer-social-list-2 footer-social-list-3" }, socials === null || socials === void 0 ? void 0 : socials.map(function (social, idx) {
+                                        var iconClass = (0, common_1.prepareSocialIcon)(social.name.split("_"));
+                                        return React.createElement("li", { key: idx },
+                                            React.createElement("a", { className: ["icon mdi", iconClass].join(" "), href: social.link }));
+                                    })))))))),
             React.createElement("div", { className: "footer-modern-line-3" },
                 React.createElement("div", { className: "container" },
                     React.createElement("div", { className: "row row-10 justify-content-between" },
                         React.createElement("div", { className: "col-md-6" },
-                            React.createElement("span", null, "514 S. Magnolia St. Orlando, FL 32806")),
+                            React.createElement("span", null, address === null || address === void 0 ? void 0 : address.value)),
                         React.createElement("div", { className: "col-md-auto" },
-                            React.createElement("p", { className: "rights" },
+                            React.createElement("p", { className: "rights" }, rights ? rights.value : React.createElement(React.Fragment, null,
                                 React.createElement("span", null, "\u00A9\u00A0"),
                                 React.createElement("span", { className: "copyright-year" }),
                                 React.createElement("span", null),
@@ -350,6 +433,6 @@ var Footer = function (props) {
                                 React.createElement("span", null, "All Rights Reserved."),
                                 React.createElement("span", null,
                                     " Design\u00A0by\u00A0",
-                                    React.createElement("a", { href: "https://www.templatemonster.com" }, "TemplateMonster")))))))));
+                                    React.createElement("a", { href: "https://www.templatemonster.com" }, "TemplateMonster"))))))))));
 };
 //# sourceMappingURL=commonElements.js.map

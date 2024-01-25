@@ -38,7 +38,6 @@ export const HomePage = () => {
         <KeyValueSection _key='footer_title1' title='Title on first column in footer' />
         <KeyValueSection _key='footer_title2' title='Title on second column in footer' />
         <KeyValueSection _key='footer_rights' title='All rights reserved bottom footer content' />
-
     </PageWrapper>
 }
 const KeyValueSection = (props: { _key: string, title: string, subText?: any }) => {

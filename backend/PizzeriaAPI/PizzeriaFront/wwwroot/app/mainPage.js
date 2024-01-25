@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -69,6 +80,9 @@ var ReactDOM = __importStar(require("react-dom"));
 var commonElements_1 = require("./commonElements");
 var axios_1 = __importDefault(require("axios"));
 var common_1 = require("./common");
+var react_slick_1 = __importDefault(require("../node_modules/react-slick"));
+// import "../node_modules/slick-carousel/slick/slick.css";
+// import "../node_modules/slick-carousel/slick/slick-theme.css";
 var MainPage = function () {
     var _a = (0, react_1.useState)([]), data = _a[0], setData = _a[1], x = "";
     return React.createElement(commonElements_1.PageWrapper, null,
@@ -113,7 +127,6 @@ var SwiperSection = function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    console.log("second");
                     if (!slider)
                         return [2 /*return*/];
                     queryString = slider === null || slider === void 0 ? void 0 : slider.bannerIdList.map(function (i) { return "".concat(i); });
@@ -314,140 +327,237 @@ var ProductsSection = function () {
             React.createElement("div", { className: "row row-lg row-30" }, mappedProducts)));
 };
 var TestimonialSection = function () {
+    var _a = (0, react_1.useState)(), testimonials = _a[0], setTestimonials = _a[1], _b = (0, react_1.useState)(), roles = _b[0], setRoles = _b[1], _c = (0, react_1.useState)(false), isHover = _c[0], setIsHover = _c[1], _d = (0, react_1.useState)(), testimonialsTitle = _d[0], setTestimonialsTitle = _d[1], getTestimonials = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res, resTitle;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetVisibleTestimonialList", common_1.axiosBaseConfig)];
+                case 1:
+                    res = _a.sent();
+                    return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValueByKey/testimonialTitle")];
+                case 2:
+                    resTitle = _a.sent();
+                    setTestimonials(res.data);
+                    setTestimonialsTitle(resTitle.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, getRoles = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetvisibleRoleList")];
+                case 1:
+                    res = _a.sent();
+                    setRoles(res.data.sort(function (a, b) { return a.roleId - b.roleId; }));
+                    return [2 /*return*/];
+            }
+        });
+    }); }, mappedTestimonials = testimonials === null || testimonials === void 0 ? void 0 : testimonials.map(function (t, idx) {
+        return React.createElement("article", { className: "quote-tara", onMouseEnter: function () { return setIsHover(true); }, onMouseLeave: function () { return setIsHover(false); } },
+            React.createElement("div", { className: "quote-tara-caption" },
+                React.createElement("div", { className: "quote-tara-text" },
+                    React.createElement("p", { className: "q", dangerouslySetInnerHTML: { __html: t.text } })),
+                React.createElement("div", { className: "quote-tara-figure" },
+                    React.createElement("img", { src: (0, common_1.getPictureUrlFromList)(t.pictureIdList)[0], alt: "", width: "115", height: "115" }))),
+            React.createElement("h6", { className: "quote-tara-author" },
+                t.firstName,
+                " ",
+                t.lastName),
+            React.createElement("div", { className: "quote-tara-status" }, roles === null || roles === void 0 ? void 0 : roles.find(function (r, idx) { return r.roleId == t.roleId; }).name));
+    }).filter(function (p) { return p; }), slickSettings = {
+        infinite: true,
+        speed: 500,
+        className: "center",
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        centerMode: true,
+        centerPadding: '60px',
+        nextArrow: React.createElement(SampleNextArrow, null),
+        prevArrow: React.createElement(SamplePrevArrow, null)
+    };
+    React.useEffect(function () {
+        getTestimonials();
+    }, []);
+    React.useEffect(function () {
+        getRoles();
+    }, [testimonials]);
     return React.createElement("section", { className: "section section-xl bg-default" },
         React.createElement("div", { className: "container" },
-            React.createElement("h3", { className: "wow fadeInLeft" }, "What People Say")),
+            React.createElement("h3", { className: "wow fadeInLeft" }, (testimonialsTitle === null || testimonialsTitle === void 0 ? void 0 : testimonialsTitle.value) || "What People Say")),
         React.createElement("div", { className: "container container-style-1" },
-            React.createElement("div", { className: "owl-carousel owl-style-12", "data-items": "1", "data-sm-items": "2", "data-lg-items": "3", "data-margin": "30", "data-xl-margin": "45", "data-autoplay": "true", "data-nav": "true", "data-center": "true", "data-smart-speed": "400" },
-                React.createElement("article", { className: "quote-tara" },
-                    React.createElement("div", { className: "quote-tara-caption" },
-                        React.createElement("div", { className: "quote-tara-text" },
-                            React.createElement("p", { className: "q" }, "PizzaHouse is the longest lasting pizza place in the city and is well run and staffed. Prices are great and allow me to keep coming back.")),
-                        React.createElement("div", { className: "quote-tara-figure" },
-                            React.createElement("img", { src: "images/user-6-115x115.jpg", alt: "", width: "115", height: "115" }))),
-                    React.createElement("h6", { className: "quote-tara-author" }, "Ashley Fitzgerald"),
-                    React.createElement("div", { className: "quote-tara-status" }, "Client")),
-                React.createElement("article", { className: "quote-tara" },
-                    React.createElement("div", { className: "quote-tara-caption" },
-                        React.createElement("div", { className: "quote-tara-text" },
-                            React.createElement("p", { className: "q" }, "I am a real pizza addict, and even when I\u2019m home I prefer your pizzas to all others. They taste awesome and are very affordable.")),
-                        React.createElement("div", { className: "quote-tara-figure" },
-                            React.createElement("img", { src: "images/user-8-115x115.jpg", alt: "", width: "115", height: "115" }))),
-                    React.createElement("h6", { className: "quote-tara-author" }, "Stephanie Williams"),
-                    React.createElement("div", { className: "quote-tara-status" }, "Client")),
-                React.createElement("article", { className: "quote-tara" },
-                    React.createElement("div", { className: "quote-tara-caption" },
-                        React.createElement("div", { className: "quote-tara-text" },
-                            React.createElement("p", { className: "q" }, "PizzaHouse has amazing pizza. Not only do you get served with a great attitude, you also get delicious pizza at a great price!")),
-                        React.createElement("div", { className: "quote-tara-figure" },
-                            React.createElement("img", { src: "images/user-7-115x115.jpg", alt: "", width: "115", height: "115" }))),
-                    React.createElement("h6", { className: "quote-tara-author" }, "Bill Johnson"),
-                    React.createElement("div", { className: "quote-tara-status" }, "Client")),
-                React.createElement("article", { className: "quote-tara" },
-                    React.createElement("div", { className: "quote-tara-caption" },
-                        React.createElement("div", { className: "quote-tara-text" },
-                            React.createElement("p", { className: "q" }, "PizzaHouse has great pizza. Not only do you get served with a great attitude and delivered delicious pizza, you get a great price.")),
-                        React.createElement("div", { className: "quote-tara-figure" },
-                            React.createElement("img", { src: "images/user-9-115x115.jpg", alt: "", width: "115", height: "115" }))),
-                    React.createElement("h6", { className: "quote-tara-author" }, "Aaron Wilson"),
-                    React.createElement("div", { className: "quote-tara-status" }, "Client")))));
+            React.createElement(react_slick_1.default, __assign({}, slickSettings), mappedTestimonials)));
 };
+function SampleNextArrow(props) {
+    var className = props.className, style = props.style, onClick = props.onClick;
+    return (React.createElement("div", { className: className, style: __assign({}, style), onClick: onClick }));
+}
+function SamplePrevArrow(props) {
+    var className = props.className, style = props.style, onClick = props.onClick;
+    return (React.createElement("div", { className: className, style: __assign({}, style), onClick: onClick }));
+}
 var GalleriesSection = function () {
-    return React.createElement("section", { className: "section section-last bg-default" },
+    var _a = (0, react_1.useState)(), galleries = _a[0], setGalleries = _a[1], getGalleries = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var galleries, i, res, title;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    galleries = [];
+                    i = 0;
+                    _a.label = 1;
+                case 1:
+                    if (!(i < 7)) return [3 /*break*/, 5];
+                    return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValueByKey/gallery_".concat(i + 1))];
+                case 2:
+                    res = _a.sent();
+                    if (!(res.status == 200)) return [3 /*break*/, 4];
+                    title = res.data.value;
+                    return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetGallery/".concat(title))];
+                case 3:
+                    res = _a.sent();
+                    galleries.push(res.data);
+                    _a.label = 4;
+                case 4:
+                    i++;
+                    return [3 /*break*/, 1];
+                case 5:
+                    setGalleries(galleries);
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    React.useEffect(function () {
+        getGalleries();
+    }, []);
+    return React.createElement("section", { className: "section section-last bg-default gallery-section" },
         React.createElement("div", { className: "container-fluid container-inset-0 isotope-wrap" },
-            React.createElement("div", { className: "row row-10 gutters-10 isotope", "data-isotope-layout": "masonry", "data-isotope-group": "gallery", "data-lightgallery": "group" },
-                React.createElement("div", { className: "col-xs-6 col-sm-4 col-xl-2 isotope-item oh-desktop" },
-                    React.createElement("article", { className: "thumbnail thumbnail-mary thumbnail-mary-2 wow slideInLeft" },
-                        React.createElement("a", { className: "thumbnail-mary-figure", href: "images/gallery-1-1200x800-original.jpg", "data-lightgallery": "item" },
-                            React.createElement("img", { src: "images/gallery-1-310x585.jpg", alt: "", width: "310", height: "585" })),
-                        React.createElement("div", { className: "thumbnail-mary-caption" },
-                            React.createElement("div", null,
-                                React.createElement("h6", { className: "thumbnail-mary-title" },
-                                    React.createElement("a", { href: "#" }, "Best Ingredients")),
-                                React.createElement("div", { className: "thumbnail-mary-location" }, "Tasty Pizza"))))),
-                React.createElement("div", { className: "col-xs-6 col-sm-8 col-xl-4 isotope-item oh-desktop" },
+            React.createElement("div", { className: "gallery-row" },
+                React.createElement("div", { className: "grid-child grid-child-".concat(1, "   oh-desktop") }, (galleries === null || galleries === void 0 ? void 0 : galleries.length) > 0 &&
                     React.createElement("article", { className: "thumbnail thumbnail-mary thumbnail-mary-big wow slideInRight" },
-                        React.createElement("a", { className: "thumbnail-mary-figure", href: "images/gallery-2-1200x800-original.jpg", "data-lightgallery": "item" },
-                            React.createElement("img", { src: "images/gallery-2-631x587.jpg", alt: "", width: "631", height: "587" })),
+                        React.createElement("a", { className: "thumbnail-mary-figure", href: "/Gallery/".concat(galleries[0].name), "data-lightgallery": "item" },
+                            React.createElement("img", { src: (0, common_1.getPictureUrlFromList)(galleries[0].pictureIdList)[0], alt: "", width: "310", height: "585" })),
                         React.createElement("div", { className: "thumbnail-mary-caption" },
                             React.createElement("div", null,
                                 React.createElement("h6", { className: "thumbnail-mary-title" },
-                                    React.createElement("a", { href: "#" }, "Comfortable interior")),
-                                React.createElement("div", { className: "thumbnail-mary-location" }, "Modern Design"))))),
-                React.createElement("div", { className: "col-xs-6 col-sm-4 col-xl-2 isotope-item oh-desktop" },
+                                    React.createElement("a", { href: "/Gallery/".concat(galleries[0].name) }, galleries[0].mainText)),
+                                React.createElement("div", { className: "thumbnail-mary-location" }, galleries[0].subText))))),
+                React.createElement("div", { className: "grid-child grid-child-".concat(2, "   oh-desktop") }, (galleries === null || galleries === void 0 ? void 0 : galleries.length) > 1 &&
                     React.createElement("article", { className: "thumbnail thumbnail-mary thumbnail-mary-2 wow slideInDown" },
-                        React.createElement("a", { className: "thumbnail-mary-figure", href: "images/gallery-3-1200x800-original.jpg", "data-lightgallery": "item" },
-                            React.createElement("img", { src: "images/gallery-3-311x289.jpg", alt: "", width: "311", height: "289" })),
+                        React.createElement("a", { className: "thumbnail-mary-figure", href: "/Gallery/".concat(galleries[1].name), "data-lightgallery": "item" },
+                            React.createElement("img", { src: (0, common_1.getPictureUrlFromList)(galleries[1].pictureIdList)[0], alt: "", width: "310", height: "585" })),
                         React.createElement("div", { className: "thumbnail-mary-caption" },
                             React.createElement("div", null,
                                 React.createElement("h6", { className: "thumbnail-mary-title" },
-                                    React.createElement("a", { href: "#" }, "quality Dishware")),
-                                React.createElement("div", { className: "thumbnail-mary-location" }, "Top-notch utensils"))))),
-                React.createElement("div", { className: "col-xs-6 col-sm-8 col-xl-4 isotope-item oh-desktop" },
+                                    React.createElement("a", { href: "/Gallery/".concat(galleries[6].name) }, galleries[1].mainText)),
+                                React.createElement("div", { className: "thumbnail-mary-location" }, galleries[1].subText))))),
+                React.createElement("div", { className: "grid-child grid-child-".concat(3, "   oh-desktop") }, (galleries === null || galleries === void 0 ? void 0 : galleries.length) > 2 &&
                     React.createElement("article", { className: "thumbnail thumbnail-mary wow slideInUp" },
-                        React.createElement("a", { className: "thumbnail-mary-figure", href: "images/gallery-4-1200x800-original.jpg", "data-lightgallery": "item" },
-                            React.createElement("img", { src: "images/gallery-4-631x289.jpg", alt: "", width: "631", height: "289" })),
+                        React.createElement("a", { className: "thumbnail-mary-figure", href: "/Gallery/".concat(galleries[2].name), "data-lightgallery": "item" },
+                            React.createElement("img", { src: (0, common_1.getPictureUrlFromList)(galleries[2].pictureIdList)[0], alt: "", width: "631", height: "587" })),
                         React.createElement("div", { className: "thumbnail-mary-caption" },
                             React.createElement("div", null,
                                 React.createElement("h6", { className: "thumbnail-mary-title" },
-                                    React.createElement("a", { href: "#" }, "Refreshing cocktails")),
-                                React.createElement("div", { className: "thumbnail-mary-location" }, "Exclusive selection"))))),
-                React.createElement("div", { className: "col-xs-6 col-sm-4 col-xl-2 isotope-item oh-desktop" },
+                                    React.createElement("a", { href: "/Gallery/".concat(galleries[6].name) }, galleries[2].mainText)),
+                                React.createElement("div", { className: "thumbnail-mary-location" }, galleries[2].subText))))),
+                React.createElement("div", { className: "grid-child grid-child-".concat(4, "   oh-desktop") }, (galleries === null || galleries === void 0 ? void 0 : galleries.length) > 3 &&
                     React.createElement("article", { className: "thumbnail thumbnail-mary thumbnail-mary-2 wow slideInUp" },
-                        React.createElement("a", { className: "thumbnail-mary-figure", href: "images/gallery-5-1200x800-original.jpg", "data-lightgallery": "item" },
-                            React.createElement("img", { src: "images/gallery-5-311x289.jpg", alt: "", width: "311", height: "289" })),
+                        React.createElement("a", { className: "thumbnail-mary-figure", href: "/Gallery/".concat(galleries[3].name), "data-lightgallery": "item" },
+                            React.createElement("img", { src: (0, common_1.getPictureUrlFromList)(galleries[3].pictureIdList)[0], alt: "", width: "311", height: "289" })),
                         React.createElement("div", { className: "thumbnail-mary-caption" },
                             React.createElement("div", null,
                                 React.createElement("h6", { className: "thumbnail-mary-title" },
-                                    React.createElement("a", { href: "#" }, "Exotic Salads")),
-                                React.createElement("div", { className: "thumbnail-mary-location" }, "Summer Taste"))))),
-                React.createElement("div", { className: "col-xs-6 col-sm-4 col-xl-2 isotope-item oh-desktop" },
+                                    React.createElement("a", { href: "/Gallery/".concat(galleries[6].name) }, galleries[3].mainText)),
+                                React.createElement("div", { className: "thumbnail-mary-location" }, galleries[3].subText))))),
+                React.createElement("div", { className: "grid-child grid-child-".concat(5, "   oh-desktop") }, (galleries === null || galleries === void 0 ? void 0 : galleries.length) > 4 &&
                     React.createElement("article", { className: "thumbnail thumbnail-mary thumbnail-mary-2 wow slideInRight" },
-                        React.createElement("a", { className: "thumbnail-mary-figure", href: "images/gallery-6-1200x800-original.jpg", "data-lightgallery": "item" },
-                            React.createElement("img", { src: "images/gallery-6-311x289.jpg", alt: "", width: "311", height: "289" })),
+                        React.createElement("a", { className: "thumbnail-mary-figure", href: "/Gallery/".concat(galleries[4].name), "data-lightgallery": "item" },
+                            React.createElement("img", { src: (0, common_1.getPictureUrlFromList)(galleries[4].pictureIdList)[0], alt: "", width: "311", height: "289" })),
                         React.createElement("div", { className: "thumbnail-mary-caption" },
                             React.createElement("div", null,
                                 React.createElement("h6", { className: "thumbnail-mary-title" },
-                                    React.createElement("a", { href: "#" }, "All Types of pizza")),
-                                React.createElement("div", { className: "thumbnail-mary-location" }, "Special Recipes"))))),
-                React.createElement("div", { className: "col-xs-6 col-sm-4 col-xl-2 isotope-item oh-desktop" },
+                                    React.createElement("a", { href: "/Gallery/".concat(galleries[6].name) }, galleries[4].mainText)),
+                                React.createElement("div", { className: "thumbnail-mary-location" }, galleries[4].subText))))),
+                React.createElement("div", { className: "grid-child grid-child-".concat(6, "   oh-desktop") }, (galleries === null || galleries === void 0 ? void 0 : galleries.length) > 5 &&
                     React.createElement("article", { className: "thumbnail thumbnail-mary thumbnail-mary-2 wow slideInLeft" },
-                        React.createElement("a", { className: "thumbnail-mary-figure", href: "images/gallery-7-1200x800-original.jpg", "data-lightgallery": "item" },
-                            React.createElement("img", { src: "images/gallery-7-311x289.jpg", alt: "", width: "311", height: "289" })),
+                        React.createElement("a", { className: "thumbnail-mary-figure", href: "/Gallery/".concat(galleries[5].name), "data-lightgallery": "item" },
+                            React.createElement("img", { src: (0, common_1.getPictureUrlFromList)(galleries[5].pictureIdList)[0], alt: "", width: "311", height: "289" })),
                         React.createElement("div", { className: "thumbnail-mary-caption" },
                             React.createElement("div", null,
                                 React.createElement("h6", { className: "thumbnail-mary-title" },
-                                    React.createElement("a", { href: "#" }, "Diverse menu")),
-                                React.createElement("div", { className: "thumbnail-mary-location" }, "Pick Your Favorite dish"))))))));
+                                    React.createElement("a", { href: "/Gallery/".concat(galleries[6].name) }, galleries[5].mainText)),
+                                React.createElement("div", { className: "thumbnail-mary-location" }, galleries[5].subText))))),
+                React.createElement("div", { className: "grid-child grid-child-".concat(7, "   oh-desktop") }, (galleries === null || galleries === void 0 ? void 0 : galleries.length) > 6 &&
+                    React.createElement("article", { className: "thumbnail thumbnail-mary thumbnail-mary-2 wow slideInLeft" },
+                        React.createElement("a", { className: "thumbnail-mary-figure", href: "/Gallery/".concat(galleries[6].name), "data-lightgallery": "item" },
+                            React.createElement("img", { src: (0, common_1.getPictureUrlFromList)(galleries[6].pictureIdList)[0], alt: "", width: "311", height: "289" })),
+                        React.createElement("div", { className: "thumbnail-mary-caption" },
+                            React.createElement("div", null,
+                                React.createElement("h6", { className: "thumbnail-mary-title" },
+                                    React.createElement("a", { href: "/Gallery/".concat(galleries[6].name) }, galleries[6].mainText)),
+                                React.createElement("div", { className: "thumbnail-mary-location" }, galleries[6].subText))))))));
 };
 var AdditionalInfoSection = function () {
+    var _a, _b, _c, _d;
+    var _e = (0, react_1.useState)(), boxesData = _e[0], setBoxesData = _e[1], getBoxes = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var boxes, i, res, resText;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    boxes = [];
+                    i = 0;
+                    _a.label = 1;
+                case 1:
+                    if (!(i < 4)) return [3 /*break*/, 5];
+                    return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValueByKey/box".concat(i + 1))];
+                case 2:
+                    res = _a.sent();
+                    return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValueByKey/box".concat(i + 1, "_text"))];
+                case 3:
+                    resText = _a.sent();
+                    if (res.status == 200 && resText.status == 200) {
+                        boxes.push({ title: res.data.value, text: resText.data.value });
+                    }
+                    _a.label = 4;
+                case 4:
+                    i++;
+                    return [3 /*break*/, 1];
+                case 5:
+                    setBoxesData(boxes);
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    React.useEffect(function () {
+        getBoxes();
+    }, []);
     return React.createElement("section", { className: "section section-sm bg-default" },
         React.createElement("div", { className: "container" },
             React.createElement("div", { className: "owl-carousel owl-style-11 dots-style-2", "data-items": "1", "data-sm-items": "1", "data-lg-items": "2", "data-xl-items": "4", "data-margin": "30", "data-dots": "true", "data-mouse-drag": "true", "data-rtl": "true" },
                 React.createElement("article", { className: "box-icon-megan wow fadeInUp" },
                     React.createElement("div", { className: "box-icon-megan-header" },
                         React.createElement("div", { className: "box-icon-megan-icon linearicons-bag" })),
-                    React.createElement("h5", { className: "box-icon-megan-title" },
-                        React.createElement("a", { href: "#" }, "Free Delivery")),
-                    React.createElement("p", { className: "box-icon-megan-text" }, "If you order more than 3 pizzas, we will gladly deliver them to you for free.")),
+                    (boxesData === null || boxesData === void 0 ? void 0 : boxesData.length) > 0 && React.createElement(React.Fragment, null,
+                        React.createElement("h5", { className: "box-icon-megan-title" }, (_a = boxesData[0]) === null || _a === void 0 ? void 0 : _a.title),
+                        React.createElement("p", { className: "box-icon-megan-text" }, boxesData[0].text))),
                 React.createElement("article", { className: "box-icon-megan wow fadeInUp", "data-wow-delay": ".05s" },
                     React.createElement("div", { className: "box-icon-megan-header" },
                         React.createElement("div", { className: "box-icon-megan-icon linearicons-map2" })),
-                    React.createElement("h5", { className: "box-icon-megan-title" },
-                        React.createElement("a", { href: "#" }, "Convenient Location")),
-                    React.createElement("p", { className: "box-icon-megan-text" }, "Our pizzeria is situated in the downtown and is very easy to reach even on weekends.")),
+                    (boxesData === null || boxesData === void 0 ? void 0 : boxesData.length) > 1 && React.createElement(React.Fragment, null,
+                        React.createElement("h5", { className: "box-icon-megan-title" }, (_b = boxesData[1]) === null || _b === void 0 ? void 0 : _b.title),
+                        React.createElement("p", { className: "box-icon-megan-text" }, boxesData[1].text))),
                 React.createElement("article", { className: "box-icon-megan wow fadeInUp", "data-wow-delay": ".1s" },
                     React.createElement("div", { className: "box-icon-megan-header" },
                         React.createElement("div", { className: "box-icon-megan-icon linearicons-radar" })),
-                    React.createElement("h5", { className: "box-icon-megan-title" },
-                        React.createElement("a", { href: "#" }, "Free Wi-Fi")),
-                    React.createElement("p", { className: "box-icon-megan-text" }, "We have free Wi-Fi available to all clients and visitors of our pizzeria.")),
+                    (boxesData === null || boxesData === void 0 ? void 0 : boxesData.length) > 2 && React.createElement(React.Fragment, null,
+                        React.createElement("h5", { className: "box-icon-megan-title" }, (_c = boxesData[2]) === null || _c === void 0 ? void 0 : _c.title),
+                        React.createElement("p", { className: "box-icon-megan-text" }, boxesData[2].text))),
                 React.createElement("article", { className: "box-icon-megan wow fadeInUp", "data-wow-delay": ".15s" },
                     React.createElement("div", { className: "box-icon-megan-header" },
                         React.createElement("div", { className: "box-icon-megan-icon linearicons-thumbs-up" })),
-                    React.createElement("h5", { className: "box-icon-megan-title" },
-                        React.createElement("a", { href: "#" }, "Best Service")),
-                    React.createElement("p", { className: "box-icon-megan-text" }, "The client is our #1 priority as we deliver top-notch customer service.")))));
+                    (boxesData === null || boxesData === void 0 ? void 0 : boxesData.length) > 3 &&
+                        React.createElement(React.Fragment, null,
+                            React.createElement("h5", { className: "box-icon-megan-title" }, (_d = boxesData[3]) === null || _d === void 0 ? void 0 : _d.title),
+                            React.createElement("p", { className: "box-icon-megan-text" }, boxesData[3].text))))));
 };
 var root = document.getElementById("react_root");
 ReactDOM.render(React.createElement(exports.MainPage, null), root);

@@ -89,13 +89,26 @@ var HomePage = function () {
         React.createElement(SocialMediaSection, null),
         React.createElement(LogoSection, { logo_key: 'main_logo', title: 'Logo' }),
         React.createElement(LogoSection, { logo_key: 'footer_logo', title: 'Footer logo' }),
+        React.createElement(KeyValueSection, { _key: 'footer_email', title: 'Footer email info' }),
         React.createElement(MenuSection, null),
         React.createElement(SliderSection, null),
         React.createElement(KeyValueSection, { _key: 'categoriesTitle', title: 'Title of categories section' }),
         React.createElement(BannerSection, { banner_key: 'banner_1', title: "First banner" }),
         React.createElement(KeyValueSection, { _key: 'productsTitle', title: 'Title of products section' }),
         React.createElement(BannerSection, { banner_key: 'banner_2', title: "Second banner banner" }),
-        Array.from({ length: 6 }, function (_, i) { return i + 1; }).map(function (i, idx) { return React.createElement(GallerySection, { key: idx, gallery_key: "gallery_".concat(i), title: "Home page gallery ".concat(i) }); }));
+        React.createElement(KeyValueSection, { _key: 'testimonialTitle', title: 'Title of testimonial section' }),
+        Array.from({ length: 7 }, function (_, i) { return i + 1; }).map(function (i, idx) { return React.createElement(GallerySection, { key: idx, gallery_key: "gallery_".concat(i), title: "Home page gallery ".concat(i) }); }),
+        React.createElement(KeyValueSection, { _key: 'box1', title: 'Box 1 title content' }),
+        React.createElement(KeyValueSection, { _key: 'box1_text', title: 'Box 1 text content' }),
+        React.createElement(KeyValueSection, { _key: 'box2', title: 'Box 2 title content' }),
+        React.createElement(KeyValueSection, { _key: 'box2_text', title: 'Box 2 text content' }),
+        React.createElement(KeyValueSection, { _key: 'box3', title: 'Box 3 title content' }),
+        React.createElement(KeyValueSection, { _key: 'box3_text', title: 'Box 3 text content' }),
+        React.createElement(KeyValueSection, { _key: 'box4', title: 'Box 4 title content' }),
+        React.createElement(KeyValueSection, { _key: 'box4_text', title: 'Box 4 text content' }),
+        React.createElement(KeyValueSection, { _key: 'footer_title1', title: 'Title on first column in footer' }),
+        React.createElement(KeyValueSection, { _key: 'footer_title2', title: 'Title on second column in footer' }),
+        React.createElement(KeyValueSection, { _key: 'footer_rights', title: 'All rights reserved bottom footer content' }));
 };
 exports.HomePage = HomePage;
 var KeyValueSection = function (props) {

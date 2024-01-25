@@ -88,7 +88,7 @@ var RolePage = function () {
                 case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetAllRoleList", common_1.axiosBaseConfig)];
                 case 1:
                     res = _a.sent();
-                    setRoles(res.data.sort(function (a, b) { return (0, common_1.sortFunc)(a, b); }));
+                    setRoles(res.data.sort(function (a, b) { return (0, common_1.sortFunc)(a, b, "roleId"); }));
                     return [2 /*return*/];
             }
         });
