@@ -14,10 +14,8 @@ namespace PizzeriaAPI.Repositories
     }
     public class CategoryRepository : GenericRepository<Category>, ICategoryRepository
     {
-        private readonly IProductRepository productRepository;
-        public CategoryRepository(IProductRepository productRepository)
+        public CategoryRepository(IEventRepository eventRepository): base(eventRepository)
         {
-            this.productRepository = productRepository;
         }
         public async Task<IList<Category>> GetVisibleCategories(ISession session)
         {

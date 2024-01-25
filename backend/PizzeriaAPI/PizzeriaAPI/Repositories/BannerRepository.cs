@@ -16,6 +16,9 @@ namespace PizzeriaAPI.Repositories
     }
     public class BannerRepository : GenericRepository<Banner>, IBannerRepository
     {
+        public BannerRepository(IEventRepository eventRepository) : base(eventRepository)
+        {
+        }
         public new async Task<IList<Banner>> GetAllAsync(ISession session)
         {
             Banner bannerAlias = null;
