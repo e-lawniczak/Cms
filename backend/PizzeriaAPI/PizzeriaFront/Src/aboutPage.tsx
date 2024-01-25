@@ -19,56 +19,13 @@ export const AboutPage = () => {
     return <PageWrapper>
         <BannerSection />
         <InformationSliderSection />
+        <BoxesSection />
     </PageWrapper>
 }
 
 const AboutPageContent = () => {
     return <>
-        <section className="section section-lg bg-gray-100">
-            <div className="container">
-                <div className="row row-md row-50">
-                    <div className="col-sm-6 col-xl-4 wow fadeInUp" data-wow-delay="0s">
-                        <article className="box-icon-classic">
-                            <div className="unit unit-spacing-lg flex-column text-center flex-md-row text-md-left">
-                                <div className="unit-left">
-                                    <div className="box-icon-classic-icon linearicons-helicopter"></div>
-                                </div>
-                                <div className="unit-body">
-                                    <h5 className="box-icon-classic-title"><a href="#">Free Delivery</a></h5>
-                                    <p className="box-icon-classic-text">Lotus advenas ducunt ad gemna. Ubi est domesticus domina heu.</p>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                    <div className="col-sm-6 col-xl-4 wow fadeInUp" data-wow-delay=".1s">
-                        <article className="box-icon-classic">
-                            <div className="unit unit-spacing-lg flex-column text-center flex-md-row text-md-left">
-                                <div className="unit-left">
-                                    <div className="box-icon-classic-icon linearicons-pizza"></div>
-                                </div>
-                                <div className="unit-body">
-                                    <h5 className="box-icon-classic-title"><a href="#">20+ Pizza Options</a></h5>
-                                    <p className="box-icon-classic-text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh</p>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                    <div className="col-sm-6 col-xl-4 wow fadeInUp" data-wow-delay=".2s">
-                        <article className="box-icon-classic">
-                            <div className="unit unit-spacing-lg flex-column text-center flex-md-row text-md-left">
-                                <div className="unit-left">
-                                    <div className="box-icon-classic-icon linearicons-leaf"></div>
-                                </div>
-                                <div className="unit-body">
-                                    <h5 className="box-icon-classic-title"><a href="#">Fresh Ingredients</a></h5>
-                                    <p className="box-icon-classic-text">Albus, dexter particulas grauiter consumere de ferox, bi-color abactus.</p>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </div>
-        </section>
+
 
 
         <section className="section section-lg section-bottom-md-70 bg-default">
@@ -345,6 +302,7 @@ const InformationSliderSection = () => {
 
     React.useEffect(() => {
         getSlider()
+        getMail()
     }, [])
     React.useEffect(() => {
         getTabs()
@@ -382,5 +340,75 @@ const InformationSliderSection = () => {
         </div>
     </section>
 }
+
+const BoxesSection = () => {
+    const
+        [boxesData, setBoxesData] = useState<{ title: string, text: string }[]>(),
+        getBoxes = async () => {
+            let boxes = []
+            for (let i = 0; i < 3; i++) {
+                let res = await axios.get(baseApiUrl + `/GetKeyValueByKey/au_box${i + 1}`)
+                let resText = await axios.get(baseApiUrl + `/GetKeyValueByKey/au_box${i + 1}_text`)
+                if (res.status == 200 && resText.status == 200) {
+                    boxes.push({ title: res.data.value, text: resText.data.value })
+                }
+            }
+            setBoxesData(boxes)
+        }
+
+    React.useEffect(() => {
+        getBoxes()
+    }, [])
+
+    return <section className="section section-lg bg-gray-100">
+        <div className="container">
+            <div className="row row-md row-50">
+                <div className="col-sm-6 col-xl-4 wow fadeInUp" data-wow-delay="0s">
+                    <article className="box-icon-classic">
+                        <div className="unit unit-spacing-lg flex-column text-center flex-md-row text-md-left">
+                            <div className="unit-left">
+                                <div className="box-icon-classic-icon linearicons-helicopter"></div>
+                            </div>
+                            <div className="unit-body">
+                                {boxesData?.length > 0 && <>
+                                    <h5 className="box-icon-classic-title">{boxesData[0]?.title}</h5>
+                                    <p className="box-icon-classic-text">{boxesData[0]?.text}</p>
+                                </>}</div>
+                        </div>
+                    </article>
+                </div>
+                <div className="col-sm-6 col-xl-4 wow fadeInUp" data-wow-delay=".1s">
+                    <article className="box-icon-classic">
+                        <div className="unit unit-spacing-lg flex-column text-center flex-md-row text-md-left">
+                            <div className="unit-left">
+                                <div className="box-icon-classic-icon linearicons-pizza"></div>
+                            </div>
+                            <div className="unit-body">
+                                {boxesData?.length > 1 && <>
+                                    <h5 className="box-icon-classic-title">{boxesData[1]?.title}</h5>
+                                    <p className="box-icon-classic-text">{boxesData[1]?.text}</p>
+                                </>}</div>
+                        </div>
+                    </article>
+                </div>
+                <div className="col-sm-6 col-xl-4 wow fadeInUp" data-wow-delay=".2s">
+                    <article className="box-icon-classic">
+                        <div className="unit unit-spacing-lg flex-column text-center flex-md-row text-md-left">
+                            <div className="unit-left">
+                                <div className="box-icon-classic-icon linearicons-leaf"></div>
+                            </div>
+                            <div className="unit-body">
+                                {boxesData?.length > 2 && <>
+                                    <h5 className="box-icon-classic-title">{boxesData[2]?.title}</h5>
+                                    <p className="box-icon-classic-text">{boxesData[2]?.text}</p>
+                                </>}</div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
 const root = document.getElementById("react_root");
 ReactDOM.render(<AboutPage />, root);
