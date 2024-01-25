@@ -310,7 +310,7 @@ const TestimonialSection = () => {
         [testimonialsTitle, setTestimonialsTitle] = useState<KeyValueDto>(),
         getTestimonials = async () => {
             let res = await axios.get(baseApiUrl + "/GetVisibleTestimonialList", axiosBaseConfig)
-            let resTitle = await axios.get(baseApiUrl + `/GetKeyValueByKey/testimonialsTitle`)
+            let resTitle = await axios.get(baseApiUrl + `/GetKeyValueByKey/testimonialTitle`)
             setTestimonials(res.data)
             setTestimonialsTitle(resTitle.data)
         },
@@ -406,99 +406,123 @@ const GalleriesSection = () => {
     React.useEffect(() => {
         getGalleries()
     }, [])
-    return <section className="section section-last bg-default">
+    return <section className="section section-last bg-default gallery-section">
         <div className="container-fluid container-inset-0 isotope-wrap">
-            <div className="row row-10 gutters-10 isotope" data-isotope-layout="masonry" data-isotope-group="gallery" data-lightgallery="group">
+            <div className="gallery-row" >
 
-                <div className="col-xs-6 col-sm-8 col-xl-4 isotope-item oh-desktop">
+                <div className={`grid-child grid-child-${1}   oh-desktop`}>
 
-                    <article className="thumbnail thumbnail-mary thumbnail-mary-big wow slideInRight">
-                        <a className="thumbnail-mary-figure" href={`/Gallery/${galleries[0].name}`} data-lightgallery="item"><img src={getPictureUrlFromList(galleries[0].pictureIdList)[0]} alt="" width="310" height="585" /></a>
-                        <div className="thumbnail-mary-caption">
-                            <div>
-                                <h6 className="thumbnail-mary-title"><a href={`/Gallery/${galleries[0].name}`}>{galleries[0].mainText}</a></h6>
-                                <div className="thumbnail-mary-location">{galleries[0].subText}</div>
+                    {galleries?.length > 0 &&
+                        <article className="thumbnail thumbnail-mary thumbnail-mary-big wow slideInRight">
+                            <a className="thumbnail-mary-figure" href={`/Gallery/${galleries[0].name}`} data-lightgallery="item"><img src={getPictureUrlFromList(galleries[0].pictureIdList)[0]} alt="" width="310" height="585" /></a>
+                            <div className="thumbnail-mary-caption">
+                                <div>
+                                    <h6 className="thumbnail-mary-title"><a href={`/Gallery/${galleries[0].name}`}>{galleries[0].mainText}</a></h6>
+                                    <div className="thumbnail-mary-location">{galleries[0].subText}</div>
+                                </div>
                             </div>
-                        </div>
-                    </article>
+                        </article>}
                 </div>
-                <div className="col-xs-6 col-sm-4 col-xl-2 isotope-item oh-desktop">
+                <div className={`grid-child grid-child-${2}   oh-desktop`}>
+                    {galleries?.length > 1 &&
 
-                    <article className="thumbnail thumbnail-mary thumbnail-mary-2 wow slideInDown">
-                        <a className="thumbnail-mary-figure" href={`/Gallery/${galleries[1].name}`} data-lightgallery="item"><img src={getPictureUrlFromList(galleries[1].pictureIdList)[0]} alt="" width="310" height="585" /></a>
-                        <div className="thumbnail-mary-caption">
-                            <div>
-                                <h6 className="thumbnail-mary-title"><a href="#">{galleries[1].mainText}</a></h6>
-                                <div className="thumbnail-mary-location">{galleries[1].subText}</div>
+                        <article className="thumbnail thumbnail-mary thumbnail-mary-2 wow slideInDown">
+                            <a className="thumbnail-mary-figure" href={`/Gallery/${galleries[1].name}`} data-lightgallery="item"><img src={getPictureUrlFromList(galleries[1].pictureIdList)[0]} alt="" width="310" height="585" /></a>
+                            <div className="thumbnail-mary-caption">
+                                <div>
+                                    <h6 className="thumbnail-mary-title"><a href={`/Gallery/${galleries[6].name}`}>{galleries[1].mainText}</a></h6>
+                                    <div className="thumbnail-mary-location">{galleries[1].subText}</div>
+                                </div>
                             </div>
-                        </div>
-                    </article>
+                        </article>}
                 </div>
-                <div className="col-xs-6 col-sm-8 col-xl-4 isotope-item oh-desktop">
+                <div className={`grid-child grid-child-${3}   oh-desktop`}>
+                    {galleries?.length > 2 &&
 
-                    <article className="thumbnail thumbnail-mary wow slideInUp">
-                        <a className="thumbnail-mary-figure" href={`/Gallery/${galleries[2].name}`} data-lightgallery="item"><img src={getPictureUrlFromList(galleries[2].pictureIdList)[0]} alt="" width="631" height="587" /></a>
-                        <div className="thumbnail-mary-caption">
-                            <div>
-                                <h6 className="thumbnail-mary-title"><a href="#">{galleries[2].mainText}</a></h6>
-                                <div className="thumbnail-mary-location">{galleries[2].subText}</div>
+                        <article className="thumbnail thumbnail-mary wow slideInUp">
+                            <a className="thumbnail-mary-figure" href={`/Gallery/${galleries[2].name}`} data-lightgallery="item"><img src={getPictureUrlFromList(galleries[2].pictureIdList)[0]} alt="" width="631" height="587" /></a>
+                            <div className="thumbnail-mary-caption">
+                                <div>
+                                    <h6 className="thumbnail-mary-title"><a href={`/Gallery/${galleries[6].name}`}>{galleries[2].mainText}</a></h6>
+                                    <div className="thumbnail-mary-location">{galleries[2].subText}</div>
+                                </div>
                             </div>
-                        </div>
-                    </article>
+                        </article>}
                 </div>
-                <div className="col-xs-6 col-sm-4 col-xl-2 isotope-item oh-desktop">
+                <div className={`grid-child grid-child-${4}   oh-desktop`}>
+                    {galleries?.length > 3 &&
 
-                    <article className="thumbnail thumbnail-mary thumbnail-mary-2 wow slideInUp">
-                        <a className="thumbnail-mary-figure" href={`/Gallery/${galleries[3].name}`} data-lightgallery="item"><img src={getPictureUrlFromList(galleries[3].pictureIdList)[0]} alt="" width="311" height="289" /></a>
-                        <div className="thumbnail-mary-caption">
-                            <div>
-                                <h6 className="thumbnail-mary-title"><a href="#">{galleries[3].mainText}</a></h6>
-                                <div className="thumbnail-mary-location">{galleries[3].subText}</div>
+                        <article className="thumbnail thumbnail-mary thumbnail-mary-2 wow slideInUp">
+                            <a className="thumbnail-mary-figure" href={`/Gallery/${galleries[3].name}`} data-lightgallery="item"><img src={getPictureUrlFromList(galleries[3].pictureIdList)[0]} alt="" width="311" height="289" /></a>
+                            <div className="thumbnail-mary-caption">
+                                <div>
+                                    <h6 className="thumbnail-mary-title"><a href={`/Gallery/${galleries[6].name}`}>{galleries[3].mainText}</a></h6>
+                                    <div className="thumbnail-mary-location">{galleries[3].subText}</div>
+                                </div>
                             </div>
-                        </div>
-                    </article>
+                        </article>}
                 </div>
-                <div className="col-xs-6 col-sm-4 col-xl-2 isotope-item oh-desktop">
+                <div className={`grid-child grid-child-${5}   oh-desktop`}>
+                    {galleries?.length > 4 &&
 
-                    <article className="thumbnail thumbnail-mary thumbnail-mary-2 wow slideInRight">
-                        <a className="thumbnail-mary-figure" href={`/Gallery/${galleries[4].name}`} data-lightgallery="item"><img src={getPictureUrlFromList(galleries[4].pictureIdList)[0]} alt="" width="311" height="289" /></a>
-                        <div className="thumbnail-mary-caption">
-                            <div>
-                                <h6 className="thumbnail-mary-title"><a href="#">{galleries[4].mainText}</a></h6>
-                                <div className="thumbnail-mary-location">{galleries[4].subText}</div>
+                        <article className="thumbnail thumbnail-mary thumbnail-mary-2 wow slideInRight">
+                            <a className="thumbnail-mary-figure" href={`/Gallery/${galleries[4].name}`} data-lightgallery="item"><img src={getPictureUrlFromList(galleries[4].pictureIdList)[0]} alt="" width="311" height="289" /></a>
+                            <div className="thumbnail-mary-caption">
+                                <div>
+                                    <h6 className="thumbnail-mary-title"><a href={`/Gallery/${galleries[6].name}`}>{galleries[4].mainText}</a></h6>
+                                    <div className="thumbnail-mary-location">{galleries[4].subText}</div>
+                                </div>
                             </div>
-                        </div>
-                    </article>
+                        </article>}
                 </div>
-                <div className="col-xs-6 col-sm-4 col-xl-2 isotope-item oh-desktop">
+                <div className={`grid-child grid-child-${6}   oh-desktop`}>
+                    {galleries?.length > 5 &&
 
-                    <article className="thumbnail thumbnail-mary thumbnail-mary-2 wow slideInLeft">
-                        <a className="thumbnail-mary-figure" href={`/Gallery/${galleries[5].name}`} data-lightgallery="item"><img src={getPictureUrlFromList(galleries[5].pictureIdList)[0]} alt="" width="311" height="289" /></a>
-                        <div className="thumbnail-mary-caption">
-                            <div>
-                                <h6 className="thumbnail-mary-title"><a href="#">{galleries[5].mainText}</a></h6>
-                                <div className="thumbnail-mary-location">{galleries[5].subText}</div>
+                        <article className="thumbnail thumbnail-mary thumbnail-mary-2 wow slideInLeft">
+                            <a className="thumbnail-mary-figure" href={`/Gallery/${galleries[5].name}`} data-lightgallery="item"><img src={getPictureUrlFromList(galleries[5].pictureIdList)[0]} alt="" width="311" height="289" /></a>
+                            <div className="thumbnail-mary-caption">
+                                <div>
+                                    <h6 className="thumbnail-mary-title"><a href={`/Gallery/${galleries[6].name}`}>{galleries[5].mainText}</a></h6>
+                                    <div className="thumbnail-mary-location">{galleries[5].subText}</div>
+                                </div>
                             </div>
-                        </div>
-                    </article>
+                        </article>}
                 </div>
-                <div className="col-xs-6 col-sm-4 col-xl-2 isotope-item oh-desktop">
+                <div className={`grid-child grid-child-${7}   oh-desktop`}>
+                    {galleries?.length > 6 &&
 
-                    <article className="thumbnail thumbnail-mary thumbnail-mary-2 wow slideInLeft">
-                        <a className="thumbnail-mary-figure" href={`/Gallery/${galleries[6].name}`} data-lightgallery="item"><img src={getPictureUrlFromList(galleries[6].pictureIdList)[0]} alt="" width="311" height="289" /></a>
-                        <div className="thumbnail-mary-caption">
-                            <div>
-                                <h6 className="thumbnail-mary-title"><a href="#">{galleries[6].mainText}</a></h6>
-                                <div className="thumbnail-mary-location">{galleries[6].subText}</div>
+                        <article className="thumbnail thumbnail-mary thumbnail-mary-2 wow slideInLeft">
+                            <a className="thumbnail-mary-figure" href={`/Gallery/${galleries[6].name}`} data-lightgallery="item"><img src={getPictureUrlFromList(galleries[6].pictureIdList)[0]} alt="" width="311" height="289" /></a>
+                            <div className="thumbnail-mary-caption">
+                                <div>
+                                    <h6 className="thumbnail-mary-title"><a href={`/Gallery/${galleries[6].name}`}>{galleries[6].mainText}</a></h6>
+                                    <div className="thumbnail-mary-location">{galleries[6].subText}</div>
+                                </div>
                             </div>
-                        </div>
-                    </article>
+                        </article>}
                 </div>
             </div>
         </div>
     </section>
 }
 const AdditionalInfoSection = () => {
+    const
+        [boxesData, setBoxesData] = useState<{ title: string, text: string }[]>(),
+        getBoxes = async () => {
+            let boxes = []
+            for (let i = 0; i < 4; i++) {
+                let res = await axios.get(baseApiUrl + `/GetKeyValueByKey/box${i + 1}`)
+                let resText = await axios.get(baseApiUrl + `/GetKeyValueByKey/box${i + 1}_text`)
+                if (res.status == 200 && resText.status == 200) {
+                    boxes.push({ title: res.data.value, text: resText.data.value })
+                }
+            }
+            setBoxesData(boxes)
+        }
+
+    React.useEffect(() => {
+        getBoxes()
+    }, [])
     return <section className="section section-sm bg-default">
         <div className="container">
             <div className="owl-carousel owl-style-11 dots-style-2" data-items="1" data-sm-items="1" data-lg-items="2" data-xl-items="4" data-margin="30" data-dots="true" data-mouse-drag="true" data-rtl="true">
@@ -506,29 +530,39 @@ const AdditionalInfoSection = () => {
                     <div className="box-icon-megan-header">
                         <div className="box-icon-megan-icon linearicons-bag"></div>
                     </div>
-                    <h5 className="box-icon-megan-title"><a href="#">Free Delivery</a></h5>
-                    <p className="box-icon-megan-text">If you order more than 3 pizzas, we will gladly deliver them to you for free.</p>
+                    {boxesData?.length > 0 && <>
+                        <h5 className="box-icon-megan-title">{boxesData[0]?.title}</h5>
+                        <p className="box-icon-megan-text">{boxesData[0].text}</p>
+                    </>}
                 </article>
                 <article className="box-icon-megan wow fadeInUp" data-wow-delay=".05s">
                     <div className="box-icon-megan-header">
                         <div className="box-icon-megan-icon linearicons-map2"></div>
                     </div>
-                    <h5 className="box-icon-megan-title"><a href="#">Convenient Location</a></h5>
-                    <p className="box-icon-megan-text">Our pizzeria is situated in the downtown and is very easy to reach even on weekends.</p>
+                    {boxesData?.length > 1 && <>
+                        <h5 className="box-icon-megan-title">{boxesData[1]?.title}</h5>
+                        <p className="box-icon-megan-text">{boxesData[1].text}</p>
+                    </>}
                 </article>
                 <article className="box-icon-megan wow fadeInUp" data-wow-delay=".1s">
                     <div className="box-icon-megan-header">
                         <div className="box-icon-megan-icon linearicons-radar"></div>
                     </div>
-                    <h5 className="box-icon-megan-title"><a href="#">Free Wi-Fi</a></h5>
-                    <p className="box-icon-megan-text">We have free Wi-Fi available to all clients and visitors of our pizzeria.</p>
+                    {boxesData?.length > 2 && <>
+                        <h5 className="box-icon-megan-title">{boxesData[2]?.title}</h5>
+                        <p className="box-icon-megan-text">{boxesData[2].text}</p>
+                    </>}
                 </article>
                 <article className="box-icon-megan wow fadeInUp" data-wow-delay=".15s">
                     <div className="box-icon-megan-header">
                         <div className="box-icon-megan-icon linearicons-thumbs-up"></div>
                     </div>
-                    <h5 className="box-icon-megan-title"><a href="#">Best Service</a></h5>
-                    <p className="box-icon-megan-text">The client is our #1 priority as we deliver top-notch customer service.</p>
+                    {boxesData?.length > 3 &&
+                        <>
+                            <h5 className="box-icon-megan-title">{boxesData[3]?.title}</h5>
+                            <p className="box-icon-megan-text">{boxesData[3].text}</p>
+                        </>
+                    }
                 </article>
             </div>
         </div>

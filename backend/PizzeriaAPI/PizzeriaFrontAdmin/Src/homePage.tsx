@@ -18,6 +18,7 @@ export const HomePage = () => {
         <SocialMediaSection />
         <LogoSection logo_key={'main_logo'} title={'Logo'} />
         <LogoSection logo_key={'footer_logo'} title={'Footer logo'} />
+        <KeyValueSection _key='footer_email' title='Footer email info' />
         <MenuSection />
         <SliderSection />
         <KeyValueSection _key='categoriesTitle' title='Title of categories section' />
@@ -26,6 +27,17 @@ export const HomePage = () => {
         <BannerSection banner_key={'banner_2'} title={"Second banner banner"} />
         <KeyValueSection _key='testimonialTitle' title='Title of testimonial section' />
         {Array.from({ length: 7 }, (_, i) => i + 1).map((i: any, idx: any) => <GallerySection key={idx} gallery_key={`gallery_${i}`} title={`Home page gallery ${i}`} />)}
+        <KeyValueSection _key='box1' title='Box 1 title content' />
+        <KeyValueSection _key='box1_text' title='Box 1 text content' />
+        <KeyValueSection _key='box2' title='Box 2 title content' />
+        <KeyValueSection _key='box2_text' title='Box 2 text content' />
+        <KeyValueSection _key='box3' title='Box 3 title content' />
+        <KeyValueSection _key='box3_text' title='Box 3 text content' />
+        <KeyValueSection _key='box4' title='Box 4 title content' />
+        <KeyValueSection _key='box4_text' title='Box 4 text content' />
+        <KeyValueSection _key='footer_title1' title='Title on first column in footer' />
+        <KeyValueSection _key='footer_title2' title='Title on second column in footer' />
+        <KeyValueSection _key='footer_rights' title='All rights reserved bottom footer content' />
 
     </PageWrapper>
 }

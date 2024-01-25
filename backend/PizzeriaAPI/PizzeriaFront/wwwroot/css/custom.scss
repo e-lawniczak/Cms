@@ -84,6 +84,7 @@
         position: absolute;
         top: 5px;
         z-index: 20;
+
         &.slick-prev {
             left: 20%;
         }
@@ -92,4 +93,56 @@
             right: 20%;
         }
     }
+}
+
+.gallery-section {
+
+    .gallery-row {
+        display: grid;
+        grid-template-columns: repeat(6, 311px);
+        grid-template-rows: repeat(2, 289px);
+        grid-column-gap: 5px;
+        grid-row-gap: 5px;
+        height: unset !important;
+        grid-template-areas:
+            "one two two three four four"
+            "one two two five six seven";
+        justify-content: center;
+        align-items: stretch;
+    }
+
+    .grid-child {
+        height: 100%;
+        flex-grow: 1;
+        justify-self: stretch;
+    }
+
+    .grid-child-1 {
+        grid-area: one;
+    }
+
+    .grid-child-2 {
+        grid-area: two;
+    }
+
+    .grid-child-3 {
+        grid-area: three;
+    }
+
+    .grid-child-4 {
+        grid-area: four;
+    }
+
+    .grid-child-5 {
+        grid-area: five;
+    }
+
+    .grid-child-6 {
+        grid-area: six;
+    }
+
+    .grid-child-7 {
+        grid-area: seven;
+    }
+
 }

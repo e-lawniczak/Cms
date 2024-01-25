@@ -77,3 +77,41 @@
 .slick-slider .slick-arrow.slick-next {
   right: 20%;
 }
+
+.gallery-section .gallery-row {
+  display: grid;
+  grid-template-columns: repeat(6, 311px);
+  grid-template-rows: repeat(2, 289px);
+  grid-column-gap: 5px;
+  grid-row-gap: 5px;
+  height: unset !important;
+  grid-template-areas: "one two two three four four" "one two two five six seven";
+  justify-content: center;
+  align-items: stretch;
+}
+.gallery-section .grid-child {
+  height: 100%;
+  flex-grow: 1;
+  justify-self: stretch;
+}
+.gallery-section .grid-child-1 {
+  grid-area: one;
+}
+.gallery-section .grid-child-2 {
+  grid-area: two;
+}
+.gallery-section .grid-child-3 {
+  grid-area: three;
+}
+.gallery-section .grid-child-4 {
+  grid-area: four;
+}
+.gallery-section .grid-child-5 {
+  grid-area: five;
+}
+.gallery-section .grid-child-6 {
+  grid-area: six;
+}
+.gallery-section .grid-child-7 {
+  grid-area: seven;
+}
