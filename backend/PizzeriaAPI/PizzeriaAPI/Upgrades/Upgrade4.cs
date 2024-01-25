@@ -1,4 +1,5 @@
-﻿using PizzeriaAPI.Domain;
+﻿using PizzeriaAPI.Database.Entities;
+using PizzeriaAPI.Domain;
 
 namespace PizzeriaAPI.Upgrades
 {
@@ -13,6 +14,8 @@ namespace PizzeriaAPI.Upgrades
         }
         private void FillActionTypeTable(NHibernate.ISession session)
         {
+            var count = session.QueryOver<ActionType>().RowCount();
+            if (count > 0) return;
             foreach (var actionType in Enum.GetValues<ActionTypeEnum>())
             {
                 var sql = $"INSERT INTO ActionType (ActionTypeId, Type) VALUES ({(int)actionType}, '{actionType}');";
@@ -22,6 +25,8 @@ namespace PizzeriaAPI.Upgrades
 
         private void FillControllerTable(NHibernate.ISession session)
         {
+            var count = session.QueryOver<Controller>().RowCount();
+            if (count > 0) return;
             foreach (var controller in Enum.GetValues<ControllerEnum>())
             {
                 var sql = $"INSERT INTO Controller (ControllerId, Name) VALUES ({(int)controller}, '{controller}');";

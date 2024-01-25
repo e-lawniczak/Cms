@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Domain;
 using PizzeriaAPI.Security;
 using PizzeriaAPI.Settings;
@@ -10,10 +11,12 @@ namespace PizzeriaAPI.Upgrades
         public int Number => 5;
         private readonly IAuthenticationService authenticationService;
         private readonly SecuritySettings securitySettings;
-        public Upgrade5(IAuthenticationService authenticationService, IOptions<SecuritySettings> securitySettings)
+        private readonly IUserManager<User> userManager;
+        public Upgrade5(IAuthenticationService authenticationService,IUserManager<User> userManager, IOptions<SecuritySettings> securitySettings)
         {
             this.authenticationService = authenticationService;
             this.securitySettings = securitySettings.Value;
+            this.userManager = userManager;
         }
         public void Execute(NHibernate.ISession session)
         {
@@ -21,13 +24,20 @@ namespace PizzeriaAPI.Upgrades
         }
         private void AddDefaultUser(NHibernate.ISession session)
         {
-            var hashPassword = BCrypt.Net.BCrypt.HashPassword("haslo123", securitySettings.Salt);
+            var email = "example@gmail.com";
+            var password = "haslo123";
+            var user = userManager.FindByEmailAsync(email);
+            if (user != null) return;
+
+            var hashPassword = BCrypt.Net.BCrypt.HashPassword(password, securitySettings.Salt);
             var request = new RegistrationRequest
             {
-                Email = "example@gmail.com",
+                Email = email,
                 Password = hashPassword
             };
-            var x = authenticationService.RegisterAsync(request).Result;
+            
+                authenticationService.RegisterAsync(request).Wait();
+            
         }
     }
 }

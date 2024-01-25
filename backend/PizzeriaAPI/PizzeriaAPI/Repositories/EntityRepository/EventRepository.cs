@@ -14,6 +14,7 @@ namespace PizzeriaAPI.Repositories.EntityRepository
     public interface IEventRepository
     {
         Task InsertOrUpdate(ControllerEnum controllerEnum, ActionTypeEnum actionTypeEnum, int entityId, int UserId, ISession session);
+        void Initialize(ISession session);
     }
     public class EventRepository : IEventRepository
     {
@@ -26,14 +27,14 @@ namespace PizzeriaAPI.Repositories.EntityRepository
             this.logger = logger;
             this.httpContextAccessor = httpContextAccessor;
         }
+        public void Initialize(ISession session)
+        {
+            controllerDict = GetControllers(session);
+            actionTypeDict = GetActionTypes(session);
+        }
 
         public async Task InsertOrUpdate(ControllerEnum controllerEnum, ActionTypeEnum actionTypeEnum, int entityId, int UserId, ISession session)
         {
-            
-            if (controllerDict == null)
-                controllerDict = GetControllers(session);
-            if (actionTypeDict == null)
-                actionTypeDict = GetActionTypes(session);
             var entity = session.QueryOver<Event>()
                 .Where(x => x.EntityId == entityId)
                 .And(x => x.Controller.ControllerId == (int)controllerEnum)
@@ -41,13 +42,19 @@ namespace PizzeriaAPI.Repositories.EntityRepository
                 .SingleOrDefault();
             User? user = await GetUser(session);
            
-            
+            var controller = controllerDict?.GetValueOrDefault(key: controllerEnum);
+            var actionType = actionTypeDict?.GetValueOrDefault(key: actionTypeEnum);
+            if(controller == null|| actionType == null)
+            {
+                logger.LogError($"Controller or ActionType not found. Controller: {controllerEnum}, ActionType: {actionTypeEnum}");
+                return;
+            }
             if (entity == null)
             {
                 entity = new Event
                 {
-                    Controller = controllerDict.GetValueOrDefault(key: controllerEnum),
-                    ActionType = actionTypeDict.GetValueOrDefault(key: actionTypeEnum),
+                    Controller = controller,
+                    ActionType = actionType,
                     User = user,
                     EntityId = entityId,
                     CreationDate = DateTime.Now,

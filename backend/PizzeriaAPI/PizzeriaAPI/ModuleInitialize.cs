@@ -160,6 +160,13 @@ namespace PizzeriaAPI
             var upgradeService = services.GetRequiredService<IUpgradesService>();
 
             upgradeService.UpgradeServices();
+
+            var eventRepository = services.GetRequiredService<IEventRepository>();
+            var transactionCoordinator = services.GetRequiredService<ITransactionCoordinator>();
+            transactionCoordinator.InRollbackScope(session =>
+            {
+                eventRepository.Initialize(session);
+            });
         }
     }
 }
