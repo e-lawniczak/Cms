@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.SocialMedia;
 using PizzeriaAPI.ORM;
-using PizzeriaAPI.Repositories;
+using PizzeriaAPI.Repositories.BaseEntityRepositories;
+using PizzeriaAPI.Repositories.EntityWithPictureRepositories;
 using Swashbuckle.Swagger.Annotations;
 using System.Net;
 
@@ -153,7 +154,7 @@ namespace PizzeriaAPI.Controllers
                 Link = socialMedia.Link,
                 IsMain = socialMedia.IsMain,
                 IsVisible = socialMedia.IsVisible,
-                PictureIdList = socialMedia.PictureList?.Select(x => x.PictureId)?.ToList(),
+                PictureIdList = socialMedia.PictureList?.Select(x => x.Id)?.ToList(),
                 TeamMemberId = socialMedia.TeamMember?.Id
             };
         }

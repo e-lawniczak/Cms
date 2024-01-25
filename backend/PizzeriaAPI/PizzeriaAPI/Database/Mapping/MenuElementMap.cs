@@ -7,7 +7,7 @@ namespace PizzeriaAPI.Database.Mapping
     {
         public MenuElementMap()
         {
-            Id(x => x.MenuElementId).Not.Nullable().GeneratedBy.Increment();
+            Id(x => x.Id, "MenuElementId").Not.Nullable().GeneratedBy.Increment();
             Map(x => x.Text).Not.Nullable();
             Map(x => x.Link).Not.Nullable();
             Map(x => x.CreationDate).Not.Nullable();

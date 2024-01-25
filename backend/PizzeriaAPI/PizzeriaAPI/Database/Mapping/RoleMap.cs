@@ -7,7 +7,7 @@ namespace PizzeriaAPI.Database.Mapping
     {
         public RoleMap()
         {
-            Id(x => x.RoleId).Not.Nullable().GeneratedBy.Increment();
+            Id(x => x.Id,"RoleId").Not.Nullable().GeneratedBy.Increment();
             Map(x => x.Name).Not.Nullable();
             Map(x => x.CreationDate).Not.Nullable();
             Map(x => x.ModificationDate).Not.Nullable();

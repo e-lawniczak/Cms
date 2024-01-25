@@ -2,7 +2,9 @@
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.TeamMember;
 using PizzeriaAPI.ORM;
-using PizzeriaAPI.Repositories;
+using PizzeriaAPI.Repositories.BaseEntityRepositories;
+using PizzeriaAPI.Repositories.EntityWithPictureRepositories;
+using PizzeriaAPI.Repositories.ExtendedBaseEntityRepositories;
 using Swashbuckle.Swagger.Annotations;
 using System.Net;
 
@@ -113,7 +115,7 @@ namespace PizzeriaAPI.Controllers
                 teamMember.FirstName = teamMemberDto.FirstName;
                 teamMember.LastName = teamMemberDto.LastName;
                 teamMember.Role = await roleRepository.GetByIdAsync(teamMemberDto.RoleId ?? 0, session);
-                teamMember.SocialMediaList = await socialMediaRepository.GetSocialMediaListByIdListAsync(teamMemberDto.SocialMediaIdList ?? new List<int>(), session);
+                teamMember.SocialMediaList = await socialMediaRepository.GetByIdListAsync(teamMemberDto.SocialMediaIdList ?? new List<int>(), session);
                 teamMember.PictureList = await pictureRepository.GetPictureListByIdListAsync(teamMemberDto.PictureIdList ?? new List<int>(), session);
             });
         }
@@ -137,10 +139,10 @@ namespace PizzeriaAPI.Controllers
             {
                 Id = teamMember.Id,
                 IsVisible = teamMember.IsVisible,
-                PictureIdList = teamMember.PictureList?.Select(x => x.PictureId).ToList(),
+                PictureIdList = teamMember.PictureList?.Select(x => x.Id).ToList(),
                 FirstName = teamMember.FirstName,
                 LastName = teamMember.LastName,
-                RoleId = teamMember.Role?.RoleId,
+                RoleId = teamMember.Role?.Id,
                 SocialMediaIdList = teamMember.SocialMediaList?.Select(x => x.Id).ToList(),
             };
         }
@@ -156,7 +158,7 @@ namespace PizzeriaAPI.Controllers
                     LastName = teamMemberDto.LastName,
                     IsDeleted = false,
                     Role = await roleRepository.GetByIdAsync(teamMemberDto.RoleId ?? 0, session),
-                    SocialMediaList = await socialMediaRepository.GetSocialMediaListByIdListAsync(teamMemberDto.SocialMediaIdList ?? new List<int>(), session),
+                    SocialMediaList = await socialMediaRepository.GetByIdListAsync(teamMemberDto.SocialMediaIdList ?? new List<int>(), session),
                     PictureList = await pictureRepository.GetPictureListByIdListAsync(teamMemberDto.PictureIdList ?? new List<int>(), session),
                 };
             });

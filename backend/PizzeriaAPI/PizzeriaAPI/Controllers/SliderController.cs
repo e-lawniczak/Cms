@@ -2,7 +2,8 @@
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.Slider;
 using PizzeriaAPI.ORM;
-using PizzeriaAPI.Repositories;
+using PizzeriaAPI.Repositories.EntityWithPictureRepositories;
+using PizzeriaAPI.Repositories.ExtendedBaseEntityRepositories;
 using Swashbuckle.Swagger.Annotations;
 using System.Net;
 
@@ -119,7 +120,7 @@ namespace PizzeriaAPI.Controllers
             {
                 slider.Name = sliderDto.Name;
                 slider.IsVisible = sliderDto.IsVisible;
-                slider.BannerList = await bannerRepository.GetBannerListByIdListAsync(sliderDto.BannerIdList ?? new List<int>(), session);
+                slider.BannerList = await bannerRepository.GetByIdListAsync(sliderDto.BannerIdList ?? new List<int>(), session);
             });
         }
 
@@ -140,7 +141,7 @@ namespace PizzeriaAPI.Controllers
         {
             return new SliderDto()
             {
-                SliderId = slider.SliderId,
+                SliderId = slider.Id,
                 Name = slider.Name,
                 IsVisible = slider.IsVisible,
                 BannerIdList = slider.BannerList?.Select(x => x.Id)?.ToList(),
@@ -154,7 +155,7 @@ namespace PizzeriaAPI.Controllers
                 {
                     Name = sliderDto.Name,
                     IsVisible = sliderDto.IsVisible,
-                    BannerList = await bannerRepository.GetBannerListByIdListAsync(sliderDto.BannerIdList ?? new List<int>(), session),
+                    BannerList = await bannerRepository.GetByIdListAsync(sliderDto.BannerIdList ?? new List<int>(), session),
                 };
             });
         }

@@ -7,7 +7,7 @@ namespace PizzeriaAPI.Database.Mapping
     {
         public SliderMap()
         {
-            Id(x => x.SliderId).Not.Nullable().GeneratedBy.Increment();
+            Id(x => x.Id, "SliderId").Not.Nullable().GeneratedBy.Increment();
             Map(x => x.Name).Not.Nullable().Unique();
             Map(x => x.CreationDate).Not.Nullable();
             Map(x => x.ModificationDate).Not.Nullable();

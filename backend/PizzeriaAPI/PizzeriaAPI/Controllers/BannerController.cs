@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.Banner;
 using PizzeriaAPI.ORM;
-using PizzeriaAPI.Repositories;
+using PizzeriaAPI.Repositories.BaseEntityRepositories;
+using PizzeriaAPI.Repositories.EntityWithPictureRepositories;
+using PizzeriaAPI.Repositories.ExtendedBaseEntityRepositories;
 using Swashbuckle.Swagger.Annotations;
 using System.Net;
 
@@ -73,7 +75,7 @@ namespace PizzeriaAPI.Controllers
             IList<BannerDto>? bannerListDto = null;
             await transactionCoordinator.InRollbackScopeAsync(async session =>
             {
-                var bannerList = await bannerRepository.GetBannerListByIdListAsync(ids, session);
+                var bannerList = await bannerRepository.GetByIdListAsync(ids, session);
                 if (bannerList != null)
                     bannerListDto = bannerList.Select(GetBannerDto).ToList();
             });
@@ -159,8 +161,8 @@ namespace PizzeriaAPI.Controllers
                 SubText = banner.SubText,
                 Link = banner.Link,
                 IsVisible = banner.IsVisible,
-                PictureIdList = banner.PictureList?.Select(x => x.PictureId)?.ToList(),
-                SliderId = banner.Slider?.SliderId
+                PictureIdList = banner.PictureList?.Select(x => x.Id)?.ToList(),
+                SliderId = banner.Slider?.Id
             };
         }
 

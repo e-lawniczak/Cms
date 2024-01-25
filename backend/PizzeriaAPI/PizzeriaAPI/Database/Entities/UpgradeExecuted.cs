@@ -1,8 +1,7 @@
 ﻿namespace PizzeriaAPI.Database.Entities
 {
-    public class UpgradeExecuted
+    public class UpgradeExecuted : Entity
     {
-        public virtual int Id { get; set; }
         public virtual int UpgradeNumber { get; set; }
     }
 }

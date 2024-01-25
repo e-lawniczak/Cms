@@ -3,7 +3,8 @@ using MySqlX.XDevAPI;
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.Role;
 using PizzeriaAPI.ORM;
-using PizzeriaAPI.Repositories;
+using PizzeriaAPI.Repositories.EntityWithPictureRepositories;
+using PizzeriaAPI.Repositories.ExtendedBaseEntityRepositories;
 using Swashbuckle.Swagger.Annotations;
 using System.Data;
 using System.Net;
@@ -104,8 +105,8 @@ namespace PizzeriaAPI.Controllers
             {
                 role.Name = roleDto.Name;
                 role.IsVisible = roleDto.IsVisible;
-                role.TeamMemberList = await teamMemberRepository.GetTeamMemberListByIdListAsync(roleDto.TeamMemberIdList ?? new List<int>(), session);
-                role.TestimonialList = await testimonialRepository.GetTestimonialListByIdListAsync(roleDto.TestimonialIdList ?? new List<int>(), session);
+                role.TeamMemberList = await teamMemberRepository.GetByIdListAsync(roleDto.TeamMemberIdList ?? new List<int>(), session);
+                role.TestimonialList = await testimonialRepository.GetByIdListAsync(roleDto.TestimonialIdList ?? new List<int>(), session);
             });
         }
 
@@ -126,7 +127,7 @@ namespace PizzeriaAPI.Controllers
         {
             return new RoleDto()
             {
-                RoleId = role.RoleId,
+                RoleId = role.Id,
                 Name = role.Name,
                 IsVisible = role.IsVisible,
                 TeamMemberIdList = role.TeamMemberList?.Select(x => x.Id).ToList(),
@@ -145,8 +146,8 @@ namespace PizzeriaAPI.Controllers
                     Name = roleDto.Name,
                     IsVisible = roleDto.IsVisible,
                     IsDeleted = false,
-                    TeamMemberList = await teamMemberRepository.GetTeamMemberListByIdListAsync(roleDto.TeamMemberIdList ?? new List<int>(), session),
-                    TestimonialList = await testimonialRepository.GetTestimonialListByIdListAsync(roleDto.TestimonialIdList ?? new List<int>(), session)
+                    TeamMemberList = await teamMemberRepository.GetByIdListAsync(roleDto.TeamMemberIdList ?? new List<int>(), session),
+                    TestimonialList = await testimonialRepository.GetByIdListAsync(roleDto.TestimonialIdList ?? new List<int>(), session)
 
                 };
             });

@@ -19,5 +19,6 @@
         TabSlider,
         Testimonial,
         TeamMember,
+        UserToken,
     }
 }

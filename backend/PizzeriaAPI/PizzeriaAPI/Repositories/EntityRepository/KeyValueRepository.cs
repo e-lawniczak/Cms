@@ -1,24 +1,26 @@
 ﻿using PizzeriaAPI.Database.Entities;
 using ISession = NHibernate.ISession;
 
-namespace PizzeriaAPI.Repositories
+namespace PizzeriaAPI.Repositories.EntityRepository
 {
-    public interface IKeyValueRepository : IGenericRepository<KeyValue>
+    public interface IKeyValueRepository : IEntityRepository<KeyValue>
     {
         Task DeleteAsync(int id, ISession session);
         Task<KeyValue> GetByKeyAsync(string key, ISession session);
+        Task<IList<KeyValue>> GetAllAsync(ISession session);
 
     }
 
-    public class KeyValueRepository : GenericRepository<KeyValue>, IKeyValueRepository
+    public class KeyValueRepository : EntityRepository<KeyValue>, IKeyValueRepository
     {
-        public KeyValueRepository(IEventRepository eventRepository) : base(eventRepository)
+        public KeyValueRepository(IEventRepository eventRepository)  : base(eventRepository, Domain.ControllerEnum.KeyValue)
         {
         }
-        public new async Task<IList<KeyValue>> GetAllAsync(ISession session)
+        public async Task<IList<KeyValue>> GetAllAsync(ISession session)
         {
-            var result = await base.GetAllAsync(session);
-            return result.OrderBy(x => x.Id).ToList();
+            var result = await session.QueryOver<KeyValue>()
+                .OrderBy(x => x.Id).Asc.ListAsync();
+            return result;
         }
         public async Task<KeyValue> GetByKeyAsync(string key, ISession session)
         {
@@ -33,6 +35,7 @@ namespace PizzeriaAPI.Repositories
             if (obj == null)
                 return;
             await session.DeleteAsync(obj);
+            await eventRepository.InsertOrUpdate(controllerEnum, Domain.ActionTypeEnum.Delete, obj.Id, 1, session);
         }
     }
 }

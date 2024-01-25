@@ -2,7 +2,7 @@
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.MenuElement;
 using PizzeriaAPI.ORM;
-using PizzeriaAPI.Repositories;
+using PizzeriaAPI.Repositories.ExtendedBaseEntityRepositories;
 using Swashbuckle.Swagger.Annotations;
 using System.Net;
 
@@ -100,7 +100,7 @@ namespace PizzeriaAPI.Controllers
         {
             await transactionCoordinator.InRollbackScopeAsync(async session =>
             {
-                menuElement.MenuElementId = menuElementDto.MenuElementId;
+                menuElement.Id = menuElementDto.MenuElementId;
                 menuElement.Text = menuElementDto.Text;
                 menuElement.Link = menuElementDto.Link;
                 menuElement.IsVisible = menuElementDto.IsVisible;
@@ -125,11 +125,11 @@ namespace PizzeriaAPI.Controllers
         {
             return new MenuElementDto()
             {
-                MenuElementId = menuElement.MenuElementId,
+                MenuElementId = menuElement.Id,
                 Text = menuElement.Text,
                 Link = menuElement.Link,
                 IsVisible = menuElement.IsVisible,
-                ParentMenuElementId = menuElement.ParentMenuElement?.MenuElementId
+                ParentMenuElementId = menuElement.ParentMenuElement?.Id
             };
         }
         private async Task<MenuElement> GetMenuElement(MenuElementDto menuElementDto)
@@ -139,7 +139,7 @@ namespace PizzeriaAPI.Controllers
                 return new MenuElement()
                 {
 
-                    MenuElementId = menuElementDto.MenuElementId,
+                    Id = menuElementDto.MenuElementId,
                     Text = menuElementDto.Text,
                     Link = menuElementDto.Link,
                     IsVisible = menuElementDto.IsVisible,

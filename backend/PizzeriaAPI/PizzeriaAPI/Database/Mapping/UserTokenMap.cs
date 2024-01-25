@@ -7,7 +7,7 @@ namespace PizzeriaAPI.Database.Mapping
     {
         public UserTokenMap()
         {
-            Id(x => x.UserTokenId).Not.Nullable().GeneratedBy.Increment();
+            Id(x => x.Id, "UserTokenId").Not.Nullable().GeneratedBy.Increment();
             Map(x => x.Token).Not.Nullable();
             Map(x => x.ExpireDate).Not.Nullable();
             References(x => x.User).Column("UserId").Not.Nullable().Not.LazyLoad();

@@ -9,7 +9,6 @@ using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Domain;
 using PizzeriaAPI.Job;
 using PizzeriaAPI.ORM;
-using PizzeriaAPI.Repositories;
 using PizzeriaAPI.Security;
 using PizzeriaAPI.Settings;
 using PizzeriaAPI.Upgrades;
@@ -17,7 +16,10 @@ using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
 using System.Text;
-
+using PizzeriaAPI.Repositories.EntityWithPictureRepositories;
+using PizzeriaAPI.Repositories.BaseEntityRepositories;
+using PizzeriaAPI.Repositories.ExtendedBaseEntityRepositories;
+using PizzeriaAPI.Repositories.EntityRepository;
 
 namespace PizzeriaAPI
 {
@@ -114,7 +116,6 @@ namespace PizzeriaAPI
             services.AddSingleton<ISocialMediaRepository, SocialMediaRepository>();
             services.AddSingleton<IBannerRepository, BannerRepository>();
             services.AddSingleton<IUserRepository, UserRepository>();
-            services.AddSingleton<IBannerRepository, BannerRepository>();
             services.AddSingleton<IPictureRepository, PictureRepository>();
             services.AddSingleton<ISliderRepository, SliderRepository>();
             services.AddSingleton<ITeamMemberRepository, TeamMemberRepository>();
@@ -149,7 +150,7 @@ namespace PizzeriaAPI
 
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(DeleteExpiredUserTokenJob),
-                cronExpression: "0 15 10 * * ?"));
+                cronExpression: "0 0,30 * * * ?"));
         }
 
         public static void OnInitialize(this IServiceProvider services)
@@ -159,6 +160,13 @@ namespace PizzeriaAPI
             var upgradeService = services.GetRequiredService<IUpgradesService>();
 
             upgradeService.UpgradeServices();
+
+            var eventRepository = services.GetRequiredService<IEventRepository>();
+            var transactionCoordinator = services.GetRequiredService<ITransactionCoordinator>();
+            transactionCoordinator.InRollbackScope(session =>
+            {
+                eventRepository.Initialize(session);
+            });
         }
     }
 }

@@ -2,7 +2,8 @@
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.Product;
 using PizzeriaAPI.ORM;
-using PizzeriaAPI.Repositories;
+using PizzeriaAPI.Repositories.BaseEntityRepositories;
+using PizzeriaAPI.Repositories.EntityWithPictureRepositories;
 using Swashbuckle.Swagger.Annotations;
 using System.Net;
 
@@ -71,7 +72,7 @@ namespace PizzeriaAPI.Controllers
             IList<ProductDto> productDtoList = new List<ProductDto>();
             await transactionCoordinator.InRollbackScopeAsync(async session =>
             {
-                var productList = await productRepository.GetVisibleProducts(session);
+                var productList = await productRepository.GetVisibleAsync(session);
                 if (productList != null)
                     productDtoList = productList.Select(GetProductDto).ToList();
             });
@@ -143,7 +144,7 @@ namespace PizzeriaAPI.Controllers
                 Score = product.Score,
                 IsRecommended = product.IsRecommended,
                 IsVisible = product.IsVisible,
-                PictureIdList = product.PictureList?.Select(x => x.PictureId ).ToList(),
+                PictureIdList = product.PictureList?.Select(x => x.Id ).ToList(),
                 CategoryId = product.Category?.Id ?? 0
             };
         }

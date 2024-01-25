@@ -1,5 +1,5 @@
 ﻿using PizzeriaAPI.ORM;
-using PizzeriaAPI.Repositories;
+using PizzeriaAPI.Repositories.EntityRepository;
 using Quartz;
 
 namespace PizzeriaAPI.Job

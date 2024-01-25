@@ -2,7 +2,8 @@
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.Gallery;
 using PizzeriaAPI.ORM;
-using PizzeriaAPI.Repositories;
+using PizzeriaAPI.Repositories.BaseEntityRepositories;
+using PizzeriaAPI.Repositories.EntityWithPictureRepositories;
 using Swashbuckle.Swagger.Annotations;
 using System.Net;
 
@@ -148,7 +149,7 @@ namespace PizzeriaAPI.Controllers
                 MainText = gallery.MainText,
                 SubText = gallery.SubText,
                 IsVisible = gallery.IsVisible,
-                PictureIdList = gallery.PictureList?.Select(x => x.PictureId).ToList(),
+                PictureIdList = gallery.PictureList?.Select(x => x.Id).ToList(),
             };
         }
 

@@ -2,7 +2,9 @@
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.TabSlider;
 using PizzeriaAPI.ORM;
-using PizzeriaAPI.Repositories;
+using PizzeriaAPI.Repositories.BaseEntityRepositories;
+using PizzeriaAPI.Repositories.EntityWithPictureRepositories;
+using PizzeriaAPI.Repositories.ExtendedBaseEntityRepositories;
 using Swashbuckle.Swagger.Annotations;
 using System.Net;
 
@@ -148,8 +150,8 @@ namespace PizzeriaAPI.Controllers
                 Id = tabSlider.Id,
                 Title = tabSlider.Title,
                 IsVisible = tabSlider.IsVisible,
-                PictureIdList = tabSlider.PictureList?.Select(x => x.PictureId)?.ToList(),
-                InformationTabIdList = tabSlider.InformationTabList?.Select(x => x.InformationTabId)?.ToList()
+                PictureIdList = tabSlider.PictureList?.Select(x => x.Id)?.ToList(),
+                InformationTabIdList = tabSlider.InformationTabList?.Select(x => x.Id)?.ToList()
             };
         }
         private async Task<TabSlider> GetTabSlider(AddTabSliderDto tabSliderDto)

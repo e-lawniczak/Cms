@@ -43,7 +43,7 @@ namespace PizzeriaAPI.Security
 
             if (result.Succeeded)
             {
-                return new ResetPasswordResponse() { UserId = user.UserId };
+                return new ResetPasswordResponse() { UserId = user.Id };
             }
             else
             {
@@ -88,7 +88,7 @@ namespace PizzeriaAPI.Security
 
             if (result.Succeeded)
             {
-                return new ChangePasswordResponse() { UserId = user.UserId };
+                return new ChangePasswordResponse() { UserId = user.Id };
             }
             else
             {
@@ -108,7 +108,7 @@ namespace PizzeriaAPI.Security
 
             AuthenticationResponse response = new AuthenticationResponse
             {
-                Id = eduUser.UserId,
+                Id = eduUser.Id,
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
                 Email = eduUser.Email,
             };
@@ -136,7 +136,7 @@ namespace PizzeriaAPI.Security
 
                 if (result.Succeeded)
                 {
-                    return new RegistrationResponse() { UserId = user.UserId };
+                    return new RegistrationResponse() { UserId = user.Id };
                 }
                 else
                 {
@@ -173,7 +173,7 @@ namespace PizzeriaAPI.Security
             {
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(JwtRegisteredClaimNames.Email, user?.Email??""),
-            new Claim("uid", user?.UserId.ToString()??""),
+            new Claim("uid", user?.Id.ToString()??""),
             new Claim(ClaimTypes.Role,"adminEdu")
             }
             .Union(userClaims)

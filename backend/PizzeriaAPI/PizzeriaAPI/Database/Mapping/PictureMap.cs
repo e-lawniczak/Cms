@@ -10,7 +10,7 @@ namespace PizzeriaAPI.Database.Mapping
         {
             Table("Picture");
 
-            Id(p => p.PictureId).Not.Nullable().GeneratedBy.Increment();
+            Id(p => p.Id, "PictureId").Not.Nullable().GeneratedBy.Increment();
 
             Map(p => p.Name).Not.Nullable().Unique();
             Map(p => p.Link).Nullable();

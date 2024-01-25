@@ -1,7 +1,8 @@
 ﻿using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Domain;
 using PizzeriaAPI.ORM;
-using PizzeriaAPI.Repositories;
+using PizzeriaAPI.Repositories.BaseEntityRepositories;
+using PizzeriaAPI.Repositories.EntityRepository;
 using System.Security.Claims;
 
 namespace PizzeriaAPI.Security
