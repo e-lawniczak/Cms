@@ -75,7 +75,7 @@ const ProductRow = (props: { item: ProductDto, isNew: boolean, pictures: Picture
                 isRecommended: data?.isRecommended || false,
                 isVisible: data?.isVisible || false,
                 name: data?.name || "",
-                pictureIdList: [data?.pictureIdList / 1] || [],
+                pictureIdList:  data?.pictureIdList ? [data?.pictureIdList / 1] : [],
                 price: data?.price || 0,
                 score: data?.score || 0,
             } as ProductDto

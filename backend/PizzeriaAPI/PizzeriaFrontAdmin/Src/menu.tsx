@@ -46,7 +46,6 @@ const MenuElementRow = (props: { parentElements: any[], item: MenuElementDto, el
     const
         { item, parentElements, isNew = false, refreshFunc, elements, setShow = () => { } } = props,
         { register, handleSubmit, setValue, getValues } = useForm({ defaultValues: { ...item } }),
-        parentData = mapObjectToSelect(parentElements, "text", "menuElementId").filter((i: any) => i.value != item?.menuElementId),
         onSubmit = (data: any) => {
         },
         makeItem = (data: any) => {
@@ -77,6 +76,8 @@ const MenuElementRow = (props: { parentElements: any[], item: MenuElementDto, el
             await axios.patch(url, item, axiosBaseConfig)
             refreshFunc()
         }
+    let parentData = mapObjectToSelect(parentElements, "text", "menuElementId").filter((i: any) => i.value != item?.menuElementId)
+    parentData.push({ label: "no parent", value: null })
     return <div className="menu-element-row row">
         <div className="id">{item?.menuElementId || -1}</div>
         <PInput register={{ ...register("text") }} inputProps={{ type: 'text' }} />
@@ -98,7 +99,6 @@ const MenuElementRow = (props: { parentElements: any[], item: MenuElementDto, el
         </div>
     </div>
 }
-
 
 const root = document.getElementById("react_root");
 ReactDOM.render(<MenuPage />, root);

@@ -34,7 +34,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCookie = exports.axiosBaseConfig = exports.baseApiUrl = exports.mapObjectToSelect = exports.PInput = exports.Image = exports.prepareSocialIcon = void 0;
+exports.getCookie = exports.axiosBaseConfig = exports.baseApiUrl = exports.mapObjectToSelect = exports.PInput = exports.Image = exports.prepareCategoryIcon = exports.prepareSocialIcon = void 0;
 var React = __importStar(require("react"));
 var prepareSocialIcon = function (name) {
     var key = name[name.length - 1];
@@ -52,6 +52,26 @@ var prepareSocialIcon = function (name) {
     }
 };
 exports.prepareSocialIcon = prepareSocialIcon;
+var prepareCategoryIcon = function (name) {
+    var key = name[name.length - 1].toLocaleLowerCase();
+    switch (key) {
+        case "salads":
+            return "linearicons-leaf";
+        case "pizza":
+            return "linearicons-pizza";
+        case "burgers":
+            return "linearicons-hamburger";
+        case "desserts":
+            return "linearicons-ice-cream";
+        case "drinks":
+            return "linearicons-coffe-cup";
+        case "seafood":
+            return "linearicons-steak";
+        default:
+            return "linearicons-dagger";
+    }
+};
+exports.prepareCategoryIcon = prepareCategoryIcon;
 var Image = function (props) {
     var imageClass = props.imageClass, src = props.src, _a = props.onImageClick, onImageClick = _a === void 0 ? function () { } : _a, item = props.item;
     return React.createElement("div", { className: ['img-container', imageClass || ""].join(" "), onClick: function (e) { return onImageClick(item, e); } },

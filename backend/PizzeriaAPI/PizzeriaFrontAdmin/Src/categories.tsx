@@ -63,7 +63,7 @@ const CategoryRow = (props: { item: CategoryDto, isNew: boolean, pictures: any, 
                 isVisible: data?.isVisible || false,
                 link: data?.link || "",
                 name: data?.name || "",
-                pictureIdList: [data?.pictureIdList / 1] || [],
+                pictureIdList: data?.pictureIdList ? [data?.pictureIdList / 1] : [],
                 productIdList: item?.productIdList || []
             } as CategoryDto
         },

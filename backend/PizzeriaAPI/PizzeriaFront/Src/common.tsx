@@ -40,7 +40,16 @@ export const prepareCategoryIcon = (name: string[]) => {
             return "linearicons-dagger";
     }
 }
+export const getPictureUrlFromList = (list: number[], type: string = "Full") => {
 
+    let ret = []
+    if (!list) return []
+    for (let i = 0; i < list.length; i++) {
+        const element = baseApiUrl + `/GetPicture/${type}/` + list[i];
+        ret.push(element)
+    }
+    return ret
+}
 
 
 export interface PageDto {

@@ -70,145 +70,10 @@ var commonElements_1 = require("./commonElements");
 var axios_1 = __importDefault(require("axios"));
 var common_1 = require("./common");
 var MainPage = function () {
-    var _a = (0, react_1.useState)([]), data = _a[0], setData = _a[1], _b = (0, react_1.useState)(), mainSlider = _b[0], setMainSlider = _b[1], _c = (0, react_1.useState)(), slider = _c[0], setSlider = _c[1], _d = (0, react_1.useState)(0), currentSlide = _d[0], setCurrentSlide = _d[1], _e = (0, react_1.useState)(), sliderBanners = _e[0], setSliderBanners = _e[1], getMainSLider = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var res;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValueByKey/home_page_slider")];
-                case 1:
-                    res = _a.sent();
-                    setMainSlider(res.data);
-                    return [2 /*return*/];
-            }
-        });
-    }); }, getSlider = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var resSlider, ss;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    if (!mainSlider)
-                        return [2 /*return*/];
-                    return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetVisibleSliderList")];
-                case 1:
-                    resSlider = _a.sent();
-                    if (resSlider.status == 200) {
-                        ss = resSlider.data.filter(function (s) { return s.name == mainSlider.value; })[0];
-                        setSlider(ss);
-                    }
-                    return [2 /*return*/];
-            }
-        });
-    }); }, getBannerSliders = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var queryString, res;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    if (!slider)
-                        return [2 /*return*/];
-                    queryString = slider === null || slider === void 0 ? void 0 : slider.bannerIdList.map(function (i) { return "".concat(i); });
-                    return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetBannersByIdList?bannerIdList=".concat(queryString))];
-                case 1:
-                    res = _a.sent();
-                    setSliderBanners(res.data);
-                    return [2 /*return*/];
-            }
-        });
-    }); }, mappedSliderBanners = sliderBanners === null || sliderBanners === void 0 ? void 0 : sliderBanners.map(function (b, idx) {
-        return React.createElement("div", { key: idx, className: "swiper-slide context-dark", style: { backgroundImage: "url(".concat(common_1.baseApiUrl + "/GetPicture/Full/" + b.pictureIdList[0], ")") }, "data-slide-bg": common_1.baseApiUrl + "/GetPicture/Full/" + b.pictureIdList[0] },
-            React.createElement("div", { className: "swiper-slide-caption section-md" },
-                React.createElement("div", { className: "container" },
-                    React.createElement("div", { className: "row" },
-                        React.createElement("div", { className: "col-sm-9 col-md-8 col-lg-7 col-xl-7 offset-lg-1 offset-xxl-0" },
-                            React.createElement("div", { dangerouslySetInnerHTML: { __html: b.text } }),
-                            React.createElement("a", { className: "button button-lg button-primary button-winona button-shadow-2", href: b.link, "data-caption-animate": "fadeInUp", "data-caption-delay": "300" }, b.subText))))));
-    }), slideUp = function () {
-        setTimeout(function () {
-            console.log("sss");
-            if ((mappedSliderBanners === null || mappedSliderBanners === void 0 ? void 0 : mappedSliderBanners.length) > 0)
-                setCurrentSlide((currentSlide + 1) % mappedSliderBanners.length);
-        }, 1500);
-    }, x = "";
-    React.useEffect(function () {
-        slideUp();
-        getMainSLider();
-    }, []);
-    React.useEffect(function () {
-        getSlider();
-    }, [mainSlider]);
-    React.useEffect(function () {
-        getBannerSliders();
-    }, [slider]);
+    var _a = (0, react_1.useState)([]), data = _a[0], setData = _a[1], x = "";
     return React.createElement(commonElements_1.PageWrapper, null,
-        React.createElement("section", { className: "section swiper-container swiper-slider swiper-slider-2 swiper-slider-3", "data-loop": "true", "data-autoplay": "5000", "data-simulate-touch": "false", "data-slide-effect": "fade" },
-            React.createElement("div", { className: "swiper-wrapper text-sm-left" }, (mappedSliderBanners === null || mappedSliderBanners === void 0 ? void 0 : mappedSliderBanners.length) > 0 && mappedSliderBanners[currentSlide]),
-            React.createElement("div", { className: "swiper-pagination", "data-bullet-custom": "true" }),
-            React.createElement("div", { className: "swiper-button-prev", onClick: function () { return setCurrentSlide((currentSlide - 1) % mappedSliderBanners.length); } },
-                React.createElement("div", { className: "preview" },
-                    React.createElement("div", { className: "preview__img" })),
-                React.createElement("div", { className: "swiper-button-arrow" })),
-            React.createElement("div", { className: "swiper-button-next", onClick: function () { return setCurrentSlide((currentSlide + 1) % mappedSliderBanners.length); } },
-                React.createElement("div", { className: "swiper-button-arrow" }),
-                React.createElement("div", { className: "preview" },
-                    React.createElement("div", { className: "preview__img" })))),
-        React.createElement("section", { className: "section section-md bg-default" },
-            React.createElement("div", { className: "container" },
-                React.createElement("h3", { className: "oh-desktop" },
-                    React.createElement("span", { className: "d-inline-block wow slideInDown" }, "Our Menu")),
-                React.createElement("div", { className: "row row-md row-30" },
-                    React.createElement("div", { className: "col-sm-6 col-lg-4" },
-                        React.createElement("div", { className: "oh-desktop" },
-                            React.createElement("article", { className: "services-terri wow slideInUp" },
-                                React.createElement("div", { className: "services-terri-figure" },
-                                    React.createElement("img", { src: "images/menu-1-370x278.jpg", alt: "", width: "370", height: "278" })),
-                                React.createElement("div", { className: "services-terri-caption" },
-                                    React.createElement("span", { className: "services-terri-icon linearicons-leaf" }),
-                                    React.createElement("h5", { className: "services-terri-title" },
-                                        React.createElement("a", { href: "#" }, "Salads")))))),
-                    React.createElement("div", { className: "col-sm-6 col-lg-4" },
-                        React.createElement("div", { className: "oh-desktop" },
-                            React.createElement("article", { className: "services-terri wow slideInDown" },
-                                React.createElement("div", { className: "services-terri-figure" },
-                                    React.createElement("img", { src: "images/menu-2-370x278.jpg", alt: "", width: "370", height: "278" })),
-                                React.createElement("div", { className: "services-terri-caption" },
-                                    React.createElement("span", { className: "services-terri-icon linearicons-pizza" }),
-                                    React.createElement("h5", { className: "services-terri-title" },
-                                        React.createElement("a", { href: "#" }, "Pizzas")))))),
-                    React.createElement("div", { className: "col-sm-6 col-lg-4" },
-                        React.createElement("div", { className: "oh-desktop" },
-                            React.createElement("article", { className: "services-terri wow slideInUp" },
-                                React.createElement("div", { className: "services-terri-figure" },
-                                    React.createElement("img", { src: "images/menu-3-370x278.jpg", alt: "", width: "370", height: "278" })),
-                                React.createElement("div", { className: "services-terri-caption" },
-                                    React.createElement("span", { className: "services-terri-icon linearicons-hamburger" }),
-                                    React.createElement("h5", { className: "services-terri-title" },
-                                        React.createElement("a", { href: "#" }, "Burgers")))))),
-                    React.createElement("div", { className: "col-sm-6 col-lg-4" },
-                        React.createElement("div", { className: "oh-desktop" },
-                            React.createElement("article", { className: "services-terri wow slideInDown" },
-                                React.createElement("div", { className: "services-terri-figure" },
-                                    React.createElement("img", { src: "images/menu-4-370x278.jpg", alt: "", width: "370", height: "278" })),
-                                React.createElement("div", { className: "services-terri-caption" },
-                                    React.createElement("span", { className: "services-terri-icon linearicons-ice-cream" }),
-                                    React.createElement("h5", { className: "services-terri-title" },
-                                        React.createElement("a", { href: "#" }, "Desserts")))))),
-                    React.createElement("div", { className: "col-sm-6 col-lg-4" },
-                        React.createElement("div", { className: "oh-desktop" },
-                            React.createElement("article", { className: "services-terri wow slideInUp" },
-                                React.createElement("div", { className: "services-terri-figure" },
-                                    React.createElement("img", { src: "images/menu-5-370x278.jpg", alt: "", width: "370", height: "278" })),
-                                React.createElement("div", { className: "services-terri-caption" },
-                                    React.createElement("span", { className: "services-terri-icon linearicons-coffee-cup" }),
-                                    React.createElement("h5", { className: "services-terri-title" },
-                                        React.createElement("a", { href: "#" }, "Drinks")))))),
-                    React.createElement("div", { className: "col-sm-6 col-lg-4" },
-                        React.createElement("div", { className: "oh-desktop" },
-                            React.createElement("article", { className: "services-terri wow slideInDown" },
-                                React.createElement("div", { className: "services-terri-figure" },
-                                    React.createElement("img", { src: "images/menu-6-370x278.jpg", alt: "", width: "370", height: "278" })),
-                                React.createElement("div", { className: "services-terri-caption" },
-                                    React.createElement("span", { className: "services-terri-icon linearicons-steak" }),
-                                    React.createElement("h5", { className: "services-terri-title" },
-                                        React.createElement("a", { href: "#" }, "Seafood"))))))))),
+        React.createElement(SwiperSection, null),
+        React.createElement(CategoriesSection, null),
         React.createElement("section", { className: "primary-overlay section parallax-container", "data-parallax-img": "images/bg-3.jpg" },
             React.createElement("div", { className: "parallax-content section-xl context-dark text-md-left" },
                 React.createElement("div", { className: "container" },
@@ -445,6 +310,111 @@ var MainPage = function () {
                         React.createElement("p", { className: "box-icon-megan-text" }, "The client is our #1 priority as we deliver top-notch customer service."))))));
 };
 exports.MainPage = MainPage;
+var SwiperSection = function () {
+    var _a = (0, react_1.useState)(), mainSlider = _a[0], setMainSlider = _a[1], _b = (0, react_1.useState)(), slider = _b[0], setSlider = _b[1], _c = (0, react_1.useState)(0), currentSlide = _c[0], setCurrentSlide = _c[1], _d = (0, react_1.useState)(), sliderBanners = _d[0], setSliderBanners = _d[1], getMainSLider = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValueByKey/home_page_slider")];
+                case 1:
+                    res = _a.sent();
+                    setMainSlider(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, getSlider = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!mainSlider)
+                        return [2 /*return*/];
+                    return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetSlider/".concat(mainSlider === null || mainSlider === void 0 ? void 0 : mainSlider.value))];
+                case 1:
+                    res = _a.sent();
+                    setSlider(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, getBannerSliders = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var queryString, res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    console.log("second");
+                    if (!slider)
+                        return [2 /*return*/];
+                    queryString = slider === null || slider === void 0 ? void 0 : slider.bannerIdList.map(function (i) { return "".concat(i); });
+                    return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetBannersByIdList?bannerIdList=".concat(queryString))];
+                case 1:
+                    res = _a.sent();
+                    setSliderBanners(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, mappedSliderBanners = sliderBanners === null || sliderBanners === void 0 ? void 0 : sliderBanners.map(function (b, idx) {
+        return React.createElement("div", { key: idx, className: "swiper-slide context-dark", style: { backgroundImage: "url(".concat(common_1.baseApiUrl + "/GetPicture/Full/" + b.pictureIdList[0], ")") }, "data-slide-bg": common_1.baseApiUrl + "/GetPicture/Full/" + b.pictureIdList[0] },
+            React.createElement("div", { className: "swiper-slide-caption section-md" },
+                React.createElement("div", { className: "container" },
+                    React.createElement("div", { className: "row" },
+                        React.createElement("div", { className: "col-sm-9 col-md-8 col-lg-7 col-xl-7 offset-lg-1 offset-xxl-0" },
+                            React.createElement("div", { dangerouslySetInnerHTML: { __html: b.text } }),
+                            React.createElement("a", { className: "button button-lg button-primary button-winona button-shadow-2", href: b.link, "data-caption-animate": "fadeInUp", "data-caption-delay": "300" }, b.subText))))));
+    });
+    React.useEffect(function () {
+        getMainSLider();
+    }, []);
+    React.useEffect(function () {
+        getSlider();
+    }, [mainSlider]);
+    React.useEffect(function () {
+        getBannerSliders();
+    }, [slider]);
+    return React.createElement("section", { className: "section swiper-container swiper-slider swiper-slider-2 swiper-slider-3", "data-loop": "true", "data-autoplay": "5000", "data-simulate-touch": "false", "data-slide-effect": "fade" },
+        React.createElement("div", { className: "swiper-wrapper text-sm-left" }, (mappedSliderBanners === null || mappedSliderBanners === void 0 ? void 0 : mappedSliderBanners.length) > 0 && mappedSliderBanners[currentSlide]),
+        React.createElement("div", { className: "swiper-pagination", "data-bullet-custom": "true" }),
+        React.createElement("div", { className: "swiper-button-prev", onClick: function () { return setCurrentSlide((currentSlide - 1) % mappedSliderBanners.length); } },
+            React.createElement("div", { className: "preview" },
+                React.createElement("div", { className: "preview__img" })),
+            React.createElement("div", { className: "swiper-button-arrow" })),
+        React.createElement("div", { className: "swiper-button-next", onClick: function () { return setCurrentSlide((currentSlide + 1) % mappedSliderBanners.length); } },
+            React.createElement("div", { className: "swiper-button-arrow" }),
+            React.createElement("div", { className: "preview" },
+                React.createElement("div", { className: "preview__img" }))));
+};
+var CategoriesSection = function () {
+    var _a = (0, react_1.useState)(), categories = _a[0], setCategories = _a[1], getCategories = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetVisibleCategoryList")];
+                case 1:
+                    res = _a.sent();
+                    setCategories(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, mappedCategories = categories === null || categories === void 0 ? void 0 : categories.map(function (cat, idx) {
+        return React.createElement("div", { className: "col-sm-6 col-lg-4" },
+            React.createElement("div", { className: "oh-desktop" },
+                React.createElement("article", { className: "services-terri wow slideInUp" },
+                    React.createElement("div", { className: "services-terri-figure" },
+                        React.createElement("img", { src: common_1.baseApiUrl + "/GetPicture/Full/" + cat.pictureIdList[0], alt: "", width: "370", height: "278" })),
+                    React.createElement("div", { className: "services-terri-caption" },
+                        React.createElement("span", { className: "services-terri-icon linearicons-leaf" }),
+                        React.createElement("h5", { className: "services-terri-title" },
+                            React.createElement("a", { href: cat.link }, cat.name))))));
+    });
+    React.useEffect(function () {
+        // slideUp()
+        getCategories();
+    }, []);
+    return React.createElement("section", { className: "section section-md bg-default" },
+        React.createElement("div", { className: "container" },
+            React.createElement("h3", { className: "oh-desktop" },
+                React.createElement("span", { className: "d-inline-block wow slideInDown" }, "Our Menu")),
+            React.createElement("div", { className: "row row-md row-30" }, mappedCategories)));
+};
 var root = document.getElementById("react_root");
 ReactDOM.render(React.createElement(exports.MainPage, null), root);
 //# sourceMappingURL=mainPage.js.map

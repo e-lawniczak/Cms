@@ -39,7 +39,7 @@ export const PicturesPage = () => {
         },
         pictureUpload = <div className="picture-upload">
             <form className='file-upload-form' onSubmit={handleSubmit(onSubmit)}>
-                <PInput register={{ ...register("fileUpload") }} inputProps={{ type: 'file', multiple: true }} />
+                <PInput register={{ ...register("fileUpload") }} inputProps={{ type: 'file', multiple: true, accept:"image/png, image/jpeg" }} />
                 <button className='btn btn-white btn-sm mb-0 btn-save' type='submit'>Add</button>
             </form>
         </div>

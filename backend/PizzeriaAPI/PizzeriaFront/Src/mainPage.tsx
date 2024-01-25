@@ -4,219 +4,23 @@ import * as ReactDOM from 'react-dom';
 
 import { PageWrapper } from './commonElements';
 import axios from 'axios';
-import { BannerDto, CategoryDto, KeyValueDto, SliderDto, baseApiUrl } from './common';
+import { BannerDto, CategoryDto, KeyValueDto, SliderDto, baseApiUrl,  getPictureUrlFromList } from './common';
 
 export const MainPage = () => {
     const
         [data, setData] = useState([]),
-        [mainSlider, setMainSlider] = useState<KeyValueDto>(),
-        [categories, setCategories] = useState<CategoryDto[]>(),
-        [slider, setSlider] = useState<SliderDto>(),
-        [currentSlide, setCurrentSlide] = useState(0),
-        [sliderBanners, setSliderBanners] = useState<BannerDto[]>(),
-        getMainSLider = async () => {
-            let res = await axios.get(baseApiUrl + `/GetKeyValueByKey/home_page_slider`)
-            setMainSlider(res.data)
-        },
-        getCategories = async () => {
-            let res = await axios.get(baseApiUrl + `/GetVisibleCategoryList`)
-            setCategories(res.data)
-        },
-        getSlider = async () => {
-            if (!mainSlider) return
-            let res = await axios.get(baseApiUrl + `/GetSlider/${mainSlider?.value}`)
-            setSlider(res.data)
 
-        },
-        getBannerSliders = async () => {
-            console.log("second")
-            if (!slider) return
-            let queryString = slider?.bannerIdList.map((i: number) => `${i}`)
-            let res = await axios.get(baseApiUrl + `/GetBannersByIdList?bannerIdList=${queryString}`)
-            setSliderBanners(res.data)
-        },
-        mappedSliderBanners = sliderBanners?.map((b: BannerDto, idx: number) => {
-            return <div key={idx} className="swiper-slide context-dark" style={{ backgroundImage: `url(${baseApiUrl + "/GetPicture/Full/" + b.pictureIdList[0]})` }} data-slide-bg={baseApiUrl + "/GetPicture/Full/" + b.pictureIdList[0]}>
-                <div className="swiper-slide-caption section-md">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-sm-9 col-md-8 col-lg-7 col-xl-7 offset-lg-1 offset-xxl-0">
-                                <div dangerouslySetInnerHTML={{ __html: b.text }}></div>
-                                <a className="button button-lg button-primary button-winona button-shadow-2" href={b.link} data-caption-animate="fadeInUp" data-caption-delay="300">{b.subText}</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }),
-        mappedCategories = categories?.map((cat: CategoryDto, idx: number) => {
-            return <div className="col-sm-6 col-lg-4">
-                <div className="oh-desktop">
-
-                    <article className="services-terri wow slideInUp">
-                        <div className="services-terri-figure">
-                            <img src={baseApiUrl + "/GetPicture/Full/" + cat.pictureIdList[0]} alt="" width="370" height="278" />
-                        </div>
-                        <div className="services-terri-caption">
-                            <span className="services-terri-icon linearicons-leaf"></span>
-                            <h5 className="services-terri-title"><a href={cat.link}>{cat.name}</a></h5>
-                        </div>
-                    </article>
-                </div>
-            </div>
-        }),
-        slideUp = () => {
-            setTimeout(() => {
-                console.log("sss")
-                if (mappedSliderBanners?.length > 0)
-                    setCurrentSlide((currentSlide + 1) % mappedSliderBanners.length)
-            }, 1500);
-        },
         x = ""
 
-    React.useEffect(() => {
-        // slideUp()
-        getCategories()
-        getMainSLider()
-    }, [])
-    React.useEffect(() => {
-        getSlider()
-    }, [mainSlider])
-    React.useEffect(() => {
-        getBannerSliders()
-    }, [slider])
 
     return <PageWrapper>
-        <section className="section swiper-container swiper-slider swiper-slider-2 swiper-slider-3" data-loop="true" data-autoplay="5000" data-simulate-touch="false" data-slide-effect="fade">
-            <div className="swiper-wrapper text-sm-left">
-                {mappedSliderBanners?.length > 0 && mappedSliderBanners[currentSlide]}
-            </div>
-
-            <div className="swiper-pagination" data-bullet-custom="true"></div>
-
-            <div className="swiper-button-prev" onClick={() => setCurrentSlide((currentSlide - 1) % mappedSliderBanners.length)}>
-                <div className="preview">
-                    <div className="preview__img"></div>
-                </div>
-                <div className="swiper-button-arrow"></div>
-            </div>
-            <div className="swiper-button-next" onClick={() => setCurrentSlide((currentSlide + 1) % mappedSliderBanners.length)}>
-                <div className="swiper-button-arrow"></div>
-                <div className="preview">
-                    <div className="preview__img"></div>
-                </div>
-            </div>
-        </section>
-
-        <section className="section section-md bg-default">
-            <div className="container">
-                <h3 className="oh-desktop"><span className="d-inline-block wow slideInDown">Our Menu</span></h3>
-                <div className="row row-md row-30">
-                    {mappedCategories}
-                    {/* <div className="col-sm-6 col-lg-4">
-                        <div className="oh-desktop">
-
-                            <article className="services-terri wow slideInUp">
-                                <div className="services-terri-figure">
-                                    <img src="images/menu-1-370x278.jpg" alt="" width="370" height="278" />
-                                </div>
-                                <div className="services-terri-caption">
-                                    <span className="services-terri-icon linearicons-leaf"></span>
-                                    <h5 className="services-terri-title"><a href="#">Salads</a></h5>
-                                </div>
-                            </article>
-                        </div>
-                    </div>
-                    <div className="col-sm-6 col-lg-4">
-                        <div className="oh-desktop">
-
-                            <article className="services-terri wow slideInDown">
-                                <div className="services-terri-figure">
-                                    <img src="images/menu-2-370x278.jpg" alt="" width="370" height="278" />
-                                </div>
-                                <div className="services-terri-caption">
-                                    <span className="services-terri-icon linearicons-pizza"></span>
-                                    <h5 className="services-terri-title"><a href="#">Pizzas</a></h5>
-                                </div>
-                            </article>
-                        </div>
-                    </div>
-                    <div className="col-sm-6 col-lg-4">
-                        <div className="oh-desktop">
-
-                            <article className="services-terri wow slideInUp">
-                                <div className="services-terri-figure">
-                                    <img src="images/menu-3-370x278.jpg" alt="" width="370" height="278" />
-                                </div>
-                                <div className="services-terri-caption">
-                                    <span className="services-terri-icon linearicons-hamburger"></span>
-                                    <h5 className="services-terri-title"><a href="#">Burgers</a></h5>
-                                </div>
-                            </article>
-                        </div>
-                    </div>
-                    <div className="col-sm-6 col-lg-4">
-                        <div className="oh-desktop">
-
-                            <article className="services-terri wow slideInDown">
-                                <div className="services-terri-figure">
-                                    <img src="images/menu-4-370x278.jpg" alt="" width="370" height="278" />
-                                </div>
-                                <div className="services-terri-caption">
-                                    <span className="services-terri-icon linearicons-ice-cream"></span>
-                                    <h5 className="services-terri-title"><a href="#">Desserts</a></h5>
-                                </div>
-                            </article>
-                        </div>
-                    </div>
-                    <div className="col-sm-6 col-lg-4">
-                        <div className="oh-desktop">
-
-                            <article className="services-terri wow slideInUp">
-                                <div className="services-terri-figure">
-                                    <img src="images/menu-5-370x278.jpg" alt="" width="370" height="278" />
-                                </div>
-                                <div className="services-terri-caption">
-                                    <span className="services-terri-icon linearicons-coffee-cup"></span>
-                                    <h5 className="services-terri-title"><a href="#">Drinks</a></h5>
-                                </div>
-                            </article>
-                        </div>
-                    </div>
-                    <div className="col-sm-6 col-lg-4">
-                        <div className="oh-desktop">
-
-                            <article className="services-terri wow slideInDown">
-                                <div className="services-terri-figure">
-                                    <img src="images/menu-6-370x278.jpg" alt="" width="370" height="278" />
-                                </div>
-                                <div className="services-terri-caption">
-                                    <span className="services-terri-icon linearicons-steak"></span>
-                                    <h5 className="services-terri-title"><a href="#">Seafood</a></h5>
-                                </div>
-                            </article>
-                        </div>
-                    </div> */}
-                </div>
-            </div>
-        </section>
+        <SwiperSection />
+        <CategoriesSection />
+        <MidSectionBanner keyValue={"banner_1"} />
 
 
-        <section className="primary-overlay section parallax-container" data-parallax-img="images/bg-3.jpg">
-            <div className="parallax-content section-xl context-dark text-md-left">
-                <div className="container">
-                    <div className="row justify-content-end">
-                        <div className="col-sm-8 col-md-7 col-lg-5">
-                            <div className="cta-modern">
-                                <h3 className="cta-modern-title wow fadeInRight">Best atmosphere</h3>
-                                <p className="lead">PizzaHouse is the place of the best pizza and high-quality service.</p>
-                                <p className="cta-modern-text oh-desktop" data-wow-delay=".1s"><span className="cta-modern-decor wow slideInLeft"></span><span className="d-inline-block wow slideInDown">Ben Smith, Founder</span></p><a className="button button-md button-secondary-2 button-winona wow fadeInUp" href="#" data-wow-delay=".2s">View Our Services</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+
+
 
 
         <section className="section section-lg bg-default">
@@ -305,20 +109,7 @@ export const MainPage = () => {
         </section>
 
 
-        <section className="primary-overlay section parallax-container" data-parallax-img="images/bg-4.jpg">
-            <div className="parallax-content section-xxl context-dark text-md-left">
-                <div className="container">
-                    <div className="row justify-content-end">
-                        <div className="col-sm-9 col-md-7 col-lg-5">
-                            <div className="cta-modern">
-                                <h3 className="cta-modern-title cta-modern-title-2 oh-desktop"><span className="d-inline-block wow fadeInLeft">-30% on all salads & drinks</span></h3>
-                                <p className="cta-modern-text cta-modern-text-2 oh-desktop" data-wow-delay=".1s"><span className="cta-modern-decor cta-modern-decor-2 wow slideInLeft"></span><span className="d-inline-block wow slideInUp">Taste some of the best PizzaHouse salads!</span></p><a className="button button-lg button-secondary button-winona wow fadeInRight" href="contacts.html" data-wow-delay=".2s">contact us</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <MidSectionBanner keyValue={"banner_2"} />
 
 
         <section className="section section-xl bg-default">
@@ -559,6 +350,167 @@ export const MainPage = () => {
             </div>
         </section>
     </PageWrapper>
+}
+
+const SwiperSection = () => {
+    const
+        [mainSlider, setMainSlider] = useState<KeyValueDto>(),
+        [slider, setSlider] = useState<SliderDto>(),
+        [currentSlide, setCurrentSlide] = useState(0),
+        [sliderBanners, setSliderBanners] = useState<BannerDto[]>(),
+        getMainSLider = async () => {
+            let res = await axios.get(baseApiUrl + `/GetKeyValueByKey/home_page_slider`)
+            setMainSlider(res.data)
+        },
+        getSlider = async () => {
+            if (!mainSlider) return
+            let res = await axios.get(baseApiUrl + `/GetSlider/${mainSlider?.value}`)
+            setSlider(res.data)
+
+        },
+        getBannerSliders = async () => {
+            console.log("second")
+            if (!slider) return
+            let queryString = slider?.bannerIdList.map((i: number) => `${i}`)
+            let res = await axios.get(baseApiUrl + `/GetBannersByIdList?bannerIdList=${queryString}`)
+            setSliderBanners(res.data)
+        },
+        mappedSliderBanners = sliderBanners?.map((b: BannerDto, idx: number) => {
+            return <div key={idx} className="swiper-slide context-dark" style={{ backgroundImage: `url(${getPictureUrlFromList(b.pictureIdList)[0]})` }} data-slide-bg={getPictureUrlFromList(b.pictureIdList)[0]}>
+                <div className="swiper-slide-caption section-md">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-sm-9 col-md-8 col-lg-7 col-xl-7 offset-lg-1 offset-xxl-0">
+                                <div dangerouslySetInnerHTML={{ __html: b.text }}></div>
+                                <a className="button button-lg button-primary button-winona button-shadow-2" href={b.link} data-caption-animate="fadeInUp" data-caption-delay="300">{b.subText}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        })
+    React.useEffect(() => {
+        getMainSLider()
+    }, [])
+    React.useEffect(() => {
+        getSlider()
+    }, [mainSlider])
+    React.useEffect(() => {
+        getBannerSliders()
+    }, [slider])
+
+    return <section className="section swiper-container swiper-slider swiper-slider-2 swiper-slider-3" data-loop="true" data-autoplay="5000" data-simulate-touch="false" data-slide-effect="fade">
+        <div className="swiper-wrapper text-sm-left">
+            {mappedSliderBanners?.length > 0 && mappedSliderBanners[currentSlide]}
+        </div>
+
+        <div className="swiper-pagination" data-bullet-custom="true"></div>
+
+        <div className="swiper-button-prev" onClick={() => setCurrentSlide((currentSlide - 1) % mappedSliderBanners.length)}>
+            <div className="preview">
+                <div className="preview__img"></div>
+            </div>
+            <div className="swiper-button-arrow"></div>
+        </div>
+        <div className="swiper-button-next" onClick={() => setCurrentSlide((currentSlide + 1) % mappedSliderBanners.length)}>
+            <div className="swiper-button-arrow"></div>
+            <div className="preview">
+                <div className="preview__img"></div>
+            </div>
+        </div>
+    </section>
+}
+
+const CategoriesSection = () => {
+    const
+        [categories, setCategories] = useState<CategoryDto[]>(),
+
+        getCategories = async () => {
+            let res = await axios.get(baseApiUrl + `/GetVisibleCategoryList`)
+            setCategories(res.data)
+        },
+        mappedCategories = categories?.map((cat: CategoryDto, idx: number) => {
+            return <div className="col-sm-6 col-lg-4">
+                <div className="oh-desktop">
+
+                    <article className="services-terri wow slideInUp">
+                        <div className="services-terri-figure">
+                            <img src={getPictureUrlFromList(cat.pictureIdList)[0]} alt="" width="370" height="278" />
+                        </div>
+                        <div className="services-terri-caption">
+                            <span className="services-terri-icon linearicons-leaf"></span>
+                            <h5 className="services-terri-title"><a href={cat.link}>{cat.name}</a></h5>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        })
+
+    React.useEffect(() => {
+        getCategories()
+
+    }, [])
+    return <section className="section section-md bg-default">
+        <div className="container">
+            <h3 className="oh-desktop"><span className="d-inline-block wow slideInDown">Our Menu</span></h3>
+            <div className="row row-md row-30">
+                {mappedCategories}
+
+            </div>
+        </div>
+    </section>
+}
+const MidSectionBanner = (props: { keyValue: string }) => {
+    const
+        [bannerValue, setBannerValue] = useState<KeyValueDto>(),
+        [banner, setBanner] = useState<BannerDto>(),
+        getBannerValue = async () => {
+            let res = await axios.get(baseApiUrl + `/GetKeyValueByKey/${props.keyValue}`)
+            setBannerValue(res.data)
+        },
+        getBanner = async () => {
+            if (!bannerValue) return
+            let res = await axios.get(baseApiUrl + `/GetBanner/${bannerValue?.value}`)
+            setBanner(res.data)
+
+        }
+
+    React.useEffect(() => {
+        getBannerValue()
+
+    }, [])
+    React.useEffect(() => {
+        getBanner()
+
+    }, [bannerValue])
+    return <section className="primary-overlay section parallax-container" data-parallax-img={getPictureUrlFromList(banner?.pictureIdList)[0]}>
+        <div className="parallax-content section-xl context-dark text-md-left">
+            <div className="container">
+                <div className="row justify-content-end">
+                    <div className="col-sm-8 col-md-7 col-lg-5">
+                        <div className="cta-modern">
+                            {banner?.text}
+                            <a className="button button-md button-secondary-2 button-winona wow fadeInUp" href={banner?.link} data-wow-delay=".2s">{banner?.subText}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    //       <section className="primary-overlay section parallax-container" data-parallax-img="images/bg-4.jpg">
+    //       <div className="parallax-content section-xxl context-dark text-md-left">
+    //           <div className="container">
+    //               <div className="row justify-content-end">
+    //                   <div className="col-sm-9 col-md-7 col-lg-5">
+    //                       <div className="cta-modern">
+    //                           <h3 className="cta-modern-title cta-modern-title-2 oh-desktop"><span className="d-inline-block wow fadeInLeft">-30% on all salads & drinks</span></h3>
+    //                           <p className="cta-modern-text cta-modern-text-2 oh-desktop" data-wow-delay=".1s"><span className="cta-modern-decor cta-modern-decor-2 wow slideInLeft"></span><span className="d-inline-block wow slideInUp">Taste some of the best PizzaHouse salads!</span></p><a className="button button-lg button-secondary button-winona wow fadeInRight" href="contacts.html" data-wow-delay=".2s">contact us</a>
+    //                       </div>
+    //                   </div>
+    //               </div>
+    //           </div>
+    //       </div>
+    //   </section>
 }
 
 const root = document.getElementById("react_root");
