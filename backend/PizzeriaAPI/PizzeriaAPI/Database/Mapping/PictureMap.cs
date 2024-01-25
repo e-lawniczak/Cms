@@ -19,10 +19,9 @@ namespace PizzeriaAPI.Database.Mapping
             Map(p => p.CreationDate).Not.Nullable();
             Map(p => p.ModificationDate).Not.Nullable();
             HasManyToMany(x => x.EntityWithPictureList)
-               .Cascade.SaveUpdate()
                .Table("entitypicture")
-               .ParentKeyColumn("entitywithpictureid")
-               .ChildKeyColumn("pictureid")
+               .ParentKeyColumn("pictureid")
+               .ChildKeyColumn("entitywithpictureid")
                .Inverse();
         }
     }
