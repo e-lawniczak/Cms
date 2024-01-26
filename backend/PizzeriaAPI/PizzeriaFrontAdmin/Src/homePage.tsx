@@ -437,12 +437,12 @@ const LogoSection = (props: { logo_key: string, title: string }) => {
                     <div className="row">
                         <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>id</div>
                         <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>key</div>
-                        <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>value</div>
+                        <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'></div>
                     </div>
                     <div className="row">
                         <div className="id">{logoPicture?.id || -1}</div>
                         <div className="key">{logoPicture?.key || props.logo_key}</div>
-                        <PInput register={{ ...register("logoValue") }} inputProps={{ type: 'text' }} />
+                        <PInput register={{ ...register("logoValue") }} inputProps={{ style: { display: "none" }, disabled: true, type: 'text' }} />
                     </div>
                 </div>
                 <div className="buttons-container">

@@ -198,7 +198,7 @@ var Header = function (props) {
                                     React.createElement("ul", { className: "list-share-2" }, mappedSocial)),
                                 React.createElement("div", { className: "rd-navbar-main" },
                                     React.createElement("ul", { className: "rd-navbar-nav" },
-                                        React.createElement("li", { className: "rd-nav-item active" },
+                                        React.createElement("li", { className: "rd-nav-item" },
                                             React.createElement("a", { className: "rd-nav-link", href: "/" }, "Home")),
                                         React.createElement("li", { className: "rd-nav-item" },
                                             React.createElement("a", { className: "rd-nav-link", href: "/About" }, "About us")),

@@ -34,7 +34,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCookie = exports.callApi = exports.testFunc = exports.axiosBaseConfig = exports.baseApiUrl = exports.mapObjectToSelect = exports.PInput = exports.Image = exports.PageWrapper = exports.PEditor = exports.PageSettingsSection = exports.Select = exports.sortFunc = exports.PictureListElement = void 0;
+exports.getCookie = exports.callApi = exports.testFunc = exports.axiosBaseConfig = exports.baseApiUrl = exports.mapObjectToSelect = exports.PTextarea = exports.PInput = exports.Image = exports.PageWrapper = exports.PEditor = exports.PageSettingsSection = exports.Select = exports.sortFunc = exports.PictureListElement = void 0;
 var React = __importStar(require("react"));
 var tinymce_react_1 = require("@tinymce/tinymce-react");
 var PictureListElement = function (props) {
@@ -117,6 +117,12 @@ var PInput = function (props) {
         React.createElement("input", __assign({}, register, { className: ['input-field', inputClass || ""].join(" ") }, inputProps)));
 };
 exports.PInput = PInput;
+var PTextarea = function (props) {
+    var register = props.register, inputClass = props.inputClass, wrapperClass = props.wrapperClass, inputProps = props.inputProps;
+    return React.createElement("div", { className: ['input-wrapper', wrapperClass || ""].join(" ") },
+        React.createElement("textarea", __assign({}, register, { className: ['input-field', inputClass || ""].join(" ") }, inputProps)));
+};
+exports.PTextarea = PTextarea;
 // export interface PopupProps {
 //   popupClass?: string
 //   popupBody?: any,

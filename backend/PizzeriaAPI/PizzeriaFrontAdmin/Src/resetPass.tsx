@@ -39,6 +39,8 @@ export const ResetPassPage = () => {
                     alert("Something went wrong. Contact administrator\n" + res.statusText)
 
                 }
+            }else{
+                alert("Passwords must match")
             }
         }
 

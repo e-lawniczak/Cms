@@ -255,6 +255,13 @@ export const PInput = (props: InputProps) => {
     <input {...register} className={['input-field', inputClass || ""].join(" ")} {...inputProps} />
   </div>
 }
+export const PTextarea = (props: InputProps) => {
+  const
+    { register, inputClass, wrapperClass, inputProps } = props;
+  return <div className={['input-wrapper', wrapperClass || ""].join(" ")}>
+    <textarea {...register} className={['input-field', inputClass || ""].join(" ")} {...inputProps} />
+  </div>
+}
 
 // export interface PopupProps {
 //   popupClass?: string

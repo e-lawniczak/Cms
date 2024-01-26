@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import * as ReactDOM from 'react-dom';
-import { CategoryDto, PInput, PageWrapper, PictureDto, ProductDto, Select, axiosBaseConfig, baseApiUrl, mapObjectToSelect, sortFunc } from './common';
+import { CategoryDto, PInput, PTextarea, PageWrapper, PictureDto, ProductDto, Select, axiosBaseConfig, baseApiUrl, mapObjectToSelect, sortFunc } from './common';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 
@@ -43,7 +43,7 @@ export const ProductsPage = () => {
                 <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>id</div>
                 <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>name</div>
                 <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>price (PLN) </div>
-                <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>discounted price</div>
+                <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>discounted price (PLN)</div>
                 <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>description</div>
                 <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>score</div>
                 <div className='text-uppercase text-secondary text-xxs font-weight-bolder opacity-7'>recommend</div>
@@ -108,7 +108,7 @@ const ProductRow = (props: { item: ProductDto, isNew: boolean, pictures: Picture
                 <PInput register={{ ...register("name") }} inputProps={{ type: 'text' }} />
                 <PInput register={{ ...register("price") }} inputProps={{ type: 'number', min: 0 }} />
                 <PInput register={{ ...register("discountPrice") }} inputProps={{ type: 'number', min: 0 }} />
-                <PInput register={{ ...register("description") }} inputProps={{ type: 'text' }} />
+                <PTextarea register={{ ...register("description") }} inputProps={{ style:{height:'80px'}, type: 'text' }} />
                 <PInput register={{ ...register("score") }} inputProps={{ type: 'number', min: 0, max: 5 }} />
                 <PInput register={{ ...register("isRecommended") }} inputProps={{ type: 'checkbox' }} />
                 <PInput register={{ ...register("isVisible") }} inputProps={{ type: 'checkbox' }} />

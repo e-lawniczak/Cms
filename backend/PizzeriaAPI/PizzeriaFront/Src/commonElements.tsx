@@ -131,7 +131,7 @@ const Header = (props: { className?: string }) => {
                                 <div className="rd-navbar-main">
 
                                     <ul className="rd-navbar-nav">
-                                        <li className="rd-nav-item active">
+                                        <li className="rd-nav-item">
                                             <a className="rd-nav-link" href="/">Home</a>
                                         </li>
                                         <li className="rd-nav-item">

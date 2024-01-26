@@ -85,12 +85,163 @@ var AboutUsPage = function () {
     React.useEffect(function () {
     }, []);
     return React.createElement(common_1.PageWrapper, null,
+        React.createElement(KeyValueSec, { _key: 'au_title', title: 'Title of the page' }),
         React.createElement(LogoSection, { logo_key: 'about_us_banner', title: 'Main banner on About Us page' }),
-        React.createElement(KeyValueSection, { objKey: 'title', objVal: "title", entry_key: 'tabSlider1', title: 'Information block on main page', dataUrl: '/GetVisibleTabSliderList' }),
-        React.createElement(KeyValueSection, { objKey: 'title', objVal: "title", entry_key: 'tabSlider2', title: 'OUR HISTORY information block', dataUrl: '/GetVisibleTabSliderList' }),
-        React.createElement(KeyValueSection, { objKey: 'title', objVal: "title", entry_key: 'tabSlider3', title: 'Testimonial information block', dataUrl: '/GetVisibleTabSliderList' }));
+        React.createElement(SliderSection, { objKey: 'tabSlider_1', objVal: "title", entry_key: 'tabSlider1', title: 'Information block on main page', dataUrl: '/GetVisibleTabSliderList' }),
+        React.createElement(KeyValueSec, { _key: 'au_box1', title: 'Box 1 title content' }),
+        React.createElement(KeyValueSec, { _key: 'au_box1_text', title: 'Box 1 text content' }),
+        React.createElement(KeyValueSec, { _key: 'au_box2', title: 'Box 2 title content' }),
+        React.createElement(KeyValueSec, { _key: 'au_box2_text', title: 'Box 2 text content' }),
+        React.createElement(KeyValueSec, { _key: 'au_box3', title: 'Box 3 title content' }),
+        React.createElement(KeyValueSec, { _key: 'au_box3_text', title: 'Box 3 text content' }),
+        React.createElement(KeyValueSec, { _key: 'au_ourTeam_title', title: 'Team section title' }),
+        React.createElement(SliderSection, { objKey: 'tabSlider_2', objVal: "title", entry_key: 'tabSlider2', title: 'OUR HISTORY information block', dataUrl: '/GetVisibleTabSliderList' }),
+        React.createElement(SliderSection, { objKey: 'tabSlider_3', objVal: "title", entry_key: 'tabSlider3', title: 'Testimonial information block', dataUrl: '/GetVisibleTabSliderList' }));
 };
 exports.AboutUsPage = AboutUsPage;
+var SliderSection = function (props) {
+    var _a = (0, react_1.useState)(), slider = _a[0], setSlider = _a[1], _b = (0, react_1.useState)(), slidersData = _b[0], setSliderData = _b[1], _c = (0, react_hook_form_1.useForm)(), register = _c.register, handleSubmit = _c.handleSubmit, setValue = _c.setValue, sKey = props.objKey, onSubmit = function (data) {
+        if (!slider)
+            addItem(sKey, data.sliderValue);
+        else
+            editItem(slider.id, slider.key, data.sliderValue);
+        getKeyValues();
+    }, getSliders = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetVisibleTabSliderList")];
+                case 1:
+                    res = _a.sent();
+                    setSliderData(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, getKeyValues = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValueByKey/".concat(sKey))];
+                case 1:
+                    res = _a.sent();
+                    setSlider(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, editItem = function (id, key, value) { return __awaiter(void 0, void 0, void 0, function () {
+        var url;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    url = common_1.baseApiUrl + "/UpdateKeyValueById";
+                    return [4 /*yield*/, axios_1.default.patch(url, { id: id, key: key, value: value }, common_1.axiosBaseConfig)];
+                case 1:
+                    _a.sent();
+                    getKeyValues();
+                    return [2 /*return*/];
+            }
+        });
+    }); }, addItem = function (key, value) { return __awaiter(void 0, void 0, void 0, function () {
+        var url;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    url = common_1.baseApiUrl + "/AddKeyValue";
+                    return [4 /*yield*/, axios_1.default.post(url, { id: -1, key: key, value: value }, common_1.axiosBaseConfig)];
+                case 1:
+                    _a.sent();
+                    getKeyValues();
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    React.useEffect(function () {
+        getKeyValues();
+        getSliders();
+    }, []);
+    return React.createElement(common_1.PageSettingsSection, { title: props.title, subtext: props.subText },
+        React.createElement("div", { className: "banner-preview" }),
+        React.createElement("div", null,
+            React.createElement("form", { action: "", className: "section-form", onSubmit: handleSubmit(onSubmit) },
+                React.createElement("div", { className: "form-content " },
+                    React.createElement("div", { className: "row" },
+                        React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "id"),
+                        React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "key"),
+                        React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "value")),
+                    React.createElement("div", { className: "row" },
+                        React.createElement("div", { className: "id" }, (slider === null || slider === void 0 ? void 0 : slider.id) || -1),
+                        React.createElement("div", { className: "key" }, (slider === null || slider === void 0 ? void 0 : slider.key) || sKey),
+                        React.createElement("div", null, slidersData && slidersData.length > 0 &&
+                            React.createElement(common_1.Select, { register: register, defaultValue: slider === null || slider === void 0 ? void 0 : slider.value, data: (0, common_1.mapObjectToSelect)(slidersData, "title", "title"), name: "sliderValue" })))),
+                React.createElement("div", { className: "buttons-container" },
+                    React.createElement("button", { type: 'submit', className: "btn btn-white btn-sm w-100 mb-0 btn-save" }, "Save")))));
+};
+var KeyValueSec = function (props) {
+    var _a = (0, react_1.useState)(), item = _a[0], setitem = _a[1], _b = (0, react_hook_form_1.useForm)({
+        defaultValues: { itemValue: (item === null || item === void 0 ? void 0 : item.value) || "" },
+    }), register = _b.register, handleSubmit = _b.handleSubmit, setValue = _b.setValue, sKey = props._key, onSubmit = function (data) {
+        if (!item)
+            addItem(sKey, data.itemValue);
+        else
+            editItem(item.id, item.key, data.itemValue);
+        getKeyValues();
+    }, getKeyValues = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValueByKey/".concat(sKey))];
+                case 1:
+                    res = _a.sent();
+                    setValue("itemValue", res.data.value);
+                    setitem(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, editItem = function (id, key, value) { return __awaiter(void 0, void 0, void 0, function () {
+        var url;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    url = common_1.baseApiUrl + "/UpdateKeyValueById";
+                    return [4 /*yield*/, axios_1.default.patch(url, { id: id, key: key, value: value }, common_1.axiosBaseConfig)];
+                case 1:
+                    _a.sent();
+                    getKeyValues();
+                    return [2 /*return*/];
+            }
+        });
+    }); }, addItem = function (key, value) { return __awaiter(void 0, void 0, void 0, function () {
+        var url;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    url = common_1.baseApiUrl + "/AddKeyValue";
+                    return [4 /*yield*/, axios_1.default.post(url, { id: -1, key: key, value: value }, common_1.axiosBaseConfig)];
+                case 1:
+                    _a.sent();
+                    getKeyValues();
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    React.useEffect(function () {
+        getKeyValues();
+    }, []);
+    return React.createElement(common_1.PageSettingsSection, { title: props.title, subtext: props.subText },
+        React.createElement("div", null,
+            React.createElement("form", { action: "", className: "section-form", onSubmit: handleSubmit(onSubmit) },
+                React.createElement("div", { className: "form-content " },
+                    React.createElement("div", { className: "row" },
+                        React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "id"),
+                        React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "key"),
+                        React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "value")),
+                    React.createElement("div", { className: "row" },
+                        React.createElement("div", { className: "id" }, (item === null || item === void 0 ? void 0 : item.id) || -1),
+                        React.createElement("div", { className: "key" }, (item === null || item === void 0 ? void 0 : item.key) || sKey),
+                        React.createElement(common_1.PInput, { register: __assign({}, register("itemValue")), inputProps: { type: 'text' } }))),
+                React.createElement("div", { className: "buttons-container" },
+                    React.createElement("button", { type: 'submit', className: "btn btn-white btn-sm w-100 mb-0 btn-save" }, "Save")))));
+};
 var KeyValueSection = function (props) {
     var _a = (0, react_1.useState)(), entry = _a[0], setEntry = _a[1], _b = (0, react_1.useState)([]), data = _b[0], setData = _b[1], _c = (0, react_hook_form_1.useForm)(), register = _c.register, handleSubmit = _c.handleSubmit, setValue = _c.setValue, dataUrl = props.dataUrl ? common_1.baseApiUrl + props.dataUrl : "", sKey = props.entry_key, fieldName = sKey + "dataValue", selectData = (0, common_1.mapObjectToSelect)(data, (props === null || props === void 0 ? void 0 : props.objKey) || "name", (props === null || props === void 0 ? void 0 : props.objVal) || "id"), onSubmit = function (data) {
         if (!entry)

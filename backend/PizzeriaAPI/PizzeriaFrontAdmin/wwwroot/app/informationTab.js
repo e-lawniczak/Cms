@@ -88,7 +88,7 @@ var InformationTabPage = function () {
                 case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetAllInformationTabList", common_1.axiosBaseConfig)];
                 case 1:
                     res = _a.sent();
-                    setTabs(res.data.sort(function (a, b) { return (0, common_1.sortFunc)(a, b); }));
+                    setTabs(res.data.sort(function (a, b) { return (0, common_1.sortFunc)(a, b, "informationTabId"); }));
                     return [2 /*return*/];
             }
         });

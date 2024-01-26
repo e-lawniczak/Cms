@@ -233,6 +233,12 @@
 .product-row.row {
   display: grid;
   grid-template-columns: 50px 100px 100px 100px auto repeat(5, 100px) 300px;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+
+textarea.input-field {
+  width: 100%;
 }
 
 .form-top-container + div {

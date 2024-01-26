@@ -138,7 +138,7 @@ var TeamMemberPage = function () {
         React.createElement("div", { className: "card mb-4" },
             React.createElement("div", { className: "form-top-container" }, !showNew && React.createElement("div", { className: "btn btn-white btn-sm mb-0 btn-save", onClick: function () { return setNew(true); } }, "Add new")),
             React.createElement("div", { className: "socials-list" },
-                React.createElement("div", { className: "generic-row row" },
+                React.createElement("div", { className: "generic-row teammember-row row" },
                     React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "id"),
                     React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "first name"),
                     React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "last name"),
@@ -146,13 +146,14 @@ var TeamMemberPage = function () {
                     React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "role"),
                     React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "Visible"),
                     React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "picture"),
+                    React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "selected socials"),
                     React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "options")),
                 showNew && addNew,
                 teamMembers && teamMembers.map(function (item, idx) { return React.createElement(TeamMemberRowRow, { roles: roles, key: idx, item: item, isNew: false, pictures: pictures, socialMedia: socialMedia, refreshFunc: getData }); }))));
 };
 exports.TeamMemberPage = TeamMemberPage;
 var TeamMemberRowRow = function (props) {
-    var item = props.item, isNew = props.isNew, pictures = props.pictures, socialMedia = props.socialMedia, roles = props.roles, refreshFunc = props.refreshFunc, picData = (0, common_1.mapObjectToSelect)(pictures, "name", "pictureId"), rolesData = (0, common_1.mapObjectToSelect)(roles, "name", "roleId"), socialData = (0, common_1.mapObjectToSelect)(socialMedia, "name", "id"), _a = (0, react_hook_form_1.useForm)({
+    var item = props.item, isNew = props.isNew, pictures = props.pictures, socialMedia = props.socialMedia, roles = props.roles, refreshFunc = props.refreshFunc, picData = (0, common_1.mapObjectToSelect)(pictures, "name", "pictureId"), rolesData = (0, common_1.mapObjectToSelect)(roles, "name", "roleId"), socialData = (0, common_1.mapObjectToSelect)(socialMedia === null || socialMedia === void 0 ? void 0 : socialMedia.filter(function (s) { return !s.teamMemberId; }), "name", "id"), _a = (0, react_hook_form_1.useForm)({
         defaultValues: __assign({}, item)
     }), register = _a.register, handleSubmit = _a.handleSubmit, formState = _a.formState, getValues = _a.getValues, makeItem = function (data) {
         return {
@@ -175,6 +176,7 @@ var TeamMemberRowRow = function (props) {
                 case 1:
                     _a.sent();
                     refreshFunc();
+                    location.reload();
                     return [2 /*return*/];
             }
         });
@@ -209,17 +211,21 @@ var TeamMemberRowRow = function (props) {
     }); };
     return React.createElement("form", { className: 'section-form' },
         React.createElement("div", { className: "form-content " },
-            React.createElement("div", { className: "generic-row row" },
+            React.createElement("div", { className: "generic-row teammember-row row" },
                 React.createElement("div", { className: "id" }, (item === null || item === void 0 ? void 0 : item.id) || -1),
                 React.createElement(common_1.PInput, { register: __assign({}, register("firstName")), inputProps: { type: 'text' } }),
                 React.createElement(common_1.PInput, { register: __assign({}, register("lastName")), inputProps: { type: 'text' } }),
                 React.createElement("div", null, socialData.length > 0 &&
-                    React.createElement(common_1.Select, { register: register, data: socialData, defaultValue: ((item === null || item === void 0 ? void 0 : item.socialMediaIdList) && (item === null || item === void 0 ? void 0 : item.socialMediaIdList[0])) || [], name: "socialMediaIdList", selectProps: { multiple: true } })),
+                    React.createElement(common_1.Select, { register: register, data: socialData, defaultValue: (item === null || item === void 0 ? void 0 : item.socialMediaIdList) || [], name: "socialMediaIdList", selectProps: { multiple: true } })),
                 React.createElement("div", { className: "role" }, rolesData.length > 0 &&
                     React.createElement(common_1.Select, { register: register, data: rolesData, defaultValue: (item === null || item === void 0 ? void 0 : item.roleId) || null, name: "roleId" })),
                 React.createElement(common_1.PInput, { register: __assign({}, register("isVisible")), inputProps: { type: 'checkbox' } }),
-                React.createElement("div", null, picData.length > 0 &&
-                    React.createElement(common_1.Select, { register: register, data: picData, defaultValue: (item === null || item === void 0 ? void 0 : item.pictureIdList[0]) || [], name: "pictureIdList" })),
+                React.createElement("div", null, picData.length > 0 ?
+                    React.createElement(common_1.Select, { register: register, data: picData, defaultValue: (item === null || item === void 0 ? void 0 : item.pictureIdList[0]) || [], name: "pictureIdList" }) :
+                    "No unassigned socials"),
+                React.createElement("div", { className: 'selected-socials' }, socialMedia === null || socialMedia === void 0 ? void 0 : socialMedia.filter(function (s) { return (item === null || item === void 0 ? void 0 : item.socialMediaIdList.indexOf(s.id)) > -1; }).map(function (s) { return React.createElement(React.Fragment, null,
+                    s.name,
+                    "; "); })),
                 React.createElement("div", { className: "buttons-container" }, isNew ?
                     React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-save", onClick: function (e) { return addItem(getValues()); } }, "Add")
                     : React.createElement(React.Fragment, null,

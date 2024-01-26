@@ -144,7 +144,7 @@ var SwiperSection = function () {
                     React.createElement("div", { className: "row" },
                         React.createElement("div", { className: "col-sm-9 col-md-8 col-lg-7 col-xl-7 offset-lg-1 offset-xxl-0" },
                             React.createElement("div", { dangerouslySetInnerHTML: { __html: b.text } }),
-                            React.createElement("a", { className: "button button-lg button-primary button-winona button-shadow-2", href: b.link, "data-caption-animate": "fadeInUp", "data-caption-delay": "300" }, b.subText))))));
+                            React.createElement("a", { className: "button button-lg button-primary button-winona button-shadow-2", href: b === null || b === void 0 ? void 0 : b.link, "data-caption-animate": "fadeInUp", "data-caption-delay": "300" }, b.subText))))));
     });
     React.useEffect(function () {
         getMainSLider();
@@ -192,7 +192,7 @@ var CategoriesSection = function () {
                     React.createElement("div", { className: "services-terri-caption" },
                         React.createElement("span", { className: ["services-terri-icon", (0, common_1.prepareCategoryIcon)(cat.name.split("_"))].join(" ") }),
                         React.createElement("h5", { className: "services-terri-title" },
-                            React.createElement("a", { href: cat.link }, cat.name))))));
+                            React.createElement("a", { href: cat === null || cat === void 0 ? void 0 : cat.link }, cat.name))))));
     });
     React.useEffect(function () {
         getCategories();
@@ -287,6 +287,7 @@ var ProductsSection = function () {
             }
         });
     }); }, mappedProducts = products === null || products === void 0 ? void 0 : products.map(function (p, idx) {
+        var _a;
         if (p.isRecommended)
             return React.createElement("div", { key: idx, className: "col-sm-6 col-lg-4 col-xl-3" },
                 React.createElement("article", { className: "product wow fadeInLeft", "data-wow-delay": ".15s" },
@@ -311,7 +312,7 @@ var ProductsSection = function () {
                             " z\u0142")),
                     React.createElement("div", { className: "product-button" },
                         React.createElement("div", { className: "button-wrap" },
-                            React.createElement("a", { className: "button button-xs button-secondary button-winona", href: categories.find(function (c) { return c.id == p.categoryId; }).link + "#".concat(p.name + p.id) }, "View Product"))),
+                            React.createElement("a", { className: "button button-xs button-secondary button-winona", href: ((_a = categories.find(function (c) { return c.id == p.categoryId; })) === null || _a === void 0 ? void 0 : _a.link) + "#".concat(p.name + p.id) }, "View Product"))),
                     (p.discountPrice < p.price && p.discountPrice > 0) ? React.createElement("span", { className: "product-badge product-badge-sale" }, "Sale") : ""));
     }).filter(function (p) { return p; });
     React.useEffect(function () {

@@ -1,9 +1,12 @@
 .rd-nav-item {
   position: relative;
+  overflow: visible;
 }
 .rd-nav-item .child-menu {
   width: 100%;
   top: 100%;
+  min-width: -moz-fit-content;
+  min-width: fit-content;
   left: 0;
   position: absolute;
   display: none;
@@ -18,9 +21,11 @@
   justify-content: flex-start;
   align-items: flex-start;
   z-index: 11;
+  min-width: 150px;
 }
 .rd-nav-item .child-menu li.child.rd-nav-item a.rd-nav-link {
   width: 100%;
+  min-width: 150px;
 }
 .rd-nav-item:hover .child-menu {
   display: grid;
@@ -28,6 +33,23 @@
 
 .section.swiper-container {
   height: 753px;
+}
+
+.wps-list {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.wps-item {
+  opacity: 0.4;
+}
+.wps-item.slick-current {
+  opacity: 1;
+}
+
+.wps-quote .slick-quote .item {
+  min-height: 300px;
 }
 
 .slick-slider {
