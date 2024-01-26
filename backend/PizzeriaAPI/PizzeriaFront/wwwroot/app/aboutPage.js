@@ -76,175 +76,12 @@ var AboutPage = function () {
     return React.createElement(commonElements_1.PageWrapper, null,
         React.createElement(BannerSection, null),
         React.createElement(InformationSliderSection, null),
-        React.createElement(BoxesSection, null));
+        React.createElement(BoxesSection, null),
+        React.createElement(OurTeamSection, null),
+        React.createElement(OurHistorySection, null),
+        React.createElement(WhatPeopleSay, null));
 };
 exports.AboutPage = AboutPage;
-var AboutPageContent = function () {
-    return React.createElement(React.Fragment, null,
-        React.createElement("section", { className: "section section-lg section-bottom-md-70 bg-default" },
-            React.createElement("div", { className: "container" },
-                React.createElement("h3", { className: "oh" },
-                    React.createElement("span", { className: "d-inline-block wow slideInUp", "data-wow-delay": "0s" }, "our team")),
-                React.createElement("div", { className: "row row-lg row-40 justify-content-center" },
-                    React.createElement("div", { className: "col-sm-6 col-lg-3 wow fadeInLeft", "data-wow-delay": ".2s", "data-wow-duration": "1s" },
-                        React.createElement("article", { className: "team-modern" },
-                            React.createElement("a", { className: "team-modern-figure", href: "#" },
-                                React.createElement("img", { src: "images/team-01-270x236.jpg", alt: "", width: "270", height: "236" })),
-                            React.createElement("div", { className: "team-modern-caption" },
-                                React.createElement("h6", { className: "team-modern-name" },
-                                    React.createElement("a", { href: "#" }, "Richard Peterson")),
-                                React.createElement("div", { className: "team-modern-status" }, "Head Chef"),
-                                React.createElement("ul", { className: "list-inline team-modern-social-list" },
-                                    React.createElement("li", null,
-                                        React.createElement("a", { className: "icon mdi mdi-facebook", href: "#" })),
-                                    React.createElement("li", null,
-                                        React.createElement("a", { className: "icon mdi mdi-twitter", href: "#" })),
-                                    React.createElement("li", null,
-                                        React.createElement("a", { className: "icon mdi mdi-instagram", href: "#" })),
-                                    React.createElement("li", null,
-                                        React.createElement("a", { className: "icon mdi mdi-google-plus", href: "#" })))))),
-                    React.createElement("div", { className: "col-sm-6 col-lg-3 wow fadeInLeft", "data-wow-delay": "0s", "data-wow-duration": "1s" },
-                        React.createElement("article", { className: "team-modern" },
-                            React.createElement("a", { className: "team-modern-figure", href: "#" },
-                                React.createElement("img", { src: "images/team-02-270x236.jpg", alt: "", width: "270", height: "236" })),
-                            React.createElement("div", { className: "team-modern-caption" },
-                                React.createElement("h6", { className: "team-modern-name" },
-                                    React.createElement("a", { href: "#" }, "Amelia Lee")),
-                                React.createElement("div", { className: "team-modern-status" }, "Manager"),
-                                React.createElement("ul", { className: "list-inline team-modern-social-list" },
-                                    React.createElement("li", null,
-                                        React.createElement("a", { className: "icon mdi mdi-facebook", href: "#" })),
-                                    React.createElement("li", null,
-                                        React.createElement("a", { className: "icon mdi mdi-twitter", href: "#" })),
-                                    React.createElement("li", null,
-                                        React.createElement("a", { className: "icon mdi mdi-instagram", href: "#" })),
-                                    React.createElement("li", null,
-                                        React.createElement("a", { className: "icon mdi mdi-google-plus", href: "#" })))))),
-                    React.createElement("div", { className: "col-sm-6 col-lg-3 wow fadeInRight", "data-wow-delay": ".1s", "data-wow-duration": "1s" },
-                        React.createElement("article", { className: "team-modern" },
-                            React.createElement("a", { className: "team-modern-figure", href: "#" },
-                                React.createElement("img", { src: "images/team-03-270x236.jpg", alt: "", width: "270", height: "236" })),
-                            React.createElement("div", { className: "team-modern-caption" },
-                                React.createElement("h6", { className: "team-modern-name" },
-                                    React.createElement("a", { href: "#" }, "Sam Peterson")),
-                                React.createElement("div", { className: "team-modern-status" }, "Head Baker"),
-                                React.createElement("ul", { className: "list-inline team-modern-social-list" },
-                                    React.createElement("li", null,
-                                        React.createElement("a", { className: "icon mdi mdi-facebook", href: "#" })),
-                                    React.createElement("li", null,
-                                        React.createElement("a", { className: "icon mdi mdi-twitter", href: "#" })),
-                                    React.createElement("li", null,
-                                        React.createElement("a", { className: "icon mdi mdi-instagram", href: "#" })),
-                                    React.createElement("li", null,
-                                        React.createElement("a", { className: "icon mdi mdi-google-plus", href: "#" })))))),
-                    React.createElement("div", { className: "col-sm-6 col-lg-3 wow fadeInRight", "data-wow-delay": ".3s", "data-wow-duration": "1s" },
-                        React.createElement("article", { className: "team-modern" },
-                            React.createElement("a", { className: "team-modern-figure", href: "#" },
-                                React.createElement("img", { src: "images/team-04-270x236.jpg", alt: "", width: "270", height: "236" })),
-                            React.createElement("div", { className: "team-modern-caption" },
-                                React.createElement("h6", { className: "team-modern-name" },
-                                    React.createElement("a", { href: "#" }, "Jane Smith")),
-                                React.createElement("div", { className: "team-modern-status" }, "Pizza Chef"),
-                                React.createElement("ul", { className: "list-inline team-modern-social-list" },
-                                    React.createElement("li", null,
-                                        React.createElement("a", { className: "icon mdi mdi-facebook", href: "#" })),
-                                    React.createElement("li", null,
-                                        React.createElement("a", { className: "icon mdi mdi-twitter", href: "#" })),
-                                    React.createElement("li", null,
-                                        React.createElement("a", { className: "icon mdi mdi-instagram", href: "#" })),
-                                    React.createElement("li", null,
-                                        React.createElement("a", { className: "icon mdi mdi-google-plus", href: "#" }))))))))),
-        React.createElement("section", { className: "section section-lg bg-gray-100 text-left section-relative" },
-            React.createElement("div", { className: "container" },
-                React.createElement("div", { className: "row row-60 justify-content-center justify-content-xxl-between" },
-                    React.createElement("div", { className: "col-lg-6 col-xxl-5 position-static" },
-                        React.createElement("h3", null, "Our history"),
-                        React.createElement("div", { className: "tabs-custom", id: "tabs-5" },
-                            React.createElement("div", { className: "tab-content tab-content-1" },
-                                React.createElement("div", { className: "tab-pane fade", id: "tabs-5-1" },
-                                    React.createElement("h5", { className: "font-weight-normal text-transform-none text-spacing-75" }, "PizzaHouse Establishment and First Happy Clients"),
-                                    React.createElement("p", null, "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh")),
-                                React.createElement("div", { className: "tab-pane fade", id: "tabs-5-2" },
-                                    React.createElement("h5", { className: "font-weight-normal text-transform-none text-spacing-75" }, "Organizing a Free Pizza Delivery Service in Los Angeles"),
-                                    React.createElement("p", null, "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque.")),
-                                React.createElement("div", { className: "tab-pane fade", id: "tabs-5-3" },
-                                    React.createElement("h5", { className: "font-weight-normal text-transform-none text-spacing-75" }, "Offering an Extended Range of Pizzas, Burgers, and Salads"),
-                                    React.createElement("p", null, "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.")),
-                                React.createElement("div", { className: "tab-pane fade show active", id: "tabs-5-4" },
-                                    React.createElement("h5", { className: "font-weight-normal text-transform-none text-spacing-75" }, "Partnering with Organic Farms Located in California"),
-                                    React.createElement("p", null, "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur."))),
-                            React.createElement("div", { className: "list-history-wrap" },
-                                React.createElement("ul", { className: "nav list-history" },
-                                    React.createElement("li", { className: "list-history-item", role: "presentation" },
-                                        React.createElement("a", { href: "#tabs-5-1", "data-toggle": "tab" },
-                                            React.createElement("div", { className: "list-history-circle" }),
-                                            "2005")),
-                                    React.createElement("li", { className: "list-history-item", role: "presentation" },
-                                        React.createElement("a", { href: "#tabs-5-2", "data-toggle": "tab" },
-                                            React.createElement("div", { className: "list-history-circle" }),
-                                            "2012")),
-                                    React.createElement("li", { className: "list-history-item", role: "presentation" },
-                                        React.createElement("a", { href: "#tabs-5-3", "data-toggle": "tab" },
-                                            React.createElement("div", { className: "list-history-circle" }),
-                                            "2015")),
-                                    React.createElement("li", { className: "list-history-item", role: "presentation" },
-                                        React.createElement("a", { className: "active", href: "#tabs-5-4", "data-toggle": "tab" },
-                                            React.createElement("div", { className: "list-history-circle" }),
-                                            "2019")))))),
-                    React.createElement("div", { className: "col-md-9 col-lg-6 position-static index-1" },
-                        React.createElement("div", { className: "bg-image-right-1 bg-image-right-lg" },
-                            React.createElement("img", { src: "images/our_history-1110x710.jpg", alt: "", width: "1110", height: "710" }),
-                            React.createElement("div", { className: "link-play-modern" },
-                                React.createElement("a", { className: "icon mdi mdi-play", "data-lightgallery": "item", href: "https://www.youtube.com/watch?v=1UWpbtUupQQ" }),
-                                React.createElement("div", { className: "link-play-modern-title" },
-                                    "How we",
-                                    React.createElement("span", null, "Work")),
-                                React.createElement("div", { className: "link-play-modern-decor" })),
-                            React.createElement("div", { className: "box-transform", style: { backgroundImage: "url(images/our_history-1110x710.jpg);" } })))))),
-        React.createElement("section", { className: "section section-lg bg-default text-md-left" },
-            React.createElement("div", { className: "container" },
-                React.createElement("div", { className: "row row-60 justify-content-center flex-lg-row-reverse" },
-                    React.createElement("div", { className: "col-md-8 col-lg-6 col-xl-5" },
-                        React.createElement("div", { className: "offset-left-xl-70" },
-                            React.createElement("h3", { className: "heading-3" }, "What People Say"),
-                            React.createElement("div", { className: "slick-quote" },
-                                React.createElement("div", { className: "slick-slider carousel-parent", "data-autoplay": "true", "data-swipe": "true", "data-items": "1", "data-child": "#child-carousel-5", "data-for": "#child-carousel-5", "data-slide-effect": "true" },
-                                    React.createElement("div", { className: "item" },
-                                        React.createElement("article", { className: "quote-modern" },
-                                            React.createElement("h5", { className: "quote-modern-text" },
-                                                React.createElement("span", { className: "q" }, "Torus accelerares, tanquam ferox cacula. Fluctuss experimentum in burdigala! Ubi est peritus classis? Peregrinatione superbe ducunt ad magnum verpa.")),
-                                            React.createElement("h5", { className: "quote-modern-author" }, "Stephen Adams,"),
-                                            React.createElement("p", { className: "quote-modern-status" }, "Regular Client"))),
-                                    React.createElement("div", { className: "item" },
-                                        React.createElement("article", { className: "quote-modern" },
-                                            React.createElement("h5", { className: "quote-modern-text" },
-                                                React.createElement("span", { className: "q" }, "Gluten, fluctus, et galatae. Germanus classiss ducunt ad brodium. Pol, a bene cedrium. Tabess unda in neuter avenio! Orexiss sunt adelphiss de rusticus parma.")),
-                                            React.createElement("h5", { className: "quote-modern-author" }, "Sam Peterson,"),
-                                            React.createElement("p", { className: "quote-modern-status" }, "Regular Client"))),
-                                    React.createElement("div", { className: "item" },
-                                        React.createElement("article", { className: "quote-modern" },
-                                            React.createElement("h5", { className: "quote-modern-text" },
-                                                React.createElement("span", { className: "q" }, "Pol, silva! Grandis contencios ducunt ad torus. Monss congregabo in nobilis tectum! Velox, fatalis victrixs sapienter talem de emeritis, festus torus.")),
-                                            React.createElement("h5", { className: "quote-modern-author" }, "Jane McMillan,"),
-                                            React.createElement("p", { className: "quote-modern-status" }, "Regular Client"))),
-                                    React.createElement("div", { className: "item" },
-                                        React.createElement("article", { className: "quote-modern" },
-                                            React.createElement("h5", { className: "quote-modern-text" },
-                                                React.createElement("span", { className: "q" }, "Fluctuss sunt eras de neuter plasmator. Heuretes noster brabeuta est. Nixus, visus, et mensa. Primus, magnum tatas rare locus de altus, camerarius clabulare.")),
-                                            React.createElement("h5", { className: "quote-modern-author" }, "Will Jones,"),
-                                            React.createElement("p", { className: "quote-modern-status" }, "Regular Client")))),
-                                React.createElement("div", { className: "slick-slider child-carousel", id: "child-carousel-5", "data-arrows": "true", "data-for": ".carousel-parent", "data-items": "4", "data-sm-items": "4", "data-md-items": "4", "data-lg-items": "4", "data-xl-items": "4", "data-slide-to-scroll": "1" },
-                                    React.createElement("div", { className: "item" },
-                                        React.createElement("img", { className: "img-circle", src: "images/team-5-83x83.jpg", alt: "", width: "83", height: "83" })),
-                                    React.createElement("div", { className: "item" },
-                                        React.createElement("img", { className: "img-circle", src: "images/team-6-83x83.jpg", alt: "", width: "83", height: "83" })),
-                                    React.createElement("div", { className: "item" },
-                                        React.createElement("img", { className: "img-circle", src: "images/team-7-83x83.jpg", alt: "", width: "83", height: "83" })),
-                                    React.createElement("div", { className: "item" },
-                                        React.createElement("img", { className: "img-circle", src: "images/team-8-83x83.jpg", alt: "", width: "83", height: "83" })))))),
-                    React.createElement("div", { className: "col-lg-6 col-xl-7" },
-                        React.createElement("img", { src: "images/wp-say-669x447.jpg", alt: "", width: "669", height: "447" }))))));
-};
 var BannerSection = function () {
     var _a = (0, react_1.useState)(), title = _a[0], setTitle = _a[1], _b = (0, react_1.useState)(), logoPic = _b[0], setLogoPic = _b[1], getTitle = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res;
@@ -313,8 +150,6 @@ var InformationSliderSection = function () {
                 case 2:
                     res = _a.sent();
                     setSlider(res.data);
-                    if (res.status == 200) {
-                    }
                     _a.label = 3;
                 case 3: return [2 /*return*/];
             }
@@ -345,7 +180,7 @@ var InformationSliderSection = function () {
         React.createElement("div", { className: "container" },
             React.createElement("div", { className: "tabs-custom row row-50 justify-content-center flex-lg-row-reverse text-center text-md-left", id: "tabs-4" },
                 React.createElement("div", { className: "col-lg-4 col-xl-3" },
-                    React.createElement("h5", { className: "text-spacing-200 text-capitalize" }, "10+ years of experience"),
+                    React.createElement("h5", { className: "text-spacing-200 text-capitalize" }, slider === null || slider === void 0 ? void 0 : slider.title),
                     React.createElement("ul", { className: "nav list-category list-category-down-md-inline-block" }, (tabs === null || tabs === void 0 ? void 0 : tabs.length) > 0 &&
                         tabs.map(function (t, idx) {
                             return React.createElement("li", { onClick: function () { return setCurrentTab(idx); }, className: "list-category-item wow fadeInRight", role: "presentation", "data-wow-delay": "0s" },
@@ -422,6 +257,212 @@ var BoxesSection = function () {
                             React.createElement("div", { className: "unit-body" }, (boxesData === null || boxesData === void 0 ? void 0 : boxesData.length) > 2 && React.createElement(React.Fragment, null,
                                 React.createElement("h5", { className: "box-icon-classic-title" }, (_e = boxesData[2]) === null || _e === void 0 ? void 0 : _e.title),
                                 React.createElement("p", { className: "box-icon-classic-text" }, (_f = boxesData[2]) === null || _f === void 0 ? void 0 : _f.text)))))))));
+};
+var OurTeamSection = function () {
+    var _a = (0, react_1.useState)(), teamMembers = _a[0], setMembers = _a[1], _b = (0, react_1.useState)(), socials = _b[0], setSocials = _b[1], _c = (0, react_1.useState)(), roles = _c[0], setRole = _c[1], getTeamMembers = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetVisibleTeamMemberList")];
+                case 1:
+                    res = _a.sent();
+                    setMembers(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, getRole = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetVisibleRoleList")];
+                case 1:
+                    res = _a.sent();
+                    setRole(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, getSocials = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetVisibleSocialMediaList")];
+                case 1:
+                    res = _a.sent();
+                    setSocials(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, mappedTeam = teamMembers === null || teamMembers === void 0 ? void 0 : teamMembers.map(function (t, idx) {
+        var _a;
+        return React.createElement("div", { className: "col-sm-6 col-lg-3 wow fadeInLeft", "data-wow-delay": ".2s", "data-wow-duration": "1s" },
+            React.createElement("article", { className: "team-modern" },
+                React.createElement("a", { className: "team-modern-figure", href: "#" },
+                    React.createElement("img", { src: (0, common_1.getPictureUrlFromList)(t.pictureIdList)[0], alt: "", width: "270", height: "236" })),
+                React.createElement("div", { className: "team-modern-caption" },
+                    React.createElement("h6", { className: "team-modern-name" },
+                        t.firstName,
+                        " ",
+                        t.lastName),
+                    React.createElement("div", { className: "team-modern-status" }, roles === null || roles === void 0 ? void 0 : roles.filter(function (r) { return r.roleId == t.roleId; })[0].name),
+                    React.createElement("ul", { className: "list-inline team-modern-social-list" }, (_a = socials === null || socials === void 0 ? void 0 : socials.filter(function (s) { return t.socialMediaIdList.indexOf(s.id) > -1; })) === null || _a === void 0 ? void 0 : _a.map(function (s) {
+                        return React.createElement("li", null,
+                            React.createElement("a", { className: ["icon mdi", (0, common_1.prepareSocialIcon)(s.name.split("_"))].join(" "), href: s.link }));
+                    })))));
+    });
+    React.useEffect(function () {
+        getRole();
+        getTeamMembers();
+        getSocials();
+    }, []);
+    return React.createElement("section", { className: "section section-lg section-bottom-md-70 bg-default" },
+        React.createElement("div", { className: "container" },
+            React.createElement("h3", { className: "oh" },
+                React.createElement("span", { className: "d-inline-block wow slideInUp", "data-wow-delay": "0s" }, "our team")),
+            React.createElement("div", { className: "row row-lg row-40 justify-content-center" }, mappedTeam)));
+};
+var OurHistorySection = function () {
+    var _a = (0, react_1.useState)(), slider = _a[0], setSlider = _a[1], _b = (0, react_1.useState)(), mail = _b[0], setMail = _b[1], _c = (0, react_1.useState)(), tabs = _c[0], setTabs = _c[1], _d = (0, react_1.useState)(0), currentTab = _d[0], setCurrentTab = _d[1], getMail = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValueByKey/footer_email")];
+                case 1:
+                    res = _a.sent();
+                    setMail(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, getSlider = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValueByKey/tabSlider_2")];
+                case 1:
+                    res = _a.sent();
+                    if (!(res.status == 200)) return [3 /*break*/, 3];
+                    return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetTabSlider/".concat(res.data.value))];
+                case 2:
+                    res = _a.sent();
+                    setSlider(res.data);
+                    _a.label = 3;
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); }, getTabs = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res, t;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetVisibleInformationTabList")];
+                case 1:
+                    res = _a.sent();
+                    if ((slider === null || slider === void 0 ? void 0 : slider.informationTabIdList.length) > 0) {
+                        t = res.data.filter(function (s) { return (slider === null || slider === void 0 ? void 0 : slider.informationTabIdList.indexOf(s.informationTabId)) > -1; });
+                        setTabs(t);
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    React.useEffect(function () {
+        getSlider();
+        getMail();
+    }, []);
+    React.useEffect(function () {
+        getTabs();
+    }, [slider]);
+    return React.createElement("section", { className: "section section-lg bg-gray-100 text-left section-relative" },
+        React.createElement("div", { className: "container" },
+            React.createElement("div", { className: "row row-60 justify-content-center justify-content-xxl-between" },
+                React.createElement("div", { className: "col-lg-6 col-xxl-5 position-static" },
+                    React.createElement("h3", null, slider === null || slider === void 0 ? void 0 : slider.title),
+                    React.createElement("div", { className: "tabs-custom", id: "tabs-5" },
+                        React.createElement("div", { className: "tab-content tab-content-1" }, tabs === null || tabs === void 0 ? void 0 : tabs.map(function (t, idx) {
+                            return React.createElement("div", { className: "tab-pane fade" + (idx == currentTab ? "show active" : ""), id: "tabs-5-".concat(idx + 1) },
+                                React.createElement("h5", { className: "font-weight-normal text-transform-none text-spacing-75" }, t.title),
+                                React.createElement("div", { dangerouslySetInnerHTML: { __html: t.text } }));
+                        })),
+                        React.createElement("div", { className: "list-history-wrap" },
+                            React.createElement("ul", { className: "nav list-history" }, tabs === null || tabs === void 0 ? void 0 : tabs.map(function (t, idx) {
+                                return React.createElement("li", { onClick: function () { return setCurrentTab(idx); }, className: "list-history-item", role: "presentation" },
+                                    React.createElement("span", { className: (idx == currentTab ? "active" : ""), "data-toggle": "tab" },
+                                        React.createElement("div", { className: "list-history-circle" }),
+                                        t.buttonText));
+                            }))))),
+                React.createElement("div", { className: "col-md-9 col-lg-6 position-static index-1" },
+                    React.createElement("div", { className: "bg-image-right-1 bg-image-right-lg", style: { overflow: "hidden" } },
+                        React.createElement("img", { src: "".concat((0, common_1.getPictureUrlFromList)(slider === null || slider === void 0 ? void 0 : slider.pictureIdList)[0]), alt: "", style: { display: 'flex', height: "100%", minWidth: "100%" }, width: "1110", height: "710" }),
+                        React.createElement("div", { className: "box-transform", style: { backgroundImage: "url(".concat(common_1.baseApiUrl + "/GetPicture/Full/" + (slider === null || slider === void 0 ? void 0 : slider.pictureIdList[0]), ");") } }))))));
+};
+var WhatPeopleSay = function () {
+    var _a = (0, react_1.useState)(), slider = _a[0], setSlider = _a[1], _b = (0, react_1.useState)(), mail = _b[0], setMail = _b[1], _c = (0, react_1.useState)(), tabs = _c[0], setTabs = _c[1], _d = (0, react_1.useState)(0), currentTab = _d[0], setCurrentTab = _d[1], getMail = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValueByKey/footer_email")];
+                case 1:
+                    res = _a.sent();
+                    setMail(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, getSlider = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetKeyValueByKey/tabSlider_3")];
+                case 1:
+                    res = _a.sent();
+                    if (!(res.status == 200)) return [3 /*break*/, 3];
+                    return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetTabSlider/".concat(res.data.value))];
+                case 2:
+                    res = _a.sent();
+                    setSlider(res.data);
+                    _a.label = 3;
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); }, getTabs = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res, t;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetVisibleInformationTabList")];
+                case 1:
+                    res = _a.sent();
+                    if ((slider === null || slider === void 0 ? void 0 : slider.informationTabIdList.length) > 0) {
+                        t = res.data.filter(function (s) { return (slider === null || slider === void 0 ? void 0 : slider.informationTabIdList.indexOf(s.informationTabId)) > -1; });
+                        setTabs(t);
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    React.useEffect(function () {
+        getSlider();
+        getMail();
+    }, []);
+    React.useEffect(function () {
+        getTabs();
+    }, [slider]);
+    return React.createElement("section", { className: "section section-lg bg-default text-md-left" },
+        React.createElement("div", { className: "container" },
+            React.createElement("div", { className: "row row-60 justify-content-center flex-lg-row-reverse" },
+                React.createElement("div", { className: "col-md-8 col-lg-6 col-xl-5" },
+                    React.createElement("div", { className: "offset-left-xl-70 wps-quote" },
+                        React.createElement("h3", { className: "heading-3" }, slider === null || slider === void 0 ? void 0 : slider.title),
+                        React.createElement("div", { className: "slick-quote" }, (tabs === null || tabs === void 0 ? void 0 : tabs.length) > 0 &&
+                            React.createElement("div", { className: "item" },
+                                React.createElement("article", { className: "quote-modern" },
+                                    React.createElement("h5", { className: "quote-modern-text" },
+                                        React.createElement("span", { className: "q" }, tabs[currentTab].title)),
+                                    React.createElement("div", { dangerouslySetInnerHTML: {
+                                            __html: tabs[currentTab].text
+                                        } })))),
+                        React.createElement("div", { className: "slick-slider child-carousel wps-list", id: "child-carousel-5", "data-arrows": "true", "data-for": ".carousel-parent", "data-items": "4", "data-sm-items": "4", "data-md-items": "4", "data-lg-items": "4", "data-xl-items": "4", "data-slide-to-scroll": "1" }, tabs === null || tabs === void 0 ? void 0 : tabs.map(function (t, idx) {
+                            return React.createElement("div", { onClick: function () { return setCurrentTab(idx); }, className: ["item wps-item", currentTab == idx ? "slick-current" : ""].join(" ") },
+                                React.createElement("img", { className: "img-circle", src: common_1.baseApiUrl + t.buttonText, alt: "", width: "83", height: "83" }));
+                        })))),
+                React.createElement("div", { className: "col-lg-6 col-xl-7" },
+                    React.createElement("img", { src: "images/wp-say-669x447.jpg", alt: "", width: "669", height: "447" })))));
 };
 var root = document.getElementById("react_root");
 ReactDOM.render(React.createElement(exports.AboutPage, null), root);

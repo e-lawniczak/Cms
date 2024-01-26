@@ -511,7 +511,7 @@ var MenuElementRow = function (props) {
                 React.createElement("div", { className: "btn btn-white btn-sm w-100 mb-0 btn-delete", onClick: function (e) { return deleteItem(getValues()); } }, "Delete"))));
 };
 var LogoSection = function (props) {
-    var _a = (0, react_1.useState)(), pictures = _a[0], setPictures = _a[1], _b = (0, react_1.useState)(), logoPicture = _b[0], setLogo = _b[1], getPictures = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var _a = (0, react_1.useState)(), pictures = _a[0], setPictures = _a[1], _b = (0, react_1.useState)(), logoPicture = _b[0], setLogo = _b[1], _c = (0, react_1.useState)(), curretPic = _c[0], setCurrentPic = _c[1], getPictures = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -522,7 +522,7 @@ var LogoSection = function (props) {
                     return [2 /*return*/];
             }
         });
-    }); }, _c = (0, react_hook_form_1.useForm)(), register = _c.register, handleSubmit = _c.handleSubmit, setValue = _c.setValue, onSubmit = function (data) {
+    }); }, _d = (0, react_hook_form_1.useForm)(), register = _d.register, handleSubmit = _d.handleSubmit, setValue = _d.setValue, getValues = _d.getValues, formState = _d.formState, onSubmit = function (data) {
         if (!logoPicture)
             addItem(props.logo_key, data.logoValue);
         else
@@ -537,6 +537,7 @@ var LogoSection = function (props) {
                     res = _a.sent();
                     setLogo(res.data);
                     setValue("logoValue", res.data.value);
+                    setCurrentPic((res.data.value.split("/")[res.data.value.split("/").length - 1] / 1));
                     return [2 /*return*/];
             }
         });
@@ -567,6 +568,8 @@ var LogoSection = function (props) {
             }
         });
     }); }, onPictureClick = function (pic) {
+        setCurrentPic(pic.pictureId);
+        console.log(pic.pictureId);
         setValue("logoValue", "/GetPicture/Mini/".concat(pic.pictureId));
     };
     React.useEffect(function () {
@@ -589,7 +592,7 @@ var LogoSection = function (props) {
                         React.createElement(common_1.PInput, { register: __assign({}, register("logoValue")), inputProps: { style: { display: "none" }, disabled: true, type: 'text' } }))),
                 React.createElement("div", { className: "buttons-container" },
                     React.createElement("button", { type: 'submit', className: "btn btn-white btn-sm w-100 mb-0 btn-save" }, "Save"))),
-            React.createElement("div", { className: "picture-list" }, pictures === null || pictures === void 0 ? void 0 : pictures.map(function (d, idx) { return React.createElement("div", { className: 'picture-container' },
+            React.createElement("div", { className: "picture-list" }, pictures === null || pictures === void 0 ? void 0 : pictures.map(function (d, idx) { return React.createElement("div", { className: ['picture-container', d.pictureId == curretPic ? "picked" : ""].join(" ") },
                 React.createElement(common_1.PictureListElement, { key: idx, item: d, onClick: function () { return onPictureClick(d); } }),
                 " ",
                 React.createElement("div", null, d.name),
@@ -658,7 +661,7 @@ var ContactSection = function () {
     React.useEffect(function () {
         getKeyValues();
     }, []);
-    return React.createElement(common_1.PageSettingsSection, { title: "Contact info", subtext: "Choose 2 from key-value entries. Value -1 of id means that the value is not yet set" },
+    return React.createElement(common_1.PageSettingsSection, { title: "Contact info", subtext: "Enter values for phone and address that will appear in header and footer. Value -1 of id means that the value is not yet set" },
         React.createElement("form", { className: 'section-form', onSubmit: handleSubmit(onSubmit) },
             React.createElement("div", { className: "form-content " },
                 React.createElement("div", { className: "row" },

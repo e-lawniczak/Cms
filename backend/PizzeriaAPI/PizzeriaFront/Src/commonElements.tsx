@@ -367,7 +367,7 @@ const Footer = (props: { className?: string }) => {
                                 <li><a href="/About">About us</a></li>
                                 {
                                     pages?.map((p: PageDto) => {
-                                        return <li><a href={`/Page/${p.title}`}>{p.title}</a></li>
+                                        return <li><a href={`/Pages/${p.title}`}>{p.title}</a></li>
                                     })
                                 }
                             </ul>

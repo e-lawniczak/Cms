@@ -8,7 +8,7 @@ module.exports = {
     entry: {
         mainPage: { import: "./Src/mainPage.tsx", dependOn: ["common", "commonElements"] },
         aboutPage: { import: "./Src/aboutPage.tsx", dependOn: ["common", "commonElements"] },
-        pages: { import: "./Src/pages.tsx", dependOn: ["common", "commonElements"] },
+        page: { import: "./Src/pages.tsx", dependOn: ["common", "commonElements"] },
         categoryPage: { import: "./Src/categoryPage.tsx", dependOn: ["common", "commonElements"] },
         galleryPage: { import: "./Src/galleryPage.tsx", dependOn: ["common", "commonElements"] },
         common: "./Src/common.tsx",

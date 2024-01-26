@@ -38,10 +38,12 @@
 
 .picture-container {
   max-height: 300px;
+  padding: 5px;
   position: relative;
   display: grid;
   grid-template-columns: 1fr;
   gap: 5px;
+  border: 1px solid transparent;
   overflow: hidden;
 }
 .picture-container .img-container {
@@ -62,6 +64,9 @@
 .picture-container .overlay div {
   font-size: 22px;
   color: white;
+}
+.picture-container.picked {
+  border: 1px solid lime;
 }
 .picture-container:hover .overlay {
   display: flex;

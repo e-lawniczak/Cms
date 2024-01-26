@@ -107,8 +107,11 @@ var ChangePass = function () {
                     else {
                         alert("Something went wrong. Contact administrator\n" + res.statusText);
                     }
-                    _e.label = 4;
-                case 4: return [2 /*return*/];
+                    return [3 /*break*/, 5];
+                case 4:
+                    alert("Passwords must match\n");
+                    _e.label = 5;
+                case 5: return [2 /*return*/];
             }
         });
     }); };

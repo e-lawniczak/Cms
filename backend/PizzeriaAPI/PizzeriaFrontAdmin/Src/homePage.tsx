@@ -390,11 +390,12 @@ const LogoSection = (props: { logo_key: string, title: string }) => {
     const
         [pictures, setPictures] = useState<PictureDto[]>(),
         [logoPicture, setLogo] = useState<KeyValueDto>(),
+        [curretPic, setCurrentPic] = useState<number>(),
         getPictures = async () => {
             let res = await axios.get(baseApiUrl + `/GetAllPictureList`)
             setPictures(res.data)
         },
-        { register, handleSubmit, setValue } = useForm(),
+        { register, handleSubmit, setValue, getValues, formState } = useForm(),
         onSubmit = (data: any) => {
             if (!logoPicture)
                 addItem(props.logo_key, data.logoValue)
@@ -407,6 +408,7 @@ const LogoSection = (props: { logo_key: string, title: string }) => {
             let res = await axios.get(baseApiUrl + `/GetKeyValueByKey/${props.logo_key}`)
             setLogo(res.data)
             setValue("logoValue", res.data.value)
+            setCurrentPic((res.data.value.split("/")[res.data.value.split("/").length - 1] / 1) as number)
         },
         editItem = async (id: any, key: string, value: any) => {
             const url = baseApiUrl + "/UpdateKeyValueById"
@@ -420,6 +422,8 @@ const LogoSection = (props: { logo_key: string, title: string }) => {
             getKeyValues()
         },
         onPictureClick = (pic: PictureDto) => {
+            setCurrentPic(pic.pictureId)
+            console.log(pic.pictureId);
             setValue("logoValue", `/GetPicture/Mini/${pic.pictureId}`)
         }
 
@@ -450,7 +454,7 @@ const LogoSection = (props: { logo_key: string, title: string }) => {
                 </div>
             </form>
             <div className="picture-list">
-                {pictures?.map((d: PictureDto, idx) => <div className='picture-container'><PictureListElement key={idx} item={d} onClick={() => onPictureClick(d)} /> <div>{d.name}</div>  </div>)}
+                {pictures?.map((d: PictureDto, idx) => <div className={['picture-container', d.pictureId == curretPic ? "picked" : ""].join(" ")}><PictureListElement key={idx} item={d} onClick={() => onPictureClick(d)} /> <div>{d.name}</div>  </div>)}
             </div>
         </div>
     </PageSettingsSection>
@@ -503,7 +507,7 @@ const ContactSection = () => {
     React.useEffect(() => {
         getKeyValues()
     }, [])
-    return <PageSettingsSection title={"Contact info"} subtext={"Choose 2 from key-value entries. Value -1 of id means that the value is not yet set"}>
+    return <PageSettingsSection title={"Contact info"} subtext={"Enter values for phone and address that will appear in header and footer. Value -1 of id means that the value is not yet set"}>
         <form className='section-form' onSubmit={handleSubmit(onSubmit)}>
             <div className="form-content ">
                 <div className="row">

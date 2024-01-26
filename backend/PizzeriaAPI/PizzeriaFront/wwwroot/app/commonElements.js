@@ -389,7 +389,7 @@ var Footer = function (props) {
                                     React.createElement("a", { href: "/About" }, "About us")), pages === null || pages === void 0 ? void 0 :
                                 pages.map(function (p) {
                                     return React.createElement("li", null,
-                                        React.createElement("a", { href: "/Page/".concat(p.title) }, p.title));
+                                        React.createElement("a", { href: "/Pages/".concat(p.title) }, p.title));
                                 })))))),
             React.createElement("div", { className: "footer-modern-line-2" },
                 React.createElement("div", { className: "container" },

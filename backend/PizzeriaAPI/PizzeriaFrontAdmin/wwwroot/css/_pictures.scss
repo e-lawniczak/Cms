@@ -16,11 +16,14 @@
 
 .picture-container {
     max-height: 300px;
+    padding: 5px;
     position: relative;
     display: grid;
     grid-template-columns: 1fr;
     gap: 5px;
+    border: 1px solid transparent;
     overflow: hidden;
+
     .img-container {
         max-height: 250px;
         overflow: hidden;
@@ -43,25 +46,35 @@
         }
     }
 
+    &.picked {
+        border: 1px solid lime;
+    }
+
     &:hover {
         .overlay {
             display: flex;
         }
     }
 }
-.picture-list-element{
+
+
+
+.picture-list-element {
     max-height: 300px;
+
     .img-container {
         max-height: 250px;
         overflow: hidden;
     }
 }
-.picture-list{
-    .picture-list-element{
+
+.picture-list {
+    .picture-list-element {
         cursor: pointer;
     }
 }
-.logo-preview{
+
+.logo-preview {
     justify-content: center;
     width: 100%;
     height: 250px;
