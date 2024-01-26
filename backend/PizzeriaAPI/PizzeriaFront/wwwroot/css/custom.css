@@ -208,3 +208,35 @@
   grid-template-columns: 1fr 1fr;
   gap: 15px;
 }
+
+.gallery-picture-list {
+  padding: 25px 50px;
+  display: grid;
+  gap: 25px;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  position: relative;
+}
+.gallery-picture-list .img-container {
+  padding: 5px;
+  border-radius: 2px;
+  box-shadow: 5px 5px 10px 1px rgba(0, 0, 0, 0.2666666667);
+  cursor: pointer;
+}
+
+.react-page-container .image-preview {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2666666667);
+  z-index: 10;
+}
+.react-page-container .image-preview .img-container {
+  z-index: 11;
+  max-width: 1000px;
+  width: 100%;
+  margin: 100px auto;
+  left: 0;
+  right: 0;
+  position: absolute;
+}

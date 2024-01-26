@@ -6,7 +6,12 @@ import * as ReactDOM from 'react-dom';
 import { Editor } from '@tinymce/tinymce-react';
 
 
-
+export const PictureListElement = (props: { item: PictureDto, onClick?: any, [x: string]: any }) => {
+    const { item, onClick, src } = props;
+    return <div className='picture-list-element' onClick={onClick}>
+      <Image src={src || baseApiUrl + `/GetPicture/Mini/${item.pictureId}`} item={item} />
+    </div>
+  }
 export const prepareSocialIcon = (name: string[]) => {
     let key = name[name.length - 1]
     switch (key) {
