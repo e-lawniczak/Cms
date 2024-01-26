@@ -197,6 +197,19 @@
         grid-area: seven;
     }
 
+    .thumbnail-mary {
+        height: 100%;
+
+        .thumbnail-mary-figure {
+
+            height: 100%;
+
+            img {
+                width: 100%;
+                min-height: 100%;
+            }
+        }
+    }
 }
 
 .list-category {
@@ -265,6 +278,10 @@
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     position: relative;
 
+    @media only screen and (max-width:800px) {
+        grid-template-columns: 1fr;
+    }
+
     .img-container {
         padding: 5px;
         border-radius: 2px;
@@ -273,10 +290,11 @@
     }
 
 }
+
 .react-page-container .image-preview {
-    position: absolute;
-    top:0;
-    
+    position: fixed;
+    top: 0;
+
     width: 100%;
     height: 100%;
     background-color: #00000044;
@@ -290,6 +308,6 @@
         left: 0;
         right: 0;
         position: absolute;
-     
+
     }
 }

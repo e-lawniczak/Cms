@@ -108,7 +108,7 @@ const SwiperSection = () => {
                         <div className="row">
                             <div className="col-sm-9 col-md-8 col-lg-7 col-xl-7 offset-lg-1 offset-xxl-0">
                                 <div dangerouslySetInnerHTML={{ __html: b.text }}></div>
-                                <a className="button button-lg button-primary button-winona button-shadow-2" href={b?.link} data-caption-animate="fadeInUp" data-caption-delay="300">{b.subText}</a>
+                                {/* <a className="button button-lg button-primary button-winona button-shadow-2" style={{zIndex:"100"}} href={b?.link} data-caption-animate="fadeInUp" data-caption-delay="300">{b.subText}</a> */}
                             </div>
                         </div>
                     </div>
@@ -371,7 +371,7 @@ function SampleNextArrow(props) {
             className={className}
             style={{ ...style }}
             onClick={onClick}
-        />
+        ></div>
     );
 }
 
@@ -382,7 +382,7 @@ function SamplePrevArrow(props) {
             className={className}
             style={{ ...style }}
             onClick={onClick}
-        />
+        ></div>
     );
 }
 

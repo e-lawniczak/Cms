@@ -32,14 +32,14 @@ const ProductsList = () => {
     }, [])
     return <>
         <div className="product-list">
-            {products?.map((p: ProductDto) => {
-                return <Product product={p} />
+            {products?.map((p: ProductDto, idx: number) => {
+                return <Product key={idx} iii={idx} product={p} />
             })}
         </div>
     </>
 }
-const Product = (props: { product: ProductDto }) => {
-    const { product } = props
+const Product = (props: { product: ProductDto, iii: number }) => {
+    const { product, iii } = props
     return <div className="product-item">
         {/* <Image src={getPictureUrlFromList(product.pictureIdList)[0]} /> */}
         <article className="product " data-wow-delay=".15s">
@@ -56,7 +56,7 @@ const Product = (props: { product: ProductDto }) => {
                     </div>
                 </div>
                 <div>
-                    <h6 className="product-title">{product.name}</h6>
+                    <h6 className="product-title">{product.id}. {product.name}</h6>
                     <div className="product-price-wrap">
 
                         {(product.discountPrice < product.price && product.discountPrice > 0) ?
