@@ -408,7 +408,7 @@ var SliderSection = function () {
                     React.createElement("button", { type: 'submit', className: "btn btn-white btn-sm w-100 mb-0 btn-save" }, "Save")))));
 };
 var MenuSection = function () {
-    var _a = (0, react_1.useState)(), elements = _a[0], setElements = _a[1], _b = (0, react_1.useState)(), parentElements = _b[0], setParentElements = _b[1], _c = (0, react_1.useState)(false), showNew = _c[0], setNew = _c[1], getMenuElements = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var _a = (0, react_1.useState)(), elements = _a[0], setElements = _a[1], _b = (0, react_1.useState)(), parentElements = _b[0], setParentElements = _b[1], _c = (0, react_1.useState)(), cats = _c[0], setCategories = _c[1], _d = (0, react_1.useState)(), pages = _d[0], setPages = _d[1], _e = (0, react_1.useState)(), gals = _e[0], setGalleries = _e[1], _f = (0, react_1.useState)(false), showNew = _f[0], setNew = _f[1], getMenuElements = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -420,9 +420,48 @@ var MenuSection = function () {
                     return [2 /*return*/];
             }
         });
-    }); }, newItem = React.createElement(MenuElementRow, { elements: elements, parentElements: parentElements, item: null, refreshFunc: getMenuElements, isNew: true, setShow: setNew });
+    }); }, getCategories = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetVisibleCategoryList")];
+                case 1:
+                    res = _a.sent();
+                    setElements(res.data.sort(function (a, b) { return (0, common_1.sortFunc)(a, b); }));
+                    setCategories(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, getPages = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetVisiblePageList")];
+                case 1:
+                    res = _a.sent();
+                    setElements(res.data.sort(function (a, b) { return (0, common_1.sortFunc)(a, b); }));
+                    setPages(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, getGalleries = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetVisibleGalleryList")];
+                case 1:
+                    res = _a.sent();
+                    setElements(res.data.sort(function (a, b) { return (0, common_1.sortFunc)(a, b); }));
+                    setGalleries(res.data);
+                    return [2 /*return*/];
+            }
+        });
+    }); }, preparedLinksData = (0, common_1.mapObjectToSelect)(cats, "name", "name").concat((0, common_1.mapObjectToSelect)(pages, "title", "title")).concat((0, common_1.mapObjectToSelect)(gals, "name", "name")), newItem = React.createElement(MenuElementRow, { elements: elements, parentElements: parentElements, item: null, refreshFunc: getMenuElements, isNew: true, setShow: setNew, preparedLinksData: preparedLinksData });
     React.useEffect(function () {
         getMenuElements();
+        getCategories();
+        getPages();
+        getGalleries();
     }, []);
     return React.createElement(common_1.PageSettingsSection, { title: 'Menu elements' },
         React.createElement("div", { className: "form-top-container" }, !showNew && React.createElement("div", { className: "btn btn-white btn-sm mb-0 btn-save", onClick: function () { return setNew(true); } }, "Add new")),
@@ -432,16 +471,17 @@ var MenuSection = function () {
                     React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "id"),
                     React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "label"),
                     React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "link"),
+                    React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "available links"),
                     React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "visible"),
                     React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "select parent"),
                     React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "current parent"),
                     React.createElement("div", { className: 'text-uppercase text-secondary text-xxs font-weight-bolder opacity-7' }, "options")),
                 showNew && newItem,
-                elements && elements.map(function (e, idx) { return React.createElement(MenuElementRow, { parentElements: parentElements, elements: elements, item: e, key: idx, refreshFunc: getMenuElements }); }))));
+                elements && elements.map(function (e, idx) { return React.createElement(MenuElementRow, { parentElements: parentElements, elements: elements, item: e, key: idx, refreshFunc: getMenuElements, preparedLinksData: preparedLinksData }); }))));
 };
 var MenuElementRow = function (props) {
     var _a;
-    var item = props.item, parentElements = props.parentElements, _b = props.isNew, isNew = _b === void 0 ? false : _b, refreshFunc = props.refreshFunc, elements = props.elements, _c = props.setShow, setShow = _c === void 0 ? function () { } : _c, _d = (0, react_hook_form_1.useForm)({ defaultValues: __assign({}, item) }), register = _d.register, handleSubmit = _d.handleSubmit, setValue = _d.setValue, getValues = _d.getValues, onSubmit = function (data) {
+    var item = props.item, parentElements = props.parentElements, _b = props.isNew, isNew = _b === void 0 ? false : _b, refreshFunc = props.refreshFunc, elements = props.elements, preparedLinksData = props.preparedLinksData, _c = props.setShow, setShow = _c === void 0 ? function () { } : _c, _d = (0, react_hook_form_1.useForm)({ defaultValues: __assign({ linkSelect: null }, item) }), register = _d.register, handleSubmit = _d.handleSubmit, setValue = _d.setValue, getValues = _d.getValues, onSubmit = function (data) {
     }, makeItem = function (data) {
         return {
             isVisible: (data === null || data === void 0 ? void 0 : data.isVisible) || false,
@@ -493,13 +533,17 @@ var MenuElementRow = function (props) {
                     return [2 /*return*/];
             }
         });
-    }); };
+    }); }, setLinkOnSelect = function (e) {
+        console.log(e);
+    };
     var parentData = (0, common_1.mapObjectToSelect)(parentElements, "text", "menuElementId").filter(function (i) { return i.value != (item === null || item === void 0 ? void 0 : item.menuElementId); });
     parentData.push({ label: "no parent", value: null });
     return React.createElement("div", { className: "menu-element-row row" },
         React.createElement("div", { className: "id" }, (item === null || item === void 0 ? void 0 : item.menuElementId) || -1),
         React.createElement(common_1.PInput, { register: __assign({}, register("text")), inputProps: { type: 'text' } }),
         React.createElement(common_1.PInput, { register: __assign({}, register("link")), inputProps: { type: 'text' } }),
+        React.createElement("div", null, parentData && (parentData === null || parentData === void 0 ? void 0 : parentData.length) > 0 &&
+            React.createElement(common_1.Select, { register: register, defaultValue: item === null || item === void 0 ? void 0 : item.parentMenuElementId, data: parentData, name: "linkSelect", selectProps: { onChange: setLinkOnSelect } })),
         React.createElement(common_1.PInput, { register: __assign({}, register("isVisible")), inputProps: { type: 'checkbox' } }),
         React.createElement("div", null, parentData && (parentData === null || parentData === void 0 ? void 0 : parentData.length) > 0 &&
             React.createElement(common_1.Select, { register: register, defaultValue: item === null || item === void 0 ? void 0 : item.parentMenuElementId, data: parentData, name: "parentMenuElementId" })),

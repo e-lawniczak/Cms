@@ -70,14 +70,13 @@ var commonElements_1 = require("./commonElements");
 var common_1 = require("./common");
 var axios_1 = __importDefault(require("axios"));
 var PagesPage = function () {
-    var _a = (0, react_1.useState)([]), data = _a[0], setData = _a[1], _b = (0, react_1.useState)(), page = _b[0], setPage = _b[1], params = new URLSearchParams(window.location.search), getPages = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var _a = (0, react_1.useState)([]), data = _a[0], setData = _a[1], _b = (0, react_1.useState)(), page = _b[0], setPage = _b[1], getPages = function () { return __awaiter(void 0, void 0, void 0, function () {
         var res, p;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetVisiblePageList")];
                 case 1:
                     res = _a.sent();
-                    console.log(location.pathname.split("/")[location.pathname.split("/").length - 1]);
                     p = res.data.filter(function (p) { return p.title == location.pathname.split("/")[location.pathname.split("/").length - 1]; });
                     if ((p === null || p === void 0 ? void 0 : p.length) == 0)
                         location.href = "/Error";

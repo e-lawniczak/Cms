@@ -34,7 +34,6 @@ export function Select(props: { register: any, data: any, name: any, selectProps
         return item.value == value
       }
     }
-
   return (
     <select className='select-comp' {...register(name)} {...selectProps}>
       {data.map((item: any, idx: any) => (
@@ -287,10 +286,10 @@ export const PTextarea = (props: InputProps) => {
 //     </div>
 //   </div>
 // }
-export const mapObjectToSelect = (object: any, keyLabel: any, valueLabel: any) => {
+export const mapObjectToSelect = (object: any, keyLabel: any, valueLabel: any, prefix?: string) => {
   let retObj = [] as { label: string, value: any }[]
   object?.forEach((item: any, idx: any) => {
-    retObj.push({ label: item[keyLabel], value: item[valueLabel] })
+    retObj.push({ label: item[keyLabel], value: prefix ? prefix + "_" + item[valueLabel] : item[valueLabel] })
   });
   return retObj;
 }

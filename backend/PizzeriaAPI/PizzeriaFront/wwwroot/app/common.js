@@ -34,8 +34,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCookie = exports.axiosBaseConfig = exports.baseApiUrl = exports.mapObjectToSelect = exports.PInput = exports.Image = exports.getPictureUrlFromList = exports.prepareCategoryIcon = exports.prepareSocialIcon = void 0;
+exports.getCookie = exports.axiosBaseConfig = exports.baseApiUrl = exports.mapObjectToSelect = exports.PInput = exports.Image = exports.getPictureUrlFromList = exports.prepareCategoryIcon = exports.prepareSocialIcon = exports.PictureListElement = void 0;
 var React = __importStar(require("react"));
+var PictureListElement = function (props) {
+    var item = props.item, onClick = props.onClick, src = props.src;
+    return React.createElement("div", { className: 'picture-list-element', onClick: onClick },
+        React.createElement(exports.Image, { src: src || exports.baseApiUrl + "/GetPicture/Mini/".concat(item.pictureId), item: item }));
+};
+exports.PictureListElement = PictureListElement;
 var prepareSocialIcon = function (name) {
     var key = name[name.length - 1];
     switch (key) {
