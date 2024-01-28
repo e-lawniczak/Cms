@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.ContactInfo;
 using PizzeriaAPI.ORM;
@@ -35,6 +36,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPost]
         [Route("/AddContactInfo")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "ContactInfo inserted successfully")]
         public async Task<ActionResult> AddContactInfo([FromBody] AddContactInfoDto contactInfoDto)
         {
@@ -82,6 +84,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPatch]
         [Route("/UpdateContactInfo")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "ContactInfo updated successfully")]
         [SwaggerResponse(HttpStatusCode.BadRequest, "ContactInfo not found")]
         public async Task<ActionResult> UpdateContactInfo([FromBody] ContactInfoDto contactInfoDto)
@@ -114,6 +117,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpDelete]
         [Route("/DeleteContactInfo/{contactInfoId}")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "ContactInfo was deleted successfully")]
         public async Task<ActionResult> DeletContactInfo([FromRoute] int contactInfoId)
         {

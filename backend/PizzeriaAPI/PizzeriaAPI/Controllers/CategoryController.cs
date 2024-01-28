@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.Category;
 using PizzeriaAPI.ORM;
@@ -35,6 +36,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPost]
         [Route("/AddCategory")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "Category inserted successfully")]
         public async Task<ActionResult> AddCategory([FromBody] AddCategoryDto categoryDto)
         {
@@ -98,6 +100,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPatch]
         [Route("/UpdateCategory")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "Category updated successfully")]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Category not found")]
         public async Task<ActionResult> UpdateCategory([FromBody] CategoryDto categoryDto)
@@ -120,6 +123,7 @@ namespace PizzeriaAPI.Controllers
         }
         [HttpDelete]
         [Route("/DeleteCategory/{categoryId}")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "Category was deleted successfully")]
         public async Task<ActionResult> DeletCategory([FromRoute] int categoryId)
         {

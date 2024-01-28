@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.TeamMember;
 using PizzeriaAPI.ORM;
@@ -39,6 +40,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPost]
         [Route("/AddTeamMember")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "TeamMember inserted successfully")]
         public async Task<ActionResult> AddTeamMember([FromBody] AddTeamMemberDto teamMemberDto)
         {
@@ -86,6 +88,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPatch]
         [Route("/UpdateTeamMember")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "TeamMember updated successfully")]
         [SwaggerResponse(HttpStatusCode.BadRequest, "TeamMember not found")]
         public async Task<ActionResult> UpdateTeamMember([FromBody] TeamMemberDto TeamMemberDto)
@@ -122,6 +125,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpDelete]
         [Route("/DeleteTeamMember/{teamMemberId}")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "TeamMember was deleted successfully")]
         public async Task<ActionResult> DeletTeamMember([FromRoute] int teamMemberId)
         {

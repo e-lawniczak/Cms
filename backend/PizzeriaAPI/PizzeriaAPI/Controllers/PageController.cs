@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.Page;
 using PizzeriaAPI.ORM;
@@ -35,6 +36,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPost]
         [Route("/AddPage")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "Page inserted successfully")]
         public async Task<ActionResult> AddPage([FromBody] AddPageDto pageDto)
         {
@@ -82,6 +84,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPatch]
         [Route("/UpdatePage")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "Page updated successfully")]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Page not found")]
         public async Task<ActionResult> UpdatePage([FromBody] PageDto pageDto)
@@ -116,6 +119,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpDelete]
         [Route("/DeletePage/{pageId}")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "Page was deleted successfully")]
         public async Task<ActionResult> DeletPage([FromRoute] int pageId)
         {

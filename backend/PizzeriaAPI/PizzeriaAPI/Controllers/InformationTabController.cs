@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.InformationTab;
 using PizzeriaAPI.ORM;
@@ -28,6 +29,7 @@ namespace PizzeriaAPI.Controllers
         }
         [HttpPost]
         [Route("/AddInformationTab")]
+        [Authorize]
         public async Task<ActionResult> AddInformationTab([FromBody] AddInformationTabDto informationTabDto)
         {
             var informationTab = await GetInformationTab(informationTabDto);
@@ -73,6 +75,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPatch]
         [Route("/UpdateInformationTab")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "InformationTab updated successfully")]
         [SwaggerResponse(HttpStatusCode.BadRequest, "InformationTab not found")]
         public async Task<ActionResult> UpdateInformationTab([FromBody] InformationTabDto InformationTabDto)
@@ -109,6 +112,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpDelete]
         [Route("/DeleteInformationTab/{informationTabId}")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "InformationTab was deleted successfully")]
         public async Task<ActionResult> DeletInformationTab([FromRoute] int informationTabId)
         {

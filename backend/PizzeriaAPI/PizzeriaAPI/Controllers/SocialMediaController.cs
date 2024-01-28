@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.SocialMedia;
@@ -35,6 +36,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPost]
         [Route("/AddSocialMedia")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "SocialMedia inserted successfully")]
         public async Task<ActionResult> AddSocialMedia([FromBody] AddSocialMediaDto socialMediaDto)
         {
@@ -97,6 +99,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPatch]
         [Route("/UpdateSocialMedia")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "SocialMedia updated successfully")]
         [SwaggerResponse(HttpStatusCode.BadRequest, "SocialMedia not found")]
         public async Task<ActionResult> UpdateSocialMedia([FromBody] SocialMediaDto socialMediaDto)
@@ -133,6 +136,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpDelete]
         [Route("/DeleteSocialMedia/{socialMediaId}")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "SocialMedia was deleted successfully")]
         public async Task<ActionResult> DeletSocialMedia([FromRoute] int socialMediaId)
         {

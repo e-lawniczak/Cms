@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MySqlX.XDevAPI;
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.Role;
@@ -32,6 +33,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPost]
         [Route("/AddRole")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "Role inserted successfully")]
         public async Task<ActionResult> AddRole([FromBody] AddRoleDto roleDto)
         {
@@ -79,6 +81,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPatch]
         [Route("/UpdateRole")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "Role updated successfully")]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Role not found")]
         public async Task<ActionResult> UpdateRole([FromBody] RoleDto roleDto)
@@ -112,6 +115,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpDelete]
         [Route("/DeleteRole/{roleId}")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "Role was deleted successfully")]
         public async Task<ActionResult> DeletRole([FromRoute] int roleId)
         {

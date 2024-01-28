@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.KeyValue;
 using PizzeriaAPI.ORM;
@@ -28,6 +29,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPost]
         [Route("/AddKeyValue")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "KeyValue inserted successfully")]
         public async Task<ActionResult> AddKeyValue([FromBody] AddKeyValueDto keyValueDto)
         {
@@ -90,6 +92,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPatch]
         [Route("/UpdateKeyValueById")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "KeyValue updated successfully")]
         public async Task<ActionResult> UpdateKeyValueById([FromBody] KeyValueDto keyValueDto)
         {
@@ -109,6 +112,7 @@ namespace PizzeriaAPI.Controllers
         }
         [HttpPatch]
         [Route("/UpdateKeyValueByKey")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "KeyValue updated successfully")]
         public async Task<ActionResult> UpdateKeyValueByKey([FromBody] KeyValueDto keyValueDto)
         {
@@ -128,6 +132,7 @@ namespace PizzeriaAPI.Controllers
         }
         [HttpDelete]
         [Route("/DeleteKeyValue/{keyValueId}")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "KeyValue was deleted successfully")]
         public async Task<ActionResult> DeletKeyValue([FromRoute] int keyValueId)
         {

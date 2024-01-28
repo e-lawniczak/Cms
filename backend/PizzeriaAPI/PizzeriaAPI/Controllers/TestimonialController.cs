@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.Testimonial;
 using PizzeriaAPI.ORM;
@@ -39,6 +40,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPost]
         [Route("/AddTestimonial")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "Testimonial inserted successfully")]
         public async Task<ActionResult> AddTestimonial([FromBody] AddTestimonialDto testimonialDto)
         {
@@ -86,6 +88,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPatch]
         [Route("/UpdateTestimonial")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "Testimonial updated successfully")]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Testimonial not found")]
         public async Task<ActionResult> UpdateTestimonial([FromBody] TestimonialDto testimonialDto)
@@ -121,6 +124,7 @@ namespace PizzeriaAPI.Controllers
         }
         [HttpDelete]
         [Route("/DeleteTestimonial/{testimonialId}")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "Testimonial was deleted successfully")]
         public async Task<ActionResult> DeletTestimonial([FromRoute] int testimonialId)
         {

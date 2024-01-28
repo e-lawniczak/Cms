@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.Product;
 using PizzeriaAPI.ORM;
@@ -35,6 +36,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPost]
         [Route("/AddProduct")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "Product inserted successfully")]
         public async Task<ActionResult> AddProduct([FromBody] AddProductDto productDto)
         {
@@ -82,6 +84,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPatch]
         [Route("/UpdateProduct")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "Product updated successfully")]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Product not found")]
         public async Task<ActionResult> UpdateProduct([FromBody] ProductDto productDto)
@@ -121,6 +124,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpDelete]
         [Route("/DeleteProduct/{productId}")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "Product was deleted successfully")]
         public async Task<ActionResult> DeletProduct([FromRoute] int productId)
         {

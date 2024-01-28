@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.MenuElement;
 using PizzeriaAPI.ORM;
@@ -28,6 +29,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPost]
         [Route("/AddMenuElement")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "MenuElement inserted successfully")]
         public async Task<ActionResult> AddMenuElement([FromBody] AddMenuElementDto menuElementDto)
         {
@@ -75,6 +77,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPatch]
         [Route("/UpdateMenuElement")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "MenuElement updated successfully")]
         [SwaggerResponse(HttpStatusCode.BadRequest, "MenuElement not found")]
         public async Task<ActionResult> UpdateMenuElement([FromBody] MenuElementDto menuElementDto)
@@ -110,6 +113,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpDelete]
         [Route("/DeleteMenuElement/{menuElementId}")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "MenuElement was deleted successfully")]
         public async Task<ActionResult> DeleteMenuElement([FromRoute] int menuElementId)
         {
