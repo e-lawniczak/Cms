@@ -116,6 +116,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPatch]
         [Route("/UpdateBanner")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "Banner updated successfully")]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Banner not found")]
         public async Task<ActionResult> UpdateBanner([FromBody] BannerDto bannerDto)
@@ -139,6 +140,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpDelete]
         [Route("/DeleteBanner/{bannerId}")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "Banner updated successfully")]
         public async Task<ActionResult> DeleteBannerBanner([FromRoute] int bannerId)
         {

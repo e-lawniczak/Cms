@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.Picture;
 using PizzeriaAPI.ORM;
@@ -35,6 +36,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPost]
         [Route("/AddPicture")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "Picture inserted successfully")]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Failed to save file to filesystem")]
         public async Task<ActionResult> AddPicture([FromForm] AddPictureDto pictureDto)
@@ -165,6 +167,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPatch]
         [Route("/UpdatePicture")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "Picture updated successfully")]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Picture not found")]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Failed to update picture")]
@@ -234,6 +237,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpDelete]
         [Route("/DeletePicture/{pictureId}")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "Picture was deleted successfully")]
         public async Task<ActionResult> DeletePicture([FromRoute] int pictureId)
         {

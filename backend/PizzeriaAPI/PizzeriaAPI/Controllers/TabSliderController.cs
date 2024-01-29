@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.TabSlider;
 using PizzeriaAPI.ORM;
@@ -36,6 +37,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPost]
         [Route("/AddTabSlider")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "TabSlider inserted successfully")]
         public async Task<ActionResult> AddTabSlider([FromBody] AddTabSliderDto tabSliderDto)
         {
@@ -98,6 +100,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPatch]
         [Route("/UpdateTabSlider")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "TabSlider updated successfully")]
         [SwaggerResponse(HttpStatusCode.BadRequest, "TabSlider not found")]
         public async Task<ActionResult> UpdateTabSlider([FromBody] TabSliderDto tabSliderDto)
@@ -132,6 +135,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpDelete]
         [Route("/DeleteTabSlider/{tabSliderId}")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "TabSlider was deleted successfully")]
         public async Task<ActionResult> DeletTabSlider([FromRoute] int tabSliderId)
         {

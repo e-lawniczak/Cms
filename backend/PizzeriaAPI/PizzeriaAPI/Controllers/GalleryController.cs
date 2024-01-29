@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.Gallery;
 using PizzeriaAPI.ORM;
@@ -32,6 +33,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPost]
         [Route("/AddGallery")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "Gallery inserted successfully")]
         public async Task<ActionResult> AddGallery([FromBody] AddGalleryDto galleryDto)
         {
@@ -94,6 +96,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPatch]
         [Route("/UpdateGallery")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "Gallery updated successfully")]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Gallery not found")]
         public async Task<ActionResult> UpdateGallery([FromBody] GalleryDto galleryDto)
@@ -129,6 +132,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpDelete]
         [Route("/DeleteGallery/{galleryId}")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "Gallery was deleted successfully")]
         public async Task<ActionResult> DeletGallery([FromRoute] int galleryId)
         {

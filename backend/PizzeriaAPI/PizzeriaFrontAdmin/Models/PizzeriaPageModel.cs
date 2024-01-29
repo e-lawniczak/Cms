@@ -16,9 +16,6 @@ namespace PizzeriaFrontAdmin.Models
 
         public virtual void OnGet()
         {
-            //var user = HttpContext.Session.GetString("user");
-            //var token = HttpContext.Session.GetString("token");
-            //var id = HttpContext.Session.GetInt32("id");
             var user = Request.Cookies["user"];
             var token = Request.Cookies["token"];
             var id = Request.Cookies["id"];
@@ -32,36 +29,14 @@ namespace PizzeriaFrontAdmin.Models
                 User = null;
                 OnUserNotLogged();
             }
-        }
-        public virtual Task OnAsyncGet()
-        {
-            //var user = HttpContext.Session.GetString("user");
-            //var token = HttpContext.Session.GetString("token");
-            //var id = HttpContext.Session.GetInt32("id");
-            var user = Request.Cookies["user"];
-            var token = Request.Cookies["token"];
-            var id = Request.Cookies["id"];
-            if (token != null && user != null && id != null)
-            {
-                User = new UserModel(user, token, Int32.Parse(id));
-                OnUserLogged();
-            }
-            else
-            {
-                User = null;
-                OnUserNotLogged();
-            }
-            return Task.CompletedTask;
         }
         protected void SaveUser(string email, string token, int id)
         {
             User = new UserModel(email, token, id);
-            //HttpContext.Session.SetString("user", email);
-            //HttpContext.Session.SetString("token", token);
-            //HttpContext.Session.SetInt32("id", id);
+
             Response.Cookies.Append("user", email);
             Response.Cookies.Append("token", token);
-            Response.Cookies.Append("id", id.ToString()); 
+            Response.Cookies.Append("id", id.ToString());
         }
         protected void LogOut()
         {
@@ -79,46 +54,15 @@ namespace PizzeriaFrontAdmin.Models
             if (User == null && url != "/Login" && url != "/Top/Secret/Register" && url != "/ResetPassword")
                 Response.Redirect("/Login");
 
-       
+
 
         }
         public void OnUserLogged()
         {
             var url = HttpContext.Request.Path.Value;
-          
+
             if (User != null && (url == "/Login" || url == "/Top/Secret/Register" || url == "/ResetPassword"))
                 Response.Redirect("/");
-        }
-        public async Task<object?> MakeHttpRequest(HttpMethod method, string url, object data = null)
-        {
-            try
-            {
-                using (var client = new HttpClient())
-                {
-                    HttpRequestMessage request = new HttpRequestMessage();
-                    request.RequestUri = new Uri("https://localhost:7156" + url);
-                    request.Method = method;
-                    request.Headers.Add("Bearer", User.token);  
-                    if (data != null)
-                        request.Content = JsonContent.Create(data);
-                    HttpResponseMessage response = await client.SendAsync(request);
-                    var responseString = await response.Content.ReadAsStringAsync();
-                    var statusCode = response.StatusCode;
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return JsonConvert.DeserializeObject(responseString);
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.Write(ex);
-                throw;
-            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PizzeriaAPI.Database.Entities;
 using PizzeriaAPI.Dto.Slider;
 using PizzeriaAPI.ORM;
@@ -32,6 +33,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPost]
         [Route("/AddSlider")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "Slider inserted successfully")]
         public async Task<ActionResult> AddSlider([FromBody] AddSliderDto sliderDto)
         {
@@ -93,6 +95,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpPatch]
         [Route("/UpdateSlider")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "Slider updated successfully")]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Slider not found")]
         public async Task<ActionResult> UpdateSlider([FromBody] SliderDto sliderDto)
@@ -126,6 +129,7 @@ namespace PizzeriaAPI.Controllers
 
         [HttpDelete]
         [Route("/DeleteSlider/{sliderId}")]
+        [Authorize]
         [SwaggerResponse(HttpStatusCode.OK, "Slider was deleted successfully")]
         public async Task<ActionResult> DeletSlider([FromRoute] int sliderId)
         {
