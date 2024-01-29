@@ -71,44 +71,101 @@ var axios_1 = __importDefault(require("axios"));
 var common_1 = require("./common");
 var CategoryPage = function () {
     var _a = (0, react_1.useState)([]), data = _a[0], setData = _a[1];
-    React.useEffect(function () {
-    }, []);
     return React.createElement(commonElements_1.PageWrapper, null,
         React.createElement(BannerSection, null),
         React.createElement(ProductsList, null));
 };
 exports.CategoryPage = CategoryPage;
 var ProductsList = function () {
-    return React.createElement(React.Fragment, null);
-};
-var BannerSection = function () {
-    var _a = (0, react_1.useState)(), page = _a[0], setPage = _a[1], params = new URLSearchParams(window.location.search), getPages = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var res, p;
+    var _a = (0, react_1.useState)(), products = _a[0], setProducts = _a[1], cat = location.pathname.split("/")[location.pathname.split("/").length - 1], getProducts = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var resCat, res, p;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetVisiblePageList")];
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetCategory/".concat(cat))];
                 case 1:
+                    resCat = _a.sent();
+                    return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetVisibleProductList")];
+                case 2:
                     res = _a.sent();
-                    console.log(location.pathname.split("/")[location.pathname.split("/").length - 1]);
-                    p = res.data.filter(function (p) { return p.title == location.pathname.split("/")[location.pathname.split("/").length - 1]; });
-                    if ((p === null || p === void 0 ? void 0 : p.length) == 0)
-                        location.href = "/Error";
-                    setPage(p[0]);
+                    p = res.data.filter(function (p) { return resCat.data.id == p.categoryId; });
+                    // if (p?.length == 0) location.href = "/Error"
+                    setProducts(p);
                     return [2 /*return*/];
             }
         });
     }); };
+    React.useEffect(function () {
+        getProducts();
+    }, []);
+    return React.createElement(React.Fragment, null,
+        React.createElement("div", { className: "product-list" }, products === null || products === void 0 ? void 0 : products.map(function (p, idx) {
+            return React.createElement(Product, { key: idx, iii: idx, product: p });
+        })));
+};
+var Product = function (props) {
+    var product = props.product, iii = props.iii;
+    return React.createElement("div", { className: "product-item" },
+        React.createElement("article", { className: "product ", "data-wow-delay": ".15s" },
+            React.createElement("div", { className: "base-info" },
+                React.createElement("div", null,
+                    React.createElement("div", { className: "product-figure" },
+                        React.createElement("img", { src: (0, common_1.getPictureUrlFromList)(product.pictureIdList)[0], alt: "", width: "161", height: "162" })),
+                    React.createElement("div", { className: "product-rating" }, Array.from({ length: 5 }, function (_, i) { return i + 1; }).map(function (i, idx) {
+                        if (idx < product.score)
+                            return React.createElement("span", { className: "mdi mdi-star" });
+                        return React.createElement("span", { className: "mdi mdi-star text-gray-13" });
+                    }))),
+                React.createElement("div", null,
+                    React.createElement("h6", { className: "product-title" },
+                        product.id,
+                        ". ",
+                        product.name),
+                    React.createElement("div", { className: "product-price-wrap" }, (product.discountPrice < product.price && product.discountPrice > 0) ?
+                        React.createElement(React.Fragment, null,
+                            React.createElement("div", { className: "product-price product-price-old" },
+                                product.price,
+                                " z\u0142"),
+                            React.createElement("div", { className: "product-price" },
+                                product.discountPrice,
+                                " z\u0142"))
+                        : React.createElement("div", { className: "product-price" },
+                            product.price,
+                            " z\u0142")),
+                    React.createElement("div", { className: "description", dangerouslySetInnerHTML: { __html: product.description } }))),
+            (product.discountPrice < product.price && product.discountPrice > 0) ? React.createElement("span", { className: "product-badge product-badge-sale" }, "Sale") : ""));
+};
+var BannerSection = function () {
+    var _a = (0, react_1.useState)(), page = _a[0], setPage = _a[1], _b = (0, react_1.useState)(), category = _b[0], setCategory = _b[1], cat = location.pathname.split("/")[location.pathname.split("/").length - 1], getCategory = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var resCat;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.get(common_1.baseApiUrl + "/GetCategory/".concat(cat))];
+                case 1:
+                    resCat = _a.sent();
+                    if (resCat.status == 200) {
+                        setCategory(resCat.data);
+                    }
+                    else {
+                        location.href = "/Error";
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    React.useEffect(function () {
+        getCategory();
+    }, []);
     return React.createElement("section", { className: "bg-gray-7" },
         React.createElement("div", { className: "breadcrumbs-custom box-transform-wrap context-dark" },
             React.createElement("div", { className: "container" },
-                React.createElement("h3", { className: "breadcrumbs-custom-title" }, (page === null || page === void 0 ? void 0 : page.title) || ""),
+                React.createElement("h3", { className: "breadcrumbs-custom-title" }, (category === null || category === void 0 ? void 0 : category.name) || ""),
                 React.createElement("div", { className: "breadcrumbs-custom-decor" })),
-            React.createElement("div", { className: "box-transform", style: { backgroundImage: "url(".concat((0, common_1.getPictureUrlFromList)(page === null || page === void 0 ? void 0 : page.pictureIdList)[0], ")") } })),
+            React.createElement("div", { className: "box-transform", style: { backgroundImage: "url(".concat((0, common_1.getPictureUrlFromList)(category === null || category === void 0 ? void 0 : category.pictureIdList)[0], ")") } })),
         React.createElement("div", { className: "container" },
             React.createElement("ul", { className: "breadcrumbs-custom-path" },
                 React.createElement("li", null,
                     React.createElement("a", { href: "/" }, "Home")),
-                React.createElement("li", { className: "active" }, (page === null || page === void 0 ? void 0 : page.title) || ""))));
+                React.createElement("li", { className: "active" }, (category === null || category === void 0 ? void 0 : category.name) || ""))));
 };
 var root = document.getElementById("react_root");
 ReactDOM.render(React.createElement(exports.CategoryPage, null), root);

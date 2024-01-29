@@ -143,8 +143,7 @@ var SwiperSection = function () {
                 React.createElement("div", { className: "container" },
                     React.createElement("div", { className: "row" },
                         React.createElement("div", { className: "col-sm-9 col-md-8 col-lg-7 col-xl-7 offset-lg-1 offset-xxl-0" },
-                            React.createElement("div", { dangerouslySetInnerHTML: { __html: b.text } }),
-                            React.createElement("a", { className: "button button-lg button-primary button-winona button-shadow-2", href: b === null || b === void 0 ? void 0 : b.link, "data-caption-animate": "fadeInUp", "data-caption-delay": "300" }, b.subText))))));
+                            React.createElement("div", { dangerouslySetInnerHTML: { __html: b.text } }))))));
     });
     React.useEffect(function () {
         getMainSLider();
